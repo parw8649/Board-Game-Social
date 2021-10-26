@@ -1,4 +1,4 @@
-# CST438-Project3: Board Game Social
+# Board Game Social
 CST438-Project3 (Group 1)
 
 Members:
