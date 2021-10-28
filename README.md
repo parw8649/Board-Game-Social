@@ -14,7 +14,8 @@ Database: Postgres Heroku<br>
 
 ## Description:<br>
 Board Game Social (working title) will allow users to keep track of their board games and connect with other users who share similar interests. They will be able to share their opinions via a post feed, reviews for games within the app database, and events centered around available games.
-
+<br>
+Django tokens will be used to verify valid user activity when sending and receiving data from the Postgres Heroku database.
 ERDs:<br>
 
 ## Tentative API Endpoints:<br>
