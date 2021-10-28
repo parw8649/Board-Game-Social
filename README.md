@@ -30,6 +30,6 @@ Tentative API Endpoints:<br>
 - Add event
 - Delete user/account
 
-Mockups:<br>
+## Mockups:<br>
 ![BGS mockups](https://github.com/parw8649/CST438-Project3/blob/patch/readme_update/proj03-group01--initial-mockups.png)
 Libraries Used:<br>
