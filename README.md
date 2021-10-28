@@ -1,22 +1,23 @@
 # Board Game Social
 CST438-Project3 (Group 1)
 
-Members:
+## Members:
 - Barbara Kondo: [bKondo](https://github.com/bKondo)
 - Boris Marin: [BorisMarin8004](https://github.com/BorisMarin8004)
 - Chaitanya Parwatkar: [parw8649](https://github.com/parw8649)
 - Keyoni Mcnair: [keyoni](https://github.com/keyoni)
 
+## Tech Stack
 Frontend: Android<br>
 Backend: Django<br>
 Database: Postgres Heroku<br>
 
-Description:<br>
+## Description:<br>
 Board Game Social (working title) will allow users to keep track of their board games and connect with other users who share similar interests. They will be able to share their opinions via a post feed, reviews for games within the app database, and events centered around available games.
 
 ERDs:<br>
 
-Tentative API Endpoints:<br>
+## Tentative API Endpoints:<br>
 - Login / signup
 - Logout
 - Get all users
