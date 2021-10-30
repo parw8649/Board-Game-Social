@@ -67,7 +67,7 @@ class Comment(models.Model):
 
     userId = models.ForeignKey(User, on_delete=models.CASCADE, db_column='userId')
     postId = models.ForeignKey(Post, on_delete=models.CASCADE, db_column='postId')
-
+    content = models.TextField(db_column="content")
 
 class GameToUser(models.Model):
     class Meta:
