@@ -40,17 +40,17 @@ class UserToUser(models.Model):
     class Meta:
         db_table = "UserToUser"
 
-    userOneId = models.ForeignKey(User, on_delete=models.CASCADE, db_column='userOneId')
-    userTwoId = models.ForeignKey(User, on_delete=models.CASCADE, db_column='userTwoId')
+    userOneId = models.ForeignKey(User, on_delete=models.CASCADE, db_column='userOneId', related_name="userOneId")
+    userTwoId = models.ForeignKey(User, on_delete=models.CASCADE, db_column='userTwoId', related_name="userTwoId")
 
 
 class Massage(models.Model):
     class Meta:
         db_table = "Massage"
 
-    senderId = models.ForeignKey(User, on_delete=models.CASCADE, db_column='senderId')
-    receiverId = models.ForeignKey(User, on_delete=models.CASCADE, db_column='receiverId')
-    content = models.TextField(db_column='content')
+    senderId = models.ForeignKey(User, on_delete=models.CASCADE, db_column="senderId", related_name="senderId")
+    receiverId = models.ForeignKey(User, on_delete=models.CASCADE, db_column="receiverId", related_name="receiverId")
+    content = models.TextField(db_column="content")
 
 
 class EventToUser(models.Model):
