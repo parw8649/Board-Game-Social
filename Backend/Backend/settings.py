@@ -37,6 +37,7 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'BoardGameSocialAPI'
 ]
 
 MIDDLEWARE = [
@@ -76,8 +77,16 @@ WSGI_APPLICATION = 'Backend.wsgi.application'
 
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': BASE_DIR / 'db.sqlite3',
+        'ENGINE': 'django.db.backends.postgresql',
+        'NAME': 'd7up7rbjf9tcp4',
+        'USER': 'udsxhxfqsbvpkw',
+        'PASSWORD': '8fcf951ae9a4621c351be681d2d514226bebcd8de9a6d909b37292fe487f2537',
+        'HOST': 'ec2-3-233-55-123.compute-1.amazonaws.com',
+        'PORT': '5432',
+        'TEST': {
+            'NAME': 'da6geq5vjieu5u',
+            'SERIALIZE': False,
+        },
     }
 }
 
