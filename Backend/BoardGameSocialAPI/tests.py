@@ -47,4 +47,3 @@ class UserViewTest(TestCase, DAVTestTemplate):
 
     def test_delete_user(self):
         super()._test_delete(self)
-

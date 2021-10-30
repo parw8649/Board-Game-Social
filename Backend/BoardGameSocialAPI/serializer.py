@@ -30,27 +30,32 @@ class EventSerializer(serializers.ModelSerializer):
     class Meta:
         model = Event
         fields = [
+            'id',
             'hostUserId',
             'dateTime',
             'description',
             'hostedGames'
         ]
-        
+
+
 class PostSerializer(serializers.ModelSerializer):
     class Meta:
         model = Post
         fields = [
+            'id',
             'userId',
             'postBody',
             'postType',
             'private',
             'likes'
         ]
-        
+
+
 class GameSerializer(serializers.ModelSerializer):
     class Meta:
         model = Game
         fields = [
+            'id',
             'gameTitle',
             'genre',
             'minPlayer',
@@ -59,15 +64,18 @@ class GameSerializer(serializers.ModelSerializer):
             'imageUrl',
             'overallPlayCount'
         ]
-        
+
+
 class UserToUserSerializer(serializers.ModelSerializer):
     class Meta:
         model = UserToUser
         fields = [
+            'id',
             'userOneId',
             'userTwoId'
         ]
-        
+
+
 class MessageSerializer(serializers.ModelSerializer):
     class Meta:
         model = Message
@@ -77,36 +85,44 @@ class MessageSerializer(serializers.ModelSerializer):
             'content'
         ]
 
+
 class EventToUserSerializer(serializers.ModelSerializer):
     class Meta:
         model = EventToUser
         fields = [
+            'id',
             'userId',
             'eventId'
         ]
+
 
 class CommentSerializer(serializers.ModelSerializer):
     class Meta:
         model = Comment
         fields = [
+            'id',
             'userId',
             'postId',
             'content'
         ]
 
+
 class GameToUserSerializer(serializers.ModelSerializer):
     class Meta:
         model = GameToUser
         fields = [
+            'id',
             'userId',
             'gameId',
             'private'
         ]
 
+
 class HostedGameSerializer(serializers.ModelSerializer):
     class Meta:
         model = HostedGame
         fields = [
+            'id',
             'eventId',
             'gameId',
             'seatsAvailable'
@@ -117,15 +133,18 @@ class ReviewSerializer(serializers.ModelSerializer):
     class Meta:
         model = Comment
         fields = [
+            'id',
             'userId',
             'gameId',
             'content'
         ]
 
-class EventToUserSerializer(serializers.ModelSerializer):
+
+class HostedGameToUserSerializer(serializers.ModelSerializer):
     class Meta:
         model = EventToUser
         fields = [
+            'id',
             'userId',
             'gameId'
         ]
