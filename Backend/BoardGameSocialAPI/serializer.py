@@ -25,3 +25,13 @@ class UserSerializer(serializers.ModelSerializer):
         Token.objects.create(user=user)
         return user
 
+
+class EventSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Event
+        fields = [
+            'hostUserId',
+            'dateTime',
+            'description',
+            'hostedGames'
+        ]
