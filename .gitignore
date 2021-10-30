@@ -2,6 +2,9 @@
 # Created by https://www.toptal.com/developers/gitignore/api/java,macos,android,windows,jetbrains+all,androidstudio,visualstudiocode,django,python
 # Edit at https://www.toptal.com/developers/gitignore?templates=java,macos,android,windows,jetbrains+all,androidstudio,visualstudiocode,django,python
 
+Android/.idea
+Backend/.idea
+
 ### Android ###
 # Built application files
 *.apk
