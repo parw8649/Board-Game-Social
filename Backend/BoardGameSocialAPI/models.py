@@ -1,4 +1,7 @@
+import datetime
+
 from django.db import models
+from django.utils import timezone
 from django.contrib.auth.models import User
 
 
@@ -6,10 +9,11 @@ class Event(models.Model):
     class Meta:
         db_table = "event"
 
+    name = models.CharField(db_column='name', max_length=50)
     hostUserId = models.ForeignKey(User, on_delete=models.CASCADE, db_column='hostUserId')
-    date = models.DateTimeField(db_column='dateTime')
-    description = models.TextField(db_column='description')
-    hostedGames = models.IntegerField(db_column='hostedGames')
+    dateTime = models.DateTimeField(default=timezone.now, db_column='dateTime')
+    description = models.TextField(default="No description", db_column='description')
+    hostedGames = models.IntegerField(default=0, db_column='hostedGames')
 
 
 class Post(models.Model):
@@ -20,7 +24,7 @@ class Post(models.Model):
     postBody = models.TextField(db_column='postBody')
     postType = models.CharField(db_column='postType', max_length=20)
     private = models.BooleanField(default=False, db_column='private')
-    likes = models.IntegerField(db_column='likes')
+    likes = models.IntegerField(default=0, db_column='likes')
 
 
 class Game(models.Model):
@@ -31,8 +35,8 @@ class Game(models.Model):
     genre = models.CharField(db_column='genre', max_length=20)
     minPlayer = models.IntegerField(db_column='minPlayer')
     maxPlayer = models.IntegerField(db_column='maxPlayer')
-    description = models.TextField(db_column='description')
-    imageUrl = models.TextField(db_column='imageUrl')
+    description = models.TextField(default="None", db_column='description')
+    imageUrl = models.TextField(default="None", db_column='imageUrl')
     overallPlayCount = models.IntegerField(default=0, db_column='overallPlayCount')
 
 
@@ -67,6 +71,7 @@ class Comment(models.Model):
 
     userId = models.ForeignKey(User, on_delete=models.CASCADE, db_column='userId')
     postId = models.ForeignKey(Post, on_delete=models.CASCADE, db_column='postId')
+    content = models.TextField(db_column="content")
 
 
 class GameToUser(models.Model):
