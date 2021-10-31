@@ -1,7 +1,6 @@
 from rest_framework.authtoken.models import Token
 from rest_framework.test import APIClient
 from django.urls import reverse
-from unittest import skip
 from BoardGameSocialAPI.models import User
 from .test_utils import *
 
@@ -32,6 +31,7 @@ class DAVTestTemplate:
 
     @classmethod
     def setUpdateData(cls, test_instance):
+        cls.__add_response(test_instance)
         cls.update_data = cls.add_data
         cls.update_data["id"] = decode_content(cls.__get_response(test_instance).content)[0]["id"]
 

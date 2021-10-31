@@ -31,6 +31,7 @@ class EventSerializer(serializers.ModelSerializer):
         model = Event
         fields = [
             'id',
+            'name',
             'hostUserId',
             'dateTime',
             'description',
@@ -80,6 +81,7 @@ class MessageSerializer(serializers.ModelSerializer):
     class Meta:
         model = Message
         fields = [
+            'id',
             'senderId',
             'receiverId',
             'content'
