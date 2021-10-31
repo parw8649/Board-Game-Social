@@ -11,7 +11,7 @@ import android.widget.EditText;
 public class SignUpActivity extends AppCompatActivity {
 
     private EditText etUsername, etPassword;
-    private Button btnRegister;
+    private Button btnRegister, btnSignIn;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -25,6 +25,7 @@ public class SignUpActivity extends AppCompatActivity {
         etUsername = findViewById(R.id.et_signup_username);
         etPassword = findViewById(R.id.et_signup_password);
         btnRegister = findViewById(R.id.btn_register);
+        btnSignIn = findViewById(R.id.btn_back_to_login);
 
         btnRegister.setOnClickListener(view -> {
             //TODO: verify if user already exits!
@@ -33,6 +34,8 @@ public class SignUpActivity extends AppCompatActivity {
             Intent goToMainActivity = MainActivity.getIntent(SignUpActivity.this);
             startActivity(goToMainActivity);
         });
+
+        btnSignIn.setOnClickListener(view -> finish());
     }
 
     public static Intent getIntent(Context context) {
