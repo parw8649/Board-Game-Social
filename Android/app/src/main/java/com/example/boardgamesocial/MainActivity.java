@@ -10,8 +10,8 @@ import android.widget.EditText;
 
 public class MainActivity extends AppCompatActivity {
 
-    EditText etUsername, etPassword;
-    Button btnLogin, btnSignup;
+    private EditText etUsername, etPassword;
+    private Button btnLogin, btnSignup;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -21,7 +21,7 @@ public class MainActivity extends AppCompatActivity {
         wireUpDisplay();
     }
 
-    void wireUpDisplay() {
+    private void wireUpDisplay() {
 
         etUsername = findViewById(R.id.et_login_username);
         etPassword = findViewById(R.id.et_login_password);
