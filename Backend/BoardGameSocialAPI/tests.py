@@ -1,7 +1,5 @@
 from django.test import TestCase
 from django.urls import reverse
-from rest_framework.authtoken.models import Token
-from rest_framework.test import APIClient
 from .models import *
 from .tests_manager import *
 
@@ -52,7 +50,6 @@ class UserViewTest(TestCase, DAVTestTemplate):
 class EventViewTest(TestCase, DAVTestTemplate):
     add_data = {
         "name": "TestEventName",
-        "hostUserId": 1,
         "description": "TestEventDescription"
     }
     delete_data = add_data
@@ -62,6 +59,7 @@ class EventViewTest(TestCase, DAVTestTemplate):
 
     @classmethod
     def setUpTestData(cls):
+        EventViewTest.add_data["hostUserId"] = User.objects.create(username="TestUsername", password="TestPassword").pk
         DAVTestTemplate.setUpTestData(cls)
 
     def test_get_event(self):
@@ -79,10 +77,8 @@ class EventViewTest(TestCase, DAVTestTemplate):
 
 class PostViewTest(TestCase, DAVTestTemplate):
     add_data = {
-        "userId": 0,
         "postBody": "TestPostBody",
-        "postType": "TestPostType",
-        "private": True
+        "postType": "TestPostType"
     }
     delete_data = add_data
     url_name = "post"
@@ -91,6 +87,7 @@ class PostViewTest(TestCase, DAVTestTemplate):
 
     @classmethod
     def setUpTestData(cls):
+        PostViewTest.add_data["userId"] = User.objects.create(username="TestUsername", password="TestPassword").pk
         DAVTestTemplate.setUpTestData(cls)
 
     def test_get_post(self):
@@ -136,10 +133,7 @@ class GameViewTest(TestCase, DAVTestTemplate):
 
 
 class UserToUserViewTest(TestCase, DAVTestTemplate):
-    add_data = {
-        "userOneId": 0,
-        "userTwoId": 1
-    }
+    add_data = {}
     delete_data = add_data
     url_name = "user_to_user"
     field_compare = "userOneId"
@@ -147,6 +141,8 @@ class UserToUserViewTest(TestCase, DAVTestTemplate):
 
     @classmethod
     def setUpTestData(cls):
+        UserToUserViewTest.add_data["userOneId"] = User.objects.create(username="TestUsername", password="TestPassword").pk
+        UserToUserViewTest.add_data["userTwoId"] = User.objects.create(username="TestUsername1", password="TestPassword1").pk
         DAVTestTemplate.setUpTestData(cls)
 
     def test_get_user_to_user(self):
@@ -155,17 +151,12 @@ class UserToUserViewTest(TestCase, DAVTestTemplate):
     def test_add_user_to_user(self):
         super()._test_add(self)
 
-    def test_update_user_to_user(self):
-        super()._test_update(self)
-
     def test_delete_user_to_user(self):
         super()._test_delete(self)
 
 
 class MessageViewTest(TestCase, DAVTestTemplate):
     add_data = {
-        "senderId": 0,
-        "receiverId": 1,
         "content": "TestContent"
     }
     delete_data = add_data
@@ -175,6 +166,8 @@ class MessageViewTest(TestCase, DAVTestTemplate):
 
     @classmethod
     def setUpTestData(cls):
+        MessageViewTest.add_data["senderId"] = User.objects.create(username="TestUsername", password="TestPassword").pk
+        MessageViewTest.add_data["receiverId"] = User.objects.create(username="TestUsername1", password="TestPassword1").pk
         DAVTestTemplate.setUpTestData(cls)
 
     def test_get_message(self):
@@ -191,10 +184,7 @@ class MessageViewTest(TestCase, DAVTestTemplate):
 
 
 class EventToUserViewTest(TestCase, DAVTestTemplate):
-    add_data = {
-        "userId": 0,
-        "eventId": 0
-    }
+    add_data = {}
     delete_data = add_data
     url_name = "event_to_user"
     field_compare = "userId"
@@ -202,6 +192,12 @@ class EventToUserViewTest(TestCase, DAVTestTemplate):
 
     @classmethod
     def setUpTestData(cls):
+        EventToUserViewTest.add_data["userId"] = User.objects.create(username="TestUsername", password="TestPassword").pk
+        EventToUserViewTest.add_data["eventId"] = Event.objects.create(
+            name="TestEventName",
+            description="TestEventDescription",
+            hostUserId=User.objects.create(username="TestUsername1", password="TestPassword1")
+        ).pk
         DAVTestTemplate.setUpTestData(cls)
 
     def test_get_event_to_user(self):
@@ -210,17 +206,12 @@ class EventToUserViewTest(TestCase, DAVTestTemplate):
     def test_add_event_to_user(self):
         super()._test_add(self)
 
-    def test_update_event_to_user(self):
-        super()._test_update(self)
-
     def test_delete_event_to_user(self):
         super()._test_delete(self)
 
 
 class CommentViewTest(TestCase, DAVTestTemplate):
     add_data = {
-        "userId": 0,
-        "postId": 0,
         "content": "TestContent"
     }
     delete_data = add_data
@@ -230,6 +221,12 @@ class CommentViewTest(TestCase, DAVTestTemplate):
 
     @classmethod
     def setUpTestData(cls):
+        CommentViewTest.add_data["userId"] = User.objects.create(username="TestUsername", password="TestPassword").pk
+        CommentViewTest.add_data["postId"] = Post.objects.create(
+            postBody="TestPostBody",
+            postType="TestPostType",
+            userId=User.objects.create(username="TestUsername1", password="TestPassword1")
+        ).pk
         DAVTestTemplate.setUpTestData(cls)
 
     def test_get_comment(self):
@@ -247,8 +244,6 @@ class CommentViewTest(TestCase, DAVTestTemplate):
 
 class GameToUserViewTest(TestCase, DAVTestTemplate):
     add_data = {
-        "userId": 0,
-        "gameId": 0,
         "private": True
     }
     delete_data = add_data
@@ -258,6 +253,13 @@ class GameToUserViewTest(TestCase, DAVTestTemplate):
 
     @classmethod
     def setUpTestData(cls):
+        GameToUserViewTest.add_data["userId"] = User.objects.create(username="TestUsername", password="TestPassword").pk
+        GameToUserViewTest.add_data["gameId"] = Game.objects.create(
+            gameTitle="TestGameTitle",
+            genre="TestGenre",
+            minPlayer=1,
+            maxPlayer=2
+        ).pk
         DAVTestTemplate.setUpTestData(cls)
 
     def test_get_game_to_user(self):
@@ -275,8 +277,6 @@ class GameToUserViewTest(TestCase, DAVTestTemplate):
 
 class HostedGameViewTest(TestCase, DAVTestTemplate):
     add_data = {
-        "eventId": 0,
-        "gameId": 0,
         "seatsAvailable": 1
     }
     delete_data = add_data
@@ -286,6 +286,17 @@ class HostedGameViewTest(TestCase, DAVTestTemplate):
 
     @classmethod
     def setUpTestData(cls):
+        HostedGameViewTest.add_data["eventId"] = Event.objects.create(
+            name="TestEventName",
+            description="TestEventDescription",
+            hostUserId=User.objects.create(username="TestUsername1", password="TestPassword1")
+        ).pk
+        HostedGameViewTest.add_data["gameId"] = Game.objects.create(
+            gameTitle="TestGameTitle",
+            genre="TestGenre",
+            minPlayer=1,
+            maxPlayer=2
+        ).pk
         DAVTestTemplate.setUpTestData(cls)
 
     def test_get_hosted_game(self):
@@ -303,8 +314,6 @@ class HostedGameViewTest(TestCase, DAVTestTemplate):
 
 class ReviewViewTest(TestCase, DAVTestTemplate):
     add_data = {
-        "userId": 0,
-        "gameId": 0,
         "content": "TestContent"
     }
     delete_data = add_data
@@ -314,6 +323,13 @@ class ReviewViewTest(TestCase, DAVTestTemplate):
 
     @classmethod
     def setUpTestData(cls):
+        ReviewViewTest.add_data["userId"] = User.objects.create(username="TestUsername", password="TestPassword").pk
+        ReviewViewTest.add_data["gameId"] = Game.objects.create(
+            gameTitle="TestGameTitle",
+            genre="TestGenre",
+            minPlayer=1,
+            maxPlayer=2
+        ).pk
         DAVTestTemplate.setUpTestData(cls)
 
     def test_get_review(self):
@@ -341,6 +357,13 @@ class HostedGameToUserViewTest(TestCase, DAVTestTemplate):
 
     @classmethod
     def setUpTestData(cls):
+        HostedGameToUserViewTest.add_data["userId"] = User.objects.create(username="TestUsername", password="TestPassword").pk
+        HostedGameToUserViewTest.add_data["gameId"] = Game.objects.create(
+            gameTitle="TestGameTitle",
+            genre="TestGenre",
+            minPlayer=1,
+            maxPlayer=2
+        ).pk
         DAVTestTemplate.setUpTestData(cls)
 
     def test_get_hosted_game_to_user(self):

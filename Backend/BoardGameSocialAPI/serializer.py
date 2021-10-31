@@ -133,7 +133,7 @@ class HostedGameSerializer(serializers.ModelSerializer):
 
 class ReviewSerializer(serializers.ModelSerializer):
     class Meta:
-        model = Comment
+        model = Review
         fields = [
             'id',
             'userId',
@@ -144,7 +144,7 @@ class ReviewSerializer(serializers.ModelSerializer):
 
 class HostedGameToUserSerializer(serializers.ModelSerializer):
     class Meta:
-        model = EventToUser
+        model = HostedGameToUser
         fields = [
             'id',
             'userId',
