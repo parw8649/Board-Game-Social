@@ -1,3 +1,8 @@
 <resources>
     <string name="app_name">BoardGameSocial</string>
+    <string name="profile_option_title">profile</string>
+    <string name="logout_option_title">logout</string>
+    <string name="home_option_title">home</string>
+    <string name="games_option_title">games</string>
+    <string name="search_option_title">search</string>
 </resources>
