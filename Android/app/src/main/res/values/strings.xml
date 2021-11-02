@@ -5,4 +5,8 @@
     <string name="home_option_title">home</string>
     <string name="games_option_title">games</string>
     <string name="search_option_title">search</string>
+    <string name="item_textView_posterPlaceHolder">Poster\'s Name</string>
+    <string name="item_textView_postTypePlaceHolder">Post Type</string>
+    <string name="item_textView_postBodyPlaceHolder">post body goes here</string>
+    <string name="item_button_text">more</string>
 </resources>

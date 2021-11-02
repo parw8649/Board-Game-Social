@@ -17,9 +17,10 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        // TODO: finish adapting ActionBar
+        // adapting ActionBar
         // https://youtu.be/DMkzIOLppf4?t=245
         Toolbar nav_bar = findViewById(R.id.nav_bar);
+        nav_bar.setTitle("");
         setSupportActionBar(nav_bar);
     }
 
