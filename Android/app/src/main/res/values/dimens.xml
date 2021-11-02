@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <dimen name="btnMargin">20dp</dimen>
+    <dimen name="btnPadding">10dp</dimen>
+    <dimen name="btnTextSize">20sp</dimen>
+    <dimen name="infoTextSize">30sp</dimen>
+    <dimen name="listMargin">0dp</dimen>
+    <dimen name="listItemMargin">15dp</dimen>
+    <dimen name="listItemMarginLeft">10dp</dimen>
+    <dimen name="textFieldHeight">100dp</dimen>
+    <dimen name="textFieldMargin">5dp</dimen>
+    <dimen name="textFieldWidth">300dp</dimen>
+    <dimen name="textSizeBig">20sp</dimen>
+    <dimen name="textSizeMiddle">15sp</dimen>
+    <dimen name="welcomeTextFieldMarginBottom">120dp</dimen>
+    <dimen name="dialogPadding">40dp</dimen>
+</resources>
