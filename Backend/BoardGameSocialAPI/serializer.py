@@ -31,6 +31,7 @@ class EventSerializer(serializers.ModelSerializer):
         model = Event
         fields = [
             'id',
+            'name',
             'hostUserId',
             'dateTime',
             'description',
@@ -80,6 +81,7 @@ class MessageSerializer(serializers.ModelSerializer):
     class Meta:
         model = Message
         fields = [
+            'id',
             'senderId',
             'receiverId',
             'content'
@@ -131,7 +133,7 @@ class HostedGameSerializer(serializers.ModelSerializer):
 
 class ReviewSerializer(serializers.ModelSerializer):
     class Meta:
-        model = Comment
+        model = Review
         fields = [
             'id',
             'userId',
@@ -142,7 +144,7 @@ class ReviewSerializer(serializers.ModelSerializer):
 
 class HostedGameToUserSerializer(serializers.ModelSerializer):
     class Meta:
-        model = EventToUser
+        model = HostedGameToUser
         fields = [
             'id',
             'userId',

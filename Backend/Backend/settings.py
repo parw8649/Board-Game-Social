@@ -25,7 +25,15 @@ SECRET_KEY = 'django-insecure-ui=$@5kfhjv9ee^q4it@istgc0u9j$c3xjexj8)nbn1x4w&f%i
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+LOGIN_URL = '/login/'
+
+ALLOWED_HOSTS = ["*"]
+
+AUTHENTICATION_BACKENDS = ['django.contrib.auth.backends.AllowAllUsersModelBackend']
+
+REST_FRAMEWORK = {
+    'DEFAULT_PERMISSION_CLASSES': ['rest_framework.permissions.AllowAny']
+}
 
 
 # Application definition
@@ -37,6 +45,9 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'rest_framework',
+    'rest_framework.authtoken',
+    'corsheaders',
     'BoardGameSocialAPI'
 ]
 
@@ -48,6 +59,7 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
+    'corsheaders.middleware.CorsMiddleware'
 ]
 
 ROOT_URLCONF = 'Backend.urls'
@@ -84,7 +96,7 @@ DATABASES = {
         'HOST': 'ec2-3-233-55-123.compute-1.amazonaws.com',
         'PORT': '5432',
         'TEST': {
-            'NAME': 'da6geq5vjieu5u',
+            'NAME': 'd7up7rbjf9tcp4',
             'SERIALIZE': False,
         },
     }

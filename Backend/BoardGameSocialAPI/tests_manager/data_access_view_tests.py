@@ -1,7 +1,6 @@
 from rest_framework.authtoken.models import Token
 from rest_framework.test import APIClient
 from django.urls import reverse
-from unittest import skip
 from BoardGameSocialAPI.models import User
 from .test_utils import *
 
@@ -32,6 +31,7 @@ class DAVTestTemplate:
 
     @classmethod
     def setUpdateData(cls, test_instance):
+        print(cls.add_data)
         cls.update_data = cls.add_data
         cls.update_data["id"] = decode_content(cls.__get_response(test_instance).content)[0]["id"]
 
@@ -75,18 +75,26 @@ class DAVTestTemplate:
     def _test_get(cls, test_instance):
         cls.__add_response(test_instance)
         response = cls.__get_response(test_instance)
+        print(response.content)
         test_instance.assertEqual(response.status_code, 200)
         test_instance.assertTrue(len(decode_content(response.content)) > 0)
 
     @classmethod
     def _test_add(cls, test_instance):
         response = cls.__add_response(test_instance)
+        print(response.content)
         test_instance.assertEqual(response.status_code, 200)
         test_instance.assertEqual(decode_content(response.content)[cls.field_compare], cls.add_data[cls.field_compare])
 
     @classmethod
     def _test_update(cls, test_instance):
-        response = cls.__update_response(test_instance)
+        try:
+            response = cls.__update_response(test_instance)
+            print(response.content)
+        except IndexError:
+            cls.__add_response(test_instance)
+            response = cls.__update_response(test_instance)
+            print(response.content)
         test_instance.assertEqual(response.status_code, 200)
         test_instance.assertEqual(decode_content(response.content)[cls.field_compare], cls.add_data[cls.field_compare])
 
@@ -94,5 +102,6 @@ class DAVTestTemplate:
     def _test_delete(cls, test_instance):
         cls.__add_response(test_instance)
         response = cls.__delete_response(test_instance)
+        print(response.content)
         test_instance.assertEqual(response.status_code, 200)
         test_instance.assertEqual(decode_content(response.content)[0][cls.field_compare], cls.delete_data[cls.field_compare])

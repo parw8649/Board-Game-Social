@@ -1,3 +1,9 @@
 <resources>
     <string name="app_name">BoardGameSocial</string>
+    <string name="et_hint_password">Password</string>
+    <string name="et_hint_username">Username</string>
+    <string name="btn_login">login</string>
+    <string name="new_user_sign_up">New user? sign-up!</string>
+    <string name="btn_register">register</string>
+    <string name="already_a_user_sign_in">Already a user? sign-in!</string>
 </resources>
