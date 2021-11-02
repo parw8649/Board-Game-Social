@@ -1,5 +1,14 @@
 <resources>
     <string name="app_name">BoardGameSocial</string>
+    <string name="profile_option_title">profile</string>
+    <string name="logout_option_title">logout</string>
+    <string name="home_option_title">home</string>
+    <string name="games_option_title">games</string>
+    <string name="search_option_title">search</string>
+    <string name="item_textView_posterPlaceHolder">Poster\'s Name</string>
+    <string name="item_textView_postTypePlaceHolder">Post Type</string>
+    <string name="item_textView_postBodyPlaceHolder">post body goes here</string>
+    <string name="item_button_text">more</string>
     <string name="et_hint_password">Password</string>
     <string name="et_hint_username">Username</string>
     <string name="btn_login">login</string>
