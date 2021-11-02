@@ -15,4 +15,5 @@
     <string name="new_user_sign_up">New user? sign-up!</string>
     <string name="btn_register">register</string>
     <string name="already_a_user_sign_in">Already a user? sign-in!</string>
+    <string name="tv_games_collection">Games Collection</string>
 </resources>
