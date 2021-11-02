@@ -1,0 +1,20 @@
+version: "3.9"
+   
+services:
+  db:
+    image: postgres
+    environment:
+      POSTGRES_USER:'udsxhxfqsbvpkw'
+      POSTGRES_PASSWORD:'8fcf951ae9a4621c351be681d2d514226bebcd8de9a6d909b37292fe487f2537'
+      POSTGRES_DB:'d7up7rbjf9tcp4'
+    expose:
+      - '3306'
+  web:
+    build: .
+    command: python manage.py runserver 0.0.0.0:8888
+    volumes:
+      - .:/backend
+    ports:
+      - "8888:8888"
+    depends_on:
+      - db
