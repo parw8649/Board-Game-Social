@@ -4,10 +4,10 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".MainActivity">
+    tools:context=".SignUpActivity">
 
     <EditText
-        android:id="@+id/et_login_username"
+        android:id="@+id/et_signup_username"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:ems="10"
@@ -23,7 +23,7 @@
         android:autofillHints="" />
 
     <EditText
-        android:id="@+id/et_login_password"
+        android:id="@+id/et_signup_password"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:ems="10"
@@ -34,41 +34,41 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.497"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/et_login_username"
+        app:layout_constraintTop_toBottomOf="@+id/et_signup_username"
         app:layout_constraintVertical_bias="0.077"
         android:autofillHints="" />
 
     <Button
-        android:id="@+id/btn_login"
+        android:id="@+id/btn_register"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="@string/btn_login"
+        android:text="@string/btn_register"
         android:backgroundTint="@color/blue_yonder"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.498"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/et_login_password"
+        app:layout_constraintTop_toBottomOf="@+id/et_signup_password"
         app:layout_constraintVertical_bias="0.107" />
 
     <TextView
         android:id="@+id/textView"
         android:layout_width="93dp"
         android:layout_height="72dp"
-        android:text="@string/new_user_sign_up"
+        android:text="@string/already_a_user_sign_in"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.464"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/btn_login"
+        app:layout_constraintTop_toBottomOf="@+id/btn_register"
         app:layout_constraintVertical_bias="0.199" />
 
     <Button
-        android:id="@+id/btn_signup"
+        android:id="@+id/btn_back_to_login"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:backgroundTint="@color/blue_yonder"
-        android:text="signup"
+        android:text="sign-in"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.498"
