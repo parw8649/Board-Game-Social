@@ -10,11 +10,11 @@ import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 import androidx.navigation.fragment.NavHostFragment;
 
-import com.example.boardgamesocial.databinding.FragmentSecondBinding;
+import com.example.boardgamesocial.databinding.FragmentSignUpBinding;
 
 public class SignUpFragment extends Fragment {
 
-    private FragmentSecondBinding binding;
+    private FragmentSignUpBinding binding;
 
     @Override
     public View onCreateView(
@@ -22,7 +22,7 @@ public class SignUpFragment extends Fragment {
             Bundle savedInstanceState
     ) {
 
-        binding = FragmentSecondBinding.inflate(inflater, container, false);
+        binding = FragmentSignUpBinding.inflate(inflater, container, false);
         return binding.getRoot();
 
     }

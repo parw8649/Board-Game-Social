@@ -19,7 +19,7 @@
         android:id="@+id/EventsFragment"
         android:name="com.example.boardgamesocial.EventsFragment"
         android:label="@string/second_fragment_label"
-        tools:layout="@layout/fragment_event">
+        tools:layout="@layout/fragment_events">
 
         <action
             android:id="@+id/action_SecondFragment_to_FirstFragment"
