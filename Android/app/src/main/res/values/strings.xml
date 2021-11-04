@@ -16,4 +16,7 @@
     <string name="btn_register">register</string>
     <string name="already_a_user_sign_in">Already a user? sign-in!</string>
     <string name="tv_games_collection">Games Collection</string>
+    <string name="game_items_tv_game_title">Game title</string>
+    <string name="game_items_tv_game_genre">Game genre</string>
+    <string name="game_item_tv_game_min_max_players">Min max players</string>
 </resources>
