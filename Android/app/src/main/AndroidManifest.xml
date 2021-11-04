@@ -10,6 +10,16 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.BoardGameSocial">
         <activity
+            android:name=".MainAppActivity"
+            android:exported="true"
+            android:label="@string/title_activity_main_app"
+            android:theme="@style/Theme.BoardGameSocial.NoActionBar" />
+        <activity
+            android:name=".LoginAndSignUpActivity"
+            android:exported="true"
+            android:label="@string/title_activity_app"
+            android:theme="@style/Theme.BoardGameSocial.NoActionBar" />
+        <activity
             android:name=".HomePostActivity"
             android:exported="false" />
         <activity
