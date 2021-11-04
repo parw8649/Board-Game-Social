@@ -8,6 +8,7 @@
     <string name="item_textView_posterPlaceHolder">Poster\'s Name</string>
     <string name="item_textView_postTypePlaceHolder">Post Type</string>
     <string name="item_textView_postBodyPlaceHolder">post body goes here</string>
+    <string name="item_textView_numberLikesPlaceholder">42</string>
     <string name="item_button_text">more</string>
     <string name="et_hint_password">Password</string>
     <string name="et_hint_username">Username</string>

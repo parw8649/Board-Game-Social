@@ -4,51 +4,87 @@
     android:layout_height="wrap_content"
     android:layout_marginEnd="8dp"
     android:layout_marginStart="8dp"
-    android:layout_marginTop="8dp" >
+    android:layout_marginTop="8dp"
+    android:backgroundTint="@color/very_light_tangelo_light_var">
 
     <RelativeLayout
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:padding="8dp"
-        android:backgroundTint="@color/very_light_tangelo">
+        android:padding="8dp">
 
-
+        <ImageView
+            android:id="@+id/item_user_icon"
+            android:layout_width="50dp"
+            android:layout_height="50dp"
+            android:src="@drawable/ic_baseline_person_24"
+            android:layout_alignParentStart="true"
+            android:layout_toLeftOf="@id/item_name_and_type"/>
 
         <Button
             android:id="@+id/item_button"
-            android:layout_width="65dp"
+            android:layout_width="50dp"
             android:layout_height="wrap_content"
             android:layout_alignParentEnd="true"
-            android:onClick="favoriteQuote"
+            android:onClick="viewPost"
+            android:padding="4dp"
             android:text="@string/item_button_text"
+            android:backgroundTint="@color/blue_yonder"
             android:textAppearance="@style/TextAppearance.AppCompat.Small" />
 
-        <TextView
-            android:id="@+id/item_poster"
-            android:layout_width="match_parent"
+        <LinearLayout
+            android:id="@+id/item_name_and_type"
+            android:layout_width="280dp"
             android:layout_height="wrap_content"
-            android:layout_toStartOf="@id/item_button"
-            android:maxLines="1"
-            android:text="@string/item_textView_posterPlaceHolder"
-            android:textAppearance="@style/TextAppearance.AppCompat.Title" />
+            android:orientation="vertical"
+            android:layout_toStartOf="@id/item_button">
 
-        <TextView
-            android:id="@+id/item_type"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_toStartOf="@id/item_button"
-            android:layout_below="@id/item_poster"
-            android:maxLines="1"
-            android:text="@string/item_textView_postTypePlaceHolder"
-            android:textAppearance="@style/TextAppearance.AppCompat.Body1" />
+            <TextView
+                android:id="@+id/item_poster"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:maxLines="1"
+                android:text="@string/item_textView_posterPlaceHolder"
+                android:textAppearance="@style/TextAppearance.AppCompat.Title" />
+
+            <TextView
+                android:id="@+id/item_type"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/item_poster"
+                android:maxLines="1"
+                android:text="@string/item_textView_postTypePlaceHolder"
+                android:textAppearance="@style/TextAppearance.AppCompat.Body1" />
+        </LinearLayout>
 
         <TextView
             android:id="@+id/item_body"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_below="@id/item_type"
+            android:layout_below="@id/item_user_icon"
             android:text="@string/item_textView_postBodyPlaceHolder"
             android:maxLines="4"
             android:textAppearance="@style/TextAppearance.AppCompat.Body2" />
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/item_body"
+            android:layout_alignParentEnd="true">
+
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_center="true"
+                android:src="@drawable/ic_baseline_favorite_24"
+                android:background=""
+                android:layout_toLeftOf="@id/item_number_likes" />
+
+            <TextView
+                android:id="@+id/item_number_likes"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerVertical="true"
+                android:text="@string/item_textView_numberLikesPlaceholder" />
+        </LinearLayout>
     </RelativeLayout>
 </androidx.cardview.widget.CardView>
