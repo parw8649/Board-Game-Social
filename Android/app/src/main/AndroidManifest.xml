@@ -11,7 +11,10 @@
         android:theme="@style/Theme.BoardGameSocial">
         <activity
             android:name=".HomePostActivity"
-            android:exported="true" />
+            android:exported="false" />
+        <activity
+            android:name=".GamesCollectionActivity"
+            android:exported="false" />
         <activity
             android:name=".SignUpActivity"
             android:exported="true" />
