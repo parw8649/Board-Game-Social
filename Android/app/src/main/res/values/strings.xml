@@ -16,17 +16,7 @@
     <string name="btn_register">register</string>
     <string name="already_a_user_sign_in">Already a user? sign-in!</string>
     <string name="tv_games_collection">Games Collection</string>
-    <string name="title_activity_app">AppActivity</string>
-    <!-- Strings used for fragments for navigation -->
-    <string name="first_fragment_label">First Fragment</string>
-    <string name="second_fragment_label">Second Fragment</string>
-    <string name="next">Next</string>
-    <string name="previous">Previous</string>
-
-    <string name="hello_first_fragment">Hello first fragment</string>
-    <string name="hello_second_fragment">Hello second fragment. Arg: %1$s</string>
-    <!-- TODO: Remove or change this placeholder text -->
-    <string name="hello_blank_fragment">Hello blank fragment</string>
-    <string name="title_activity_main2">MainActivity2</string>
-    <string name="title_activity_main_app">MainAppActivity</string>
+    <string name="game_items_tv_game_title">Game title</string>
+    <string name="game_items_tv_game_genre">Game genre</string>
+    <string name="game_item_tv_game_min_max_players">Min max players</string>
 </resources>
