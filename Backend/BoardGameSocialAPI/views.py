@@ -8,7 +8,7 @@ from .serializer import *
 from .models import *
 
 
-@csrf_exempt
+@api_view(["POST"])
 def signUpView(request):
     try:
         body = get_body(request)
@@ -23,8 +23,10 @@ def signUpView(request):
 @api_view(["GET"])
 def logout(request):
     try:
-        Token.objects.get(**{k: v[0] for k, v in request.GET.items()}).delete()
-        res = get_response({"User logout successful"}, status=200)
+        print(request.GET)
+        print({k: v for k, v in request.GET.items()})
+        Token.objects.get(**{k: v for k, v in request.GET.items()}).delete()
+        res = get_response({"status": "User logout successful"}, status=200)
     except (TypeError, ValueError, Token.DoesNotExist, FieldError) as e:
         res = get_response({"error": str(e)}, status=400)
     return res
@@ -58,6 +60,11 @@ class UserToUserView(DataAccessView):
     serializer_class = UserToUserSerializer
     queryset = UserToUser.objects.all()
     model = UserToUser
+    url_conf = {
+        "get": "get_models",
+        "post": "add_models",
+        "delete": "delete_models"
+    }
 
 
 class MessageView(DataAccessView):
@@ -70,6 +77,11 @@ class EventToUserView(DataAccessView):
     serializer_class = EventToUserSerializer
     queryset = Event.objects.all()
     model = EventToUser
+    url_conf = {
+        "get": "get_models",
+        "post": "add_models",
+        "delete": "delete_models"
+    }
 
 
 class CommentView(DataAccessView):

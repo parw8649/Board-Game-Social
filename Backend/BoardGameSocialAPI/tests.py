@@ -18,6 +18,18 @@ class LoginViewTest(TestCase):
         self.assertEqual(response.status_code, 200)
 
 
+class LogoutViewTest(TestCase):
+    credentials = {
+        'user_id': 1,
+    }
+
+    def test_logout(self):
+        response = self.client.get(reverse('logout'), LogoutViewTest.credentials, follow=True)
+        print(decode_content(response.content))
+        self.assertEqual({'status': 'User logout successful'}, decode_content(response.content))
+        self.assertEqual(response.status_code, 200)
+
+
 class UserViewTest(TestCase, DAVTestTemplate):
     add_data = {
         "username": "AutoTestUserUsername",
