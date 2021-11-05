@@ -1,6 +1,8 @@
-from django.shortcuts import render
+from django.core.exceptions import FieldError
 from django.db.utils import IntegrityError
 from django.views.decorators.csrf import csrf_exempt
+from rest_framework.decorators import api_view
+
 from .view_manager import *
 from .serializer import *
 from .models import *
@@ -16,6 +18,16 @@ def signUpView(request):
         body = {"error": str(e)}
         status = 400
     return get_response(body, status=status)
+
+
+@api_view(["GET"])
+def logout(request):
+    try:
+        Token.objects.get(**{k: v[0] for k, v in request.GET.items()}).delete()
+        res = get_response({"User logout successful"}, status=200)
+    except (TypeError, ValueError, Token.DoesNotExist, FieldError) as e:
+        res = get_response({"error": str(e)}, status=400)
+    return res
 
 
 class UserView(DataAccessView):
