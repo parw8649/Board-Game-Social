@@ -22,11 +22,11 @@
 
         <Button
             android:id="@+id/item_button"
-            android:layout_width="50dp"
+            android:layout_width="@dimen/item_more_btn_width"
             android:layout_height="wrap_content"
             android:layout_alignParentEnd="true"
             android:onClick="viewPost"
-            android:padding="4dp"
+            android:padding="@dimen/btn_padding_slim"
             android:text="@string/item_button_text"
             android:backgroundTint="@color/blue_yonder"
             android:textAppearance="@style/TextAppearance.AppCompat.Small" />

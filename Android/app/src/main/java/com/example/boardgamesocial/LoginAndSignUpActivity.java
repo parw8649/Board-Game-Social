@@ -13,18 +13,18 @@ import androidx.navigation.Navigation;
 import androidx.navigation.ui.AppBarConfiguration;
 import androidx.navigation.ui.NavigationUI;
 
-import com.example.boardgamesocial.databinding.ActivityLoginAndSignUpBinding;
+import com.example.boardgamesocial.databinding.ActivityAppBinding;
 
 public class LoginAndSignUpActivity extends AppCompatActivity {
 
     private AppBarConfiguration appBarConfiguration;
-    private ActivityLoginAndSignUpBinding binding;
+    private ActivityAppBinding binding;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        binding = ActivityLoginAndSignUpBinding.inflate(getLayoutInflater());
+        binding = ActivityAppBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
 
 

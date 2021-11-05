@@ -9,18 +9,18 @@ import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 import androidx.navigation.fragment.NavHostFragment;
 
-import com.example.boardgamesocial.databinding.FragmentHomePostBinding;
+import com.example.boardgamesocial.databinding.FragmentFirstBinding;
 
 public class HomePostFragment extends Fragment {
 
-    private FragmentHomePostBinding binding;
+    private FragmentFirstBinding binding;
 
     @Override
     public View onCreateView(
             LayoutInflater inflater, ViewGroup container,
             Bundle savedInstanceState
     ) {
-        binding = FragmentHomePostBinding.inflate(inflater, container, false);
+        binding = FragmentFirstBinding.inflate(inflater, container, false);
         return binding.getRoot();
     }
 

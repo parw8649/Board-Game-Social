@@ -34,4 +34,11 @@
     <string name="title_activity_main2">MainActivity2</string>
     <string name="title_activity_main_app">MainAppActivity</string>
     <string name="title_activity_login_and_sign_up1">LoginAndSignUpActivity1</string>
+    <!-- Strings used for fragment_profile-->
+    <string name="profile_first_name_placeholder">firstName</string>
+    <string name="profile_username_placeholder">username</string>
+    <string name="profile_btn_edit">edit profile</string>
+    <string name="profile_bio_placeholder">I am the user’s biography. I should have a character limit of 850 using Roboto regular at size 16.</string>
+    <string name="profile_btn_view_friends">view friends</string>
+    <string name="profile_btn_view_user_gamelist">view [user]\'s gamelist</string>
 </resources>
