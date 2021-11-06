@@ -23,9 +23,6 @@ def signUpView(request):
 @api_view(["GET"])
 def logout(request):
     try:
-        print(request.GET)
-        print({k: v for k, v in request.GET.items()})
-        Token.objects.get(**{k: v for k, v in request.GET.items()}).delete()
         res = get_response({"status": "User logout successful"}, status=200)
     except (TypeError, ValueError, Token.DoesNotExist, FieldError) as e:
         res = get_response({"error": str(e)}, status=400)
