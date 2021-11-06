@@ -1,6 +1,18 @@
 package com.example.boardgamesocial.API;
 
+import com.example.boardgamesocial.DataClasses.Comment;
+import com.example.boardgamesocial.DataClasses.Event;
 import com.example.boardgamesocial.DataClasses.Game;
+import com.example.boardgamesocial.DataClasses.HostedGame;
+import com.example.boardgamesocial.DataClasses.Message;
+import com.example.boardgamesocial.DataClasses.Post;
+import com.example.boardgamesocial.DataClasses.Relationships.EventToUser;
+import com.example.boardgamesocial.DataClasses.Relationships.GameToUser;
+import com.example.boardgamesocial.DataClasses.Relationships.HostedGameToUser;
+import com.example.boardgamesocial.DataClasses.Relationships.UserToUser;
+import com.example.boardgamesocial.DataClasses.Review;
+import com.example.boardgamesocial.DataClasses.Token;
+import com.example.boardgamesocial.DataClasses.User;
 
 import java.util.HashMap;
 import java.util.List;
@@ -18,7 +30,19 @@ import retrofit2.http.Url;
 public interface API {
     String BASE_URL = "http://10.0.2.2:8000/";
     HashMap<Class<?>, String> urlMap =new HashMap<Class<?>, String>() {{
-        put(Game.class, "/api/game/");
+        put(Token.class, "login/");
+        put(User.class, "api/user/");
+        put(Event.class, "api/event/");
+        put(Post.class, "api/post/");
+        put(Game.class, "api/game/");
+        put(UserToUser.class, "api/user_to_user/");
+        put(Message.class, "api/message/");
+        put(EventToUser.class, "api/event_to_user/");
+        put(Comment.class, "api/comment/");
+        put(GameToUser.class, "api/game_to_user/");
+        put(HostedGame.class, "api/hosted_game/");
+        put(Review.class, "api/review/");
+        put(HostedGameToUser.class, "api/hosted_game_to_user/");
     }};
 
     @GET
