@@ -4,6 +4,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 
+import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.android.material.snackbar.Snackbar;
 
 import androidx.appcompat.app.AppCompatActivity;
@@ -21,6 +22,9 @@ public class MainAppActivity extends AppCompatActivity {
 
     private AppBarConfiguration appBarConfiguration;
     private ActivityMainAppBinding binding;
+    private NavController navController;
+    private BottomNavigationView bottomNav;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -29,11 +33,19 @@ public class MainAppActivity extends AppCompatActivity {
         binding = ActivityMainAppBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
 
-        setSupportActionBar(binding.toolbar);
+        bottomNav = findViewById(R.id.bottom_nav);
 
-        NavController navController = Navigation.findNavController(this, R.id.nav_host_fragment_content_main_app);
+        navController = Navigation.findNavController(this, R.id.nav_host_fragment_content_main_app);
         appBarConfiguration = new AppBarConfiguration.Builder(navController.getGraph()).build();
         NavigationUI.setupActionBarWithNavController(this, navController, appBarConfiguration);
+
+//        binding.home_post_fab.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View view) {
+//                Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
+//                        .setAction("Action", null).show();
+//            }
+//        });
     }
 
     @Override

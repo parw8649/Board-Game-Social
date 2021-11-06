@@ -19,15 +19,4 @@
             tools:listitem="@layout/item">
         </androidx.recyclerview.widget.RecyclerView>
     </RelativeLayout>
-
-    <com.google.android.material.floatingactionbutton.FloatingActionButton
-        android:id="@+id/fab"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_gravity="bottom|end"
-        android:layout_marginEnd="@dimen/fab_margin"
-        android:layout_marginBottom="16dp"
-        android:backgroundTint="@color/coral_reef"
-        app:srcCompat="@drawable/ic_baseline_add_24" />
-
 </androidx.coordinatorlayout.widget.CoordinatorLayout>

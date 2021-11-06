@@ -1,11 +1,11 @@
 <resources>
     <string name="app_name">BoardGameSocial</string>
     <!-- Strings used for nav (action/tool)bar -->
-    <string name="profile_option_title">profile</string>
-    <string name="logout_option_title">logout</string>
-    <string name="home_option_title">home</string>
-    <string name="games_option_title">games</string>
-    <string name="search_option_title">search</string>
+    <string name="profile_option_title">Profile</string>
+    <string name="logout_option_title">Logout</string>
+    <string name="home_option_title">Home</string>
+    <string name="games_option_title">Games</string>
+    <string name="search_option_title">Search</string>
     <!-- Strings used for item -->
     <string name="item_textView_posterPlaceHolder">Poster\'s Name</string>
     <string name="item_textView_postTypePlaceHolder">Post Type</string>

@@ -15,6 +15,7 @@
     <dimen name="welcomeTextFieldMarginBottom">120dp</dimen>
     <dimen name="dialogPadding">40dp</dimen>
     <dimen name="fab_margin">16dp</dimen>
+    <dimen name="fab_cradle_vertical_offset">35dp</dimen>
     <dimen name="item_more_btn_width">50dp</dimen>
    <!--  profile pages -->
     <dimen name="btn_padding_slim">4dp</dimen>
