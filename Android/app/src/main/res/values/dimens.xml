@@ -16,10 +16,12 @@
     <dimen name="dialogPadding">40dp</dimen>
     <dimen name="fab_margin">16dp</dimen>
     <dimen name="item_more_btn_width">50dp</dimen>
+   <!--  profile pages -->
     <dimen name="btn_padding_slim">4dp</dimen>
     <dimen name="even_spacing_layout_width">0dp</dimen>
     <dimen name="even_spacing_layout_weight">1</dimen>
     <dimen name="profile_top_margin">15dp</dimen>
+    <dimen name="profile_bio_bottom_margin">15dp</dimen>
     <dimen name="profile_icon_size">100dp</dimen>
     <dimen name="linear_vert_padding">10dp</dimen>
 </resources>

@@ -17,7 +17,6 @@
 
         <include
             layout="@layout/content_main_app"
-            app:layout_below="@+id/nav_bar"
             tools:layout_editor_absoluteX="0dp"
             />
     </LinearLayout>
