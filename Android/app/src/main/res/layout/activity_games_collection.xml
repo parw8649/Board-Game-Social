@@ -6,23 +6,23 @@
     android:layout_height="match_parent"
     tools:context=".GamesCollectionActivity">
 
-    <TextView
-        android:id="@+id/tv_games_collection"
-        android:layout_width="213dp"
-        android:layout_height="35dp"
-        android:text="@string/tv_games_collection"
-        android:textAlignment="center"
-        app:layout_constraintBottom_toBottomOf="parent"
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.133" />
+        tools:ignore="MissingConstraints">
 
-    <androidx.recyclerview.widget.RecyclerView
-        android:layout_width="388dp"
-        android:layout_height="655dp"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/tv_games_collection" />
+        <include
+            android:id="@+id/nav_bar_games_collection"
+            layout="@layout/nav_bar" />
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/quoteFeed_recyclerView"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/nav_bar_games_collection"
+            android:layout_marginTop="25dp"
+            tools:listitem="@layout/game_items" />
+    </RelativeLayout>
+
 </androidx.constraintlayout.widget.ConstraintLayout>
