@@ -9,11 +9,11 @@ import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 import androidx.navigation.fragment.NavHostFragment;
 
-import com.example.boardgamesocial.databinding.FragmentSecondBinding;
+import com.example.boardgamesocial.databinding.FragmentEventsBinding;
 
 public class EventsFragment extends Fragment {
 
-    private FragmentSecondBinding binding;
+    private FragmentEventsBinding binding;
 
     @Override
     public View onCreateView(
@@ -21,7 +21,7 @@ public class EventsFragment extends Fragment {
             Bundle savedInstanceState
     ) {
 
-        binding = FragmentSecondBinding.inflate(inflater, container, false);
+        binding = FragmentEventsBinding.inflate(inflater, container, false);
         return binding.getRoot();
 
     }
@@ -29,13 +29,13 @@ public class EventsFragment extends Fragment {
     public void onViewCreated(@NonNull View view, Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
-        binding.buttonSecond.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                NavHostFragment.findNavController(EventsFragment.this)
-                        .navigate(R.id.action_SecondFragment_to_FirstFragment);
-            }
-        });
+//        binding.buttonSecond.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View view) {
+//                NavHostFragment.findNavController(EventsFragment.this)
+//                        .navigate(R.id.action_SecondFragment_to_FirstFragment);
+//            }
+//        });
     }
 
     @Override

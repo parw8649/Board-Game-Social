@@ -14,15 +14,30 @@
         <action
             android:id="@+id/action_FirstFragment_to_SecondFragment"
             app:destination="@id/EventsFragment" />
+        <action
+            android:id="@+id/action_HomePostFragment_to_profileFragment"
+            app:destination="@id/profileFragment" />
     </fragment>
     <fragment
         android:id="@+id/EventsFragment"
         android:name="com.example.boardgamesocial.EventsFragment"
         android:label="@string/second_fragment_label"
-        tools:layout="@layout/fragment_event">
+        tools:layout="@layout/fragment_events">
 
         <action
             android:id="@+id/action_SecondFragment_to_FirstFragment"
             app:destination="@id/HomePostFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/profileFragment"
+        android:name="com.example.boardgamesocial.ProfileFragment"
+        android:label="fragment_profile"
+        tools:layout="@layout/fragment_profile" >
+        <action
+            android:id="@+id/action_profileFragment_to_HomePostFragment"
+            app:destination="@id/HomePostFragment" />
+        <action
+            android:id="@+id/action_profileFragment_to_EventsFragment"
+            app:destination="@id/EventsFragment" />
     </fragment>
 </navigation>

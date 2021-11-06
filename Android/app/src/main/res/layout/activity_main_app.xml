@@ -4,7 +4,22 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:orientation="vertical"
     tools:context=".MainAppActivity">
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical">
+
+        <include
+            layout="@layout/nav_bar"
+            />
+
+        <include
+            layout="@layout/content_main_app"
+            tools:layout_editor_absoluteX="0dp"
+            />
+    </LinearLayout>
 
     <com.google.android.material.appbar.AppBarLayout
         android:layout_width="match_parent"
@@ -13,14 +28,13 @@
 
         <androidx.appcompat.widget.Toolbar
             android:id="@+id/toolbar"
+            layout="@layout/nav_bar"
             android:layout_width="match_parent"
             android:layout_height="?attr/actionBarSize"
-            android:background="?attr/colorPrimary"
+            android:background="@color/very_light_tangelo"
             app:popupTheme="@style/Theme.BoardGameSocial.PopupOverlay" />
 
     </com.google.android.material.appbar.AppBarLayout>
-
-    <include layout="@layout/content_main_app" />
 
     <com.google.android.material.floatingactionbutton.FloatingActionButton
         android:id="@+id/fab"
@@ -29,6 +43,7 @@
         android:layout_gravity="bottom|end"
         android:layout_marginEnd="@dimen/fab_margin"
         android:layout_marginBottom="16dp"
-        app:srcCompat="@android:drawable/ic_dialog_email" />
+        android:backgroundTint="@color/coral_reef"
+        app:srcCompat="@drawable/ic_baseline_add_24" />
 
 </androidx.coordinatorlayout.widget.CoordinatorLayout>
