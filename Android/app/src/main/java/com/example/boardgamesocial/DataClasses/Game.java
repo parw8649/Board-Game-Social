@@ -102,14 +102,14 @@ public class Game {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         Game game = (Game) o;
-        return Objects.equals(getId(), game.getId()) && Objects.equals(getGameTitle(),
-                game.getGameTitle()) && Objects.equals(getGenre(),
-                game.getGenre()) && Objects.equals(getMinPlayer(),
-                game.getMinPlayer()) && Objects.equals(getMaxPlayer(),
-                game.getMaxPlayer()) && Objects.equals(getDescription(),
-                game.getDescription()) && Objects.equals(getImageUrl(),
-                game.getImageUrl()) && Objects.equals(getOverallPlayCount(),
-                game.getOverallPlayCount());
+        return Objects.equals(getId(), game.getId())
+                && Objects.equals(getGameTitle(), game.getGameTitle())
+                && Objects.equals(getGenre(), game.getGenre())
+                && Objects.equals(getMinPlayer(), game.getMinPlayer())
+                && Objects.equals(getMaxPlayer(), game.getMaxPlayer())
+                && Objects.equals(getDescription(), game.getDescription())
+                && Objects.equals(getImageUrl(), game.getImageUrl())
+                && Objects.equals(getOverallPlayCount(), game.getOverallPlayCount());
     }
 
     @Override
