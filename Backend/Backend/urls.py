@@ -21,6 +21,7 @@ from BoardGameSocialAPI.views import *
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('login/', obtain_auth_token, name="login"),
+    path('logout/', logout, name="logout"),
     path('sign_up/', signUpView, name="sign_up"),
     path('api/', include([
         path('user/', UserView.as_view(), name="user"),

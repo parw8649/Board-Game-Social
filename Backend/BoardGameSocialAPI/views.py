@@ -1,12 +1,14 @@
-from django.shortcuts import render
+from django.core.exceptions import FieldError
 from django.db.utils import IntegrityError
 from django.views.decorators.csrf import csrf_exempt
+from rest_framework.decorators import api_view
+
 from .view_manager import *
 from .serializer import *
 from .models import *
 
 
-@csrf_exempt
+@api_view(["POST"])
 def signUpView(request):
     try:
         body = get_body(request)
@@ -16,6 +18,15 @@ def signUpView(request):
         body = {"error": str(e)}
         status = 400
     return get_response(body, status=status)
+
+
+@api_view(["GET"])
+def logout(request):
+    try:
+        res = get_response({"status": "User logout successful"}, status=200)
+    except (TypeError, ValueError, Token.DoesNotExist, FieldError) as e:
+        res = get_response({"error": str(e)}, status=400)
+    return res
 
 
 class UserView(DataAccessView):
@@ -46,6 +57,11 @@ class UserToUserView(DataAccessView):
     serializer_class = UserToUserSerializer
     queryset = UserToUser.objects.all()
     model = UserToUser
+    url_conf = {
+        "get": "get_models",
+        "post": "add_models",
+        "delete": "delete_models"
+    }
 
 
 class MessageView(DataAccessView):
@@ -58,6 +74,11 @@ class EventToUserView(DataAccessView):
     serializer_class = EventToUserSerializer
     queryset = Event.objects.all()
     model = EventToUser
+    url_conf = {
+        "get": "get_models",
+        "post": "add_models",
+        "delete": "delete_models"
+    }
 
 
 class CommentView(DataAccessView):
