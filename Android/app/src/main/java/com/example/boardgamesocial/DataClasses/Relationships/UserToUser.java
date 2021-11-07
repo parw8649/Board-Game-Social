@@ -1,8 +1,10 @@
 package com.example.boardgamesocial.DataClasses.Relationships;
 
+import com.example.boardgamesocial.DataClasses.DataClass;
+
 import java.util.Objects;
 
-public class UserToUser {
+public class UserToUser implements DataClass {
     private Integer id;
     private Integer userOneId;
     private Integer userTwoId;
@@ -40,6 +42,11 @@ public class UserToUser {
 
     public void setUserTwoId(Integer userTwoId) {
         this.userTwoId = userTwoId;
+    }
+
+    @Override
+    public Integer getPrimaryKey() {
+        return this.id;
     }
 
     @Override

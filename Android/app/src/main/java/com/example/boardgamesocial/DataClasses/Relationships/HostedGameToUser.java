@@ -1,8 +1,10 @@
 package com.example.boardgamesocial.DataClasses.Relationships;
 
+import com.example.boardgamesocial.DataClasses.DataClass;
+
 import java.util.Objects;
 
-public class HostedGameToUser {
+public class HostedGameToUser implements DataClass {
     private Integer id;
     private Integer userId;
     private Integer gameId;
@@ -40,6 +42,11 @@ public class HostedGameToUser {
 
     public void setGameId(Integer gameId) {
         this.gameId = gameId;
+    }
+
+    @Override
+    public Integer getPrimaryKey() {
+        return this.id;
     }
 
     @Override

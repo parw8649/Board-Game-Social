@@ -1,10 +1,11 @@
 package com.example.boardgamesocial.DataClasses.Relationships;
 
+import com.example.boardgamesocial.DataClasses.DataClass;
 import com.google.gson.annotations.SerializedName;
 
 import java.util.Objects;
 
-public class GameToUser {
+public class GameToUser implements DataClass {
     @SerializedName("id")
     private Integer id;
     @SerializedName("userId")
@@ -57,6 +58,11 @@ public class GameToUser {
 
     public void setPrivate_(Boolean private_) {
         this.private_ = private_;
+    }
+
+    @Override
+    public Integer getPrimaryKey() {
+        return this.id;
     }
 
     @Override

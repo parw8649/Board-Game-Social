@@ -2,7 +2,7 @@ package com.example.boardgamesocial.DataClasses;
 
 import java.util.Objects;
 
-public class HostedGame {
+public class HostedGame implements DataClass {
     private Integer id;
     private Integer eventId;
     private Integer gameId;
@@ -51,6 +51,11 @@ public class HostedGame {
 
     public void setSeatsAvailable(Integer seatsAvailable) {
         this.seatsAvailable = seatsAvailable;
+    }
+
+    @Override
+    public Integer getPrimaryKey() {
+        return this.id;
     }
 
     @Override

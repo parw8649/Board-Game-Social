@@ -4,7 +4,7 @@ package com.example.boardgamesocial.DataClasses;
 import java.util.Date;
 import java.util.Objects;
 
-public class Event {
+public class Event implements DataClass {
     /**
      * The dateTime field should be like one of these:
      * ['%Y-%m-%d %H:%M:%S',    # '2006-10-25 14:30:59'
@@ -87,6 +87,11 @@ public class Event {
 
     public void setHostedGames(Integer hostedGames) {
         this.hostedGames = hostedGames;
+    }
+
+    @Override
+    public Integer getPrimaryKey() {
+        return this.id;
     }
 
     @Override

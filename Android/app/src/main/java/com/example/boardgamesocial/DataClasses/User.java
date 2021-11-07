@@ -1,11 +1,13 @@
 package com.example.boardgamesocial.DataClasses;
 
+import androidx.annotation.NonNull;
+
 import com.google.gson.annotations.SerializedName;
 
 import java.util.Date;
 import java.util.Objects;
 
-public class User {
+public class User implements DataClass {
     @SerializedName("id")
     private Integer id;
     @SerializedName("date_joined")
@@ -43,7 +45,7 @@ public class User {
         this.username = username;
     }
 
-    public User(Date dateJoined, String email, String firstName, Boolean isActive, Boolean isStaff, Boolean isSuperuser, Date lastLogin, String lastName, String password, String username) {
+    public User(Date dateJoined, String email, String firstName, Boolean isActive, Boolean isStaff, Boolean isSuperuser, Date lastLogin, String lastName, String username, String password) {
         this.dateJoined = dateJoined;
         this.email = email;
         this.firstName = firstName;
@@ -52,8 +54,13 @@ public class User {
         this.isSuperuser = isSuperuser;
         this.lastLogin = lastLogin;
         this.lastName = lastName;
-        this.password = password;
         this.username = username;
+        this.password = password;
+    }
+
+    public User(String username, String password) {
+        this.username = username;
+        this.password = password;
     }
 
     public Integer getId() {
@@ -142,6 +149,11 @@ public class User {
 
     public void setUsername(String username) {
         this.username = username;
+    }
+
+    @Override
+    public Integer getPrimaryKey() {
+        return this.id;
     }
 
     @Override

@@ -4,7 +4,7 @@ import com.google.gson.annotations.SerializedName;
 
 import java.util.Objects;
 
-public class Post {
+public class Post implements DataClass {
     @SerializedName("id")
     private Integer id;
     @SerializedName("userId")
@@ -81,6 +81,11 @@ public class Post {
 
     public void setLikes(Integer likes) {
         this.likes = likes;
+    }
+
+    @Override
+    public Integer getPrimaryKey() {
+        return this.id;
     }
 
     @Override

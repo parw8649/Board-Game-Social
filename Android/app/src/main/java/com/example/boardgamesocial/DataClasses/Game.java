@@ -2,7 +2,7 @@ package com.example.boardgamesocial.DataClasses;
 
 import java.util.Objects;
 
-public class Game {
+public class Game implements DataClass {
     private Integer id;
     private String gameTitle;
     private String genre;
@@ -98,6 +98,11 @@ public class Game {
     }
 
     @Override
+    public Integer getPrimaryKey() {
+        return this.id;
+    }
+
+    @Override
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
@@ -128,12 +133,12 @@ public class Game {
     public String toString() {
         return "Game{" +
                 "id=" + id +
-                ", gameTitle='" + gameTitle + '\'' +
-                ", genre='" + genre + '\'' +
+                ", gameTitle='" + gameTitle + "'" +
+                ", genre='" + genre + "'" +
                 ", minPlayer=" + minPlayer +
                 ", maxPlayer=" + maxPlayer +
-                ", description='" + description + '\'' +
-                ", imageUrl='" + imageUrl + '\'' +
+                ", description='" + description + "'" +
+                ", imageUrl='" + imageUrl + "'" +
                 ", overallPlayCount=" + overallPlayCount +
                 '}';
     }

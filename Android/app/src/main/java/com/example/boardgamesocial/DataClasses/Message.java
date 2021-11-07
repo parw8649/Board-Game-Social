@@ -2,7 +2,7 @@ package com.example.boardgamesocial.DataClasses;
 
 import java.util.Objects;
 
-public class Message {
+public class Message implements DataClass {
     private Integer id;
     private Integer senderId;
     private Integer receiverId;
@@ -51,6 +51,11 @@ public class Message {
 
     public void setContent(String content) {
         this.content = content;
+    }
+
+    @Override
+    public Integer getPrimaryKey() {
+        return this.id;
     }
 
     @Override

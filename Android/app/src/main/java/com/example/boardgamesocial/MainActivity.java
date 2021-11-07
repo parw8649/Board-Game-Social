@@ -1,5 +1,7 @@
 package com.example.boardgamesocial;
 
+import static com.example.boardgamesocial.API.RetrofitClient.getObjectList;
+
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Context;
@@ -11,8 +13,18 @@ import android.widget.EditText;
 
 
 import com.example.boardgamesocial.API.RetrofitClient;
+import com.example.boardgamesocial.DataClasses.DataClass;
 import com.example.boardgamesocial.DataClasses.Game;
+import com.google.gson.Gson;
+import com.google.gson.JsonArray;
+import com.google.gson.JsonElement;
+import com.google.gson.JsonObject;
+import com.google.gson.JsonParser;
+import com.google.gson.internal.LinkedTreeMap;
 
+import org.json.JSONArray;
+
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
@@ -39,22 +51,22 @@ public class MainActivity extends AppCompatActivity {
         retrofitClient = RetrofitClient.getClient();
 
         retrofitClient.getCall(Game.class, new HashMap<String, String>(){{
-            put("gameTitle", "TestGame1");
-            put("minPlayer", "1");
-        }}).enqueue(new Callback<List<Object>>() {
+//            put("gameTitle", "TestGame8");
+            put("gameTitle", "7 Wonders Duel");
+        }}).enqueue(new Callback<JsonArray>() {
             @Override
-            public void onResponse(Call<List<Object>> call, Response<List<Object>> response) {
+            public void onResponse(Call<JsonArray> call, Response<JsonArray> response) {
                 if (response.isSuccessful()) {
                     assert response.body() != null;
-                    Object game = response.body();
-                    Log.i("Game", String.valueOf(game));
+                    List<Game> list = getObjectList(response.body(), Game.class);
+                    Log.i("Game", list.get(0).getGameTitle());
                 } else {
                     new Exception("Request failed, code: " + response.code()).printStackTrace();
                 }
             }
 
             @Override
-            public void onFailure(Call<List<Object>> call, Throwable t) {
+            public void onFailure(Call<JsonArray> call, Throwable t) {
                 try {
                     throw t;
                 } catch (Throwable throwable) {

@@ -10,7 +10,7 @@ import okhttp3.Response;
 public class HeaderInterceptor implements Interceptor {
 
 //  TODO: Get from shared preferences
-    public static final String TOKEN = "a9cec526b3a8775af8878e25e187b48250058e3e";
+    public static final String TOKEN = "e4a36ccc86bc71b7e78c5d42bbd3109ab4764af1";
 
     @NonNull
     @Override

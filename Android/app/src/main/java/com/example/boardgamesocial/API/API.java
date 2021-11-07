@@ -1,6 +1,7 @@
 package com.example.boardgamesocial.API;
 
 import com.example.boardgamesocial.DataClasses.Comment;
+import com.example.boardgamesocial.DataClasses.DataClass;
 import com.example.boardgamesocial.DataClasses.Event;
 import com.example.boardgamesocial.DataClasses.Game;
 import com.example.boardgamesocial.DataClasses.HostedGame;
@@ -13,6 +14,8 @@ import com.example.boardgamesocial.DataClasses.Relationships.UserToUser;
 import com.example.boardgamesocial.DataClasses.Review;
 import com.example.boardgamesocial.DataClasses.Token;
 import com.example.boardgamesocial.DataClasses.User;
+import com.google.gson.JsonArray;
+import com.google.gson.JsonObject;
 
 import java.util.HashMap;
 import java.util.List;
@@ -28,8 +31,10 @@ import retrofit2.http.QueryMap;
 import retrofit2.http.Url;
 
 public interface API {
-    String BASE_URL = "http://10.0.2.2:8000/";
-    HashMap<Class<?>, String> urlMap =new HashMap<Class<?>, String>() {{
+    String BASE_URL_LOCAL = "http://10.0.2.2:8000/";
+    String BASE_URL_TESTS = "http://0.0.0.0:8000/";
+
+    HashMap<Class<?>, String> urlMap = new HashMap<Class<?>, String>() {{
         put(Token.class, "login/");
         put(User.class, "api/user/");
         put(Event.class, "api/event/");
@@ -46,26 +51,26 @@ public interface API {
     }};
 
     @GET
-    Call<List<Object>> getCall(
+    Call<JsonArray> getCall(
             @Url String url,
             @QueryMap Map<String, String> filters
     );
 
     @POST
-    Call<Object> postCall(
+    Call<JsonObject> postCall(
             @Url String url,
             @Body Object filters
     );
 
     @PUT
-    Call<Object> putCall(
+    Call<JsonObject> putCall(
             @Url String url,
-            @Body Object filters
+            @Body Map<String, String> filters
     );
 
     @DELETE
-    Call<Object> deleteCall(
+    Call<JsonArray> deleteCall(
             @Url String url,
-            @Body Object filters
+            @QueryMap Map<String, String> filters
     );
 }

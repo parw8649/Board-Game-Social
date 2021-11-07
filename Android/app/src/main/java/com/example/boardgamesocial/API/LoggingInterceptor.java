@@ -19,7 +19,8 @@ public class LoggingInterceptor implements Interceptor {
                         "Sending request %s on %s%n%s",
                         request.url(),
                         chain.connection(),
-                        request.headers()
+                        request.headers(),
+                        request.method()
                 )
         );
 
