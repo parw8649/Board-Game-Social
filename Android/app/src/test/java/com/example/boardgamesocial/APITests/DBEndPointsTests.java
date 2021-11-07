@@ -27,6 +27,7 @@ import com.example.boardgamesocial.DataClasses.Event;
 import com.example.boardgamesocial.DataClasses.Game;
 import com.example.boardgamesocial.DataClasses.Message;
 import com.example.boardgamesocial.DataClasses.Post;
+import com.example.boardgamesocial.DataClasses.Relationships.EventToUser;
 import com.example.boardgamesocial.DataClasses.Relationships.UserToUser;
 import com.example.boardgamesocial.DataClasses.User;
 import com.google.gson.Gson;
@@ -479,7 +480,62 @@ public class DBEndPointsTests {
 
     @Test
     public void eventToUserTests(){
-
+        try {
+            createContextObject(testUser, new HashMap<String, String>(){{
+                put("username", testUser.getUsername());
+            }});
+            createContextObject(testUserModified, new HashMap<String, String>(){{
+                put("username", testUserModified.getUsername());
+            }});
+            EventToUser testEventToUser = new EventToUser(
+                    getObjectList(
+                            retrofit.getCall(
+                                    User.class,
+                                    new HashMap<String, String>(){{
+                                        put("username", testUser.getUsername());
+                                    }}
+                            ).execute().body(), User.class
+                    ).get(0).getId(),
+                    getObjectList(
+                            retrofit.getCall(
+                                    Event.class,
+                                    new HashMap<String, String>(){{
+                                        put("name", "Admin Event");
+                                    }}
+                            ).execute().body(), Event.class
+                    ).get(0).getId()
+            );
+            Map<TestStage, StageAction> actionMap = getGenericActionMap(
+                    EventToUser.class,
+                    Arrays.asList(
+                            EventToUser.class.getDeclaredField("userId"),
+                            EventToUser.class.getDeclaredField("eventId")
+                    )
+            );
+            actionMap.remove(TestStage.PUT_TEST);
+            actionMap.remove(TestStage.GET_TEST_PUT);
+            StageSettings<EventToUser> stageSettings = new StageSettings<>(
+                    actionMap,
+                    new HashMap<String, String>(){{
+                        put("userId", "245");
+                    }},
+                    new HashMap<String, String>(){{
+                        put("userId", String.valueOf(testEventToUser.getUserId()));
+                    }},
+                    null,
+                    new HashMap<String, String>(){{
+                        put("userId", String.valueOf(testEventToUser.getUserId()));
+                    }},
+                    testEventToUser,
+                    null,
+                    EventToUser.class,
+                    retrofit
+            );
+            stageSettings.runStageTests();
+        } catch (IllegalAccessException | NoSuchFieldException | IOException e) {
+            e.printStackTrace();
+            fail("Exception accrued");
+        }
     }
 
     @Test
