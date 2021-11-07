@@ -6,6 +6,7 @@ import android.os.Bundle;
 
 import com.google.android.material.bottomappbar.BottomAppBar;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.snackbar.Snackbar;
 
 import androidx.appcompat.app.AppCompatActivity;
@@ -31,6 +32,7 @@ public class MainAppActivity extends AppCompatActivity {
     private ActivityMainAppBinding binding;
     private NavController navController;
     private BottomAppBar bottomAppBar;
+    FloatingActionButton fab;
 
 
     @Override
@@ -44,6 +46,8 @@ public class MainAppActivity extends AppCompatActivity {
 
         bottomAppBar = findViewById(R.id.bottom_app_bar);
         setSupportActionBar(bottomAppBar);
+
+        fab = findViewById(R.id.home_post_fab);
 
         bottomAppBar.setOnMenuItemClickListener(new Toolbar.OnMenuItemClickListener() {
             @Override
@@ -76,13 +80,13 @@ public class MainAppActivity extends AppCompatActivity {
             }
         });
 
-//        binding.fab.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View view) {
-//                Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
-//                        .setAction("Action", null).show();
-//            }
-//        });
+        fab.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Snackbar.make(view, "Eventually, you'll be able to add a new post ", Snackbar.LENGTH_LONG)
+                        .setAction("Action", null).show();
+            }
+        });
     }
 
     @Override
