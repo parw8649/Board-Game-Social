@@ -46,8 +46,8 @@ public class DBEndPointsTests {
     public static final User testUser = new User("testUserRetrofit1U", "testUserRetrofit1P");
     public static final User testUserModified = new User("testUserRetrofit1U-MOD", "testUserRetrofit1P-MOD");
 
-    public static final Game testGame = new Game("testGameRetrofit1GT", "testGameRetrofit1GG", 1 ,2);
-    public static final Game testGameModified = new Game("testGameRetrofit1GT-MOD", "testGameRetrofit1GG-MOD", 2 ,3);
+    public static final Game testGame = new Game("testGameRetrofit1GT", "testGame1GG", 1 ,2);
+    public static final Game testGameModified = new Game("testGameRetrofit1GT-MOD", "testGame1GG-MOD", 2 ,3);
 
     private static final Map<Object, Map<String, String>> contextObjects = new HashMap<>();
 
@@ -304,7 +304,44 @@ public class DBEndPointsTests {
 
     @Test
     public void gameTests(){
-
+        try {
+            StageSettings<Game> stageSettings = new StageSettings<>(
+                    getGenericActionMap(
+                            Game.class,
+                            Arrays.asList(
+                                    Game.class.getDeclaredField("gameTitle"),
+                                    Game.class.getDeclaredField("genre"),
+                                    Game.class.getDeclaredField("minPlayer"),
+                                    Game.class.getDeclaredField("maxPlayer")
+                            )
+                    ),
+                    new HashMap<String, String>(){{
+                        put("gameTitle", "gameTitleTest1");
+                    }},
+                    new HashMap<String, String>(){{
+                        put("gameTitle", testGame.getGameTitle());
+                    }},
+                    new HashMap<String, String>(){{
+                        put("gameTitle", testGameModified.getGameTitle());
+                    }},
+                    new HashMap<String, String>(){{
+                        put("gameTitle", testGameModified.getGameTitle());
+                    }},
+                    testGame,
+                    new HashMap<String, String>(){{
+                        put("gameTitle", testGameModified.getGameTitle());
+                        put("genre", testGameModified.getGenre());
+                        put("minPlayer", String.valueOf(testGameModified.getMinPlayer()));
+                        put("maxPlayer", String.valueOf(testGameModified.getMaxPlayer()));
+                    }},
+                    Game.class,
+                    retrofit
+            );
+            stageSettings.runStageTests();
+        } catch (NoSuchFieldException | IllegalAccessException | IOException e) {
+            e.printStackTrace();
+            fail("Exception accrued");
+        }
     }
 
     @Test
