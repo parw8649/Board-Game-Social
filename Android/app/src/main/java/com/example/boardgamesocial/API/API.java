@@ -35,7 +35,6 @@ public interface API {
     String BASE_URL_TESTS = "http://0.0.0.0:8000/";
 
     HashMap<Class<?>, String> urlMap = new HashMap<Class<?>, String>() {{
-        put(Token.class, "login/");
         put(User.class, "api/user/");
         put(Event.class, "api/event/");
         put(Post.class, "api/post/");
@@ -49,6 +48,21 @@ public interface API {
         put(Review.class, "api/review/");
         put(HostedGameToUser.class, "api/hosted_game_to_user/");
     }};
+
+    @POST("api/sign_up/")
+    Call<User> signUpCall(
+            @Body User user
+    );
+
+    @POST("api/login/")
+    Call<Token> loginCall(
+            @QueryMap User user
+    );
+
+    @GET("api/logout/")
+    Call<JsonObject> logoutCall(
+            @QueryMap Map<String, String> userIdMap
+    );
 
     @GET
     Call<JsonArray> getCall(

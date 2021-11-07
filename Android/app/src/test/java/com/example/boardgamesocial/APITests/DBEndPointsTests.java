@@ -3,8 +3,6 @@ package com.example.boardgamesocial.APITests;
 import static com.example.boardgamesocial.API.RetrofitClient.getObject;
 import static com.example.boardgamesocial.API.RetrofitClient.getObjectList;
 import static com.example.boardgamesocial.APITests.DBTestStage.ConsoleColor.colorText;
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertTrue;
 import static org.junit.Assert.fail;
@@ -12,18 +10,14 @@ import static org.junit.Assert.fail;
 import android.util.Log;
 
 import org.junit.After;
-import org.junit.Assert;
-import org.junit.BeforeClass;
 import org.junit.Test;
 
-import com.example.boardgamesocial.API.API;
 import com.example.boardgamesocial.API.RetrofitClient;
 import com.example.boardgamesocial.APITests.DBTestStage.ConsoleColor;
 import com.example.boardgamesocial.APITests.DBTestStage.StageAction;
 import com.example.boardgamesocial.APITests.DBTestStage.StageSettings;
 import com.example.boardgamesocial.APITests.DBTestStage.TestStage;
 import com.example.boardgamesocial.DataClasses.Comment;
-import com.example.boardgamesocial.DataClasses.DataClass;
 import com.example.boardgamesocial.DataClasses.Event;
 import com.example.boardgamesocial.DataClasses.Game;
 import com.example.boardgamesocial.DataClasses.HostedGame;
@@ -35,18 +29,15 @@ import com.example.boardgamesocial.DataClasses.Relationships.HostedGameToUser;
 import com.example.boardgamesocial.DataClasses.Relationships.UserToUser;
 import com.example.boardgamesocial.DataClasses.Review;
 import com.example.boardgamesocial.DataClasses.User;
-import com.google.gson.Gson;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
 
 import java.io.IOException;
 import java.lang.reflect.Field;
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.Objects;
 
 public class DBEndPointsTests {
 
@@ -873,5 +864,4 @@ public class DBEndPointsTests {
             fail("Exception accrued");
         }
     }
-
 }

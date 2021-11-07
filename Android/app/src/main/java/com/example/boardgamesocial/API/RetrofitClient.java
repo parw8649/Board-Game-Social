@@ -5,6 +5,8 @@ import static com.example.boardgamesocial.API.API.BASE_URL_TESTS;
 import static com.example.boardgamesocial.API.API.urlMap;
 
 import com.example.boardgamesocial.DataClasses.DataClass;
+import com.example.boardgamesocial.DataClasses.Token;
+import com.example.boardgamesocial.DataClasses.User;
 import com.google.gson.Gson;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonElement;
@@ -21,6 +23,10 @@ import okhttp3.OkHttpClient;
 import retrofit2.Call;
 import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
+import retrofit2.http.Body;
+import retrofit2.http.GET;
+import retrofit2.http.POST;
+import retrofit2.http.QueryMap;
 
 public class RetrofitClient {
     private final API api;
@@ -64,6 +70,18 @@ public class RetrofitClient {
 
     public static <T> T getObject(JsonObject jsonObject, Class<T> cls) {
         return new Gson().fromJson(jsonObject, cls);
+    }
+
+    public Call<User> signUpCall(User user){
+        return api.signUpCall(user);
+    }
+
+    public Call<Token> loginCall(User user){
+        return api.loginCall(user);
+    }
+
+    public Call<JsonObject> logoutCall(Map<String, String> userIdMap){
+        return api.logoutCall(userIdMap);
     }
 
     public Call<JsonArray> getCall(Class<?> cls, Map<String, String> filters){
