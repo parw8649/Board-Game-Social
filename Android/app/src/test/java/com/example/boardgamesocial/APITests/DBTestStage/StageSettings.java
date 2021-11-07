@@ -41,7 +41,7 @@ public class StageSettings<T> {
         this.stageFilterAfterUpdate = stageFilterAfterUpdate;
         this.stageFilterAfterDelete = stageFilterAfterDelete;
         this.stageAddObject = stageAddObject;
-        this.stageUpdateObject = stageUpdateObject;
+        this.stageUpdateObject = stageUpdateObject == null ? new HashMap<>() : stageUpdateObject;
         this.stageDeleteObject = new HashMap<>();
         this.dataClass = dataClass;
         this.retrofit = retrofit;
@@ -127,6 +127,20 @@ public class StageSettings<T> {
         this.retrofit = retrofit;
     }
 
+    public void setObjectId() throws IOException, IllegalAccessException, NoSuchFieldException {
+        if (!stageDeleteObject.containsKey("id") || !stageUpdateObject.containsKey("id")){
+            List<T> foundObjects = getObjectList(retrofit.getCall(dataClass, stageFilterAfterAdd).execute().body(), dataClass);
+            Field idField = dataClass.getDeclaredField("id");
+            idField.setAccessible(true);
+            if (!stageDeleteObject.containsKey("id")) {
+                stageDeleteObject.put("id", String.valueOf(idField.get(foundObjects.get(0))));
+            }
+            if (!stageUpdateObject.containsKey("id")){
+                stageUpdateObject.put("id", String.valueOf(idField.get(foundObjects.get(0))));
+            }
+        }
+    }
+
     public void runStageTests() throws IOException, IllegalAccessException, NoSuchFieldException {
         if (stageActionMap.containsKey(TestStage.GET_TEST_FILTER)){
             Objects.requireNonNull(stageActionMap.get(TestStage.GET_TEST_FILTER))
@@ -141,13 +155,7 @@ public class StageSettings<T> {
                     .runActions(retrofit.getCall(dataClass, stageFilterAfterAdd).execute().body());
         }
         if (stageActionMap.containsKey(TestStage.PUT_TEST)){
-            List<T> foundObjects = getObjectList(retrofit.getCall(dataClass, stageFilterAfterAdd).execute().body(), dataClass);
-
-            Field idField = dataClass.getDeclaredField("id");
-            idField.setAccessible(true);
-            stageUpdateObject.put("id", String.valueOf(idField.get(foundObjects.get(0))));
-            stageDeleteObject.put("id", String.valueOf(idField.get(foundObjects.get(0))));
-
+            setObjectId();
             Objects.requireNonNull(stageActionMap.get(TestStage.PUT_TEST))
                     .runActions(retrofit.putCall(dataClass, stageUpdateObject).execute().body());
         }
@@ -156,6 +164,7 @@ public class StageSettings<T> {
                     .runActions(retrofit.getCall(dataClass, stageFilterAfterUpdate).execute().body());
         }
         if (stageActionMap.containsKey(TestStage.DELETE_TEST)){
+            setObjectId();
             Objects.requireNonNull(stageActionMap.get(TestStage.DELETE_TEST))
                     .runActions(retrofit.deleteCall(dataClass, stageDeleteObject).execute().body());
         }

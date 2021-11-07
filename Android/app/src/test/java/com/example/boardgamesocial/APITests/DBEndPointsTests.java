@@ -25,6 +25,7 @@ import com.example.boardgamesocial.DataClasses.DataClass;
 import com.example.boardgamesocial.DataClasses.Event;
 import com.example.boardgamesocial.DataClasses.Game;
 import com.example.boardgamesocial.DataClasses.Post;
+import com.example.boardgamesocial.DataClasses.Relationships.UserToUser;
 import com.example.boardgamesocial.DataClasses.User;
 import com.google.gson.Gson;
 import com.google.gson.JsonArray;
@@ -346,7 +347,62 @@ public class DBEndPointsTests {
 
     @Test
     public void userToUserTests(){
-
+        try {
+            createContextObject(testUser, new HashMap<String, String>(){{
+                put("username", testUser.getUsername());
+            }});
+            createContextObject(testUserModified, new HashMap<String, String>(){{
+                put("username", testUserModified.getUsername());
+            }});
+            UserToUser testUserToUser = new UserToUser(
+                    getObjectList(
+                            retrofit.getCall(
+                                    User.class,
+                                    new HashMap<String, String>(){{
+                                        put("username", testUser.getUsername());
+                                    }}
+                            ).execute().body(), User.class
+                    ).get(0).getId(),
+                    getObjectList(
+                            retrofit.getCall(
+                                    User.class,
+                                    new HashMap<String, String>(){{
+                                        put("username", testUserModified.getUsername());
+                                    }}
+                            ).execute().body(), User.class
+                    ).get(0).getId()
+            );
+            Map<TestStage, StageAction> actionMap = getGenericActionMap(
+                    UserToUser.class,
+                    Arrays.asList(
+                            UserToUser.class.getDeclaredField("userOneId"),
+                            UserToUser.class.getDeclaredField("userTwoId")
+                    )
+            );
+            actionMap.remove(TestStage.PUT_TEST);
+            actionMap.remove(TestStage.GET_TEST_PUT);
+            StageSettings<UserToUser> stageSettings = new StageSettings<>(
+                    actionMap,
+                    new HashMap<String, String>(){{
+                        put("userOneId", "245");
+                    }},
+                    new HashMap<String, String>(){{
+                        put("userOneId", String.valueOf(testUserToUser.getUserOneId()));
+                    }},
+                    null,
+                    new HashMap<String, String>(){{
+                        put("userOneId", String.valueOf(testUserToUser.getUserOneId()));
+                    }},
+                    testUserToUser,
+                    null,
+                    UserToUser.class,
+                    retrofit
+            );
+            stageSettings.runStageTests();
+        } catch (IllegalAccessException | NoSuchFieldException | IOException e) {
+            e.printStackTrace();
+            fail("Exception accrued");
+        }
     }
 
     @Test
