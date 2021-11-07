@@ -26,10 +26,12 @@ import com.example.boardgamesocial.DataClasses.Comment;
 import com.example.boardgamesocial.DataClasses.DataClass;
 import com.example.boardgamesocial.DataClasses.Event;
 import com.example.boardgamesocial.DataClasses.Game;
+import com.example.boardgamesocial.DataClasses.HostedGame;
 import com.example.boardgamesocial.DataClasses.Message;
 import com.example.boardgamesocial.DataClasses.Post;
 import com.example.boardgamesocial.DataClasses.Relationships.EventToUser;
 import com.example.boardgamesocial.DataClasses.Relationships.GameToUser;
+import com.example.boardgamesocial.DataClasses.Relationships.HostedGameToUser;
 import com.example.boardgamesocial.DataClasses.Relationships.UserToUser;
 import com.example.boardgamesocial.DataClasses.User;
 import com.google.gson.Gson;
@@ -676,7 +678,69 @@ public class DBEndPointsTests {
 
     @Test
     public void hostedGameTests(){
-
+        try {
+            createContextObject(testGame, new HashMap<String, String>(){{
+                put("gameTitle", testGame.getGameTitle());
+            }});
+            HostedGame testHostedGame = new HostedGame(
+                    getObjectList(
+                            retrofit.getCall(
+                                    Event.class,
+                                    new HashMap<String, String>(){{
+                                        put("name", "Admin Event");
+                                    }}
+                            ).execute().body(), Event.class
+                    ).get(0).getId(),
+                    getObjectList(
+                            retrofit.getCall(
+                                    Game.class,
+                                    new HashMap<String, String>(){{
+                                        put("gameTitle", testGame.getGameTitle());
+                                    }}
+                            ).execute().body(), Game.class
+                    ).get(0).getId(),
+                    1
+            );
+            HostedGame testHostedGameModified = new HostedGame(
+                    testHostedGame.getEventId(),
+                    testHostedGame.getGameId(),
+                    2
+            );
+            StageSettings<HostedGame> stageSettings = new StageSettings<>(
+                    getGenericActionMap(
+                            HostedGame.class,
+                            Arrays.asList(
+                                    HostedGame.class.getDeclaredField("eventId"),
+                                    HostedGame.class.getDeclaredField("gameId"),
+                                    HostedGame.class.getDeclaredField("seatsAvailable")
+                            )
+                    ),
+                    new HashMap<String, String>(){{
+                        put("eventId", "66");
+                    }},
+                    new HashMap<String, String>(){{
+                        put("eventId", String.valueOf(testHostedGame.getEventId()));
+                    }},
+                    new HashMap<String, String>(){{
+                        put("eventId", String.valueOf(testHostedGame.getEventId()));
+                    }},
+                    new HashMap<String, String>(){{
+                        put("eventId", String.valueOf(testHostedGameModified.getEventId()));
+                    }},
+                    testHostedGame,
+                    new HashMap<String, String>(){{
+                        put("eventId", String.valueOf(testHostedGameModified.getEventId()));
+                        put("gameId", String.valueOf(testHostedGameModified.getGameId()));
+                        put("seatsAvailable", String.valueOf(testHostedGameModified.getSeatsAvailable()));
+                    }},
+                    HostedGame.class,
+                    retrofit
+            );
+            stageSettings.runStageTests();
+        } catch (IllegalAccessException | NoSuchFieldException | IOException e) {
+            e.printStackTrace();
+            fail("Exception accrued");
+        }
     }
 
     @Test
