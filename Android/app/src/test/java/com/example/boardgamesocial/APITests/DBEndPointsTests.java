@@ -2,11 +2,14 @@ package com.example.boardgamesocial.APITests;
 
 import static com.example.boardgamesocial.API.RetrofitClient.getObject;
 import static com.example.boardgamesocial.API.RetrofitClient.getObjectList;
+import static com.example.boardgamesocial.APITests.DBTestStage.ConsoleColor.colorText;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertTrue;
 import static org.junit.Assert.fail;
+
+import android.util.Log;
 
 import org.junit.After;
 import org.junit.Assert;
@@ -14,6 +17,7 @@ import org.junit.Test;
 
 import com.example.boardgamesocial.API.API;
 import com.example.boardgamesocial.API.RetrofitClient;
+import com.example.boardgamesocial.APITests.DBTestStage.ConsoleColor;
 import com.example.boardgamesocial.APITests.DBTestStage.StageAction;
 import com.example.boardgamesocial.APITests.DBTestStage.StageSettings;
 import com.example.boardgamesocial.APITests.DBTestStage.TestStage;
@@ -46,9 +50,16 @@ public class DBEndPointsTests {
 
     private static final Map<Object, Map<String, String>> contextObjects = new HashMap<>();
 
+    public static final String CONTEXT_OBJECTS_TAG = colorText(ConsoleColor.ANSI_CYAN, "Context objects");
+    public static final String GET_TEST_TAG = colorText(ConsoleColor.ANSI_CYAN,"Get test");
+    public static final String POST_TEST_TAG = colorText(ConsoleColor.ANSI_CYAN,"Post test");
+    public static final String PUT_TEST_TAG = colorText(ConsoleColor.ANSI_CYAN,"Put test");
+    public static final String DELETE_TEST_TAG = colorText(ConsoleColor.ANSI_CYAN,"Delete test");
+
     private <K> Map<TestStage, StageAction> getGenericActionMap(Class<K> cls, List<Field> reqFields) {
         return new HashMap<TestStage, StageAction>(){{
             put(TestStage.GET_TEST_FILTER, apiResponse -> {
+                Log.d(GET_TEST_TAG, "Testing Filter GET");
                 assertNotNull(apiResponse);
                 List<K> apiResponseList = getObjectList((JsonArray) apiResponse, cls);
                 for (Field field : reqFields) {
@@ -57,6 +68,7 @@ public class DBEndPointsTests {
                 }
             });
             put(TestStage.POST_TEST, apiResponse -> {
+                Log.d(POST_TEST_TAG, "Testing POST");
                 assertNotNull(apiResponse);
                 K apiResponseObject = getObject((JsonObject) apiResponse, cls);
                 for (Field field : reqFields) {
@@ -65,6 +77,7 @@ public class DBEndPointsTests {
                 }
             });
             put(TestStage.GET_TEST_POST, apiResponse -> {
+                Log.d(GET_TEST_TAG, "Testing POST with GET");
                 assertNotNull(apiResponse);
                 List<K> apiResponseList = getObjectList((JsonArray) apiResponse, cls);
                 for (Field field : reqFields) {
@@ -73,6 +86,7 @@ public class DBEndPointsTests {
                 }
             });
             put(TestStage.PUT_TEST, apiResponse -> {
+                Log.d(PUT_TEST_TAG, "Testing PUT");
                 assertNotNull(apiResponse);
                 K apiResponseObject = getObject((JsonObject) apiResponse, cls);
                 for (Field field : reqFields) {
@@ -81,6 +95,7 @@ public class DBEndPointsTests {
                 }
             });
             put(TestStage.GET_TEST_PUT, apiResponse -> {
+                Log.d(GET_TEST_TAG, "Testing PUT with GET");
                 assertNotNull(apiResponse);
                 List<K> apiResponseList = getObjectList((JsonArray) apiResponse, cls);
                 for (Field field : reqFields) {
@@ -89,6 +104,7 @@ public class DBEndPointsTests {
                 }
             });
             put(TestStage.DELETE_TEST, apiResponse -> {
+                Log.d(DELETE_TEST_TAG, "Testing DELETE");
                 assertNotNull(apiResponse);
                 List<K> apiResponseList = getObjectList((JsonArray) apiResponse, cls);
                 for (Field field : reqFields) {
@@ -97,6 +113,7 @@ public class DBEndPointsTests {
                 }
             });
             put(TestStage.GET_TEST_DELETE, apiResponse -> {
+                Log.d(GET_TEST_TAG, "Testing DELETE with GET");
                 assertNotNull(apiResponse);
                 List<K> apiResponseList = getObjectList((JsonArray) apiResponse, cls);
                 for (Field field : reqFields) {
@@ -108,6 +125,7 @@ public class DBEndPointsTests {
     }
 
     private <T> void createContextObject(T object, Map<String, String> filter) throws IOException {
+        Log.d(CONTEXT_OBJECTS_TAG, String.format("Creating Object %s", object));
         contextObjects.put(object, filter);
         retrofit.postCall(object.getClass(), object).execute();
     }
@@ -118,6 +136,7 @@ public class DBEndPointsTests {
         Field idField = cls.getDeclaredField("id");
         idField.setAccessible(true);
 
+        Log.d(CONTEXT_OBJECTS_TAG, String.format("Deleting Object id:%s | %s", idField.get(foundObjects.get(0)), filter));
         retrofit.deleteCall(cls, new HashMap<String, String>(){{
             put("id", String.valueOf(idField.get(foundObjects.get(0))));
         }}).execute();

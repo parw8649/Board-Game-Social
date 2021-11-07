@@ -16,11 +16,11 @@ public class LoggingInterceptor implements Interceptor {
         long t1 = System.nanoTime();
         Log.i("API",
                 String.format(
-                        "Sending request %s on %s%n%s",
+                        "Sending request %s as %s with headers: %s Chain Connection: %s",
                         request.url(),
-                        chain.connection(),
+                        request.method(),
                         request.headers(),
-                        request.method()
+                        chain.connection()
                 )
         );
 
