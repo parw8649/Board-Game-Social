@@ -24,6 +24,7 @@ import com.example.boardgamesocial.APITests.DBTestStage.TestStage;
 import com.example.boardgamesocial.DataClasses.DataClass;
 import com.example.boardgamesocial.DataClasses.Event;
 import com.example.boardgamesocial.DataClasses.Game;
+import com.example.boardgamesocial.DataClasses.Post;
 import com.example.boardgamesocial.DataClasses.User;
 import com.google.gson.Gson;
 import com.google.gson.JsonArray;
@@ -243,7 +244,62 @@ public class DBEndPointsTests {
 
     @Test
     public void postTests(){
-
+        try {
+            createContextObject(testUser, new HashMap<String, String>(){{
+                put("username", testUser.getUsername());
+            }});
+            Post testPost = new Post(
+                    getObjectList(
+                            retrofit.getCall(
+                                    User.class,
+                                    new HashMap<String, String>(){{
+                                        put("username", testUser.getUsername());
+                                    }}
+                            ).execute().body(), User.class
+                    ).get(0).getId(),
+                    "testPostRetrofitB",
+                    "testPostRetrofitT"
+            );
+            Post testPostModified = new Post(
+                    testPost.getUserId(),
+                    "testPostRetrofitB-MOD",
+                    "testPostT-MOD"
+            );
+            StageSettings<Post> stageSettings = new StageSettings<>(
+                    getGenericActionMap(
+                            Post.class,
+                            Arrays.asList(
+                                    Post.class.getDeclaredField("userId"),
+                                    Post.class.getDeclaredField("postBody"),
+                                    Post.class.getDeclaredField("postType")
+                            )
+                    ),
+                    new HashMap<String, String>(){{
+                        put("postBody", "Admin Post Body");
+                    }},
+                    new HashMap<String, String>(){{
+                        put("postBody", testPost.getPostBody());
+                    }},
+                    new HashMap<String, String>(){{
+                        put("postBody", testPostModified.getPostBody());
+                    }},
+                    new HashMap<String, String>(){{
+                        put("postBody", testPostModified.getPostBody());
+                    }},
+                    testPost,
+                    new HashMap<String, String>(){{
+                        put("userId", String.valueOf(testPostModified.getUserId()));
+                        put("postBody", testPostModified.getPostBody());
+                        put("postType", testPostModified.getPostType());
+                    }},
+                    Post.class,
+                    retrofit
+            );
+            stageSettings.runStageTests();
+        } catch (IllegalAccessException | NoSuchFieldException | IOException e) {
+            e.printStackTrace();
+            fail("Exception accrued");
+        }
     }
 
     @Test
