@@ -83,8 +83,8 @@ public class MainActivity extends AppCompatActivity {
         btnLogin.setOnClickListener(view -> {
             //TODO: 1) Verify user based on credentials
             //TODO: 2) If valid user then switch to landing page activity!
-            /*Intent goToLandingPageActivity = LandingPageActivity.getIntent(MainActivity.this);
-            startActivity(goToLandingPageActivity);*/
+            Intent goToHomePostActivity = HomePostActivity.getIntent(MainActivity.this);
+            startActivity(goToHomePostActivity);
         });
 
         btnSignup.setOnClickListener(view -> {

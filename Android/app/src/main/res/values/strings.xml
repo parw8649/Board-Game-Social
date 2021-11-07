@@ -1,14 +1,18 @@
 <resources>
     <string name="app_name">BoardGameSocial</string>
+    <!-- Strings used for nav (action/tool)bar -->
     <string name="profile_option_title">profile</string>
     <string name="logout_option_title">logout</string>
     <string name="home_option_title">home</string>
     <string name="games_option_title">games</string>
     <string name="search_option_title">search</string>
+    <!-- Strings used for item -->
     <string name="item_textView_posterPlaceHolder">Poster\'s Name</string>
     <string name="item_textView_postTypePlaceHolder">Post Type</string>
     <string name="item_textView_postBodyPlaceHolder">post body goes here</string>
+    <string name="item_textView_numberLikesPlaceholder">42</string>
     <string name="item_button_text">more</string>
+    <!-- Strings used for login and signup -->
     <string name="et_hint_password">Password</string>
     <string name="et_hint_username">Username</string>
     <string name="btn_login">login</string>
@@ -16,4 +20,29 @@
     <string name="btn_register">register</string>
     <string name="already_a_user_sign_in">Already a user? sign-in!</string>
     <string name="tv_games_collection">Games Collection</string>
+    <string name="game_items_tv_game_title">Game title</string>
+    <string name="game_items_tv_game_genre">Game genre</string>
+    <string name="game_item_tv_game_min_max_players">Min max players</string>
+
+    <string name="title_activity_app">AppActivity</string>
+    <!-- Strings used for fragments for navigation -->
+    <string name="first_fragment_label">First Fragment</string>
+    <string name="second_fragment_label">Second Fragment</string>
+    <string name="next">Next</string>
+    <string name="previous">Previous</string>
+
+    <string name="hello_first_fragment">Hello first fragment</string>
+    <string name="hello_second_fragment">Hello second fragment. Arg: %1$s</string>
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="title_activity_main2">MainActivity2</string>
+    <string name="title_activity_main_app">MainAppActivity</string>
+    <string name="title_activity_login_and_sign_up1">LoginAndSignUpActivity1</string>
+    <!-- Strings used for fragment_profile-->
+    <string name="profile_first_name_placeholder">firstName</string>
+    <string name="profile_username_placeholder">username</string>
+    <string name="profile_btn_edit">edit profile</string>
+    <string name="profile_bio_placeholder">I am the user’s biography. I should have a character limit of 850 using Roboto regular at size 16.</string>
+    <string name="profile_btn_view_friends">view friends</string>
+    <string name="profile_btn_view_user_gamelist">view [user]\'s gamelist</string>
 </resources>
