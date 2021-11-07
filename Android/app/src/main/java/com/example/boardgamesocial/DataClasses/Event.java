@@ -1,6 +1,8 @@
 package com.example.boardgamesocial.DataClasses;
 
 
+import androidx.annotation.NonNull;
+
 import java.util.Date;
 import java.util.Objects;
 
@@ -39,6 +41,11 @@ public class Event implements DataClass {
         this.dateTime = dateTime;
         this.description = description;
         this.hostedGames = hostedGames;
+    }
+
+    public Event(String name, Integer hostUserId) {
+        this.name = name;
+        this.hostUserId = hostUserId;
     }
 
     public Integer getId() {

@@ -6,17 +6,17 @@ import java.util.Objects;
 
 public class EventToUser implements DataClass {
     private Integer id;
-    private Integer serId;
+    private Integer userId;
     private Integer eventId;
 
-    public EventToUser(Integer id, Integer serId, Integer eventId) {
+    public EventToUser(Integer id, Integer userId, Integer eventId) {
         this.id = id;
-        this.serId = serId;
+        this.userId = userId;
         this.eventId = eventId;
     }
 
-    public EventToUser(Integer serId, Integer eventId) {
-        this.serId = serId;
+    public EventToUser(Integer userId, Integer eventId) {
+        this.userId = userId;
         this.eventId = eventId;
     }
 
@@ -28,12 +28,12 @@ public class EventToUser implements DataClass {
         this.id = id;
     }
 
-    public Integer getSerId() {
-        return serId;
+    public Integer getUserId() {
+        return userId;
     }
 
-    public void setSerId(Integer serId) {
-        this.serId = serId;
+    public void setUserId(Integer userId) {
+        this.userId = userId;
     }
 
     public Integer getEventId() {
@@ -55,14 +55,14 @@ public class EventToUser implements DataClass {
         if (o == null || getClass() != o.getClass()) return false;
         EventToUser that = (EventToUser) o;
         return Objects.equals(getId(), that.getId())
-                && Objects.equals(getSerId(), that.getSerId())
+                && Objects.equals(getUserId(), that.getUserId())
                 && Objects.equals(getEventId(), that.getEventId());
     }
 
     @Override
     public int hashCode() {
         return Objects.hash(getId(),
-                getSerId(),
+                getUserId(),
                 getEventId());
     }
 
@@ -70,7 +70,7 @@ public class EventToUser implements DataClass {
     public String toString() {
         return "EventToUser{" +
                 "id=" + id +
-                ", serId=" + serId +
+                ", userId=" + userId +
                 ", eventId=" + eventId +
                 '}';
     }

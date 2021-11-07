@@ -33,6 +33,13 @@ public class Game implements DataClass {
         this.overallPlayCount = overallPlayCount;
     }
 
+    public Game(String gameTitle, String genre, Integer minPlayer, Integer maxPlayer) {
+        this.gameTitle = gameTitle;
+        this.genre = genre;
+        this.minPlayer = minPlayer;
+        this.maxPlayer = maxPlayer;
+    }
+
     public Integer getId() {
         return id;
     }

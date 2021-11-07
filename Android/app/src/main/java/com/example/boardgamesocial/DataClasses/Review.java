@@ -4,20 +4,20 @@ import java.util.Objects;
 
 public class Review implements DataClass {
     private Integer id;
-    private Integer serId;
-    private Integer ameId;
+    private Integer userId;
+    private Integer gameId;
     private String content;
 
-    public Review(Integer id, Integer serId, Integer ameId, String content) {
+    public Review(Integer id, Integer userId, Integer gameId, String content) {
         this.id = id;
-        this.serId = serId;
-        this.ameId = ameId;
+        this.userId = userId;
+        this.gameId = gameId;
         this.content = content;
     }
 
-    public Review(Integer serId, Integer ameId, String content) {
-        this.serId = serId;
-        this.ameId = ameId;
+    public Review(Integer userId, Integer gameId, String content) {
+        this.userId = userId;
+        this.gameId = gameId;
         this.content = content;
     }
 
@@ -29,20 +29,20 @@ public class Review implements DataClass {
         this.id = id;
     }
 
-    public Integer getSerId() {
-        return serId;
+    public Integer getUserId() {
+        return userId;
     }
 
-    public void setSerId(Integer serId) {
-        this.serId = serId;
+    public void setUserId(Integer userId) {
+        this.userId = userId;
     }
 
-    public Integer getAmeId() {
-        return ameId;
+    public Integer getGameId() {
+        return gameId;
     }
 
-    public void setAmeId(Integer ameId) {
-        this.ameId = ameId;
+    public void setGameId(Integer gameId) {
+        this.gameId = gameId;
     }
 
     public String getContent() {
@@ -64,16 +64,16 @@ public class Review implements DataClass {
         if (o == null || getClass() != o.getClass()) return false;
         Review review = (Review) o;
         return Objects.equals(getId(), review.getId())
-                && Objects.equals(getSerId(), review.getSerId())
-                && Objects.equals(getAmeId(), review.getAmeId())
+                && Objects.equals(getUserId(), review.getUserId())
+                && Objects.equals(getGameId(), review.getGameId())
                 && Objects.equals(getContent(), review.getContent());
     }
 
     @Override
     public int hashCode() {
         return Objects.hash(getId(),
-                getSerId(),
-                getAmeId(),
+                getUserId(),
+                getGameId(),
                 getContent());
     }
 
@@ -81,8 +81,8 @@ public class Review implements DataClass {
     public String toString() {
         return "Review{" +
                 "id=" + id +
-                ", serId=" + serId +
-                ", ameId=" + ameId +
+                ", userId=" + userId +
+                ", gameId=" + gameId +
                 ", content='" + content + '\'' +
                 '}';
     }

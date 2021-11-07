@@ -35,6 +35,12 @@ public class Post implements DataClass {
         this.likes = likes;
     }
 
+    public Post(Integer userId, String postBody, String postType) {
+        this.userId = userId;
+        this.postBody = postBody;
+        this.postType = postType;
+    }
+
     public Integer getId() {
         return id;
     }

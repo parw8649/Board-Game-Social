@@ -59,7 +59,7 @@ public interface API {
     @POST
     Call<JsonObject> postCall(
             @Url String url,
-            @Body Object filters
+            @Body Object object
     );
 
     @PUT

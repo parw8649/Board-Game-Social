@@ -70,8 +70,8 @@ public class RetrofitClient {
         return api.getCall(urlMap.get(cls), filters);
     }
 
-    public Call<JsonObject> postCall(Class<?> cls, Object filters){
-        return api.postCall(urlMap.get(cls), filters);
+    public Call<JsonObject> postCall(Class<?> cls, Object object){
+        return api.postCall(urlMap.get(cls), object);
     }
 
     public Call<JsonObject> putCall(Class<?> cls, Map<String, String> filters){
