@@ -24,11 +24,11 @@
         android:id="@+id/profile_option"
         android:title="@string/profile_option_title"
         android:icon="@drawable/ic_baseline_person_24_blue_yonder"
-        app:showAsAction="always" />
+        app:showAsAction="never" />
 
     <item
         android:id="@+id/logout_option"
         android:title="@string/logout_option_title"
         android:icon="@drawable/ic_baseline_logout_24_blue_yonder"
-        app:showAsAction="always" />
+        app:showAsAction="never" />
 </menu>

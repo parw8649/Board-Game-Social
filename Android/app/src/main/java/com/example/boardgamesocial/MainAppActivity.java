@@ -4,15 +4,21 @@ import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 
+import com.google.android.material.bottomappbar.BottomAppBar;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.android.material.snackbar.Snackbar;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 
+import androidx.appcompat.widget.Toolbar;
+import androidx.fragment.app.Fragment;
 import androidx.navigation.NavController;
 import androidx.navigation.Navigation;
+import androidx.navigation.fragment.NavHostFragment;
 import androidx.navigation.ui.AppBarConfiguration;
 import androidx.navigation.ui.NavigationUI;
 
@@ -23,7 +29,7 @@ public class MainAppActivity extends AppCompatActivity {
     private AppBarConfiguration appBarConfiguration;
     private ActivityMainAppBinding binding;
     private NavController navController;
-    private BottomNavigationView bottomNav;
+    private BottomAppBar bottomAppBar;
 
 
     @Override
@@ -33,13 +39,40 @@ public class MainAppActivity extends AppCompatActivity {
         binding = ActivityMainAppBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
 
-        bottomNav = findViewById(R.id.bottom_nav);
-
         navController = Navigation.findNavController(this, R.id.nav_host_fragment_content_main_app);
-        appBarConfiguration = new AppBarConfiguration.Builder(navController.getGraph()).build();
-        NavigationUI.setupActionBarWithNavController(this, navController, appBarConfiguration);
 
-//        binding.home_post_fab.setOnClickListener(new View.OnClickListener() {
+        bottomAppBar = findViewById(R.id.bottom_app_bar);
+        setSupportActionBar(bottomAppBar);
+
+        bottomAppBar.setOnMenuItemClickListener(new Toolbar.OnMenuItemClickListener() {
+            @Override
+            public boolean onMenuItemClick(MenuItem item) {
+                Fragment selectedfragment = null;
+
+                switch (item.getItemId()) {
+                    case R.id.home_option:
+                        selectedfragment = new HomePostFragment();
+                        break;
+//                    case R.id.games_option:
+//                        selectedfragment = new GamesFragment();
+//                        break;
+//                    case R.id.search_option:
+//                        selectedfragment = new SearchFragment();
+//                        break;
+                    case R.id.profile_option:
+                        selectedfragment = new ProfileFragment();
+                        break;
+                    case R.id.logout_option:
+                        Intent goToHomePostActivity = LoginAndSignUpActivity.getIntent(MainAppActivity.this);
+                        startActivity(goToHomePostActivity);
+                        break;
+                }
+                getSupportFragmentManager().beginTransaction().replace(R.id.nav_host_fragment_content_main_app, selectedfragment).commit();
+                return true;
+            }
+        });
+
+//        binding.fab.setOnClickListener(new View.OnClickListener() {
 //            @Override
 //            public void onClick(View view) {
 //                Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
@@ -53,6 +86,13 @@ public class MainAppActivity extends AppCompatActivity {
         NavController navController = Navigation.findNavController(this, R.id.nav_host_fragment_content_main_app);
         return NavigationUI.navigateUp(navController, appBarConfiguration)
                 || super.onSupportNavigateUp();
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        super.onCreateOptionsMenu(menu);
+        getMenuInflater().inflate(R.menu.navbar_options, menu);
+        return true;
     }
 
     public static Intent getIntent(Context context) {
