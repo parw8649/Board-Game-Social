@@ -800,9 +800,9 @@ public class DBEndPointsTests {
                     }},
                     testReview,
                     new HashMap<String, String>(){{
-                        put("userId", String.valueOf(testReview.getUserId()));
-                        put("gameId", String.valueOf(testReview.getGameId()));
-                        put("content", String.valueOf(testReview.getContent()));
+                        put("userId", String.valueOf(testReviewModified.getUserId()));
+                        put("gameId", String.valueOf(testReviewModified.getGameId()));
+                        put("content", String.valueOf(testReviewModified.getContent()));
                     }},
                     Review.class,
                     retrofit
@@ -816,7 +816,62 @@ public class DBEndPointsTests {
 
     @Test
     public void hostedGameToUserTests() {
-
+        try {
+            createContextObject(testUser, new HashMap<String, String>(){{
+                put("username", testUser.getUsername());
+            }});
+            createContextObject(testGame, new HashMap<String, String>(){{
+                put("gameTitle", testGame.getGameTitle());
+            }});
+            HostedGameToUser testHostedGameToUser = new HostedGameToUser(
+                    getObjectList(
+                            retrofit.getCall(
+                                    User.class,
+                                    new HashMap<String, String>(){{
+                                        put("username", testUser.getUsername());
+                                    }}
+                            ).execute().body(), User.class
+                    ).get(0).getId(),
+                    getObjectList(
+                            retrofit.getCall(
+                                    Game.class,
+                                    new HashMap<String, String>(){{
+                                        put("gameTitle", testGame.getGameTitle());
+                                    }}
+                            ).execute().body(), Game.class
+                    ).get(0).getId()
+            );
+            Map<TestStage, StageAction> actionMap = getGenericActionMap(
+                    HostedGameToUser.class,
+                    Arrays.asList(
+                            HostedGameToUser.class.getDeclaredField("userId"),
+                            HostedGameToUser.class.getDeclaredField("gameId")
+                    )
+            );
+            actionMap.remove(TestStage.PUT_TEST);
+            actionMap.remove(TestStage.GET_TEST_PUT);
+            StageSettings<HostedGameToUser> stageSettings = new StageSettings<>(
+                    actionMap,
+                    new HashMap<String, String>(){{
+                        put("userId", "245");
+                    }},
+                    new HashMap<String, String>(){{
+                        put("userId", String.valueOf(testHostedGameToUser.getUserId()));
+                    }},
+                    null,
+                    new HashMap<String, String>(){{
+                        put("userId", String.valueOf(testHostedGameToUser.getUserId()));
+                    }},
+                    testHostedGameToUser,
+                    null,
+                    HostedGameToUser.class,
+                    retrofit
+            );
+            stageSettings.runStageTests();
+        } catch (IllegalAccessException | NoSuchFieldException | IOException e) {
+            e.printStackTrace();
+            fail("Exception accrued");
+        }
     }
 
 }
