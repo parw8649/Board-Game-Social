@@ -22,6 +22,7 @@ import com.example.boardgamesocial.APITests.DBTestStage.ConsoleColor;
 import com.example.boardgamesocial.APITests.DBTestStage.StageAction;
 import com.example.boardgamesocial.APITests.DBTestStage.StageSettings;
 import com.example.boardgamesocial.APITests.DBTestStage.TestStage;
+import com.example.boardgamesocial.DataClasses.Comment;
 import com.example.boardgamesocial.DataClasses.DataClass;
 import com.example.boardgamesocial.DataClasses.Event;
 import com.example.boardgamesocial.DataClasses.Game;
@@ -484,9 +485,6 @@ public class DBEndPointsTests {
             createContextObject(testUser, new HashMap<String, String>(){{
                 put("username", testUser.getUsername());
             }});
-            createContextObject(testUserModified, new HashMap<String, String>(){{
-                put("username", testUserModified.getUsername());
-            }});
             EventToUser testEventToUser = new EventToUser(
                     getObjectList(
                             retrofit.getCall(
@@ -540,7 +538,69 @@ public class DBEndPointsTests {
 
     @Test
     public void commentTests(){
-
+        try {
+            createContextObject(testUser, new HashMap<String, String>(){{
+                put("username", testUser.getUsername());
+            }});
+            Comment testComment = new Comment(
+                    getObjectList(
+                            retrofit.getCall(
+                                    User.class,
+                                    new HashMap<String, String>(){{
+                                        put("username", testUser.getUsername());
+                                    }}
+                            ).execute().body(), User.class
+                    ).get(0).getId(),
+                    getObjectList(
+                            retrofit.getCall(
+                                    Post.class,
+                                    new HashMap<String, String>(){{
+                                        put("postBody", "Admin Post Body");
+                                    }}
+                            ).execute().body(), Post.class
+                    ).get(0).getId(),
+                    "testCommentRetrofitC"
+            );
+            Comment testCommentModified = new Comment(
+                    testComment.getUserId(),
+                    testComment.getPostId(),
+                    "testCommentRetrofitC-MOD"
+            );
+            StageSettings<Comment> stageSettings = new StageSettings<>(
+                    getGenericActionMap(
+                            Comment.class,
+                            Arrays.asList(
+                                    Comment.class.getDeclaredField("userId"),
+                                    Comment.class.getDeclaredField("postId"),
+                                    Comment.class.getDeclaredField("content")
+                            )
+                    ),
+                    new HashMap<String, String>(){{
+                        put("userId", "245");
+                    }},
+                    new HashMap<String, String>(){{
+                        put("userId", String.valueOf(testComment.getUserId()));
+                    }},
+                    new HashMap<String, String>(){{
+                        put("userId", String.valueOf(testCommentModified.getUserId()));
+                    }},
+                    new HashMap<String, String>(){{
+                        put("userId", String.valueOf(testCommentModified.getUserId()));
+                    }},
+                    testComment,
+                    new HashMap<String, String>(){{
+                        put("userId", String.valueOf(testCommentModified.getUserId()));
+                        put("postId", String.valueOf(testCommentModified.getPostId()));
+                        put("content", testCommentModified.getContent());
+                    }},
+                    Comment.class,
+                    retrofit
+            );
+            stageSettings.runStageTests();
+        } catch (IllegalAccessException | NoSuchFieldException | IOException e) {
+            e.printStackTrace();
+            fail("Exception accrued");
+        }
     }
 
     @Test
