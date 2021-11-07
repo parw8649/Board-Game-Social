@@ -13,6 +13,7 @@ import android.util.Log;
 
 import org.junit.After;
 import org.junit.Assert;
+import org.junit.BeforeClass;
 import org.junit.Test;
 
 import com.example.boardgamesocial.API.API;
@@ -24,6 +25,7 @@ import com.example.boardgamesocial.APITests.DBTestStage.TestStage;
 import com.example.boardgamesocial.DataClasses.DataClass;
 import com.example.boardgamesocial.DataClasses.Event;
 import com.example.boardgamesocial.DataClasses.Game;
+import com.example.boardgamesocial.DataClasses.Message;
 import com.example.boardgamesocial.DataClasses.Post;
 import com.example.boardgamesocial.DataClasses.Relationships.UserToUser;
 import com.example.boardgamesocial.DataClasses.User;
@@ -407,7 +409,72 @@ public class DBEndPointsTests {
 
     @Test
     public void messageTests(){
-
+        try {
+            createContextObject(testUser, new HashMap<String, String>(){{
+                put("username", testUser.getUsername());
+            }});
+            createContextObject(testUserModified, new HashMap<String, String>(){{
+                put("username", testUserModified.getUsername());
+            }});
+            Message testMessage = new Message(
+                    getObjectList(
+                            retrofit.getCall(
+                                    User.class,
+                                    new HashMap<String, String>(){{
+                                        put("username", testUser.getUsername());
+                                    }}
+                            ).execute().body(), User.class
+                    ).get(0).getId(),
+                    getObjectList(
+                            retrofit.getCall(
+                                    User.class,
+                                    new HashMap<String, String>(){{
+                                        put("username", testUserModified.getUsername());
+                                    }}
+                            ).execute().body(), User.class
+                    ).get(0).getId(),
+                    "testMessageRetrofitC"
+            );
+            Message testMessageModified = new Message(
+                    testMessage.getSenderId(),
+                    testMessage.getReceiverId(),
+                    "testMessageRetrofitC-MOD"
+            );
+            StageSettings<Message> stageSettings = new StageSettings<>(
+                    getGenericActionMap(
+                            Message.class,
+                            Arrays.asList(
+                                    Message.class.getDeclaredField("senderId"),
+                                    Message.class.getDeclaredField("receiverId"),
+                                    Message.class.getDeclaredField("content")
+                            )
+                    ),
+                    new HashMap<String, String>(){{
+                        put("senderId", "245");
+                    }},
+                    new HashMap<String, String>(){{
+                        put("senderId", String.valueOf(testMessage.getSenderId()));
+                    }},
+                    new HashMap<String, String>(){{
+                        put("senderId", String.valueOf(testMessageModified.getSenderId()));
+                    }},
+                    new HashMap<String, String>(){{
+                        put("senderId", String.valueOf(testMessageModified.getSenderId()));
+                    }},
+                    testMessage,
+                    new HashMap<String, String>(){{
+                        put("senderId", String.valueOf(testMessageModified.getSenderId()));
+                        put("receiverId", String.valueOf(testMessageModified.getReceiverId()));
+                        put("content", testMessageModified.getContent());
+                    }},
+                    Message.class,
+                    retrofit
+            );
+            stageSettings.runStageTests();
+        } catch (IllegalAccessException | NoSuchFieldException | IOException e) {
+            e.printStackTrace();
+            fail("Exception accrued");
+        }
     }
 
     @Test
