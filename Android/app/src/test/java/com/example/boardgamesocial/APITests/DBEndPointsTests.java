@@ -29,6 +29,7 @@ import com.example.boardgamesocial.DataClasses.Game;
 import com.example.boardgamesocial.DataClasses.Message;
 import com.example.boardgamesocial.DataClasses.Post;
 import com.example.boardgamesocial.DataClasses.Relationships.EventToUser;
+import com.example.boardgamesocial.DataClasses.Relationships.GameToUser;
 import com.example.boardgamesocial.DataClasses.Relationships.UserToUser;
 import com.example.boardgamesocial.DataClasses.User;
 import com.google.gson.Gson;
@@ -605,7 +606,72 @@ public class DBEndPointsTests {
 
     @Test
     public void gameToUserTests(){
-
+        try {
+            createContextObject(testUser, new HashMap<String, String>(){{
+                put("username", testUser.getUsername());
+            }});
+            createContextObject(testGame, new HashMap<String, String>(){{
+                put("gameTitle", testGame.getGameTitle());
+            }});
+            GameToUser testGameToUser = new GameToUser(
+                    getObjectList(
+                            retrofit.getCall(
+                                    User.class,
+                                    new HashMap<String, String>(){{
+                                        put("username", testUser.getUsername());
+                                    }}
+                            ).execute().body(), User.class
+                    ).get(0).getId(),
+                    getObjectList(
+                            retrofit.getCall(
+                                    Game.class,
+                                    new HashMap<String, String>(){{
+                                        put("gameTitle", testGame.getGameTitle());
+                                    }}
+                            ).execute().body(), Game.class
+                    ).get(0).getId(),
+                    true
+            );
+            GameToUser testGameToUserModified = new GameToUser(
+                    testGameToUser.getUserId(),
+                    testGameToUser.getGameId(),
+                    false
+            );
+            StageSettings<GameToUser> stageSettings = new StageSettings<>(
+                    getGenericActionMap(
+                            GameToUser.class,
+                            Arrays.asList(
+                                    GameToUser.class.getDeclaredField("userId"),
+                                    GameToUser.class.getDeclaredField("gameId"),
+                                    GameToUser.class.getDeclaredField("private_")
+                            )
+                    ),
+                    new HashMap<String, String>(){{
+                        put("userId", "245");
+                    }},
+                    new HashMap<String, String>(){{
+                        put("userId", String.valueOf(testGameToUser.getUserId()));
+                    }},
+                    new HashMap<String, String>(){{
+                        put("userId", String.valueOf(testGameToUserModified.getUserId()));
+                    }},
+                    new HashMap<String, String>(){{
+                        put("userId", String.valueOf(testGameToUserModified.getUserId()));
+                    }},
+                    testGameToUser,
+                    new HashMap<String, String>(){{
+                        put("userId", String.valueOf(testGameToUserModified.getUserId()));
+                        put("gameId", String.valueOf(testGameToUserModified.getGameId()));
+                        put("private", String.valueOf(testGameToUserModified.getPrivate_()));
+                    }},
+                    GameToUser.class,
+                    retrofit
+            );
+            stageSettings.runStageTests();
+        } catch (IllegalAccessException | NoSuchFieldException | IOException e) {
+            e.printStackTrace();
+            fail("Exception accrued");
+        }
     }
 
     @Test
