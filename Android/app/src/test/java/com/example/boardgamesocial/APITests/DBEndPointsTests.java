@@ -33,6 +33,7 @@ import com.example.boardgamesocial.DataClasses.Relationships.EventToUser;
 import com.example.boardgamesocial.DataClasses.Relationships.GameToUser;
 import com.example.boardgamesocial.DataClasses.Relationships.HostedGameToUser;
 import com.example.boardgamesocial.DataClasses.Relationships.UserToUser;
+import com.example.boardgamesocial.DataClasses.Review;
 import com.example.boardgamesocial.DataClasses.User;
 import com.google.gson.Gson;
 import com.google.gson.JsonArray;
@@ -745,7 +746,72 @@ public class DBEndPointsTests {
 
     @Test
     public void reviewTests(){
-
+        try {
+            createContextObject(testUser, new HashMap<String, String>(){{
+                put("username", testUser.getUsername());
+            }});
+            createContextObject(testGame, new HashMap<String, String>(){{
+                put("gameTitle", testGame.getGameTitle());
+            }});
+            Review testReview = new Review(
+                    getObjectList(
+                            retrofit.getCall(
+                                    User.class,
+                                    new HashMap<String, String>(){{
+                                        put("username", testUser.getUsername());
+                                    }}
+                            ).execute().body(), User.class
+                    ).get(0).getId(),
+                    getObjectList(
+                            retrofit.getCall(
+                                    Game.class,
+                                    new HashMap<String, String>(){{
+                                        put("gameTitle", testGame.getGameTitle());
+                                    }}
+                            ).execute().body(), Game.class
+                    ).get(0).getId(),
+                    "testReviewRetrofitC"
+            );
+            Review testReviewModified = new Review(
+                    testReview.getUserId(),
+                    testReview.getGameId(),
+                    "testReviewRetrofitC-MOD"
+            );
+            StageSettings<Review> stageSettings = new StageSettings<>(
+                    getGenericActionMap(
+                            Review.class,
+                            Arrays.asList(
+                                    Review.class.getDeclaredField("userId"),
+                                    Review.class.getDeclaredField("gameId"),
+                                    Review.class.getDeclaredField("content")
+                            )
+                    ),
+                    new HashMap<String, String>(){{
+                        put("userId", "245");
+                    }},
+                    new HashMap<String, String>(){{
+                        put("userId", String.valueOf(testReview.getUserId()));
+                    }},
+                    new HashMap<String, String>(){{
+                        put("userId", String.valueOf(testReview.getUserId()));
+                    }},
+                    new HashMap<String, String>(){{
+                        put("userId", String.valueOf(testReview.getUserId()));
+                    }},
+                    testReview,
+                    new HashMap<String, String>(){{
+                        put("userId", String.valueOf(testReview.getUserId()));
+                        put("gameId", String.valueOf(testReview.getGameId()));
+                        put("content", String.valueOf(testReview.getContent()));
+                    }},
+                    Review.class,
+                    retrofit
+            );
+            stageSettings.runStageTests();
+        } catch (IllegalAccessException | NoSuchFieldException | IOException e) {
+            e.printStackTrace();
+            fail("Exception accrued");
+        }
     }
 
     @Test
