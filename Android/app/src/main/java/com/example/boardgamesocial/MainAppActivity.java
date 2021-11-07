@@ -13,6 +13,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.Toast;
 
 import androidx.appcompat.widget.Toolbar;
 import androidx.fragment.app.Fragment;
@@ -52,6 +53,9 @@ public class MainAppActivity extends AppCompatActivity {
                 switch (item.getItemId()) {
                     case R.id.home_option:
                         selectedfragment = new HomePostFragment();
+                        break;
+                    case R.id.events_option:
+                        selectedfragment = new EventsFragment();
                         break;
 //                    case R.id.games_option:
 //                        selectedfragment = new GamesFragment();

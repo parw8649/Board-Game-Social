@@ -5,6 +5,7 @@
     <string name="logout_option_title">Logout</string>
     <string name="home_option_title">Home</string>
     <string name="games_option_title">Games</string>
+    <string name="events_option_title">Events</string>
     <string name="search_option_title">Search</string>
     <!-- Strings used for item -->
     <string name="item_textView_posterPlaceHolder">Poster\'s Name</string>

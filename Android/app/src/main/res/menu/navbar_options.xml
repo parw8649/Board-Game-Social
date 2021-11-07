@@ -15,6 +15,12 @@
         app:showAsAction="always" />
 
     <item
+        android:id="@+id/events_option"
+        android:title="@string/events_option_title"
+        android:icon="@drawable/ic_baseline_event_24_blue_yonder"
+        app:showAsAction="always" />
+
+    <item
         android:id="@+id/search_option"
         android:title="@string/search_option_title"
         android:icon="@drawable/ic_baseline_search_24"
