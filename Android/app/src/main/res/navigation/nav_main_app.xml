@@ -13,13 +13,25 @@
 
         <action
             android:id="@+id/action_FirstFragment_to_SecondFragment"
-            app:destination="@id/EventsFragment" />
+            app:destination="@id/eventsFragment" />
         <action
             android:id="@+id/action_HomePostFragment_to_profileFragment"
             app:destination="@id/profileFragment" />
+        <action
+            android:id="@+id/action_HomePostFragment_to_addPostFragment"
+            app:destination="@id/addPostFragment" />
+        <action
+            android:id="@+id/action_HomePostFragment_to_singlePostFragment"
+            app:destination="@id/singlePostFragment" />
+        <action
+            android:id="@+id/action_HomePostFragment_to_chatFragment"
+            app:destination="@id/chatFragment" />
+        <action
+            android:id="@+id/action_HomePostFragment_to_searchFragment"
+            app:destination="@id/searchFragment" />
     </fragment>
     <fragment
-        android:id="@+id/EventsFragment"
+        android:id="@+id/eventsFragment"
         android:name="com.example.boardgamesocial.EventsFragment"
         android:label="@string/second_fragment_label"
         tools:layout="@layout/fragment_events">
@@ -37,7 +49,129 @@
             android:id="@+id/action_profileFragment_to_HomePostFragment"
             app:destination="@id/HomePostFragment" />
         <action
-            android:id="@+id/action_profileFragment_to_EventsFragment"
-            app:destination="@id/EventsFragment" />
+            android:id="@+id/action_profileFragment_to_editProfileFragment"
+            app:destination="@id/editProfileFragment" />
+        <action
+            android:id="@+id/action_profileFragment_to_userFriendsFragment"
+            app:destination="@id/userFriendsFragment" />
+        <action
+            android:id="@+id/action_profileFragment_to_gameCollectionFragment"
+            app:destination="@id/gameCollectionFragment" />
     </fragment>
+    <fragment
+        android:id="@+id/addPostFragment"
+        android:name="com.example.boardgamesocial.AddPostFragment"
+        android:label="fragment_add_post"
+        tools:layout="@layout/fragment_add_post" >
+        <action
+            android:id="@+id/action_addPostFragment_to_HomePostFragment"
+            app:destination="@id/HomePostFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/singlePostFragment"
+        android:name="com.example.boardgamesocial.SinglePostFragment"
+        android:label="fragment_single_post"
+        tools:layout="@layout/fragment_single_post" >
+        <action
+            android:id="@+id/action_singlePostFragment_to_HomePostFragment"
+            app:destination="@id/HomePostFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/editProfileFragment"
+        android:name="com.example.boardgamesocial.EditProfileFragment"
+        android:label="fragment_edit_profile"
+        tools:layout="@layout/fragment_edit_profile" >
+        <action
+            android:id="@+id/action_editProfileFragment_to_profileFragment"
+            app:destination="@id/profileFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/userFriendsFragment"
+        android:name="com.example.boardgamesocial.UserFriendsFragment"
+        android:label="fragment_user_friends"
+        tools:layout="@layout/fragment_user_friends" >
+        <action
+            android:id="@+id/action_userFriendsFragment_to_profileFragment"
+            app:destination="@id/profileFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/gameCollectionFragment"
+        android:name="com.example.boardgamesocial.GameCollectionFragment"
+        android:label="fragment_game_collection"
+        tools:layout="@layout/fragment_game_collection" >
+        <action
+            android:id="@+id/action_gameCollectionFragment_to_profileFragment"
+            app:destination="@id/profileFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/singleEventFragment"
+        android:name="com.example.boardgamesocial.SingleEventFragment"
+        android:label="fragment_single_event"
+        tools:layout="@layout/fragment_single_event" >
+        <action
+            android:id="@+id/action_singleEventFragment_to_EventsFragment"
+            app:destination="@id/eventsFragment" />
+        <action
+            android:id="@+id/action_singleEventFragment_to_hostedGamesFragment"
+            app:destination="@id/hostedGamesFragment" />
+        <action
+            android:id="@+id/action_singleEventFragment_to_eventAttendeesFragment"
+            app:destination="@id/eventAttendeesFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/hostedGamesFragment"
+        android:name="com.example.boardgamesocial.HostedGamesFragment"
+        android:label="fragment_hosted_games"
+        tools:layout="@layout/fragment_hosted_games" >
+        <action
+            android:id="@+id/action_hostedGamesFragment_to_singleEventFragment"
+            app:destination="@id/singleEventFragment" />
+        <action
+            android:id="@+id/action_hostedGamesFragment_to_singleHostedGameFragment"
+            app:destination="@id/singleHostedGameFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/singleHostedGameFragment"
+        android:name="com.example.boardgamesocial.SingleHostedGameFragment"
+        android:label="fragment_single_hosted_game"
+        tools:layout="@layout/fragment_single_hosted_game" >
+        <action
+            android:id="@+id/action_singleHostedGameFragment_to_hostedGamesFragment"
+            app:destination="@id/hostedGamesFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/eventAttendeesFragment"
+        android:name="com.example.boardgamesocial.EventAttendeesFragment"
+        android:label="fragment_event_attendees"
+        tools:layout="@layout/fragment_event_attendees" >
+        <action
+            android:id="@+id/action_eventAttendeesFragment_to_singleEventFragment"
+            app:destination="@id/singleEventFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/chatFragment"
+        android:name="com.example.boardgamesocial.ChatFragment"
+        android:label="fragment_chat"
+        tools:layout="@layout/fragment_chat" >
+        <action
+            android:id="@+id/action_chatFragment_to_HomePostFragment"
+            app:destination="@id/HomePostFragment" />
+        <action
+            android:id="@+id/action_chatFragment_to_friendChatFragment"
+            app:destination="@id/friendChatFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/friendChatFragment"
+        android:name="com.example.boardgamesocial.FriendChatFragment"
+        android:label="fragment_friend_chat"
+        tools:layout="@layout/fragment_friend_chat" >
+        <action
+            android:id="@+id/action_friendChatFragment_to_chatFragment"
+            app:destination="@id/chatFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/searchFragment"
+        android:name="com.example.boardgamesocial.SearchFragment"
+        android:label="fragment_search"
+        tools:layout="@layout/fragment_search" />
 </navigation>
