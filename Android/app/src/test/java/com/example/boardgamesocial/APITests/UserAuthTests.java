@@ -24,17 +24,11 @@ import java.util.HashMap;
 @FixMethodOrder(MethodSorters.JVM)
 public class UserAuthTests {
 
-    private static RetrofitClient retrofit;
+    private static final RetrofitClient retrofit = RetrofitClient.getClient();
     public static final User user = new User(
             "testUserRetrofitU",
             "testUserRetrofitP"
     );
-
-    @BeforeClass
-    public static void beforeClass() throws Exception {
-        HeaderInterceptor.token = new Token("");
-        retrofit = RetrofitClient.getClient();
-    }
 
     @AfterClass
     public static void afterClass() throws Exception {

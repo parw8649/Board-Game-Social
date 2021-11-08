@@ -12,6 +12,7 @@ import android.widget.Button;
 import android.widget.EditText;
 
 
+import com.example.boardgamesocial.API.HeaderInterceptor;
 import com.example.boardgamesocial.API.RetrofitClient;
 import com.example.boardgamesocial.DataClasses.DataClass;
 import com.example.boardgamesocial.DataClasses.Game;
@@ -50,8 +51,9 @@ public class MainActivity extends AppCompatActivity {
     private void wireUpDisplay() {
         retrofitClient = RetrofitClient.getClient();
 
+        // This token needs to be acquired with login request
+        HeaderInterceptor.token.setToken("e4a36ccc86bc71b7e78c5d42bbd3109ab4764af1");
         retrofitClient.getCall(Game.class, new HashMap<String, String>(){{
-//            put("gameTitle", "TestGame8");
             put("gameTitle", "7 Wonders Duel");
         }}).enqueue(new Callback<JsonArray>() {
             @Override

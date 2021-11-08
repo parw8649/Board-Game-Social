@@ -148,7 +148,7 @@ public class DBEndPointsTests {
 
     @BeforeClass
     public static void beforeClass() {
-        HeaderInterceptor.token = new Token("e4a36ccc86bc71b7e78c5d42bbd3109ab4764af1");
+        HeaderInterceptor.token.setToken("e4a36ccc86bc71b7e78c5d42bbd3109ab4764af1");
     }
 
     @After
