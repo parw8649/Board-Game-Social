@@ -3,6 +3,7 @@ package com.example.boardgamesocial.API;
 import android.util.Log;
 
 import java.io.IOException;
+import java.util.Objects;
 
 import okhttp3.Interceptor;
 import okhttp3.Request;
@@ -16,10 +17,11 @@ public class LoggingInterceptor implements Interceptor {
         long t1 = System.nanoTime();
         Log.i("API",
                 String.format(
-                        "Sending request %s as %s with headers: %s Chain Connection: %s",
+                        "Sending request %s as %s with headers: %s Body: %s Chain Connection: %s",
                         request.url(),
                         request.method(),
                         request.headers(),
+                        request.body() == null ? "Empty Body" : request.body().toString(),
                         chain.connection()
                 )
         );

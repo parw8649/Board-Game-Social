@@ -49,17 +49,17 @@ public interface API {
         put(HostedGameToUser.class, "api/hosted_game_to_user/");
     }};
 
-    @POST("api/sign_up/")
+    @POST("sign_up/")
     Call<User> signUpCall(
             @Body User user
     );
 
-    @POST("api/login/")
+    @POST("login/")
     Call<Token> loginCall(
-            @QueryMap User user
+            @Body User user
     );
 
-    @GET("api/logout/")
+    @GET("logout/")
     Call<JsonObject> logoutCall(
             @QueryMap Map<String, String> userIdMap
     );

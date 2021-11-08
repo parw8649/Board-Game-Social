@@ -10,8 +10,10 @@ import static org.junit.Assert.fail;
 import android.util.Log;
 
 import org.junit.After;
+import org.junit.BeforeClass;
 import org.junit.Test;
 
+import com.example.boardgamesocial.API.HeaderInterceptor;
 import com.example.boardgamesocial.API.RetrofitClient;
 import com.example.boardgamesocial.APITests.DBTestStage.ConsoleColor;
 import com.example.boardgamesocial.APITests.DBTestStage.StageAction;
@@ -28,6 +30,7 @@ import com.example.boardgamesocial.DataClasses.Relationships.GameToUser;
 import com.example.boardgamesocial.DataClasses.Relationships.HostedGameToUser;
 import com.example.boardgamesocial.DataClasses.Relationships.UserToUser;
 import com.example.boardgamesocial.DataClasses.Review;
+import com.example.boardgamesocial.DataClasses.Token;
 import com.example.boardgamesocial.DataClasses.User;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
@@ -141,6 +144,11 @@ public class DBEndPointsTests {
         retrofit.deleteCall(cls, new HashMap<String, String>(){{
             put("id", String.valueOf(idField.get(foundObjects.get(0))));
         }}).execute();
+    }
+
+    @BeforeClass
+    public static void beforeClass() {
+        HeaderInterceptor.token = new Token("e4a36ccc86bc71b7e78c5d42bbd3109ab4764af1");
     }
 
     @After

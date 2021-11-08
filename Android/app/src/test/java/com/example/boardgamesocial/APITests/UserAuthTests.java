@@ -1,5 +1,6 @@
 package com.example.boardgamesocial.APITests;
 
+import static com.example.boardgamesocial.API.RetrofitClient.getObjectList;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertNotNull;
@@ -11,12 +12,16 @@ import com.example.boardgamesocial.API.RetrofitClient;
 import com.example.boardgamesocial.DataClasses.Token;
 import com.example.boardgamesocial.DataClasses.User;
 
+import org.junit.AfterClass;
 import org.junit.BeforeClass;
+import org.junit.FixMethodOrder;
 import org.junit.Test;
+import org.junit.runners.MethodSorters;
 
 import java.io.IOException;
 import java.util.HashMap;
 
+@FixMethodOrder(MethodSorters.JVM)
 public class UserAuthTests {
 
     private static RetrofitClient retrofit;
@@ -29,6 +34,14 @@ public class UserAuthTests {
     public static void beforeClass() throws Exception {
         HeaderInterceptor.token = new Token("");
         retrofit = RetrofitClient.getClient();
+    }
+
+    @AfterClass
+    public static void afterClass() throws Exception {
+        HeaderInterceptor.token.setToken("e4a36ccc86bc71b7e78c5d42bbd3109ab4764af1");
+        retrofit.deleteCall(User.class, new HashMap<String, String>(){{
+            put("username", user.getUsername());
+        }}).execute();
     }
 
     @Test
@@ -47,7 +60,17 @@ public class UserAuthTests {
             assertNotNull(token);
             HeaderInterceptor.token.setToken(token.getToken());
             assertFalse(HeaderInterceptor.token.getToken().isEmpty());
-            assertNotNull(retrofit.getCall(User.class, new HashMap<>()).execute().body());
+            user.setId(
+                    getObjectList(
+                            retrofit.getCall(
+                                    User.class,
+                                    new HashMap<String, String>(){{
+                                        put("username", user.getUsername());
+                                    }}
+                            ).execute().body(),
+                            User.class
+                    ).get(0).getId()
+            );
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -58,10 +81,10 @@ public class UserAuthTests {
         try {
             assertEquals(200,
                 retrofit.logoutCall(new HashMap<String, String>(){{
-                    put("userId", String.valueOf(user.getId()));
+                    put("user_id", String.valueOf(user.getId()));
                 }}).execute().code()
             );
-            assertNotNull(retrofit.getCall(User.class, new HashMap<>()).execute().body());
+            assertNull(retrofit.getCall(User.class, new HashMap<>()).execute().body());
         } catch (IOException e) {
             e.printStackTrace();
         }
