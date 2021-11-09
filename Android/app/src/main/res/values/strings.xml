@@ -1,11 +1,12 @@
 <resources>
     <string name="app_name">BoardGameSocial</string>
     <!-- Strings used for nav (action/tool)bar -->
-    <string name="profile_option_title">profile</string>
-    <string name="logout_option_title">logout</string>
-    <string name="home_option_title">home</string>
-    <string name="games_option_title">games</string>
-    <string name="search_option_title">search</string>
+    <string name="profile_option_title">Profile</string>
+    <string name="logout_option_title">Logout</string>
+    <string name="home_option_title">Home</string>
+    <string name="games_option_title">Games</string>
+    <string name="events_option_title">Events</string>
+    <string name="search_option_title">Search</string>
     <!-- Strings used for item -->
     <string name="item_textView_posterPlaceHolder">Poster\'s Name</string>
     <string name="item_textView_postTypePlaceHolder">Post Type</string>
@@ -42,7 +43,16 @@
     <string name="profile_first_name_placeholder">firstName</string>
     <string name="profile_username_placeholder">username</string>
     <string name="profile_btn_edit">edit profile</string>
-    <string name="profile_bio_placeholder">I am the user’s biography. I should have a character limit of 850 using Roboto regular at size 16.</string>
+    <string name="profile_bio_placeholder">I am the user’s biography. I will have a character limit
+        of 850 using Roboto regular at size 16. Ooooo ooooooooo oooooo ooooo ooooo oo ooooo oooo
+        ooooo oooo oooooo ooooooo ooooooo ooooo oooooooo oooo ooooo oooo ooooooooo ooo ooo oooo oo
+        ooooo oooo oooooooooo oo ooooo oooo oooo oooo oooooo oooo oooo oooo oo ooooooooooo oooooo
+        ooooooo oooooo oooooo oooooo ooooooooo ooo ooooo oooooo ooooo oo oooo ooooo oooo ooooo ooo
+        ooo oooooo oooooo oooooooo oooooo oooooo ooooo oooooo oooooo ooooo ooooooo oooooo ooooo ooooo
+        oooooooo oooooo oooooo ooooo oooooo oooooo ooooo ooooooo oooooo ooooooooooo oooooo ooooooooo
+        ooo ooooo oooooo ooooo oo oooo ooooo oooo ooooo ooo ooo oooooo oooooo oooooooo oooooo oooooo
+        ooooo oooooo oooooo ooooo ooooooo oooooo ooooo ooooo oooooooo oooooo oooooo ooooo oooooo oooooo
+        ooooo ooooooo oooooo ooooooo ooooo ooooooo oooooo oooooo</string>
     <string name="profile_btn_view_friends">view friends</string>
     <string name="profile_btn_view_user_gamelist">view [user]\'s gamelist</string>
 </resources>

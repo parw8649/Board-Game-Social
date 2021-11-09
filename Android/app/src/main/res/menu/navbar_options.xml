@@ -5,12 +5,19 @@
     <item
         android:id="@+id/home_option"
         android:title="@string/home_option_title"
-
+        android:icon="@drawable/ic_baseline_home_24_blue_yonder"
         app:showAsAction="always" />
 
     <item
         android:id="@+id/games_option"
         android:title="@string/games_option_title"
+        android:icon="@drawable/ic_baseline_reorder_24_blue_yonder"
+        app:showAsAction="always" />
+
+    <item
+        android:id="@+id/events_option"
+        android:title="@string/events_option_title"
+        android:icon="@drawable/ic_baseline_event_24_blue_yonder"
         app:showAsAction="always" />
 
     <item
@@ -21,11 +28,13 @@
 
     <item
         android:id="@+id/profile_option"
-        android:title="profile"
+        android:title="@string/profile_option_title"
+        android:icon="@drawable/ic_baseline_person_24_blue_yonder"
         app:showAsAction="never" />
 
     <item
         android:id="@+id/logout_option"
-        android:title="logout"
+        android:title="@string/logout_option_title"
+        android:icon="@drawable/ic_baseline_logout_24_blue_yonder"
         app:showAsAction="never" />
 </menu>

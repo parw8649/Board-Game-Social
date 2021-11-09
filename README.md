@@ -15,10 +15,11 @@ Database: Postgres Heroku<br>
 ## Description:<br>
 Board Game Social (working title) will allow users to keep track of their board games and connect with other users who share similar interests. They will be able to share their opinions via a post feed, reviews for games within the app database, and events centered around available games.
 <br>
-Django tokens will be used to verify valid user activity when sending and receiving data from the Postgres Heroku database.
-ERDs:<br>
+Django tokens will be used to verify valid user activity when sending and receiving data from the Postgres Heroku database.<br>
+## ERDs:<br>
+![BGS ERDS](https://github.com/parw8649/CST438-Project3/blob/homePost_profile_fragments/docs/Board%20Game%20Social%20ERD.png)
 
-## Tentative API Endpoints:<br>
+## Initial API Endpoints:<br>
 - Login / signup
 - Logout
 - Get all users
@@ -34,4 +35,6 @@ ERDs:<br>
 
 ## Mockups:<br>
 ![BGS mockups](https://github.com/parw8649/CST438-Project3/blob/patch/readme_update/proj03-group01--initial-mockups.png)
-Libraries Used:<br>
+
+## Libraries Used:<br>
+- [Retrofit](https://square.github.io/retrofit/#download)

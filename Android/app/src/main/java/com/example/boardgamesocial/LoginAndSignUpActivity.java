@@ -2,6 +2,8 @@ package com.example.boardgamesocial;
 
 import static com.example.boardgamesocial.API.RetrofitClient.getObjectList;
 
+import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
 
 import com.example.boardgamesocial.API.HeaderInterceptor;
@@ -84,5 +86,11 @@ public class LoginAndSignUpActivity extends AppCompatActivity {
         NavController navController = Navigation.findNavController(this, R.id.nav_host_fragment_content_app);
         return NavigationUI.navigateUp(navController, appBarConfiguration)
                 || super.onSupportNavigateUp();
+    }
+
+    public static Intent getIntent(Context context) {
+        // Barbara added getIntent Sat Nov 6 for bottom app bar navigation
+        System.out.println("Inside LoginAndSignUpActivity getIntent!");
+        return new Intent(context, LoginAndSignUpActivity.class);
     }
 }

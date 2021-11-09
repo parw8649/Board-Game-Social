@@ -8,13 +8,13 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_marginVertical="@dimen/profile_v_margin"
         android:orientation="vertical"
         android:gravity="center_horizontal">
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="@dimen/profile_top_margin"
             android:gravity="center_vertical">
 
             <ImageView
@@ -29,7 +29,7 @@
             <LinearLayout
                 android:id="@+id/profile_names_container"
                 android:layout_width="@dimen/even_spacing_layout_width"
-                android:layout_height="match_parent"
+                android:layout_height="wrap_content"
                 android:layout_weight="@dimen/even_spacing_layout_weight"
                 android:gravity="center_vertical"
                 android:orientation="vertical"
@@ -47,33 +47,36 @@
                     android:id="@+id/profile_username"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="@dimen/linear_vert_padding"
+                    android:layout_marginTop="@dimen/profile_username_v_margin"
+                    android:layout_marginBottom="@dimen/profile_username_v_margin"
                     android:text="@string/profile_username_placeholder"
                     android:textSize="@dimen/textSizeMiddle" />
-            </LinearLayout>
 
-            <Button
-                android:id="@+id/profile_btn_edit"
-                android:layout_width="@dimen/even_spacing_layout_width"
-                android:layout_height="wrap_content"
-                android:layout_weight="@dimen/even_spacing_layout_weight"
-                android:padding="@dimen/btn_padding_slim"
-                android:backgroundTint="@color/blue_yonder"
-                android:text="@string/profile_btn_edit"
-                android:textAppearance="@style/TextAppearance.AppCompat.Small" />
+                <Button
+                    android:id="@+id/profile_btn_edit"
+                    android:layout_width="wrap_content"
+                    android:layout_height="@dimen/btn_height_slim"
+                    android:padding="@dimen/btn_padding_slim"
+                    android:backgroundTint="@color/blue_yonder"
+                    android:text="@string/profile_btn_edit"
+                    android:textAppearance="@style/TextAppearance.AppCompat.Small" />
+            </LinearLayout>
         </LinearLayout>
 
         <TextView
             android:id="@+id/profile_bio"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:padding="@dimen/linear_vert_padding"
+            android:padding="@dimen/profile_bio_padding"
+            android:layout_marginBottom="@dimen/profile_bio_bottom_margin"
+            android:justificationMode="inter_word"
+            android:maxLines="17"
             android:text="@string/profile_bio_placeholder"/>
 
         <Button
             android:id="@+id/profile_btn_view_friends"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_height="@dimen/btn_height_slim"
             android:padding="@dimen/btn_padding_slim"
             android:backgroundTint="@color/blue_yonder"
             android:text="@string/profile_btn_view_friends"
@@ -81,7 +84,7 @@
         <Button
             android:id="@+id/profile_btn_view_user_gamelist"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_height="@dimen/btn_height_slim"
             android:layout_weight="@dimen/even_spacing_layout_weight"
             android:padding="@dimen/btn_padding_slim"
             android:backgroundTint="@color/blue_yonder"

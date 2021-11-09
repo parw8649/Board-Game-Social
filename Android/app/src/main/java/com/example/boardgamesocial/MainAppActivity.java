@@ -4,14 +4,23 @@ import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 
+import com.google.android.material.bottomappbar.BottomAppBar;
+import com.google.android.material.bottomnavigation.BottomNavigationView;
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.snackbar.Snackbar;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
+import android.widget.Toast;
 
+import androidx.appcompat.widget.Toolbar;
+import androidx.fragment.app.Fragment;
 import androidx.navigation.NavController;
 import androidx.navigation.Navigation;
+import androidx.navigation.fragment.NavHostFragment;
 import androidx.navigation.ui.AppBarConfiguration;
 import androidx.navigation.ui.NavigationUI;
 
@@ -21,6 +30,10 @@ public class MainAppActivity extends AppCompatActivity {
 
     private AppBarConfiguration appBarConfiguration;
     private ActivityMainAppBinding binding;
+    private NavController navController;
+    private BottomAppBar bottomAppBar;
+    FloatingActionButton fab;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -29,17 +42,51 @@ public class MainAppActivity extends AppCompatActivity {
         binding = ActivityMainAppBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
 
-        setSupportActionBar(binding.toolbar);
+        navController = Navigation.findNavController(this, R.id.nav_host_fragment_content_main_app);
 
-        NavController navController = Navigation.findNavController(this, R.id.nav_host_fragment_content_main_app);
-        appBarConfiguration = new AppBarConfiguration.Builder(navController.getGraph()).build();
-        NavigationUI.setupActionBarWithNavController(this, navController, appBarConfiguration);
+        bottomAppBar = findViewById(R.id.bottom_app_bar);
+        setSupportActionBar(bottomAppBar);
 
-        binding.fab.setOnClickListener(new View.OnClickListener() {
+        fab = findViewById(R.id.home_post_fab);
+
+        bottomAppBar.setOnMenuItemClickListener(new Toolbar.OnMenuItemClickListener() {
+            @Override
+            public boolean onMenuItemClick(MenuItem item) {
+                Fragment selectedfragment = null;
+
+                switch (item.getItemId()) {
+                    case R.id.home_option:
+                        selectedfragment = new HomePostFragment();
+                        break;
+                    case R.id.events_option:
+                        selectedfragment = new EventsFragment();
+                        break;
+                    case R.id.games_option:
+                        // we might be changing this to a specific UserGamesCollectionFragment()
+                        selectedfragment = new GamesCollectionFragment();
+                        break;
+                    case R.id.search_option:
+                        selectedfragment = new SearchFragment();
+                        break;
+                    case R.id.profile_option:
+                        selectedfragment = new ProfileFragment();
+                        break;
+                    case R.id.logout_option:
+                        Intent goToHomePostActivity = LoginAndSignUpActivity.getIntent(MainAppActivity.this);
+                        startActivity(goToHomePostActivity);
+                        break;
+                }
+                getSupportFragmentManager().beginTransaction().replace(R.id.nav_host_fragment_content_main_app, selectedfragment).commit();
+                return true;
+            }
+        });
+
+        fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
+                Snackbar.make(view, "Eventually, you'll be able to add a new post ", Snackbar.LENGTH_LONG)
                         .setAction("Action", null).show();
+                // getSupportFragmentManager().beginTransaction().replace(R.id.nav_host_fragment_content_main_app, new AddPostFragment()).commit();
             }
         });
     }
@@ -49,6 +96,13 @@ public class MainAppActivity extends AppCompatActivity {
         NavController navController = Navigation.findNavController(this, R.id.nav_host_fragment_content_main_app);
         return NavigationUI.navigateUp(navController, appBarConfiguration)
                 || super.onSupportNavigateUp();
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        super.onCreateOptionsMenu(menu);
+        getMenuInflater().inflate(R.menu.navbar_options, menu);
+        return true;
     }
 
     public static Intent getIntent(Context context) {
