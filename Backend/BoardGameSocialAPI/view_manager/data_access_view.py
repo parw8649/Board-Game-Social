@@ -80,8 +80,16 @@ class DataAccessView(mixins.CreateModelMixin,
 
     def delete_models(self, *args, **kwargs):
         try:
-            data = self.filter_models(**self.request.data)
-            self.model.objects.filter(**self.request.data).delete()
+            if len(self.parse_query_params()) == 0 and len(self.request.data) == 0:
+                raise FieldError("Missing parameters")
+            elif len(self.request.data) == 0:
+                filter_settings = self.parse_query_params()
+            elif len(self.parse_query_params()) == 0:
+                filter_settings = self.request.data
+            else:
+                filter_settings = self.parse_query_params()
+            data = self.filter_models(**filter_settings)
+            self.model.objects.filter(**filter_settings).delete()
             res = get_response(data, status=200)
         except FieldError as e:
             data = {"error": str(e)}
