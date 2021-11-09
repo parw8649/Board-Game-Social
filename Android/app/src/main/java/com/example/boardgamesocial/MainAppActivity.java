@@ -62,8 +62,8 @@ public class MainAppActivity extends AppCompatActivity {
                         selectedfragment = new EventsFragment();
                         break;
                     case R.id.games_option:
-                        // we might be changing this to a specific UserGamesCollectionFragment()
-                        selectedfragment = new GamesCollectionFragment();
+                        // we might be changing this to a specific UserGameCollectionFragment()
+                        selectedfragment = new GameCollectionFragment();
                         break;
                     case R.id.search_option:
                         selectedfragment = new SearchFragment();
