@@ -61,12 +61,16 @@ public class MainAppActivity extends AppCompatActivity {
                     case R.id.events_option:
                         selectedfragment = new EventsFragment();
                         break;
-//                    case R.id.games_option:
-//                        selectedfragment = new GamesFragment();
-//                        break;
-//                    case R.id.search_option:
+                    case R.id.games_option:
+//                        selectedfragment = new UserGamesFragment();
+                        // TODO: replace temp action: HomePost
+                        selectedfragment = new HomePostFragment();
+                        break;
+                    case R.id.search_option:
 //                        selectedfragment = new SearchFragment();
-//                        break;
+                        // TODO: replace temp action: HomePost
+                        selectedfragment = new HomePostFragment();
+                        break;
                     case R.id.profile_option:
                         selectedfragment = new ProfileFragment();
                         break;
