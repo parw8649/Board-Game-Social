@@ -62,14 +62,11 @@ public class MainAppActivity extends AppCompatActivity {
                         selectedfragment = new EventsFragment();
                         break;
                     case R.id.games_option:
-//                        selectedfragment = new UserGamesFragment();
-                        // TODO: replace temp action: HomePost
-                        selectedfragment = new HomePostFragment();
+                        // we might be changing this to a specific UserGamesCollectionFragment()
+                        selectedfragment = new GamesCollectionFragment();
                         break;
                     case R.id.search_option:
-//                        selectedfragment = new SearchFragment();
-                        // TODO: replace temp action: HomePost
-                        selectedfragment = new HomePostFragment();
+                        selectedfragment = new SearchFragment();
                         break;
                     case R.id.profile_option:
                         selectedfragment = new ProfileFragment();
@@ -89,6 +86,7 @@ public class MainAppActivity extends AppCompatActivity {
             public void onClick(View view) {
                 Snackbar.make(view, "Eventually, you'll be able to add a new post ", Snackbar.LENGTH_LONG)
                         .setAction("Action", null).show();
+                // getSupportFragmentManager().beginTransaction().replace(R.id.nav_host_fragment_content_main_app, new AddPostFragment()).commit();
             }
         });
     }
