@@ -17,7 +17,6 @@
             android:exported="true"
             android:label="@string/title_activity_main_app"
             android:theme="@style/Theme.BoardGameSocial.NoActionBar" >
-
         </activity>
         <activity
             android:name=".LoginAndSignUpActivity"
@@ -28,6 +27,18 @@
                 <action android:name="android.intent.action.MAIN" />
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
+        </activity>
+        <activity
+            android:name=".HomePostActivity"
+            android:exported="true"
+            android:label="@string/title_activity_home_post"
+            android:theme="@style/Theme.BoardGameSocial.NoActionBar" >
+        </activity>
+        <activity
+            android:name=".SignUpActivity"
+            android:exported="true"
+            android:label="@string/title_activity_sign_up"
+            android:theme="@style/Theme.BoardGameSocial.NoActionBar" >
         </activity>
 
     </application>

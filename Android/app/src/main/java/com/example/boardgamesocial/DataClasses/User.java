@@ -1,7 +1,5 @@
 package com.example.boardgamesocial.DataClasses;
 
-import androidx.annotation.NonNull;
-
 import com.google.gson.annotations.SerializedName;
 
 import java.util.Date;
