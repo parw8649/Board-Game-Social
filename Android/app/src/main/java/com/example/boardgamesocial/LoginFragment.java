@@ -79,7 +79,7 @@ public class LoginFragment extends Fragment {
                     assert response.body() != null;
                     token = response.body();
                     Log.i("Token", token.toString());
-                    HeaderInterceptor.token.setToken(token.getToken());
+                    retrofitClient.setAuthToken(token);
                     Toast.makeText(getContext(), "Login Successful", Toast.LENGTH_LONG).show();
                     Intent goToHomePostActivity = HomePostActivity.getIntent(getContext());
                     startActivity(goToHomePostActivity);

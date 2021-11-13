@@ -73,6 +73,10 @@ public class RetrofitClient {
         return new Gson().fromJson(jsonObject, cls);
     }
 
+    public void setAuthToken(Token token) {
+        HeaderInterceptor.token.setToken(token.getToken());
+    }
+
     public Call<User> signUpCall(User user){
         return api.signUpCall(user);
     }
