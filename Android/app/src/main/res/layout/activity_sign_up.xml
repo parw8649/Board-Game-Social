@@ -51,8 +51,8 @@
 
     <TextView
         android:id="@+id/textView"
-        android:layout_width="193dp"
-        android:layout_height="72dp"
+        android:layout_width="163dp"
+        android:layout_height="23dp"
         android:text="@string/already_a_user_sign_in"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
