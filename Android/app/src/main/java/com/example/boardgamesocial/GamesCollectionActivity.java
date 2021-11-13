@@ -16,9 +16,9 @@ public class GamesCollectionActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_games_collection);
 
-        Toolbar nav_bar = findViewById(R.id.nav_bar_games_collection);
+        /*Toolbar nav_bar = findViewById(R.id.nav_bar_games_collection);
         nav_bar.setTitle("");
-        setSupportActionBar(nav_bar);
+        setSupportActionBar(nav_bar);*/
     }
 
     @Override
