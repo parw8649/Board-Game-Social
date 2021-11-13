@@ -1,12 +1,14 @@
 package com.example.boardgamesocial;
 
 import android.os.Bundle;
-
-import androidx.fragment.app.Fragment;
-
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+
+import androidx.fragment.app.Fragment;
+
+import com.example.boardgamesocial.DataClasses.Commons.*;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -53,6 +55,9 @@ public class GameCollectionFragment extends Fragment {
             mParam1 = getArguments().getString(ARG_PARAM1);
             mParam2 = getArguments().getString(ARG_PARAM2);
         }
+
+        Utils.checkForUser(requireContext());
+        Log.i("GamesCollection - User Token: ", Utils.getUserToken());
     }
 
     @Override
