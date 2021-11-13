@@ -85,7 +85,6 @@
             android:id="@+id/profile_btn_view_user_gamelist"
             android:layout_width="wrap_content"
             android:layout_height="@dimen/btn_height_slim"
-            android:layout_weight="@dimen/even_spacing_layout_weight"
             android:padding="@dimen/btn_padding_slim"
             android:backgroundTint="@color/blue_yonder"
             android:text="@string/profile_btn_view_user_gamelist"

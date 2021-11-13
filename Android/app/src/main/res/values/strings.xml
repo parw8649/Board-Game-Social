@@ -55,4 +55,21 @@
         ooooo ooooooo oooooo ooooooo ooooo ooooooo oooooo oooooo</string>
     <string name="profile_btn_view_friends">view friends</string>
     <string name="profile_btn_view_user_gamelist">view [user]\'s gamelist</string>
+    <!--  Strings used for fragment_edit_profile  -->
+    <string name="edit_profile_greeting_placeholder">Hello, Username!</string>
+    <string name="edit_profile_greeting">Hello, %1$s!</string>
+    <string name="edit_profile_btn_edit_icon">edit icon</string>
+    <string name="edit_profile_username_label">username:</string>
+    <string name="edit_profile_username_hint">new username</string>
+    <string name="edit_profile_btn_edit_username">edit username</string>
+    <string name="edit_profile_password_label">password:</string>
+    <string name="edit_profile_password_asterisks">******</string>
+    <string name="edit_profile_password_hint">new password</string>
+    <string name="edit_profile_password_confirm_hint">confirm password</string>
+    <string name="edit_profile_btn_edit_password">edit password</string>
+    <string name="edit_profile_bio_label">bio:</string>
+    <string name="edit_profile_current_bio">placeholder</string>
+    <string name="edit_profile_btn_edit_bio">edit bio</string>
+    <string name="edit_profile_btn_delete_account">delete account</string>
+    <string name="imageView_contentDescription">user icon</string>
 </resources>
