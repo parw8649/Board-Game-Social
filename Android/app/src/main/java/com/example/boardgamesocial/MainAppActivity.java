@@ -18,6 +18,7 @@ import androidx.appcompat.widget.Toolbar;
 import androidx.fragment.app.Fragment;
 import androidx.navigation.NavController;
 import androidx.navigation.Navigation;
+import androidx.navigation.fragment.NavHostFragment;
 import androidx.navigation.ui.AppBarConfiguration;
 import androidx.navigation.ui.NavigationUI;
 
@@ -44,46 +45,50 @@ public class MainAppActivity extends AppCompatActivity {
         bottomAppBar = findViewById(R.id.bottom_app_bar);
         setSupportActionBar(bottomAppBar);
 
-        fab = findViewById(R.id.home_post_fab);
+        fab = findViewById(R.id.bottom_app_bar_fab);
 
         bottomAppBar.setOnMenuItemClickListener(new Toolbar.OnMenuItemClickListener() {
             @Override
             public boolean onMenuItemClick(MenuItem item) {
-                Fragment selectedfragment = null;
 
                 switch (item.getItemId()) {
                     case R.id.home_option:
-                        selectedfragment = HomePostFragment.newInstance(null, null);
+                        navController.navigate(R.id.HomePostFragment);
+                        fab.show();
                         break;
                     case R.id.events_option:
-                        selectedfragment = new EventsFragment();
+                        navController.navigate(R.id.eventsFragment);
+                        fab.show();
                         break;
                     case R.id.games_option:
                         // this should direct to a fragment showing all games available in database
-                        selectedfragment = GameCollectionFragment.newInstance(null, null);
+                        navController.navigate(R.id.gameCollectionFragment);
+                        fab.show();
                         break;
                     case R.id.search_option:
-                        selectedfragment = SearchFragment.newInstance(null, null);
+                        navController.navigate(R.id.searchFragment);
+                        fab.hide();
                         break;
                     case R.id.profile_option:
-                        selectedfragment = ProfileFragment.newInstance(null, null);
+                        navController.navigate(R.id.profileFragment);
+                        fab.hide();
                         break;
                     case R.id.logout_option:
                         Intent goToHomePostActivity = LoginAndSignUpActivity.getIntent(MainAppActivity.this);
                         startActivity(goToHomePostActivity);
                         break;
                 }
-                getSupportFragmentManager().beginTransaction().replace(R.id.nav_host_fragment_content_main_app, selectedfragment).commit();
                 return true;
             }
         });
 
+//        we should probably set this individually for each fragment use
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Snackbar.make(view, "Eventually, you'll be able to add a new post ", Snackbar.LENGTH_LONG)
-                        .setAction("Action", null).show();
-                 getSupportFragmentManager().beginTransaction().replace(R.id.nav_host_fragment_content_main_app, new AddPostFragment()).commit();
+                Snackbar.make(view, "Eventually, you'll be able to add a new post ", Snackbar.LENGTH_SHORT)
+                        .setAnchorView(R.id.bottom_app_bar_fab).setAction("Action", null).show();
+                navController.navigate(R.id.addPostFragment);
             }
         });
     }

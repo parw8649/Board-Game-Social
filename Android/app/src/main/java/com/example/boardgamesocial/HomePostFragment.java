@@ -7,8 +7,14 @@ import android.view.ViewGroup;
 
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
+import androidx.navigation.fragment.NavHostFragment;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
+import com.example.boardgamesocial.RecycleAdapters.PostAdapter;
 import com.example.boardgamesocial.databinding.FragmentHomePostBinding;
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
+import com.google.android.material.snackbar.Snackbar;
 
 public class HomePostFragment extends Fragment {
 
@@ -21,6 +27,7 @@ public class HomePostFragment extends Fragment {
     private String mParam1;
     private String mParam2;
     private FragmentHomePostBinding binding;
+    private FloatingActionButton fab;
 
     public HomePostFragment() {
         // Required empty public constructor
@@ -61,6 +68,11 @@ public class HomePostFragment extends Fragment {
 
     public void onViewCreated(@NonNull View view, Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
+
+        RecyclerView recyclerView = view.findViewById(R.id.postFeed_recyclerView);
+        recyclerView.setLayoutManager(new LinearLayoutManager((this.getContext())));
+        final PostAdapter postAdapter = new PostAdapter();
+        recyclerView.setAdapter(postAdapter);
     }
 
     @Override
