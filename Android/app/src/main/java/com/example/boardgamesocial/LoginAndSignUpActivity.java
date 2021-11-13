@@ -35,6 +35,8 @@ public class LoginAndSignUpActivity extends AppCompatActivity {
     private EditText etUsername, etPassword;
     private Button btnLogin, btnSignup;
 
+    private Token token;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -111,10 +113,13 @@ public class LoginAndSignUpActivity extends AppCompatActivity {
                 public void onResponse(Call<Token> call, Response<Token> response) {
                     if (response.isSuccessful()) {
                         assert response.body() != null;
-                        Token token = response.body();
+                        token = response.body();
                         Log.i("Token", token.toString());
+                        Toast.makeText(LoginAndSignUpActivity.this, "Login Successful", Toast.LENGTH_LONG).show();
+                        Intent goToHomePostActivity = HomePostActivity.getIntent(LoginAndSignUpActivity.this);
+                        startActivity(goToHomePostActivity);
                     } else {
-                        Toast.makeText(LoginAndSignUpActivity.this, response.message(), Toast.LENGTH_LONG).show();
+                        Toast.makeText(LoginAndSignUpActivity.this, "Unable to log in with provided credentials", Toast.LENGTH_LONG).show();
                         new Exception("Request failed, code: " + response.code()).printStackTrace();
                     }
                 }
@@ -128,10 +133,6 @@ public class LoginAndSignUpActivity extends AppCompatActivity {
                     }
                 }
             });
-
-            //TODO: 2) If valid user then switch to landing page activity!
-            /*Intent goToHomePostActivity = HomePostActivity.getIntent(LoginAndSignUpActivity.this);
-            startActivity(goToHomePostActivity);*/
         });
 
         btnSignup.setOnClickListener(view -> {
