@@ -83,7 +83,7 @@ public class MainAppActivity extends AppCompatActivity {
             public void onClick(View view) {
                 Snackbar.make(view, "Eventually, you'll be able to add a new post ", Snackbar.LENGTH_LONG)
                         .setAction("Action", null).show();
-                // getSupportFragmentManager().beginTransaction().replace(R.id.nav_host_fragment_content_main_app, new AddPostFragment()).commit();
+                 getSupportFragmentManager().beginTransaction().replace(R.id.nav_host_fragment_content_main_app, new AddPostFragment()).commit();
             }
         });
     }
