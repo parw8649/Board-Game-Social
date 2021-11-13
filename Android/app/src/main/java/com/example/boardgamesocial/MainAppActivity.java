@@ -5,7 +5,6 @@ import android.content.Intent;
 import android.os.Bundle;
 
 import com.google.android.material.bottomappbar.BottomAppBar;
-import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.snackbar.Snackbar;
 
@@ -14,13 +13,11 @@ import androidx.appcompat.app.AppCompatActivity;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.Toast;
 
 import androidx.appcompat.widget.Toolbar;
 import androidx.fragment.app.Fragment;
 import androidx.navigation.NavController;
 import androidx.navigation.Navigation;
-import androidx.navigation.fragment.NavHostFragment;
 import androidx.navigation.ui.AppBarConfiguration;
 import androidx.navigation.ui.NavigationUI;
 
@@ -56,20 +53,20 @@ public class MainAppActivity extends AppCompatActivity {
 
                 switch (item.getItemId()) {
                     case R.id.home_option:
-                        selectedfragment = new HomePostFragment();
+                        selectedfragment = HomePostFragment.newInstance(null, null);
                         break;
                     case R.id.events_option:
                         selectedfragment = new EventsFragment();
                         break;
                     case R.id.games_option:
-                        // we might be changing this to a specific UserGameCollectionFragment()
-                        selectedfragment = new GameCollectionFragment();
+                        // this should direct to a fragment showing all games available in database
+                        selectedfragment = GameCollectionFragment.newInstance(null, null);
                         break;
                     case R.id.search_option:
-                        selectedfragment = new SearchFragment();
+                        selectedfragment = SearchFragment.newInstance(null, null);
                         break;
                     case R.id.profile_option:
-                        selectedfragment = new ProfileFragment();
+                        selectedfragment = ProfileFragment.newInstance(null, null);
                         break;
                     case R.id.logout_option:
                         Intent goToHomePostActivity = LoginAndSignUpActivity.getIntent(MainAppActivity.this);
