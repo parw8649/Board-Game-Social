@@ -22,7 +22,7 @@ public class HomePostActivity extends AppCompatActivity {
         // adapting ActionBar
         // https://youtu.be/DMkzIOLppf4?t=245
         Toolbar nav_bar = findViewById(R.id.nav_bar);
-        nav_bar.setTitle("");
+        //nav_bar.setTitle("");
         setSupportActionBar(nav_bar);
     }
 
