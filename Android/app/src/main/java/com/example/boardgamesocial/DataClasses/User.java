@@ -56,7 +56,17 @@ public class User implements DataClass {
         this.password = password;
     }
 
+    //Used for Login
     public User(String username, String password) {
+        this.username = username;
+        this.password = password;
+    }
+
+    //Used for signUp
+    public User(String firstName, String lastName, String email, String username,  String password) {
+        this.firstName = firstName;
+        this.lastName = lastName;
+        this.email = email;
         this.username = username;
         this.password = password;
     }
