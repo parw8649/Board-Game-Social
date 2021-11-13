@@ -14,6 +14,7 @@ import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 import androidx.navigation.fragment.NavHostFragment;
 
+import com.example.boardgamesocial.API.HeaderInterceptor;
 import com.example.boardgamesocial.API.RetrofitClient;
 import com.example.boardgamesocial.DataClasses.Token;
 import com.example.boardgamesocial.DataClasses.User;
@@ -49,7 +50,7 @@ public class LoginFragment extends Fragment {
         etUsername = view.findViewById(R.id.et_login_username);
         etPassword = view.findViewById(R.id.et_login_password);
 
-        retrofitClient = RetrofitClient.getClientWithoutHeaderInterceptor();
+        retrofitClient = RetrofitClient.getClient();
 
         signUpBtn.setOnClickListener(view1 -> NavHostFragment.findNavController(LoginFragment.this)
                 .navigate(R.id.action_FirstFragment_to_SecondFragment));
@@ -71,14 +72,14 @@ public class LoginFragment extends Fragment {
 
         Log.i("Login", "Username: "+ username +", Password: "+ password);
 
-        retrofitClient.loginCall(new User(username, password)
-        ).enqueue(new Callback<Token>() {
+        retrofitClient.loginCall(new User(username, password)).enqueue(new Callback<Token>() {
             @Override
             public void onResponse(Call<Token> call, Response<Token> response) {
                 if (response.isSuccessful()) {
                     assert response.body() != null;
                     token = response.body();
                     Log.i("Token", token.toString());
+                    HeaderInterceptor.token.setToken(token.getToken());
                     Toast.makeText(getContext(), "Login Successful", Toast.LENGTH_LONG).show();
                     Intent goToHomePostActivity = HomePostActivity.getIntent(getContext());
                     startActivity(goToHomePostActivity);

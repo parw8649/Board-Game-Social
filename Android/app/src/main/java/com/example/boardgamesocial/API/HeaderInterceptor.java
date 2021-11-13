@@ -11,7 +11,7 @@ import okhttp3.Interceptor;
 import okhttp3.Response;
 
 public class HeaderInterceptor implements Interceptor {
-    public static Token token = new Token("");
+    public final static Token token = new Token("");
 
     @NonNull
     @Override
