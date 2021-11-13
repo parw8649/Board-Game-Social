@@ -69,8 +69,11 @@ public class MainAppActivity extends AppCompatActivity {
                         selectedfragment = new SearchFragment();
                         break;
                     case R.id.profile_option:
-                        selectedfragment = new ProfileFragment();
-                        break;
+//                        selectedfragment = new ProfileFragment();
+//                        navController.navigate(R.id.action_HomePostFragment_to_profileFragment);
+//                        break;
+                        navController.navigate(R.id.profileFragment);
+                        return true;
                     case R.id.logout_option:
                         Intent goToHomePostActivity = LoginAndSignUpActivity.getIntent(MainAppActivity.this);
                         startActivity(goToHomePostActivity);
