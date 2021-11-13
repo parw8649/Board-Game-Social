@@ -61,5 +61,6 @@
         ooooo ooooooo oooooo ooooooo ooooo ooooooo oooooo oooooo</string>
     <string name="profile_btn_view_friends">view friends</string>
     <string name="profile_btn_view_user_gamelist">view [user]\'s gamelist</string>
-    <string name="btn_text_sign_in">sign-in</string>
+    <string name="btn_text_sign_in">sign in</string>
+    <string name="btn_text_sign_up">sign up</string>
 </resources>
