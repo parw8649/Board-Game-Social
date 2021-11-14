@@ -25,7 +25,6 @@ import java.util.Objects;
 
 public class DataClsAdapter <DC extends DataClass, VH extends DataClsVH<DC>> extends RecyclerView.Adapter<VH> {
     private List<DC> objectList;
-//    private Constructor<VH> vhConstructor;
     private Class<DC> cls;
 
     public static final Map<Class<?>, VHConstructor> VH_MAP = new HashMap<Class<?>, VHConstructor>(){{
@@ -49,7 +48,6 @@ public class DataClsAdapter <DC extends DataClass, VH extends DataClsVH<DC>> ext
     @Override
     public VH onCreateViewHolder(ViewGroup parent, int viewType) {
         View itemView = LayoutInflater.from(parent.getContext()).inflate(R.layout.post_item, parent,false);
-        Log.w("View", String.valueOf(itemView));
         return (VH) Objects.requireNonNull(VH_MAP.get(cls)).create(itemView);
     }
 

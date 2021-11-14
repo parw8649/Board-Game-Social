@@ -1,16 +1,11 @@
 package com.example.boardgamesocial.DataViews;
 
-import androidx.lifecycle.LifecycleOwner;
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
-import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModel;
 
 import com.example.boardgamesocial.DataClasses.DataClass;
-import com.example.boardgamesocial.DataViews.Adapters.DataClsAdapter;
-import com.example.boardgamesocial.DataViews.Adapters.ViewHolders.DataClsVH;
 
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
