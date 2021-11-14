@@ -16,6 +16,7 @@ import android.view.View;
 
 import androidx.appcompat.widget.Toolbar;
 import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentManager;
 import androidx.navigation.NavController;
 import androidx.navigation.Navigation;
 import androidx.navigation.fragment.NavHostFragment;
@@ -30,7 +31,8 @@ public class MainAppActivity extends AppCompatActivity {
     private ActivityMainAppBinding binding;
     private NavController navController;
     private BottomAppBar bottomAppBar;
-    FloatingActionButton fab;
+    private FloatingActionButton fab;
+    private FragmentManager fragmentManager;
 
 
     @Override
@@ -41,6 +43,8 @@ public class MainAppActivity extends AppCompatActivity {
         setContentView(binding.getRoot());
 
         navController = Navigation.findNavController(this, R.id.nav_host_fragment_content_main_app);
+
+        fragmentManager = getSupportFragmentManager();
 
         bottomAppBar = findViewById(R.id.bottom_app_bar);
         setSupportActionBar(bottomAppBar);
@@ -78,17 +82,8 @@ public class MainAppActivity extends AppCompatActivity {
                         startActivity(goToHomePostActivity);
                         break;
                 }
+                setFabOnClick(item.getItemId());
                 return true;
-            }
-        });
-
-//        we should probably set this individually for each fragment use
-        fab.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Snackbar.make(view, "Eventually, you'll be able to add a new post ", Snackbar.LENGTH_SHORT)
-                        .setAnchorView(R.id.bottom_app_bar_fab).setAction("Action", null).show();
-                navController.navigate(R.id.addPostFragment);
             }
         });
     }
@@ -110,5 +105,35 @@ public class MainAppActivity extends AppCompatActivity {
     public static Intent getIntent(Context context) {
         System.out.println("Inside MainAppActivity getIntent!");
         return new Intent(context, MainAppActivity.class);
+    }
+
+    private void setFabOnClick(int fragmentId) {
+        switch (fragmentId) {
+            case R.id.home_option:
+                fab.setOnClickListener(v -> {
+                    Snackbar.make(v, "Eventually, you'll be able to add a new post ", Snackbar.LENGTH_SHORT)
+                            .setAnchorView(R.id.bottom_app_bar_fab).setAction("Action", null).show();
+                    navController.navigate(R.id.addPostFragment);
+                });
+                return;
+            case R.id.events_option:
+                fab.setOnClickListener(v -> {
+                    Snackbar.make(v, "Eventually, you'll be able to add a new event", Snackbar.LENGTH_SHORT)
+                            .setAnchorView(R.id.bottom_app_bar_fab).setAction("Action", null).show();
+//                    navController.navigate(R.id.addEventFragment);
+                });
+                return;
+            case R.id.games_option:
+                fab.setOnClickListener(v -> {
+                    Snackbar.make(v, "Eventually, you'll be able to add a new game to your collection ", Snackbar.LENGTH_SHORT)
+                            .setAnchorView(R.id.bottom_app_bar_fab).setAction("Action", null).show();
+//                    navController.navigate(R.id.addGameFragment);
+                });
+                return;
+            case R.id.search_option:
+                fab.hide();
+            case R.id.profile_option:
+                fab.hide();
+        }
     }
 }
