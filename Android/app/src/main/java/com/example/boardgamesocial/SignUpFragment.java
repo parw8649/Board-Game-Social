@@ -50,7 +50,7 @@ public class SignUpFragment extends Fragment {
         etUsername = view.findViewById(R.id.et_signup_username);
         etPassword = view.findViewById(R.id.et_signup_password);
 
-        retrofitClient = RetrofitClient.getClientWithoutHeaderInterceptor();
+        retrofitClient = RetrofitClient.getClient();
 
         registerBtn.setOnClickListener(view1 -> registerUser());
         backToLoginBtn.setOnClickListener(view1 -> NavHostFragment.findNavController(SignUpFragment.this)

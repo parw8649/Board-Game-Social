@@ -33,11 +33,12 @@ public class RetrofitClient {
     private final API api;
     private static RetrofitClient retrofitClient;
 
-    private RetrofitClient(HeaderInterceptor headerInterceptor){
-
-        OkHttpClient httpClient = Objects.isNull(headerInterceptor) ?
-                new OkHttpClient.Builder().addInterceptor(new LoggingInterceptor()).build() :
-                new OkHttpClient.Builder().addInterceptor(headerInterceptor).addInterceptor(new LoggingInterceptor()).build();
+    private RetrofitClient(){
+        OkHttpClient httpClient = new OkHttpClient
+                .Builder()
+                .addInterceptor(new HeaderInterceptor())
+                .addInterceptor(new LoggingInterceptor())
+                .build();
 
         Retrofit retrofit = new Retrofit.Builder()
                 .baseUrl(BASE_URL_LOCAL)
@@ -49,15 +50,7 @@ public class RetrofitClient {
 
     public static RetrofitClient getClient() {
         if (retrofitClient == null){
-            retrofitClient = new RetrofitClient(new HeaderInterceptor());
-        }
-        return retrofitClient;
-    }
-
-    //Used for API calls without Authorization Headers
-    public static RetrofitClient getClientWithoutHeaderInterceptor() {
-        if (retrofitClient == null){
-            retrofitClient = new RetrofitClient(null);
+            retrofitClient = new RetrofitClient();
         }
         return retrofitClient;
     }
@@ -78,6 +71,10 @@ public class RetrofitClient {
 
     public static <T> T getObject(JsonObject jsonObject, Class<T> cls) {
         return new Gson().fromJson(jsonObject, cls);
+    }
+
+    public void setAuthToken(Token token) {
+        HeaderInterceptor.token.setToken(token.getToken());
     }
 
     public Call<User> signUpCall(User user){
