@@ -1,4 +1,4 @@
-package com.example.boardgamesocial;
+package com.example.boardgamesocial.MainApp.Fragments;
 
 import android.os.Bundle;
 
@@ -8,12 +8,14 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.example.boardgamesocial.R;
+
 /**
  * A simple {@link Fragment} subclass.
- * Use the {@link SingleEventFragment#newInstance} factory method to
+ * Use the {@link SingleHostedGameFragment#newInstance} factory method to
  * create an instance of this fragment.
  */
-public class SingleEventFragment extends Fragment {
+public class SingleHostedGameFragment extends Fragment {
 
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
@@ -24,7 +26,7 @@ public class SingleEventFragment extends Fragment {
     private String mParam1;
     private String mParam2;
 
-    public SingleEventFragment() {
+    public SingleHostedGameFragment() {
         // Required empty public constructor
     }
 
@@ -34,11 +36,11 @@ public class SingleEventFragment extends Fragment {
      *
      * @param param1 Parameter 1.
      * @param param2 Parameter 2.
-     * @return A new instance of fragment SingleEventFragment.
+     * @return A new instance of fragment SingleHostedGameFragment.
      */
     // TODO: Rename and change types and number of parameters
-    public static SingleEventFragment newInstance(String param1, String param2) {
-        SingleEventFragment fragment = new SingleEventFragment();
+    public static SingleHostedGameFragment newInstance(String param1, String param2) {
+        SingleHostedGameFragment fragment = new SingleHostedGameFragment();
         Bundle args = new Bundle();
         args.putString(ARG_PARAM1, param1);
         args.putString(ARG_PARAM2, param2);
@@ -59,6 +61,6 @@ public class SingleEventFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_single_event, container, false);
+        return inflater.inflate(R.layout.fragment_single_hosted_game, container, false);
     }
 }

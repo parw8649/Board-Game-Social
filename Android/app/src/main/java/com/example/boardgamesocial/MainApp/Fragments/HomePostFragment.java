@@ -1,16 +1,13 @@
-package com.example.boardgamesocial;
-
-import static com.example.boardgamesocial.API.RetrofitClient.getObjectList;
+package com.example.boardgamesocial.MainApp.Fragments;
 
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
-import androidx.navigation.fragment.NavHostFragment;
+import androidx.lifecycle.Observer;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -18,15 +15,14 @@ import com.example.boardgamesocial.DataClasses.Post;
 import com.example.boardgamesocial.DataViews.Adapters.DataClsAdapter;
 import com.example.boardgamesocial.DataViews.Adapters.ViewHolders.PostVH;
 import com.example.boardgamesocial.DataViews.DataClsVM;
+import com.example.boardgamesocial.R;
 import com.example.boardgamesocial.databinding.FragmentHomePostBinding;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
-import com.google.android.material.snackbar.Snackbar;
-import com.google.gson.JsonArray;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
-import java.util.function.Supplier;
 
 public class HomePostFragment extends Fragment {
 
@@ -84,15 +80,15 @@ public class HomePostFragment extends Fragment {
         RecyclerView recyclerView = view.findViewById(R.id.postFeed_recyclerView);
         recyclerView.setLayoutManager(new LinearLayoutManager(this.getContext()));
         List<Post> posts = new ArrayList<>();
-        DataClsAdapter<Post, PostVH> dataClsAdapter = new DataClsAdapter<>(posts, PostVH.class);
+        DataClsAdapter<Post, PostVH> dataClsAdapter = new DataClsAdapter<>(posts, Post.class);
         recyclerView.setAdapter(dataClsAdapter);
         DataClsVM<Post> dataClsVM = new DataClsVM<>(Post.class, new HashMap<>());
-        dataClsVM.getLiveData().observe(getViewLifecycleOwner(), res -> {
-            posts.addAll(getObjectList((JsonArray) res, Post.class));
+        dataClsVM.getLiveData().observe(getViewLifecycleOwner(), (Observer<Object>) o -> {
+            List<Post> t = (List<Post>) o;
+            Collections.reverse(t);
+            posts.addAll(t);
             dataClsAdapter.notifyDataSetChanged();
         });
-
-
     }
 
     @Override

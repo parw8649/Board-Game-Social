@@ -1,6 +1,5 @@
-package com.example.boardgamesocial;
+package com.example.boardgamesocial.LoginAndSignUp.Fragments;
 
-import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -16,6 +15,7 @@ import androidx.navigation.fragment.NavHostFragment;
 
 import com.example.boardgamesocial.API.RetrofitClient;
 import com.example.boardgamesocial.DataClasses.User;
+import com.example.boardgamesocial.R;
 import com.example.boardgamesocial.databinding.FragmentSignUpBinding;
 
 import java.util.Objects;

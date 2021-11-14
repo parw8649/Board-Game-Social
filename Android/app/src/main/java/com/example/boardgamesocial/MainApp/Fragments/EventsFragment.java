@@ -1,4 +1,4 @@
-package com.example.boardgamesocial;
+package com.example.boardgamesocial.MainApp.Fragments;
 
 import android.os.Bundle;
 import android.view.LayoutInflater;

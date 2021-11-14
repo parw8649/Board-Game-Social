@@ -13,13 +13,13 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.BoardGameSocial" >
         <activity
-            android:name=".MainAppActivity"
+            android:name=".MainApp.MainAppActivity"
             android:exported="true"
             android:label="@string/title_activity_main_app"
             android:theme="@style/Theme.BoardGameSocial.NoActionBar" >
         </activity>
         <activity
-            android:name=".LoginAndSignUpActivity"
+            android:name=".LoginAndSignUp.LoginAndSignUpActivity"
             android:exported="true"
             android:label="@string/title_activity_app"
             android:theme="@style/Theme.BoardGameSocial.NoActionBar" >
@@ -35,7 +35,7 @@
             android:theme="@style/Theme.BoardGameSocial.NoActionBar" >
         </activity>
         <activity
-            android:name=".SignUpActivity"
+            android:name=".LoginAndSignUp.SignUpActivity"
             android:exported="true"
             android:label="@string/title_activity_sign_up"
             android:theme="@style/Theme.BoardGameSocial.NoActionBar" >

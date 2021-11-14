@@ -1,4 +1,4 @@
-package com.example.boardgamesocial;
+package com.example.boardgamesocial.MainApp;
 
 import android.content.Context;
 import android.content.Intent;
@@ -11,6 +11,9 @@ import androidx.navigation.Navigation;
 import androidx.navigation.ui.AppBarConfiguration;
 import androidx.navigation.ui.NavigationUI;
 import android.os.Bundle;
+
+import com.example.boardgamesocial.LoginAndSignUp.LoginAndSignUpActivity;
+import com.example.boardgamesocial.R;
 import com.example.boardgamesocial.databinding.ActivityMainAppBinding;
 import com.google.android.material.bottomappbar.BottomAppBar;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;

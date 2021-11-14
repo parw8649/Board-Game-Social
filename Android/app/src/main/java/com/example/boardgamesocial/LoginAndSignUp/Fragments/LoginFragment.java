@@ -1,4 +1,4 @@
-package com.example.boardgamesocial;
+package com.example.boardgamesocial.LoginAndSignUp.Fragments;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -14,10 +14,11 @@ import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 import androidx.navigation.fragment.NavHostFragment;
 
-import com.example.boardgamesocial.API.HeaderInterceptor;
 import com.example.boardgamesocial.API.RetrofitClient;
 import com.example.boardgamesocial.DataClasses.Token;
 import com.example.boardgamesocial.DataClasses.User;
+import com.example.boardgamesocial.MainApp.MainAppActivity;
+import com.example.boardgamesocial.R;
 import com.example.boardgamesocial.databinding.FragmentLoginBinding;
 
 import java.util.Objects;
@@ -81,8 +82,8 @@ public class LoginFragment extends Fragment {
                     Log.i("Token", token.toString());
                     retrofitClient.setAuthToken(token);
                     Toast.makeText(getContext(), "Login Successful", Toast.LENGTH_LONG).show();
-                    Intent goToHomePostActivity = HomePostActivity.getIntent(getContext());
-                    startActivity(goToHomePostActivity);
+                    Intent goToMainAppActivity = MainAppActivity.getIntent(getContext());
+                    startActivity(goToMainAppActivity);
 
                 } else {
                     Toast.makeText(getContext(), "Unable to log in with provided credentials", Toast.LENGTH_LONG).show();

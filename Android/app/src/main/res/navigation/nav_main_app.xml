@@ -7,7 +7,7 @@
 
     <fragment
         android:id="@+id/HomePostFragment"
-        android:name="com.example.boardgamesocial.HomePostFragment"
+        android:name="com.example.boardgamesocial.MainApp.Fragments.HomePostFragment"
         android:label="@string/first_fragment_label"
         tools:layout="@layout/fragment_home_post">
 
@@ -32,7 +32,7 @@
     </fragment>
     <fragment
         android:id="@+id/eventsFragment"
-        android:name="com.example.boardgamesocial.EventsFragment"
+        android:name="com.example.boardgamesocial.MainApp.Fragments.EventsFragment"
         android:label="@string/second_fragment_label"
         tools:layout="@layout/fragment_events">
 
@@ -42,7 +42,7 @@
     </fragment>
     <fragment
         android:id="@+id/profileFragment"
-        android:name="com.example.boardgamesocial.ProfileFragment"
+        android:name="com.example.boardgamesocial.MainApp.Fragments.ProfileFragment"
         android:label="fragment_profile"
         tools:layout="@layout/fragment_profile" >
         <action
@@ -60,7 +60,7 @@
     </fragment>
     <fragment
         android:id="@+id/addPostFragment"
-        android:name="com.example.boardgamesocial.AddPostFragment"
+        android:name="com.example.boardgamesocial.MainApp.Fragments.AddPostFragment"
         android:label="fragment_add_post"
         tools:layout="@layout/fragment_add_post" >
         <action
@@ -69,7 +69,7 @@
     </fragment>
     <fragment
         android:id="@+id/singlePostFragment"
-        android:name="com.example.boardgamesocial.SinglePostFragment"
+        android:name="com.example.boardgamesocial.MainApp.Fragments.SinglePostFragment"
         android:label="fragment_single_post"
         tools:layout="@layout/fragment_single_post" >
         <action
@@ -78,7 +78,7 @@
     </fragment>
     <fragment
         android:id="@+id/editProfileFragment"
-        android:name="com.example.boardgamesocial.EditProfileFragment"
+        android:name="com.example.boardgamesocial.MainApp.Fragments.EditProfileFragment"
         android:label="fragment_edit_profile"
         tools:layout="@layout/fragment_edit_profile" >
         <action
@@ -87,7 +87,7 @@
     </fragment>
     <fragment
         android:id="@+id/userFriendsFragment"
-        android:name="com.example.boardgamesocial.UserFriendsFragment"
+        android:name="com.example.boardgamesocial.MainApp.Fragments.UserFriendsFragment"
         android:label="fragment_user_friends"
         tools:layout="@layout/fragment_user_friends" >
         <action
@@ -96,7 +96,7 @@
     </fragment>
     <fragment
         android:id="@+id/gameCollectionFragment"
-        android:name="com.example.boardgamesocial.GameCollectionFragment"
+        android:name="com.example.boardgamesocial.MainApp.Fragments.GameCollectionFragment"
         android:label="fragment_game_collection"
         tools:layout="@layout/fragment_game_collection" >
         <action
@@ -105,7 +105,7 @@
     </fragment>
     <fragment
         android:id="@+id/singleEventFragment"
-        android:name="com.example.boardgamesocial.SingleEventFragment"
+        android:name="com.example.boardgamesocial.MainApp.Fragments.SingleEventFragment"
         android:label="fragment_single_event"
         tools:layout="@layout/fragment_single_event" >
         <action
@@ -120,7 +120,7 @@
     </fragment>
     <fragment
         android:id="@+id/hostedGamesFragment"
-        android:name="com.example.boardgamesocial.HostedGamesFragment"
+        android:name="com.example.boardgamesocial.MainApp.Fragments.HostedGamesFragment"
         android:label="fragment_hosted_games"
         tools:layout="@layout/fragment_hosted_games" >
         <action
@@ -132,7 +132,7 @@
     </fragment>
     <fragment
         android:id="@+id/singleHostedGameFragment"
-        android:name="com.example.boardgamesocial.SingleHostedGameFragment"
+        android:name="com.example.boardgamesocial.MainApp.Fragments.SingleHostedGameFragment"
         android:label="fragment_single_hosted_game"
         tools:layout="@layout/fragment_single_hosted_game" >
         <action
@@ -141,7 +141,7 @@
     </fragment>
     <fragment
         android:id="@+id/eventAttendeesFragment"
-        android:name="com.example.boardgamesocial.EventAttendeesFragment"
+        android:name="com.example.boardgamesocial.MainApp.Fragments.EventAttendeesFragment"
         android:label="fragment_event_attendees"
         tools:layout="@layout/fragment_event_attendees" >
         <action
@@ -150,7 +150,7 @@
     </fragment>
     <fragment
         android:id="@+id/chatFragment"
-        android:name="com.example.boardgamesocial.ChatFragment"
+        android:name="com.example.boardgamesocial.MainApp.Fragments.ChatFragment"
         android:label="fragment_chat"
         tools:layout="@layout/fragment_chat" >
         <action
@@ -162,7 +162,7 @@
     </fragment>
     <fragment
         android:id="@+id/friendChatFragment"
-        android:name="com.example.boardgamesocial.FriendChatFragment"
+        android:name="com.example.boardgamesocial.MainApp.Fragments.FriendChatFragment"
         android:label="fragment_friend_chat"
         tools:layout="@layout/fragment_friend_chat" >
         <action
@@ -171,7 +171,7 @@
     </fragment>
     <fragment
         android:id="@+id/searchFragment"
-        android:name="com.example.boardgamesocial.SearchFragment"
+        android:name="com.example.boardgamesocial.MainApp.Fragments.SearchFragment"
         android:label="fragment_search"
         tools:layout="@layout/fragment_search" />
 </navigation>
