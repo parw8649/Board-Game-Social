@@ -82,7 +82,7 @@ public class LoginFragment extends Fragment {
                     Token token = response.body();
                     Log.i("Token", token.toString());
 
-                    retrofitClient.setAuthToken(token);
+                    retrofitClient.setAuthToken(token.getToken());
                     Toast.makeText(getContext(), "Login Successful", Toast.LENGTH_LONG).show();
 
                     Utils.addUserToPreferences(getContext(), token);

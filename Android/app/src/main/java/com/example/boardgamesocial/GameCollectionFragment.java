@@ -1,5 +1,7 @@
 package com.example.boardgamesocial;
 
+import static com.example.boardgamesocial.API.RetrofitClient.getObjectList;
+
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -8,7 +10,17 @@ import android.view.ViewGroup;
 
 import androidx.fragment.app.Fragment;
 
-import com.example.boardgamesocial.DataClasses.Commons.*;
+import com.example.boardgamesocial.API.RetrofitClient;
+import com.example.boardgamesocial.DataClasses.Commons.Utils;
+import com.example.boardgamesocial.DataClasses.Game;
+import com.google.gson.JsonArray;
+
+import java.util.HashMap;
+import java.util.List;
+
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -58,6 +70,8 @@ public class GameCollectionFragment extends Fragment {
 
         Utils.checkForUser(requireContext());
         Log.i("GamesCollection - User Token: ", Utils.getUserToken());
+
+        getGamesCollectionData();
     }
 
     @Override
@@ -65,5 +79,36 @@ public class GameCollectionFragment extends Fragment {
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         return inflater.inflate(R.layout.fragment_game_collection, container, false);
+    }
+
+    private void getGamesCollectionData() {
+
+        RetrofitClient retrofitClient = RetrofitClient.getClient();
+
+        retrofitClient.setAuthToken(Utils.getUserToken());
+
+        retrofitClient.getCall(Game.class, new HashMap<String, String>(){{
+            put("gameTitle", "7 Wonders Duel");
+        }}).enqueue(new Callback<JsonArray>() {
+            @Override
+            public void onResponse(Call<JsonArray> call, Response<JsonArray> response) {
+                if (response.isSuccessful()) {
+                    assert response.body() != null;
+                    List<Game> list = getObjectList(response.body(), Game.class);
+                    Log.i("Game", list.get(0).getGameTitle());
+                } else {
+                    new Exception("Request failed, code: " + response.code()).printStackTrace();
+                }
+            }
+
+            @Override
+            public void onFailure(Call<JsonArray> call, Throwable t) {
+                try {
+                    throw t;
+                } catch (Throwable throwable) {
+                    throwable.printStackTrace();
+                }
+            }
+        });
     }
 }
