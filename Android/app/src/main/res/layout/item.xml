@@ -61,8 +61,8 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_below="@id/item_user_icon"
-            android:text="@string/item_textView_postBodyPlaceHolder"
             android:maxLines="4"
+            android:text="@string/item_textView_postBodyPlaceHolder"
             android:textAppearance="@style/TextAppearance.AppCompat.Body2" />
 
         <LinearLayout

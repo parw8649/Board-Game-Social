@@ -11,12 +11,13 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent" >
 
-        <androidx.recyclerview.widget.RecyclerView
+        <LinearLayout
             android:id="@+id/postFeed_recyclerView"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="8dp"
-            tools:listitem="@layout/item">
-        </androidx.recyclerview.widget.RecyclerView>
+            tools:listitem="@layout/item"
+            android:orientation="vertical">
+        </LinearLayout>
     </RelativeLayout>
 </androidx.coordinatorlayout.widget.CoordinatorLayout>
