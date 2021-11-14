@@ -30,8 +30,7 @@
     <string name="game_items_tv_genre">Genre</string>
     <string name="game_item_tv_min_players">Min players: 2</string>
     <string name="game_item_tv_max_players">Max players: 4</string>
-    <string name="game_item_tv_overall_player_count_text">Overall play count</string>
-    <string name="game_item_tv_overall_player_count">10</string>
+    <string name="game_item_tv_overall_play_count">Overall play count: 10</string>
     <string name="game_items_tv_description">Description</string>
 
     <string name="title_activity_app">AppActivity</string>
