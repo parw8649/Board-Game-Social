@@ -45,6 +45,12 @@
     <string name="title_activity_main2">MainActivity2</string>
     <string name="title_activity_main_app">MainAppActivity</string>
     <string name="title_activity_login_and_sign_up1">LoginAndSignUpActivity1</string>
+    <!-- temp placeholders for nav -->
+    <string name="title_fragment_edit_profile">Edit Profile Fragment</string>
+    <string name="title_fragment_search">Search Fragment</string>
+    <string name="title_fragment_game_collection">Game Collection Fragment</string>
+    <string name="title_fragment_events">Events Fragment</string>
+    <string name="title_fragment_add_post">Add Post Fragment</string>
     <!-- Strings used for fragment_profile-->
     <string name="profile_first_name_placeholder">firstName</string>
     <string name="profile_username_placeholder">username</string>
