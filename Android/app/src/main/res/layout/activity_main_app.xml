@@ -29,7 +29,7 @@
         app:menu="@menu/navbar_options" />
 
     <com.google.android.material.floatingactionbutton.FloatingActionButton
-        android:id="@+id/home_post_fab"
+        android:id="@+id/bottom_app_bar_fab"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:backgroundTint="@color/coral_reef"
