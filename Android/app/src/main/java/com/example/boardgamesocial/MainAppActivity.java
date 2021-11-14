@@ -2,28 +2,19 @@ package com.example.boardgamesocial;
 
 import android.content.Context;
 import android.content.Intent;
+import android.view.Menu;
+import android.view.MenuItem;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.Toolbar;
+import androidx.navigation.NavController;
+import androidx.navigation.Navigation;
+import androidx.navigation.ui.AppBarConfiguration;
+import androidx.navigation.ui.NavigationUI;
 import android.os.Bundle;
-
+import com.example.boardgamesocial.databinding.ActivityMainAppBinding;
 import com.google.android.material.bottomappbar.BottomAppBar;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.snackbar.Snackbar;
-
-import androidx.appcompat.app.AppCompatActivity;
-
-import android.view.Menu;
-import android.view.MenuItem;
-import android.view.View;
-
-import androidx.appcompat.widget.Toolbar;
-import androidx.fragment.app.Fragment;
-import androidx.fragment.app.FragmentManager;
-import androidx.navigation.NavController;
-import androidx.navigation.Navigation;
-import androidx.navigation.fragment.NavHostFragment;
-import androidx.navigation.ui.AppBarConfiguration;
-import androidx.navigation.ui.NavigationUI;
-
-import com.example.boardgamesocial.databinding.ActivityMainAppBinding;
 
 public class MainAppActivity extends AppCompatActivity {
 
@@ -32,8 +23,6 @@ public class MainAppActivity extends AppCompatActivity {
     private NavController navController;
     private BottomAppBar bottomAppBar;
     private FloatingActionButton fab;
-    private FragmentManager fragmentManager;
-
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -43,8 +32,6 @@ public class MainAppActivity extends AppCompatActivity {
         setContentView(binding.getRoot());
 
         navController = Navigation.findNavController(this, R.id.nav_host_fragment_content_main_app);
-
-        fragmentManager = getSupportFragmentManager();
 
         bottomAppBar = findViewById(R.id.bottom_app_bar);
         setSupportActionBar(bottomAppBar);
