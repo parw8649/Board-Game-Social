@@ -1,19 +1,13 @@
 package com.example.boardgamesocial.API;
 
-import static com.example.boardgamesocial.API.API.BASE_URL_LOCAL;
-import static com.example.boardgamesocial.API.API.BASE_URL_TESTS;
-import static com.example.boardgamesocial.API.API.urlMap;
+import static com.example.boardgamesocial.API.API.URL_MAP;
 
-import com.example.boardgamesocial.DataClasses.DataClass;
 import com.example.boardgamesocial.DataClasses.Token;
 import com.example.boardgamesocial.DataClasses.User;
 import com.google.gson.Gson;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
-
-import org.json.JSONArray;
-import org.json.JSONObject;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -24,12 +18,10 @@ import okhttp3.OkHttpClient;
 import retrofit2.Call;
 import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
-import retrofit2.http.Body;
-import retrofit2.http.GET;
-import retrofit2.http.POST;
-import retrofit2.http.QueryMap;
 
 public class RetrofitClient {
+
+    public static UrlToggle urlToggle = UrlToggle.DEV;
     private final API api;
     private static RetrofitClient retrofitClient;
 
@@ -41,7 +33,7 @@ public class RetrofitClient {
                 .build();
 
         Retrofit retrofit = new Retrofit.Builder()
-                .baseUrl(BASE_URL_LOCAL)
+                .baseUrl(Objects.requireNonNull(API.BASE_URL.get(urlToggle)))
                 .addConverterFactory(GsonConverterFactory.create())
                 .client(httpClient)
                 .build();
@@ -90,18 +82,18 @@ public class RetrofitClient {
     }
 
     public Call<JsonArray> getCall(Class<?> cls, Map<String, String> filters){
-        return api.getCall(urlMap.get(cls), filters);
+        return api.getCall(URL_MAP.get(cls), filters);
     }
 
     public Call<JsonObject> postCall(Class<?> cls, Object object){
-        return api.postCall(urlMap.get(cls), object);
+        return api.postCall(URL_MAP.get(cls), object);
     }
 
     public Call<JsonObject> putCall(Class<?> cls, Map<String, String> filters){
-        return api.putCall(urlMap.get(cls), filters);
+        return api.putCall(URL_MAP.get(cls), filters);
     }
 
     public Call<JsonArray> deleteCall(Class<?> cls, Map<String, String> filters){
-        return api.deleteCall(urlMap.get(cls), filters);
+        return api.deleteCall(URL_MAP.get(cls), filters);
     }
 }

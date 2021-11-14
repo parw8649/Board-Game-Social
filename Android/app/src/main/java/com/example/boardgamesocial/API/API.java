@@ -31,10 +31,14 @@ import retrofit2.http.QueryMap;
 import retrofit2.http.Url;
 
 public interface API {
-    String BASE_URL_LOCAL = "http://10.0.2.2:8000/";
-    String BASE_URL_TESTS = "http://0.0.0.0:8000/";
 
-    HashMap<Class<?>, String> urlMap = new HashMap<Class<?>, String>() {{
+    Map<UrlToggle, String> BASE_URL = new HashMap<UrlToggle, String>(){{
+       put(UrlToggle.DEV, "http://10.0.2.2:8000/");
+       put(UrlToggle.PROD, "add-heroku-url-here");
+       put(UrlToggle.TEST, "http://0.0.0.0:8000/");
+    }};
+
+    HashMap<Class<?>, String> URL_MAP = new HashMap<Class<?>, String>() {{
         put(User.class, "api/user/");
         put(Event.class, "api/event/");
         put(Post.class, "api/post/");

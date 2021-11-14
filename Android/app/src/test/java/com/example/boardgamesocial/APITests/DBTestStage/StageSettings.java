@@ -12,7 +12,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 
-public class StageSettings<T> {
+public class StageSettings<DC extends DataClass> {
     private Map<TestStage, StageAction> stageActionMap;
     private Map<String, String> stageFilterBeforeAdd;
     private Map<String, String> stageFilterAfterAdd;
@@ -21,7 +21,7 @@ public class StageSettings<T> {
     private DataClass stageAddObject;
     private Map<String, String> stageUpdateObject;
     private Map<String, String> stageDeleteObject;
-    private Class<T> dataClass;
+    private Class<DC> dataClass;
     private RetrofitClient retrofit;
 
     public StageSettings(
@@ -32,7 +32,7 @@ public class StageSettings<T> {
             Map<String, String> stageFilterAfterDelete,
             DataClass stageAddObject,
             Map<String, String> stageUpdateObject,
-            Class<T> dataClass,
+            Class<DC> dataClass,
             RetrofitClient retrofit
     ) {
         this.stageActionMap = stageActionMap;
@@ -111,11 +111,11 @@ public class StageSettings<T> {
         this.stageDeleteObject = stageDeleteObject;
     }
 
-    public Class<T> getDataClass() {
+    public Class<DC> getDataClass() {
         return dataClass;
     }
 
-    public void setDataClass(Class<T> dataClass) {
+    public void setDataClass(Class<DC> dataClass) {
         this.dataClass = dataClass;
     }
 
@@ -129,7 +129,7 @@ public class StageSettings<T> {
 
     public void setObjectId() throws IOException, IllegalAccessException, NoSuchFieldException {
         if (!stageDeleteObject.containsKey("id") || !stageUpdateObject.containsKey("id")){
-            List<T> foundObjects = getObjectList(retrofit.getCall(dataClass, stageFilterAfterAdd).execute().body(), dataClass);
+            List<DC> foundObjects = getObjectList(retrofit.getCall(dataClass, stageFilterAfterAdd).execute().body(), dataClass);
             Field idField = dataClass.getDeclaredField("id");
             idField.setAccessible(true);
             if (!stageDeleteObject.containsKey("id")) {

@@ -15,11 +15,13 @@ import org.junit.Test;
 
 import com.example.boardgamesocial.API.HeaderInterceptor;
 import com.example.boardgamesocial.API.RetrofitClient;
+import com.example.boardgamesocial.API.UrlToggle;
 import com.example.boardgamesocial.APITests.DBTestStage.ConsoleColor;
 import com.example.boardgamesocial.APITests.DBTestStage.StageAction;
 import com.example.boardgamesocial.APITests.DBTestStage.StageSettings;
 import com.example.boardgamesocial.APITests.DBTestStage.TestStage;
 import com.example.boardgamesocial.DataClasses.Comment;
+import com.example.boardgamesocial.DataClasses.DataClass;
 import com.example.boardgamesocial.DataClasses.Event;
 import com.example.boardgamesocial.DataClasses.Game;
 import com.example.boardgamesocial.DataClasses.HostedGame;
@@ -44,7 +46,9 @@ import java.util.Map;
 
 public class DBEndPointsTests {
 
-    private static final RetrofitClient retrofit = RetrofitClient.getClient();
+    private static RetrofitClient retrofitClient;
+
+    public static final Token token = new Token("e4a36ccc86bc71b7e78c5d42bbd3109ab4764af1");
 
     public static final User testUser = new User("testUserRetrofit1U", "testUserRetrofit1P");
     public static final User testUserModified = new User("testUserRetrofit1U-MOD", "testUserRetrofit1P-MOD");
@@ -52,7 +56,7 @@ public class DBEndPointsTests {
     public static final Game testGame = new Game("testGameRetrofit1GT", "testGame1GG", 1 ,2);
     public static final Game testGameModified = new Game("testGameRetrofit1GT-MOD", "testGame1GG-MOD", 2 ,3);
 
-    private static final Map<Object, Map<String, String>> contextObjects = new HashMap<>();
+    private static final Map<DataClass, Map<String, String>> contextObjects = new HashMap<>();
 
     public static final String CONTEXT_OBJECTS_TAG = colorText(ConsoleColor.ANSI_CYAN, "Context objects");
     public static final String GET_TEST_TAG = colorText(ConsoleColor.ANSI_CYAN,"Get test");
@@ -60,12 +64,12 @@ public class DBEndPointsTests {
     public static final String PUT_TEST_TAG = colorText(ConsoleColor.ANSI_CYAN,"Put test");
     public static final String DELETE_TEST_TAG = colorText(ConsoleColor.ANSI_CYAN,"Delete test");
 
-    private <K> Map<TestStage, StageAction> getGenericActionMap(Class<K> cls, List<Field> reqFields) {
+    private <DC extends DataClass> Map<TestStage, StageAction> getGenericActionMap(Class<DC> cls, List<Field> reqFields) {
         return new HashMap<TestStage, StageAction>(){{
             put(TestStage.GET_TEST_FILTER, apiResponse -> {
                 Log.d(GET_TEST_TAG, "Testing Filter GET");
                 assertNotNull(apiResponse);
-                List<K> apiResponseList = getObjectList((JsonArray) apiResponse, cls);
+                List<DC> apiResponseList = getObjectList((JsonArray) apiResponse, cls);
                 for (Field field : reqFields) {
                     field.setAccessible(true);
                     assertNotNull(field.get(apiResponseList.get(0)));
@@ -74,7 +78,7 @@ public class DBEndPointsTests {
             put(TestStage.POST_TEST, apiResponse -> {
                 Log.d(POST_TEST_TAG, "Testing POST");
                 assertNotNull(apiResponse);
-                K apiResponseObject = getObject((JsonObject) apiResponse, cls);
+                DC apiResponseObject = getObject((JsonObject) apiResponse, cls);
                 for (Field field : reqFields) {
                     field.setAccessible(true);
                     assertNotNull(field.get(apiResponseObject));
@@ -83,7 +87,7 @@ public class DBEndPointsTests {
             put(TestStage.GET_TEST_POST, apiResponse -> {
                 Log.d(GET_TEST_TAG, "Testing POST with GET");
                 assertNotNull(apiResponse);
-                List<K> apiResponseList = getObjectList((JsonArray) apiResponse, cls);
+                List<DC> apiResponseList = getObjectList((JsonArray) apiResponse, cls);
                 for (Field field : reqFields) {
                     field.setAccessible(true);
                     assertNotNull(field.get(apiResponseList.get(0)));
@@ -92,7 +96,7 @@ public class DBEndPointsTests {
             put(TestStage.PUT_TEST, apiResponse -> {
                 Log.d(PUT_TEST_TAG, "Testing PUT");
                 assertNotNull(apiResponse);
-                K apiResponseObject = getObject((JsonObject) apiResponse, cls);
+                DC apiResponseObject = getObject((JsonObject) apiResponse, cls);
                 for (Field field : reqFields) {
                     field.setAccessible(true);
                     assertNotNull(field.get(apiResponseObject));
@@ -101,7 +105,7 @@ public class DBEndPointsTests {
             put(TestStage.GET_TEST_PUT, apiResponse -> {
                 Log.d(GET_TEST_TAG, "Testing PUT with GET");
                 assertNotNull(apiResponse);
-                List<K> apiResponseList = getObjectList((JsonArray) apiResponse, cls);
+                List<DC> apiResponseList = getObjectList((JsonArray) apiResponse, cls);
                 for (Field field : reqFields) {
                     field.setAccessible(true);
                     assertNotNull(field.get(apiResponseList.get(0)));
@@ -110,7 +114,7 @@ public class DBEndPointsTests {
             put(TestStage.DELETE_TEST, apiResponse -> {
                 Log.d(DELETE_TEST_TAG, "Testing DELETE");
                 assertNotNull(apiResponse);
-                List<K> apiResponseList = getObjectList((JsonArray) apiResponse, cls);
+                List<DC> apiResponseList = getObjectList((JsonArray) apiResponse, cls);
                 for (Field field : reqFields) {
                     field.setAccessible(true);
                     assertNotNull(field.get(apiResponseList.get(0)));
@@ -119,7 +123,7 @@ public class DBEndPointsTests {
             put(TestStage.GET_TEST_DELETE, apiResponse -> {
                 Log.d(GET_TEST_TAG, "Testing DELETE with GET");
                 assertNotNull(apiResponse);
-                List<K> apiResponseList = getObjectList((JsonArray) apiResponse, cls);
+                List<DC> apiResponseList = getObjectList((JsonArray) apiResponse, cls);
                 for (Field field : reqFields) {
                     field.setAccessible(true);
                     assertTrue(apiResponseList.isEmpty());
@@ -128,32 +132,34 @@ public class DBEndPointsTests {
         }};
     }
 
-    private <T> void createContextObject(T object, Map<String, String> filter) throws IOException {
+    private <DC extends DataClass> void createContextObject(DC object, Map<String, String> filter) throws IOException {
         Log.d(CONTEXT_OBJECTS_TAG, String.format("Creating Object %s", object));
         contextObjects.put(object, filter);
-        retrofit.postCall(object.getClass(), object).execute();
+        retrofitClient.postCall(object.getClass(), object).execute();
     }
 
-    private <T> void deleteContextObject(Class<T> cls, Map<String, String> filter) throws IOException, NoSuchFieldException, IllegalAccessException {
-        List<T> foundObjects = getObjectList(retrofit.getCall(cls, filter).execute().body(), cls);
+    private <DC extends DataClass> void deleteContextObject(Class<DC> cls, Map<String, String> filter) throws IOException, NoSuchFieldException, IllegalAccessException {
+        List<DC> foundObjects = getObjectList(retrofitClient.getCall(cls, filter).execute().body(), cls);
 
         Field idField = cls.getDeclaredField("id");
         idField.setAccessible(true);
 
         Log.d(CONTEXT_OBJECTS_TAG, String.format("Deleting Object id:%s | %s", idField.get(foundObjects.get(0)), filter));
-        retrofit.deleteCall(cls, new HashMap<String, String>(){{
+        retrofitClient.deleteCall(cls, new HashMap<String, String>(){{
             put("id", String.valueOf(idField.get(foundObjects.get(0))));
         }}).execute();
     }
 
     @BeforeClass
     public static void beforeClass() {
-        HeaderInterceptor.token.setToken("e4a36ccc86bc71b7e78c5d42bbd3109ab4764af1");
+        RetrofitClient.urlToggle = UrlToggle.TEST;
+        retrofitClient = RetrofitClient.getClient();
+        retrofitClient.setAuthToken(token);
     }
 
     @After
     public void tearDown() throws Exception {
-        for (Map.Entry<Object, Map<String, String>> entry: contextObjects.entrySet()) {
+        for (Map.Entry<DataClass, Map<String, String>> entry: contextObjects.entrySet()) {
             deleteContextObject(entry.getKey().getClass(), entry.getValue());
         }
         contextObjects.clear();
@@ -188,7 +194,7 @@ public class DBEndPointsTests {
                         put("password", testUserModified.getPassword());
                     }},
                     User.class,
-                    retrofit
+                    retrofitClient
             );
             stageSettings.runStageTests();
         } catch (NoSuchFieldException | IllegalAccessException | IOException e) {
@@ -206,7 +212,7 @@ public class DBEndPointsTests {
             Event testEvent = new Event(
                     "testEventRetrofitN",
                     getObjectList(
-                            retrofit.getCall(
+                            retrofitClient.getCall(
                                     User.class,
                                     new HashMap<String, String>(){{
                                         put("username", testUser.getUsername());
@@ -241,7 +247,7 @@ public class DBEndPointsTests {
                         put("hostUserId", String.valueOf(testEventModified.getHostUserId()));
                     }},
                     Event.class,
-                    retrofit
+                    retrofitClient
             );
             stageSettings.runStageTests();
         } catch (IllegalAccessException | NoSuchFieldException | IOException e) {
@@ -258,7 +264,7 @@ public class DBEndPointsTests {
             }});
             Post testPost = new Post(
                     getObjectList(
-                            retrofit.getCall(
+                            retrofitClient.getCall(
                                     User.class,
                                     new HashMap<String, String>(){{
                                         put("username", testUser.getUsername());
@@ -301,7 +307,7 @@ public class DBEndPointsTests {
                         put("postType", testPostModified.getPostType());
                     }},
                     Post.class,
-                    retrofit
+                    retrofitClient
             );
             stageSettings.runStageTests();
         } catch (IllegalAccessException | NoSuchFieldException | IOException e) {
@@ -343,7 +349,7 @@ public class DBEndPointsTests {
                         put("maxPlayer", String.valueOf(testGameModified.getMaxPlayer()));
                     }},
                     Game.class,
-                    retrofit
+                    retrofitClient
             );
             stageSettings.runStageTests();
         } catch (NoSuchFieldException | IllegalAccessException | IOException e) {
@@ -363,7 +369,7 @@ public class DBEndPointsTests {
             }});
             UserToUser testUserToUser = new UserToUser(
                     getObjectList(
-                            retrofit.getCall(
+                            retrofitClient.getCall(
                                     User.class,
                                     new HashMap<String, String>(){{
                                         put("username", testUser.getUsername());
@@ -371,7 +377,7 @@ public class DBEndPointsTests {
                             ).execute().body(), User.class
                     ).get(0).getId(),
                     getObjectList(
-                            retrofit.getCall(
+                            retrofitClient.getCall(
                                     User.class,
                                     new HashMap<String, String>(){{
                                         put("username", testUserModified.getUsername());
@@ -403,7 +409,7 @@ public class DBEndPointsTests {
                     testUserToUser,
                     null,
                     UserToUser.class,
-                    retrofit
+                    retrofitClient
             );
             stageSettings.runStageTests();
         } catch (IllegalAccessException | NoSuchFieldException | IOException e) {
@@ -423,7 +429,7 @@ public class DBEndPointsTests {
             }});
             Message testMessage = new Message(
                     getObjectList(
-                            retrofit.getCall(
+                            retrofitClient.getCall(
                                     User.class,
                                     new HashMap<String, String>(){{
                                         put("username", testUser.getUsername());
@@ -431,7 +437,7 @@ public class DBEndPointsTests {
                             ).execute().body(), User.class
                     ).get(0).getId(),
                     getObjectList(
-                            retrofit.getCall(
+                            retrofitClient.getCall(
                                     User.class,
                                     new HashMap<String, String>(){{
                                         put("username", testUserModified.getUsername());
@@ -473,7 +479,7 @@ public class DBEndPointsTests {
                         put("content", testMessageModified.getContent());
                     }},
                     Message.class,
-                    retrofit
+                    retrofitClient
             );
             stageSettings.runStageTests();
         } catch (IllegalAccessException | NoSuchFieldException | IOException e) {
@@ -490,7 +496,7 @@ public class DBEndPointsTests {
             }});
             EventToUser testEventToUser = new EventToUser(
                     getObjectList(
-                            retrofit.getCall(
+                            retrofitClient.getCall(
                                     User.class,
                                     new HashMap<String, String>(){{
                                         put("username", testUser.getUsername());
@@ -498,7 +504,7 @@ public class DBEndPointsTests {
                             ).execute().body(), User.class
                     ).get(0).getId(),
                     getObjectList(
-                            retrofit.getCall(
+                            retrofitClient.getCall(
                                     Event.class,
                                     new HashMap<String, String>(){{
                                         put("name", "Admin Event");
@@ -530,7 +536,7 @@ public class DBEndPointsTests {
                     testEventToUser,
                     null,
                     EventToUser.class,
-                    retrofit
+                    retrofitClient
             );
             stageSettings.runStageTests();
         } catch (IllegalAccessException | NoSuchFieldException | IOException e) {
@@ -547,7 +553,7 @@ public class DBEndPointsTests {
             }});
             Comment testComment = new Comment(
                     getObjectList(
-                            retrofit.getCall(
+                            retrofitClient.getCall(
                                     User.class,
                                     new HashMap<String, String>(){{
                                         put("username", testUser.getUsername());
@@ -555,7 +561,7 @@ public class DBEndPointsTests {
                             ).execute().body(), User.class
                     ).get(0).getId(),
                     getObjectList(
-                            retrofit.getCall(
+                            retrofitClient.getCall(
                                     Post.class,
                                     new HashMap<String, String>(){{
                                         put("postBody", "Admin Post Body");
@@ -597,7 +603,7 @@ public class DBEndPointsTests {
                         put("content", testCommentModified.getContent());
                     }},
                     Comment.class,
-                    retrofit
+                    retrofitClient
             );
             stageSettings.runStageTests();
         } catch (IllegalAccessException | NoSuchFieldException | IOException e) {
@@ -617,7 +623,7 @@ public class DBEndPointsTests {
             }});
             GameToUser testGameToUser = new GameToUser(
                     getObjectList(
-                            retrofit.getCall(
+                            retrofitClient.getCall(
                                     User.class,
                                     new HashMap<String, String>(){{
                                         put("username", testUser.getUsername());
@@ -625,7 +631,7 @@ public class DBEndPointsTests {
                             ).execute().body(), User.class
                     ).get(0).getId(),
                     getObjectList(
-                            retrofit.getCall(
+                            retrofitClient.getCall(
                                     Game.class,
                                     new HashMap<String, String>(){{
                                         put("gameTitle", testGame.getGameTitle());
@@ -667,7 +673,7 @@ public class DBEndPointsTests {
                         put("private", String.valueOf(testGameToUserModified.getPrivate_()));
                     }},
                     GameToUser.class,
-                    retrofit
+                    retrofitClient
             );
             stageSettings.runStageTests();
         } catch (IllegalAccessException | NoSuchFieldException | IOException e) {
@@ -684,7 +690,7 @@ public class DBEndPointsTests {
             }});
             HostedGame testHostedGame = new HostedGame(
                     getObjectList(
-                            retrofit.getCall(
+                            retrofitClient.getCall(
                                     Event.class,
                                     new HashMap<String, String>(){{
                                         put("name", "Admin Event");
@@ -692,7 +698,7 @@ public class DBEndPointsTests {
                             ).execute().body(), Event.class
                     ).get(0).getId(),
                     getObjectList(
-                            retrofit.getCall(
+                            retrofitClient.getCall(
                                     Game.class,
                                     new HashMap<String, String>(){{
                                         put("gameTitle", testGame.getGameTitle());
@@ -734,7 +740,7 @@ public class DBEndPointsTests {
                         put("seatsAvailable", String.valueOf(testHostedGameModified.getSeatsAvailable()));
                     }},
                     HostedGame.class,
-                    retrofit
+                    retrofitClient
             );
             stageSettings.runStageTests();
         } catch (IllegalAccessException | NoSuchFieldException | IOException e) {
@@ -754,7 +760,7 @@ public class DBEndPointsTests {
             }});
             Review testReview = new Review(
                     getObjectList(
-                            retrofit.getCall(
+                            retrofitClient.getCall(
                                     User.class,
                                     new HashMap<String, String>(){{
                                         put("username", testUser.getUsername());
@@ -762,7 +768,7 @@ public class DBEndPointsTests {
                             ).execute().body(), User.class
                     ).get(0).getId(),
                     getObjectList(
-                            retrofit.getCall(
+                            retrofitClient.getCall(
                                     Game.class,
                                     new HashMap<String, String>(){{
                                         put("gameTitle", testGame.getGameTitle());
@@ -804,7 +810,7 @@ public class DBEndPointsTests {
                         put("content", String.valueOf(testReviewModified.getContent()));
                     }},
                     Review.class,
-                    retrofit
+                    retrofitClient
             );
             stageSettings.runStageTests();
         } catch (IllegalAccessException | NoSuchFieldException | IOException e) {
@@ -824,7 +830,7 @@ public class DBEndPointsTests {
             }});
             HostedGameToUser testHostedGameToUser = new HostedGameToUser(
                     getObjectList(
-                            retrofit.getCall(
+                            retrofitClient.getCall(
                                     User.class,
                                     new HashMap<String, String>(){{
                                         put("username", testUser.getUsername());
@@ -832,7 +838,7 @@ public class DBEndPointsTests {
                             ).execute().body(), User.class
                     ).get(0).getId(),
                     getObjectList(
-                            retrofit.getCall(
+                            retrofitClient.getCall(
                                     Game.class,
                                     new HashMap<String, String>(){{
                                         put("gameTitle", testGame.getGameTitle());
@@ -864,7 +870,7 @@ public class DBEndPointsTests {
                     testHostedGameToUser,
                     null,
                     HostedGameToUser.class,
-                    retrofit
+                    retrofitClient
             );
             stageSettings.runStageTests();
         } catch (IllegalAccessException | NoSuchFieldException | IOException e) {
