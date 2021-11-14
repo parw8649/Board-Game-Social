@@ -16,6 +16,9 @@
     <!-- Strings used for login and signup -->
     <string name="et_hint_password">Password</string>
     <string name="et_hint_username">Username</string>
+    <string name="et_hint_firstname">First Name</string>
+    <string name="et_hint_lastname">Last Name</string>
+    <string name="et_hint_email">Email</string>
     <string name="btn_login">login</string>
     <string name="new_user_sign_up">New user? sign-up!</string>
     <string name="btn_register">register</string>
@@ -26,6 +29,9 @@
     <string name="game_item_tv_game_min_max_players">Min max players</string>
 
     <string name="title_activity_app">AppActivity</string>
+    <string name="title_activity_home_post">HomePostActivity</string>
+    <string name="title_activity_sign_up">SignUpActivity</string>
+    <string name="title_activity_games_collection">GamesCollectionActivity</string>
     <!-- Strings used for fragments for navigation -->
     <string name="first_fragment_label">First Fragment</string>
     <string name="second_fragment_label">Second Fragment</string>
@@ -55,4 +61,6 @@
         ooooo ooooooo oooooo ooooooo ooooo ooooooo oooooo oooooo</string>
     <string name="profile_btn_view_friends">view friends</string>
     <string name="profile_btn_view_user_gamelist">view [user]\'s gamelist</string>
+    <string name="btn_text_sign_in">sign in</string>
+    <string name="btn_text_sign_up">sign up</string>
 </resources>

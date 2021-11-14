@@ -18,6 +18,7 @@ import org.json.JSONObject;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 
 import okhttp3.OkHttpClient;
 import retrofit2.Call;
@@ -70,6 +71,10 @@ public class RetrofitClient {
 
     public static <T> T getObject(JsonObject jsonObject, Class<T> cls) {
         return new Gson().fromJson(jsonObject, cls);
+    }
+
+    public void setAuthToken(Token token) {
+        HeaderInterceptor.token.setToken(token.getToken());
     }
 
     public Call<User> signUpCall(User user){

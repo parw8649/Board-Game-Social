@@ -1,41 +1,30 @@
 package com.example.boardgamesocial;
 
-import androidx.appcompat.app.AppCompatActivity;
-
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.Toast;
+
+import androidx.appcompat.app.AppCompatActivity;
+
+import com.example.boardgamesocial.API.RetrofitClient;
+import com.example.boardgamesocial.DataClasses.User;
+
+import java.util.Objects;
+
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
 
 public class SignUpActivity extends AppCompatActivity {
-
-    private EditText etUsername, etPassword;
-    private Button btnRegister, btnSignIn;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_sign_up);
-
-        wireUpDisplay();
-    }
-
-    private void wireUpDisplay() {
-        etUsername = findViewById(R.id.et_signup_username);
-        etPassword = findViewById(R.id.et_signup_password);
-        btnRegister = findViewById(R.id.btn_register);
-        btnSignIn = findViewById(R.id.btn_back_to_login);
-
-        btnRegister.setOnClickListener(view -> {
-            //TODO: verify if user already exits!
-            //TODO: if user doesn't exists then save user data
-            //After successful registration, redirecting user to login page.
-            Intent goToMainActivity = MainActivity.getIntent(SignUpActivity.this);
-            startActivity(goToMainActivity);
-        });
-
-        btnSignIn.setOnClickListener(view -> finish());
     }
 
     public static Intent getIntent(Context context) {
