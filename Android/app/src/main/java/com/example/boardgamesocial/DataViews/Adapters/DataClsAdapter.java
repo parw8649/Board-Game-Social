@@ -1,54 +1,58 @@
 package com.example.boardgamesocial.DataViews.Adapters;
 
-import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.BaseAdapter;
+
+import androidx.annotation.NonNull;
+import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.boardgamesocial.DataClasses.DataClass;
+import com.example.boardgamesocial.DataViews.Adapters.ViewHolders.DataClsVH;
+import com.example.boardgamesocial.R;
 
+import java.lang.reflect.Constructor;
+import java.lang.reflect.InvocationTargetException;
 import java.util.List;
+import java.util.function.Supplier;
 
-public class DataClsAdapter <T extends DataClass> extends BaseAdapter {
+public class DataClsAdapter <DC extends DataClass, VH extends DataClsVH<DC>> extends RecyclerView.Adapter<VH> {
+    private List<DC> objectList;
+    private Class<VH> vhConstructor;
 
-    private final int layout;
-    private final Context context;
-    private final List<T> objectList;
-    private final OnGetView<T> renderAction;
-
-    public DataClsAdapter(int layout, Context context, List<T> objectList, OnGetView<T> renderAction) {
-        this.layout = layout;
-        this.context = context;
+    public DataClsAdapter(List<DC> objectList, Class<VH> cls) {
         this.objectList = objectList;
-        this.renderAction = renderAction;
+        this.vhConstructor = cls;
     }
 
-    @Override
-    public int getCount() {
-        return 0;
+    public void setVhConstructor(Class<VH> cls) {
+        this.vhConstructor = cls;
     }
 
-    @Override
-    public T getItem(int position) {
-        return objectList.get(position);
+    public void setPosts(List<DC> objectList) {
+        this.objectList = objectList;
     }
 
+    @NonNull
     @Override
-    public long getItemId(int position) {
-        return position;
-    }
-
-    @Override
-    public View getView(int position, View view, ViewGroup viewGroup) {
-        if (view == null) {
-            LayoutInflater vi = LayoutInflater.from(context);
-            view = vi.inflate(layout, null);
+    public VH onCreateViewHolder(ViewGroup parent, int viewType) {
+        View itemView = LayoutInflater.from(parent.getContext()).inflate(R.layout.item, parent,false);
+        try {
+            return vhConstructor.getConstructor().newInstance(itemView);
+        } catch (IllegalAccessException | InstantiationException | InvocationTargetException | NoSuchMethodException e) {
+            e.printStackTrace();
+            throw new IllegalArgumentException("Could not create instance of ViewHolder in DataClsAdapter");
         }
-        T object = getItem(position);
-        if (object != null) {
-            renderAction.render(view, object);
-        }
-        return view;
+    }
+
+    @Override
+    public void onBindViewHolder(VH holder, int position) {
+        DC currentObject = objectList.get(position);
+        holder.onBind(currentObject);
+    }
+
+    @Override
+    public int getItemCount() {
+        return objectList.size();
     }
 }

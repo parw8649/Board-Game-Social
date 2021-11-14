@@ -7,6 +7,7 @@ import android.util.Log;
 import androidx.lifecycle.MutableLiveData;
 
 import com.example.boardgamesocial.API.RetrofitClient;
+import com.example.boardgamesocial.DataClasses.DataClass;
 import com.google.gson.JsonArray;
 
 import retrofit2.Call;
@@ -32,14 +33,14 @@ public class LiveDataConnector {
         return liveDataConnector;
     }
 
-    public MutableLiveData<List<?>> getMutableLiveData(Class<?> dataClass, Map<String, String> filter) {
-        MutableLiveData<List<?>> mutableLiveData = new MutableLiveData<>();
+    public <DC extends DataClass> MutableLiveData<List<DC>> getMutableLiveData(Class<DC> dataClass, Map<String, String> filter) {
+        MutableLiveData<List<DC>> mutableLiveData = new MutableLiveData<>();
         retrofitClient.getCall(dataClass, filter).enqueue(new Callback<JsonArray>() {
             @Override
             public void onResponse(Call<JsonArray> call, Response<JsonArray> response) {
                 if (response.isSuccessful()) {
                     assert response.body() != null;
-                    List<?> objectList = getObjectList(response.body(), dataClass);
+                    List<DC> objectList = getObjectList(response.body(), dataClass);
                     mutableLiveData.setValue(objectList);
                 } else {
                     new Exception("Request failed, code: " + response.code()).printStackTrace();

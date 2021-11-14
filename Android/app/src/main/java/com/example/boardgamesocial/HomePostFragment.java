@@ -16,8 +16,8 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.boardgamesocial.DataClasses.Post;
 import com.example.boardgamesocial.DataViews.Adapters.DataClsAdapter;
+import com.example.boardgamesocial.DataViews.Adapters.ViewHolders.PostVH;
 import com.example.boardgamesocial.DataViews.DataClsVM;
-import com.example.boardgamesocial.RecycleAdapters.PostAdapter;
 import com.example.boardgamesocial.databinding.FragmentHomePostBinding;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.snackbar.Snackbar;
@@ -25,6 +25,8 @@ import com.google.gson.JsonArray;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
+import java.util.function.Supplier;
 
 public class HomePostFragment extends Fragment {
 
@@ -80,37 +82,17 @@ public class HomePostFragment extends Fragment {
         super.onViewCreated(view, savedInstanceState);
 
         RecyclerView recyclerView = view.findViewById(R.id.postFeed_recyclerView);
-        recyclerView.setLayoutManager(new LinearLayoutManager((this.getContext())));
-        final PostAdapter postAdapter = new PostAdapter();
-        recyclerView.setAdapter(postAdapter);
+        recyclerView.setLayoutManager(new LinearLayoutManager(this.getContext()));
+        List<Post> posts = new ArrayList<>();
+        DataClsAdapter<Post, PostVH> dataClsAdapter = new DataClsAdapter<>(posts, PostVH.class);
+        recyclerView.setAdapter(dataClsAdapter);
+        DataClsVM<Post> dataClsVM = new DataClsVM<>(Post.class, new HashMap<>());
+        dataClsVM.getLiveData().observe(getViewLifecycleOwner(), res -> {
+            posts.addAll(getObjectList((JsonArray) res, Post.class));
+            dataClsAdapter.notifyDataSetChanged();
+        });
 
-//        recyclerView = view.findViewById(R.id.postFeed_recyclerView);
-//        posts = new ArrayList<>();
-//        dataClsVM = new DataClsVM(Post.class, new HashMap<>());
-//        dataClsVM.getLiveData().observe(getViewLifecycleOwner(), res -> {
-//            posts.addAll(getObjectList((JsonArray) res, Post.class));
-//            dataClsAdapter.notifyDataSetChanged();
-//        });
-//
-//        if (dataClsAdapter == null) {
-//            dataClsAdapter = new DataClsAdapter<>(R.layout.item, getContext(), posts, (postView, object) -> {
-//                TextView postUser = postView.findViewById(R.id.item_poster);
-//                TextView postType = postView.findViewById(R.id.item_type);
-//                TextView postBody = postView.findViewById(R.id.item_body);
-//                if (postUser != null) {
-//                    postUser.setText(object.getUserId());
-//                }
-//                if (postType != null) {
-//                    postType.setText(object.getPostType());
-//                }
-//                if (postBody != null) {
-//                    postBody.setText(object.getPostBody());
-//                }
-//            });
-//            recyclerView.setAdapter(dataClsAdapter);
-//        } else {
-//            dataClsAdapter.notifyDataSetChanged();
-//        }
+
     }
 
     @Override
