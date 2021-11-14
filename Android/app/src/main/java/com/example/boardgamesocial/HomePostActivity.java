@@ -43,7 +43,6 @@ public class HomePostActivity extends AppCompatActivity {
                 return true;
             case R.id.games_option:
                 Toast.makeText(this, "games option selected", Toast.LENGTH_LONG).show();
-                switchToGamesCollectionActivity();
                 return true;
             case R.id.search_option:
                 Toast.makeText(this, "search option selected", Toast.LENGTH_LONG).show();
@@ -57,15 +56,5 @@ public class HomePostActivity extends AppCompatActivity {
             default:
                 return super.onOptionsItemSelected(item);
         }
-    }
-
-    public static Intent getIntent(Context context) {
-        System.out.println("Inside HomePostActivity getIntent!");
-        return new Intent(context, HomePostActivity.class);
-    }
-
-    private void switchToGamesCollectionActivity() {
-        Intent goToGamesCollectionActivity = GamesCollectionActivity.getIntent(HomePostActivity.this);
-        startActivity(goToGamesCollectionActivity);
     }
 }
