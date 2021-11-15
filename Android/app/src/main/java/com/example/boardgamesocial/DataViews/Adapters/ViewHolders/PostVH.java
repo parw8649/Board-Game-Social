@@ -2,26 +2,18 @@ package com.example.boardgamesocial.DataViews.Adapters.ViewHolders;
 
 import static com.example.boardgamesocial.API.RetrofitClient.getObjectList;
 
-import android.media.Image;
+import android.app.Activity;
 import android.view.View;
-import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
-
-import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.boardgamesocial.API.RetrofitClient;
 import com.example.boardgamesocial.DataClasses.Post;
 import com.example.boardgamesocial.DataClasses.User;
 import com.example.boardgamesocial.R;
-import com.google.gson.JsonArray;
 
 import java.util.HashMap;
 import java.util.List;
-
-import retrofit2.Call;
-import retrofit2.Callback;
-import retrofit2.Response;
 
 public class PostVH extends DataClsVH<Post> {
     private final TextView textViewUsername;
@@ -37,9 +29,6 @@ public class PostVH extends DataClsVH<Post> {
         textViewPostBody = postView.findViewById(R.id.item_body);
         itemNumberLikes = postView.findViewById(R.id.item_number_likes);
         likeImg = postView.findViewById(R.id.like_img);
-        likeImg.setOnClickListener(view -> {
-
-        });
     }
 
     @Override
@@ -51,39 +40,33 @@ public class PostVH extends DataClsVH<Post> {
     }
 
     @Override
-    public void onBind(Post post) {
+    public void onBind(Activity activity, Post post) {
         toggleVisibility(View.INVISIBLE);
         RetrofitClient retrofitClient = RetrofitClient.getClient();
         retrofitClient.getCall(User.class, new HashMap<String, String>(){{
             put("id", String.valueOf(post.getUserId()));
-        }}).enqueue(new Callback<JsonArray>() {
-            @Override
-            public void onResponse(Call<JsonArray> call, Response<JsonArray> response) {
-                if (response.isSuccessful()) {
-                    assert response.body() != null;
-                    List<User> users = getObjectList(response.body(), User.class);
-                    if (users.size() > 1) {
-                        new Exception("Got many Users on primary key: " + response.body()).printStackTrace();
-                    } else {
-                        toggleVisibility(View.VISIBLE);
-                        User user = users.get(0);
-                        textViewUsername.setText(user.getUsername());
-                        textViewPostType.setText(post.getPostType());
-                        textViewPostBody.setText(post.getPostBody());
-                        itemNumberLikes.setText(post.getLikes());
-                    }
-                } else {
-                    new Exception("Request failed, code: " + response.code()).printStackTrace();
-                }
-            }
-
-            @Override
-            public void onFailure(Call<JsonArray> call, Throwable t) {
-                try {
-                    throw t;
-                } catch (Throwable throwable) {
-                    throwable.printStackTrace();
-                }
+        }}).subscribe(jsonArray -> {
+            List<User> users = getObjectList(jsonArray, User.class);
+            if (users.size() > 1) {
+                new Exception("Got many Users on primary key: " + users).printStackTrace();
+            } else {
+                User user = users.get(0);
+                activity.runOnUiThread(()->{
+                    toggleVisibility(View.VISIBLE);
+                    textViewUsername.setText(user.getUsername());
+                    textViewPostType.setText(post.getPostType());
+                    textViewPostBody.setText(post.getPostBody());
+                    itemNumberLikes.setText(String.valueOf(post.getLikes()));
+                });
+                likeImg.setOnClickListener(view ->
+                    retrofitClient.putCall(Post.class, new HashMap<String, String>(){{
+                        put("id", String.valueOf(post.getId()));
+                        put("userId", String.valueOf(user.getId()));
+                        put("postBody", String.valueOf(post.getPostBody()));
+                        put("postType", String.valueOf(post.getPostType()));
+                        put("likes", String.valueOf(post.getLikes()+1));
+                    }})
+                );
             }
         });
     }

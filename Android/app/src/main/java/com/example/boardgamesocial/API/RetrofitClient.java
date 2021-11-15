@@ -2,6 +2,9 @@ package com.example.boardgamesocial.API;
 
 import static com.example.boardgamesocial.API.API.URL_MAP;
 
+import android.util.Log;
+
+import com.example.boardgamesocial.DataClasses.DataClass;
 import com.example.boardgamesocial.DataClasses.Token;
 import com.example.boardgamesocial.DataClasses.User;
 import com.google.gson.Gson;
@@ -9,17 +12,25 @@ import com.google.gson.JsonArray;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 
+import org.reactivestreams.Subscriber;
+
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 
+import io.reactivex.Flowable;
+import io.reactivex.observers.DisposableObserver;
+import io.reactivex.schedulers.Schedulers;
 import okhttp3.OkHttpClient;
 import retrofit2.Call;
 import retrofit2.Retrofit;
+import retrofit2.adapter.rxjava2.RxJava2CallAdapterFactory;
 import retrofit2.converter.gson.GsonConverterFactory;
 
 public class RetrofitClient {
+
+    public static final String TAG = "RetrofitClient";
 
     public static UrlToggle urlToggle = UrlToggle.DEV;
     private final API api;
@@ -35,6 +46,7 @@ public class RetrofitClient {
         Retrofit retrofit = new Retrofit.Builder()
                 .baseUrl(Objects.requireNonNull(API.BASE_URL.get(urlToggle)))
                 .addConverterFactory(GsonConverterFactory.create())
+                .addCallAdapterFactory(RxJava2CallAdapterFactory.create())
                 .client(httpClient)
                 .build();
         api = retrofit.create(API.class);
@@ -69,31 +81,33 @@ public class RetrofitClient {
         HeaderInterceptor.token.setToken(token.getToken());
     }
 
-    public Call<User> signUpCall(User user){
-        return api.signUpCall(user);
+    public Flowable<User> signUpCall(User user){
+        return api.signUpCall(user).subscribeOn(Schedulers.io());
     }
 
-    public Call<Token> loginCall(User user){
-        return api.loginCall(user);
+    public Flowable<Token> loginCall(User user){
+        return api.loginCall(user).subscribeOn(Schedulers.io());
     }
 
-    public Call<JsonObject> logoutCall(Map<String, String> userIdMap){
-        return api.logoutCall(userIdMap);
+    public Flowable<JsonObject> logoutCall(Map<String, String> userIdMap){
+        return api.logoutCall(userIdMap).subscribeOn(Schedulers.io());
     }
 
-    public Call<JsonArray> getCall(Class<?> cls, Map<String, String> filters){
-        return api.getCall(URL_MAP.get(cls), filters);
+    public Flowable<JsonArray> getCall(Class<?> cls, Map<String, String> filters){
+        return api.getCall(URL_MAP.get(cls), filters).subscribeOn(Schedulers.io());
     }
 
-    public Call<JsonObject> postCall(Class<?> cls, Object object){
-        return api.postCall(URL_MAP.get(cls), object);
+    public Flowable<JsonObject> postCall(Class<?> cls, Object object){
+        return api.postCall(URL_MAP.get(cls), object).subscribeOn(Schedulers.io());
     }
 
-    public Call<JsonObject> putCall(Class<?> cls, Map<String, String> filters){
-        return api.putCall(URL_MAP.get(cls), filters);
+    public Flowable<JsonObject> putCall(Class<?> cls, Map<String, String> filters){
+        return api.putCall(URL_MAP.get(cls), filters).subscribeOn(Schedulers.io());
     }
 
-    public Call<JsonArray> deleteCall(Class<?> cls, Map<String, String> filters){
-        return api.deleteCall(URL_MAP.get(cls), filters);
+    public Flowable<JsonArray> deleteCall(Class<?> cls, Map<String, String> filters){
+        return api.deleteCall(URL_MAP.get(cls), filters).subscribeOn(Schedulers.io());
     }
+
+
 }

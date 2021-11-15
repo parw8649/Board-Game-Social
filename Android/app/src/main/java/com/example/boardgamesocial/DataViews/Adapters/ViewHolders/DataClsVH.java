@@ -1,5 +1,6 @@
 package com.example.boardgamesocial.DataViews.Adapters.ViewHolders;
 
+import android.app.Activity;
 import android.view.View;
 
 import androidx.annotation.NonNull;
@@ -14,5 +15,5 @@ public abstract class DataClsVH <DC extends DataClass> extends RecyclerView.View
     }
 
     public abstract void toggleVisibility(int visibility);
-    public abstract void onBind(DC dataClass);
+    public abstract void onBind(Activity activity, DC dataClass);
 }

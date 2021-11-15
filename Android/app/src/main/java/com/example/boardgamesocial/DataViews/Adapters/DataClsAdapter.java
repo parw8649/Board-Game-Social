@@ -1,5 +1,6 @@
 package com.example.boardgamesocial.DataViews.Adapters;
 
+import android.app.Activity;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -24,6 +25,7 @@ import java.util.Map;
 import java.util.Objects;
 
 public class DataClsAdapter <DC extends DataClass, VH extends DataClsVH<DC>> extends RecyclerView.Adapter<VH> {
+    private final Activity activity;
     private List<DC> objectList;
     private Class<DC> cls;
 
@@ -31,7 +33,8 @@ public class DataClsAdapter <DC extends DataClass, VH extends DataClsVH<DC>> ext
         put(Post.class, PostVH::new);
     }};
 
-    public DataClsAdapter(List<DC> objectList, Class<DC> cls) {
+    public DataClsAdapter(Activity activity, List<DC> objectList, Class<DC> cls) {
+        this.activity = activity;
         this.objectList = objectList;
         this.cls = cls;
     }
@@ -54,7 +57,7 @@ public class DataClsAdapter <DC extends DataClass, VH extends DataClsVH<DC>> ext
     @Override
     public void onBindViewHolder(VH holder, int position) {
         DC currentObject = objectList.get(position);
-        holder.onBind(currentObject);
+        holder.onBind(activity, currentObject);
     }
 
     @Override

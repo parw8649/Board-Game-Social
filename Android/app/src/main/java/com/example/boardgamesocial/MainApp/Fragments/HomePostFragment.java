@@ -8,11 +8,14 @@ import android.view.ViewGroup;
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.Observer;
+import androidx.lifecycle.ViewModelProviders;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.example.boardgamesocial.DataClasses.DataClass;
 import com.example.boardgamesocial.DataClasses.Post;
 import com.example.boardgamesocial.DataViews.Adapters.DataClsAdapter;
+import com.example.boardgamesocial.DataViews.Adapters.ViewHolders.DataClsVH;
 import com.example.boardgamesocial.DataViews.Adapters.ViewHolders.PostVH;
 import com.example.boardgamesocial.DataViews.DataClsVM;
 import com.example.boardgamesocial.R;
@@ -20,6 +23,7 @@ import com.example.boardgamesocial.databinding.FragmentHomePostBinding;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
@@ -80,13 +84,13 @@ public class HomePostFragment extends Fragment {
         RecyclerView recyclerView = view.findViewById(R.id.postFeed_recyclerView);
         recyclerView.setLayoutManager(new LinearLayoutManager(this.getContext()));
         List<Post> posts = new ArrayList<>();
-        DataClsAdapter<Post, PostVH> dataClsAdapter = new DataClsAdapter<>(posts, Post.class);
+        DataClsAdapter<Post, PostVH> dataClsAdapter = new DataClsAdapter<>(getActivity(), posts, Post.class);
         recyclerView.setAdapter(dataClsAdapter);
-        DataClsVM<Post> dataClsVM = new DataClsVM<>(Post.class, new HashMap<>());
-        dataClsVM.getLiveData().observe(getViewLifecycleOwner(), (Observer<Object>) o -> {
-            List<Post> t = (List<Post>) o;
-            Collections.reverse(t);
-            posts.addAll(t);
+
+        DataClsVM dataClsVM = DataClsVM.getInstance();
+        dataClsVM.getMutableLiveData(Post.class, new HashMap<>()).observe(getViewLifecycleOwner(), newPosts -> {
+            Collections.reverse(newPosts);
+            posts.addAll(newPosts);
             dataClsAdapter.notifyDataSetChanged();
         });
     }

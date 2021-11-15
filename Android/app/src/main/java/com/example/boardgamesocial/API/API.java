@@ -1,5 +1,6 @@
 package com.example.boardgamesocial.API;
 
+
 import com.example.boardgamesocial.DataClasses.Comment;
 import com.example.boardgamesocial.DataClasses.DataClass;
 import com.example.boardgamesocial.DataClasses.Event;
@@ -21,6 +22,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import io.reactivex.Flowable;
 import retrofit2.Call;
 import retrofit2.http.Body;
 import retrofit2.http.DELETE;
@@ -54,40 +56,40 @@ public interface API {
     }};
 
     @POST("sign_up/")
-    Call<User> signUpCall(
+    Flowable<User> signUpCall(
             @Body User user
     );
 
     @POST("login/")
-    Call<Token> loginCall(
+    Flowable<Token> loginCall(
             @Body User user
     );
 
     @GET("logout/")
-    Call<JsonObject> logoutCall(
+    Flowable<JsonObject> logoutCall(
             @QueryMap Map<String, String> userIdMap
     );
 
     @GET
-    Call<JsonArray> getCall(
+    Flowable<JsonArray> getCall(
             @Url String url,
             @QueryMap Map<String, String> filters
     );
 
     @POST
-    Call<JsonObject> postCall(
+    Flowable<JsonObject> postCall(
             @Url String url,
             @Body Object object
     );
 
     @PUT
-    Call<JsonObject> putCall(
+    Flowable<JsonObject> putCall(
             @Url String url,
             @Body Map<String, String> filters
     );
 
     @DELETE
-    Call<JsonArray> deleteCall(
+    Flowable<JsonArray> deleteCall(
             @Url String url,
             @QueryMap Map<String, String> filters
     );

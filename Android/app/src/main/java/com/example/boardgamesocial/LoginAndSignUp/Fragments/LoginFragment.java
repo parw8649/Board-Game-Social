@@ -73,32 +73,11 @@ public class LoginFragment extends Fragment {
 
         Log.i("Login", "Username: "+ username +", Password: "+ password);
 
-        retrofitClient.loginCall(new User(username, password)).enqueue(new Callback<Token>() {
-            @Override
-            public void onResponse(Call<Token> call, Response<Token> response) {
-                if (response.isSuccessful()) {
-                    assert response.body() != null;
-                    token = response.body();
-                    Log.i("Token", token.toString());
-                    retrofitClient.setAuthToken(token);
-                    Toast.makeText(getContext(), "Login Successful", Toast.LENGTH_LONG).show();
-                    Intent goToMainAppActivity = MainAppActivity.getIntent(getContext());
-                    startActivity(goToMainAppActivity);
-
-                } else {
-                    Toast.makeText(getContext(), "Unable to log in with provided credentials", Toast.LENGTH_LONG).show();
-                    new Exception("Request failed, code: " + response.code()).printStackTrace();
-                }
-            }
-
-            @Override
-            public void onFailure(Call<Token> call, Throwable t) {
-                try {
-                    throw t;
-                } catch (Throwable throwable) {
-                    throwable.printStackTrace();
-                }
-            }
+        retrofitClient.loginCall(new User(username, password)).subscribe(token -> {
+            Log.i("Token", token.toString());
+            retrofitClient.setAuthToken(token);
+            Intent goToMainAppActivity = MainAppActivity.getIntent(getContext());
+            startActivity(goToMainAppActivity);
         });
 
     }

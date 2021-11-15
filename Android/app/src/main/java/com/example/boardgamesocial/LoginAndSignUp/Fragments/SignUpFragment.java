@@ -72,32 +72,11 @@ public class SignUpFragment extends Fragment {
         String username = Objects.nonNull(etUsername.getText()) ? etUsername.getText().toString() : null;
         String password = Objects.nonNull(etPassword.getText()) ? etPassword.getText().toString() : null;
 
-        retrofitClient.signUpCall(new User(firstName, lastName, email, username, password)
-        ).enqueue(new Callback<User>() {
-            @Override
-            public void onResponse(Call<User> call, Response<User> response) {
-                if (response.isSuccessful()) {
-                    assert response.body() != null;
-                    User user = response.body();
-                    Log.i("User", user.toString());
-                    Toast.makeText(getContext(), "User registered!", Toast.LENGTH_LONG).show();
-                    NavHostFragment
-                            .findNavController(SignUpFragment.this)
-                            .navigate(R.id.action_SecondFragment_to_FirstFragment);
-                } else {
-                    Toast.makeText(getContext(), response.message(), Toast.LENGTH_LONG).show();
-                    new Exception("Request failed, code: " + response.code()).printStackTrace();
-                }
-            }
-
-            @Override
-            public void onFailure(Call<User> call, Throwable t) {
-                try {
-                    throw t;
-                } catch (Throwable throwable) {
-                    throwable.printStackTrace();
-                }
-            }
+        retrofitClient.signUpCall(new User(firstName, lastName, email, username, password)).subscribe(user -> {
+            Log.i("User", user.toString());
+            NavHostFragment
+                    .findNavController(SignUpFragment.this)
+                    .navigate(R.id.action_SecondFragment_to_FirstFragment);
         });
     }
 
