@@ -13,5 +13,6 @@ public abstract class DataClsVH <DC extends DataClass> extends RecyclerView.View
         super(itemView);
     }
 
+    public abstract void toggleVisibility(int visibility);
     public abstract void onBind(DC dataClass);
 }
