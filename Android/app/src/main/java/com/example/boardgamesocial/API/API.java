@@ -33,6 +33,7 @@ import retrofit2.http.Url;
 public interface API {
     String BASE_URL_LOCAL = "http://10.0.2.2:8000/";
     String BASE_URL_TESTS = "http://0.0.0.0:8000/";
+    String BASE_URL_DEV = "https://boardgamesocial.herokuapp.com/";
 
     HashMap<Class<?>, String> urlMap = new HashMap<Class<?>, String>() {{
         put(User.class, "api/user/");
