@@ -83,9 +83,6 @@ public class HomePostFragment extends Fragment implements DataClsAdapter.OnItemL
         List<Post> posts = new ArrayList<>();
         DataClsAdapter<Post, PostVH> dataClsAdapter = new DataClsAdapter<>(getActivity(), posts, Post.class, this);
         recyclerView.setAdapter(dataClsAdapter);
-        recyclerView.setOnClickListener(recyclerItemView -> {
-            Toast.makeText(getContext(), "This should start new Fragment", Toast.LENGTH_LONG).show();
-        });
 
         DataClsVM dataClsVM = DataClsVM.getInstance();
         dataClsVM.getMutableLiveData(Post.class, new HashMap<>()).observe(getViewLifecycleOwner(), newPosts -> {
