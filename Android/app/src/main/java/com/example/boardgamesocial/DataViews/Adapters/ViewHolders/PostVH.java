@@ -11,20 +11,21 @@ import android.widget.TextView;
 import com.example.boardgamesocial.API.RetrofitClient;
 import com.example.boardgamesocial.DataClasses.Post;
 import com.example.boardgamesocial.DataClasses.User;
+import com.example.boardgamesocial.DataViews.Adapters.DataClsAdapter;
 import com.example.boardgamesocial.R;
 
 import java.util.HashMap;
 import java.util.List;
 
-public class PostVH extends DataClsVH<Post> {
+public class PostVH extends DataClsVH<Post> implements View.OnClickListener {
     private final TextView textViewUsername;
     private final TextView textViewPostType;
     private final TextView textViewPostBody;
     private final TextView itemNumberLikes;
     private final ImageView likeImg;
 
-    public PostVH(View postView) {
-        super(postView);
+    public PostVH(View postView, DataClsAdapter.OnItemListener onItemListener) {
+        super(postView, onItemListener);
         textViewUsername = postView.findViewById(R.id.item_poster);
         textViewPostType = postView.findViewById(R.id.item_type);
         textViewPostBody = postView.findViewById(R.id.item_body);

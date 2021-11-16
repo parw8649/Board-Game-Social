@@ -8,15 +8,12 @@ import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
-import androidx.lifecycle.Observer;
-import androidx.lifecycle.ViewModelProviders;
+import androidx.navigation.fragment.NavHostFragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.example.boardgamesocial.DataClasses.DataClass;
 import com.example.boardgamesocial.DataClasses.Post;
 import com.example.boardgamesocial.DataViews.Adapters.DataClsAdapter;
-import com.example.boardgamesocial.DataViews.Adapters.ViewHolders.DataClsVH;
 import com.example.boardgamesocial.DataViews.Adapters.ViewHolders.PostVH;
 import com.example.boardgamesocial.DataViews.DataClsVM;
 import com.example.boardgamesocial.R;
@@ -24,12 +21,10 @@ import com.example.boardgamesocial.databinding.FragmentHomePostBinding;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
 import java.util.ArrayList;
-import java.util.Collection;
-import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 
-public class HomePostFragment extends Fragment {
+public class HomePostFragment extends Fragment implements DataClsAdapter.OnItemListener {
 
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
@@ -85,7 +80,7 @@ public class HomePostFragment extends Fragment {
         RecyclerView recyclerView = view.findViewById(R.id.postFeed_recyclerView);
         recyclerView.setLayoutManager(new LinearLayoutManager(this.getContext()));
         List<Post> posts = new ArrayList<>();
-        DataClsAdapter<Post, PostVH> dataClsAdapter = new DataClsAdapter<>(getActivity(), posts, Post.class);
+        DataClsAdapter<Post, PostVH> dataClsAdapter = new DataClsAdapter<>(getActivity(), posts, Post.class, this);
         recyclerView.setAdapter(dataClsAdapter);
         recyclerView.setOnClickListener(recyclerItemView -> {
             Toast.makeText(getContext(), "This should start new Fragment", Toast.LENGTH_LONG).show();
@@ -104,4 +99,9 @@ public class HomePostFragment extends Fragment {
         binding = null;
     }
 
+    @Override
+    public void onItemClick(int position) {
+        // TODO: add fragment transition here
+        Toast.makeText(getContext(),"Item clicked", Toast.LENGTH_LONG).show();
+    }
 }

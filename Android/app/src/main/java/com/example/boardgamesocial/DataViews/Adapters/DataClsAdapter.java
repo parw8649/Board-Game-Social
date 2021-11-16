@@ -26,6 +26,7 @@ import java.util.Objects;
 
 public class DataClsAdapter <DC extends DataClass, VH extends DataClsVH<DC>> extends RecyclerView.Adapter<VH> {
     private final Activity activity;
+    private final OnItemListener onItemListener;
     private List<DC> objectList;
     private Class<DC> cls;
 
@@ -33,10 +34,11 @@ public class DataClsAdapter <DC extends DataClass, VH extends DataClsVH<DC>> ext
         put(Post.class, PostVH::new);
     }};
 
-    public DataClsAdapter(Activity activity, List<DC> objectList, Class<DC> cls) {
+    public DataClsAdapter(Activity activity, List<DC> objectList, Class<DC> cls, OnItemListener onItemListener) {
         this.activity = activity;
         this.objectList = objectList;
         this.cls = cls;
+        this.onItemListener = onItemListener;
     }
 
     public void setCls(Class<DC> cls) {
@@ -51,7 +53,7 @@ public class DataClsAdapter <DC extends DataClass, VH extends DataClsVH<DC>> ext
     @Override
     public VH onCreateViewHolder(ViewGroup parent, int viewType) {
         View itemView = LayoutInflater.from(parent.getContext()).inflate(R.layout.post_item, parent,false);
-        return (VH) Objects.requireNonNull(VH_MAP.get(cls)).create(itemView);
+        return (VH) Objects.requireNonNull(VH_MAP.get(cls)).create(itemView, onItemListener);
     }
 
     @Override
@@ -63,5 +65,9 @@ public class DataClsAdapter <DC extends DataClass, VH extends DataClsVH<DC>> ext
     @Override
     public int getItemCount() {
         return objectList.size();
+    }
+
+    public interface OnItemListener {
+        void onItemClick(int position);
     }
 }
