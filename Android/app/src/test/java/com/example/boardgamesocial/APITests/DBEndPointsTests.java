@@ -13,9 +13,9 @@ import org.junit.After;
 import org.junit.BeforeClass;
 import org.junit.Test;
 
+import com.example.boardgamesocial.API.APIMode;
 import com.example.boardgamesocial.API.HeaderInterceptor;
 import com.example.boardgamesocial.API.RetrofitClient;
-import com.example.boardgamesocial.API.UrlToggle;
 import com.example.boardgamesocial.APITests.DBTestStage.ConsoleColor;
 import com.example.boardgamesocial.APITests.DBTestStage.StageAction;
 import com.example.boardgamesocial.APITests.DBTestStage.StageSettings;
@@ -39,6 +39,7 @@ import com.google.gson.JsonObject;
 
 import java.io.IOException;
 import java.lang.reflect.Field;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
@@ -135,11 +136,13 @@ public class DBEndPointsTests {
     private <DC extends DataClass> void createContextObject(DC object, Map<String, String> filter) throws IOException {
         Log.d(CONTEXT_OBJECTS_TAG, String.format("Creating Object %s", object));
         contextObjects.put(object, filter);
-        retrofitClient.postCall(object.getClass(), object).execute();
+        retrofitClient.postCall(object.getClass(), object).subscribe();
     }
 
     private <DC extends DataClass> void deleteContextObject(Class<DC> cls, Map<String, String> filter) throws IOException, NoSuchFieldException, IllegalAccessException {
-        List<DC> foundObjects = getObjectList(retrofitClient.getCall(cls, filter).execute().body(), cls);
+        List<DC> foundObjects = new ArrayList<>();
+        retrofitClient.getCall(cls, filter)
+                .subscribe(jsonArray -> foundObjects.addAll(getObjectList(jsonArray, cls)));
 
         Field idField = cls.getDeclaredField("id");
         idField.setAccessible(true);
@@ -147,12 +150,12 @@ public class DBEndPointsTests {
         Log.d(CONTEXT_OBJECTS_TAG, String.format("Deleting Object id:%s | %s", idField.get(foundObjects.get(0)), filter));
         retrofitClient.deleteCall(cls, new HashMap<String, String>(){{
             put("id", String.valueOf(idField.get(foundObjects.get(0))));
-        }}).execute();
+        }}).subscribe();
     }
 
     @BeforeClass
     public static void beforeClass() {
-        RetrofitClient.urlToggle = UrlToggle.TEST;
+        RetrofitClient.apiMode = APIMode.TEST;
         retrofitClient = RetrofitClient.getClient();
         retrofitClient.setAuthToken(token);
     }
@@ -209,17 +212,11 @@ public class DBEndPointsTests {
             createContextObject(testUser, new HashMap<String, String>(){{
                 put("username", testUser.getUsername());
             }});
-            Event testEvent = new Event(
-                    "testEventRetrofitN",
-                    getObjectList(
-                            retrofitClient.getCall(
-                                    User.class,
-                                    new HashMap<String, String>(){{
-                                        put("username", testUser.getUsername());
-                                    }}
-                            ).execute().body(), User.class
-                    ).get(0).getId()
-            );
+            Event testEvent = new Event("testEventRetrofitN", -1);
+            retrofitClient.getCall(User.class, new HashMap<String, String>(){{
+                        put("username", testUser.getUsername());
+                    }})
+                    .subscribe(jsonArray -> testEvent.setHostUserId(getObjectList(jsonArray, User.class).get(0).getId()));
             Event testEventModified = new Event("testEventRetrofitN-MOD", testEvent.getHostUserId());
             StageSettings<Event> stageSettings = new StageSettings<>(
                     getGenericActionMap(
@@ -263,17 +260,14 @@ public class DBEndPointsTests {
                 put("username", testUser.getUsername());
             }});
             Post testPost = new Post(
-                    getObjectList(
-                            retrofitClient.getCall(
-                                    User.class,
-                                    new HashMap<String, String>(){{
-                                        put("username", testUser.getUsername());
-                                    }}
-                            ).execute().body(), User.class
-                    ).get(0).getId(),
+                    -1,
                     "testPostRetrofitB",
                     "testPostRetrofitT"
             );
+            retrofitClient.getCall(User.class, new HashMap<String, String>(){{
+                        put("username", testUser.getUsername());
+                    }})
+                    .subscribe(jsonArray -> testPost.setUserId(getObjectList(jsonArray, User.class).get(0).getId()));
             Post testPostModified = new Post(
                     testPost.getUserId(),
                     "testPostRetrofitB-MOD",
@@ -367,24 +361,15 @@ public class DBEndPointsTests {
             createContextObject(testUserModified, new HashMap<String, String>(){{
                 put("username", testUserModified.getUsername());
             }});
-            UserToUser testUserToUser = new UserToUser(
-                    getObjectList(
-                            retrofitClient.getCall(
-                                    User.class,
-                                    new HashMap<String, String>(){{
-                                        put("username", testUser.getUsername());
-                                    }}
-                            ).execute().body(), User.class
-                    ).get(0).getId(),
-                    getObjectList(
-                            retrofitClient.getCall(
-                                    User.class,
-                                    new HashMap<String, String>(){{
-                                        put("username", testUserModified.getUsername());
-                                    }}
-                            ).execute().body(), User.class
-                    ).get(0).getId()
-            );
+            UserToUser testUserToUser = new UserToUser(-1, -1);
+            retrofitClient.getCall(User.class, new HashMap<String, String>(){{
+                        put("username", testUser.getUsername());
+                    }})
+                    .subscribe(jsonArray -> testUserToUser.setUserOneId(getObjectList(jsonArray, User.class).get(0).getId()));
+            retrofitClient.getCall(User.class, new HashMap<String, String>(){{
+                        put("username", testUserModified.getUsername());
+                    }})
+                    .subscribe(jsonArray -> testUserToUser.setUserTwoId(getObjectList(jsonArray, User.class).get(0).getId()));
             Map<TestStage, StageAction> actionMap = getGenericActionMap(
                     UserToUser.class,
                     Arrays.asList(
@@ -427,25 +412,15 @@ public class DBEndPointsTests {
             createContextObject(testUserModified, new HashMap<String, String>(){{
                 put("username", testUserModified.getUsername());
             }});
-            Message testMessage = new Message(
-                    getObjectList(
-                            retrofitClient.getCall(
-                                    User.class,
-                                    new HashMap<String, String>(){{
-                                        put("username", testUser.getUsername());
-                                    }}
-                            ).execute().body(), User.class
-                    ).get(0).getId(),
-                    getObjectList(
-                            retrofitClient.getCall(
-                                    User.class,
-                                    new HashMap<String, String>(){{
-                                        put("username", testUserModified.getUsername());
-                                    }}
-                            ).execute().body(), User.class
-                    ).get(0).getId(),
-                    "testMessageRetrofitC"
-            );
+            Message testMessage = new Message(-1, -1, "testMessageRetrofitC");
+            retrofitClient.getCall(User.class, new HashMap<String, String>(){{
+                        put("username", testUser.getUsername());
+                    }})
+                    .subscribe(jsonArray -> testMessage.setSenderId(getObjectList(jsonArray, User.class).get(0).getId()));
+            retrofitClient.getCall(User.class, new HashMap<String, String>(){{
+                        put("username", testUserModified.getUsername());
+                    }})
+                    .subscribe(jsonArray -> testMessage.setReceiverId(getObjectList(jsonArray, User.class).get(0).getId()));
             Message testMessageModified = new Message(
                     testMessage.getSenderId(),
                     testMessage.getReceiverId(),
@@ -494,24 +469,15 @@ public class DBEndPointsTests {
             createContextObject(testUser, new HashMap<String, String>(){{
                 put("username", testUser.getUsername());
             }});
-            EventToUser testEventToUser = new EventToUser(
-                    getObjectList(
-                            retrofitClient.getCall(
-                                    User.class,
-                                    new HashMap<String, String>(){{
-                                        put("username", testUser.getUsername());
-                                    }}
-                            ).execute().body(), User.class
-                    ).get(0).getId(),
-                    getObjectList(
-                            retrofitClient.getCall(
-                                    Event.class,
-                                    new HashMap<String, String>(){{
-                                        put("name", "Admin Event");
-                                    }}
-                            ).execute().body(), Event.class
-                    ).get(0).getId()
-            );
+            EventToUser testEventToUser = new EventToUser(-1, -1);
+            retrofitClient.getCall(User.class, new HashMap<String, String>(){{
+                        put("username", testUser.getUsername());
+                    }})
+                    .subscribe(jsonArray -> testEventToUser.setUserId(getObjectList(jsonArray, User.class).get(0).getId()));
+            retrofitClient.getCall(Event.class, new HashMap<String, String>(){{
+                        put("name", "Admin Event");
+                    }})
+                    .subscribe(jsonArray -> testEventToUser.setEventId(getObjectList(jsonArray, Event.class).get(0).getId()));
             Map<TestStage, StageAction> actionMap = getGenericActionMap(
                     EventToUser.class,
                     Arrays.asList(
@@ -551,25 +517,15 @@ public class DBEndPointsTests {
             createContextObject(testUser, new HashMap<String, String>(){{
                 put("username", testUser.getUsername());
             }});
-            Comment testComment = new Comment(
-                    getObjectList(
-                            retrofitClient.getCall(
-                                    User.class,
-                                    new HashMap<String, String>(){{
-                                        put("username", testUser.getUsername());
-                                    }}
-                            ).execute().body(), User.class
-                    ).get(0).getId(),
-                    getObjectList(
-                            retrofitClient.getCall(
-                                    Post.class,
-                                    new HashMap<String, String>(){{
-                                        put("postBody", "Admin Post Body");
-                                    }}
-                            ).execute().body(), Post.class
-                    ).get(0).getId(),
-                    "testCommentRetrofitC"
-            );
+            Comment testComment = new Comment(-1, -1, "testCommentRetrofitC");
+            retrofitClient.getCall(User.class, new HashMap<String, String>(){{
+                        put("username", testUser.getUsername());
+                    }})
+                    .subscribe(jsonArray -> testComment.setUserId(getObjectList(jsonArray, User.class).get(0).getId()));
+            retrofitClient.getCall(Post.class, new HashMap<String, String>(){{
+                        put("postBody", "Admin Post Body");
+                    }})
+                    .subscribe(jsonArray -> testComment.setPostId(getObjectList(jsonArray, Post.class).get(0).getId()));
             Comment testCommentModified = new Comment(
                     testComment.getUserId(),
                     testComment.getPostId(),
@@ -621,25 +577,15 @@ public class DBEndPointsTests {
             createContextObject(testGame, new HashMap<String, String>(){{
                 put("gameTitle", testGame.getGameTitle());
             }});
-            GameToUser testGameToUser = new GameToUser(
-                    getObjectList(
-                            retrofitClient.getCall(
-                                    User.class,
-                                    new HashMap<String, String>(){{
-                                        put("username", testUser.getUsername());
-                                    }}
-                            ).execute().body(), User.class
-                    ).get(0).getId(),
-                    getObjectList(
-                            retrofitClient.getCall(
-                                    Game.class,
-                                    new HashMap<String, String>(){{
-                                        put("gameTitle", testGame.getGameTitle());
-                                    }}
-                            ).execute().body(), Game.class
-                    ).get(0).getId(),
-                    true
-            );
+            GameToUser testGameToUser = new GameToUser(-1, -1, true);
+            retrofitClient.getCall(User.class, new HashMap<String, String>(){{
+                        put("username", testUser.getUsername());
+                    }})
+                    .subscribe(jsonArray -> testGameToUser.setUserId(getObjectList(jsonArray, User.class).get(0).getId()));
+            retrofitClient.getCall(Game.class, new HashMap<String, String>(){{
+                        put("gameTitle", testGame.getGameTitle());
+                    }})
+                    .subscribe(jsonArray -> testGameToUser.setGameId(getObjectList(jsonArray, Game.class).get(0).getId()));
             GameToUser testGameToUserModified = new GameToUser(
                     testGameToUser.getUserId(),
                     testGameToUser.getGameId(),
@@ -688,25 +634,15 @@ public class DBEndPointsTests {
             createContextObject(testGame, new HashMap<String, String>(){{
                 put("gameTitle", testGame.getGameTitle());
             }});
-            HostedGame testHostedGame = new HostedGame(
-                    getObjectList(
-                            retrofitClient.getCall(
-                                    Event.class,
-                                    new HashMap<String, String>(){{
-                                        put("name", "Admin Event");
-                                    }}
-                            ).execute().body(), Event.class
-                    ).get(0).getId(),
-                    getObjectList(
-                            retrofitClient.getCall(
-                                    Game.class,
-                                    new HashMap<String, String>(){{
-                                        put("gameTitle", testGame.getGameTitle());
-                                    }}
-                            ).execute().body(), Game.class
-                    ).get(0).getId(),
-                    1
-            );
+            HostedGame testHostedGame = new HostedGame(-1, -1, 1);
+            retrofitClient.getCall(Event.class, new HashMap<String, String>(){{
+                        put("name", "Admin Event");
+                    }})
+                    .subscribe(jsonArray -> testHostedGame.setEventId(getObjectList(jsonArray, Event.class).get(0).getId()));
+            retrofitClient.getCall(Game.class, new HashMap<String, String>(){{
+                        put("gameTitle", testGame.getGameTitle());
+                    }})
+                    .subscribe(jsonArray -> testHostedGame.setGameId(getObjectList(jsonArray, Game.class).get(0).getId()));
             HostedGame testHostedGameModified = new HostedGame(
                     testHostedGame.getEventId(),
                     testHostedGame.getGameId(),
@@ -758,25 +694,15 @@ public class DBEndPointsTests {
             createContextObject(testGame, new HashMap<String, String>(){{
                 put("gameTitle", testGame.getGameTitle());
             }});
-            Review testReview = new Review(
-                    getObjectList(
-                            retrofitClient.getCall(
-                                    User.class,
-                                    new HashMap<String, String>(){{
-                                        put("username", testUser.getUsername());
-                                    }}
-                            ).execute().body(), User.class
-                    ).get(0).getId(),
-                    getObjectList(
-                            retrofitClient.getCall(
-                                    Game.class,
-                                    new HashMap<String, String>(){{
-                                        put("gameTitle", testGame.getGameTitle());
-                                    }}
-                            ).execute().body(), Game.class
-                    ).get(0).getId(),
-                    "testReviewRetrofitC"
-            );
+            Review testReview = new Review(-1, -1, "testReviewRetrofitC");
+            retrofitClient.getCall(User.class, new HashMap<String, String>(){{
+                        put("username", testUser.getUsername());
+                    }})
+                    .subscribe(jsonArray -> testReview.setUserId(getObjectList(jsonArray, User.class).get(0).getId()));
+            retrofitClient.getCall(Game.class, new HashMap<String, String>(){{
+                        put("gameTitle", testGame.getGameTitle());
+                    }})
+                    .subscribe(jsonArray -> testReview.setGameId(getObjectList(jsonArray, Game.class).get(0).getId()));
             Review testReviewModified = new Review(
                     testReview.getUserId(),
                     testReview.getGameId(),
@@ -828,24 +754,15 @@ public class DBEndPointsTests {
             createContextObject(testGame, new HashMap<String, String>(){{
                 put("gameTitle", testGame.getGameTitle());
             }});
-            HostedGameToUser testHostedGameToUser = new HostedGameToUser(
-                    getObjectList(
-                            retrofitClient.getCall(
-                                    User.class,
-                                    new HashMap<String, String>(){{
-                                        put("username", testUser.getUsername());
-                                    }}
-                            ).execute().body(), User.class
-                    ).get(0).getId(),
-                    getObjectList(
-                            retrofitClient.getCall(
-                                    Game.class,
-                                    new HashMap<String, String>(){{
-                                        put("gameTitle", testGame.getGameTitle());
-                                    }}
-                            ).execute().body(), Game.class
-                    ).get(0).getId()
-            );
+            HostedGameToUser testHostedGameToUser = new HostedGameToUser(-1, -1);
+            retrofitClient.getCall(User.class, new HashMap<String, String>(){{
+                        put("username", testUser.getUsername());
+                    }})
+                    .subscribe(jsonArray -> testHostedGameToUser.setUserId(getObjectList(jsonArray, User.class).get(0).getId()));
+            retrofitClient.getCall(Game.class, new HashMap<String, String>(){{
+                        put("gameTitle", testGame.getGameTitle());
+                    }})
+                    .subscribe(jsonArray -> testHostedGameToUser.setGameId(getObjectList(jsonArray, Game.class).get(0).getId()));
             Map<TestStage, StageAction> actionMap = getGenericActionMap(
                     HostedGameToUser.class,
                     Arrays.asList(

@@ -23,7 +23,10 @@ import java.util.List;
 import java.util.Map;
 
 import io.reactivex.Flowable;
+import io.reactivex.Observable;
+import io.reactivex.Single;
 import retrofit2.Call;
+import retrofit2.Response;
 import retrofit2.http.Body;
 import retrofit2.http.DELETE;
 import retrofit2.http.GET;
@@ -34,10 +37,10 @@ import retrofit2.http.Url;
 
 public interface API {
 
-    Map<UrlToggle, String> BASE_URL = new HashMap<UrlToggle, String>(){{
-       put(UrlToggle.DEV, "http://10.0.2.2:8000/");
-       put(UrlToggle.PROD, "add-heroku-url-here");
-       put(UrlToggle.TEST, "http://0.0.0.0:8000/");
+    Map<APIMode, String> BASE_URL = new HashMap<APIMode, String>(){{
+       put(APIMode.DEV, "http://10.0.2.2:8000/");
+       put(APIMode.PROD, "add-heroku-url-here");
+       put(APIMode.TEST, "http://0.0.0.0:8000/");
     }};
 
     HashMap<Class<?>, String> URL_MAP = new HashMap<Class<?>, String>() {{
@@ -56,40 +59,40 @@ public interface API {
     }};
 
     @POST("sign_up/")
-    Flowable<User> signUpCall(
+    Observable<User> signUpCall(
             @Body User user
     );
 
     @POST("login/")
-    Flowable<Token> loginCall(
+    Observable<Token> loginCall(
             @Body User user
     );
 
     @GET("logout/")
-    Flowable<JsonObject> logoutCall(
+    Observable<JsonObject> logoutCall(
             @QueryMap Map<String, String> userIdMap
     );
 
     @GET
-    Flowable<JsonArray> getCall(
+    Observable<JsonArray> getCall(
             @Url String url,
             @QueryMap Map<String, String> filters
     );
 
     @POST
-    Flowable<JsonObject> postCall(
+    Observable<JsonObject> postCall(
             @Url String url,
             @Body Object object
     );
 
     @PUT
-    Flowable<JsonObject> putCall(
+    Observable<JsonObject> putCall(
             @Url String url,
             @Body Map<String, String> filters
     );
 
     @DELETE
-    Flowable<JsonArray> deleteCall(
+    Observable<JsonArray> deleteCall(
             @Url String url,
             @QueryMap Map<String, String> filters
     );

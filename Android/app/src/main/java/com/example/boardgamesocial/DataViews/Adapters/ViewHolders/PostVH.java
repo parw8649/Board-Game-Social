@@ -1,5 +1,6 @@
 package com.example.boardgamesocial.DataViews.Adapters.ViewHolders;
 
+import static com.example.boardgamesocial.API.RetrofitClient.getObject;
 import static com.example.boardgamesocial.API.RetrofitClient.getObjectList;
 
 import android.app.Activity;
@@ -58,14 +59,19 @@ public class PostVH extends DataClsVH<Post> {
                     textViewPostBody.setText(post.getPostBody());
                     itemNumberLikes.setText(String.valueOf(post.getLikes()));
                 });
-                likeImg.setOnClickListener(view ->
-                    retrofitClient.putCall(Post.class, new HashMap<String, String>(){{
-                        put("id", String.valueOf(post.getId()));
-                        put("userId", String.valueOf(user.getId()));
-                        put("postBody", String.valueOf(post.getPostBody()));
-                        put("postType", String.valueOf(post.getPostType()));
-                        put("likes", String.valueOf(post.getLikes()+1));
-                    }})
+                likeImg.setOnClickListener(view -> {
+                        itemNumberLikes.setText(String.valueOf(post.getLikes() + 1));
+                        retrofitClient.putCall(Post.class, new HashMap<String, String>() {{
+                            put("id", String.valueOf(post.getId()));
+                            put("userId", String.valueOf(user.getId()));
+                            put("postBody", String.valueOf(post.getPostBody()));
+                            put("postType", String.valueOf(post.getPostType()));
+                            put("likes", String.valueOf(post.getLikes() + 1));
+                        }}).subscribe(jsonObject -> {
+                            Post putPost = getObject(jsonObject, Post.class);
+                            post.setLikes(putPost.getLikes());
+                        });
+                    }
                 );
             }
         });

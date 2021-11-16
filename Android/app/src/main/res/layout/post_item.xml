@@ -23,16 +23,16 @@
 <!--        TODO: remove that button so it does not break layout-->
         <Button
             android:id="@+id/item_button"
-            android:visibility="invisible"
-            android:clickable="false"
             android:layout_width="@dimen/item_more_btn_width"
             android:layout_height="wrap_content"
             android:layout_alignParentEnd="true"
             android:backgroundTint="@color/blue_yonder"
+            android:clickable="false"
             android:onClick="viewPost"
             android:padding="@dimen/btn_padding_slim"
             android:text="@string/item_button_text"
-            android:textAppearance="@style/TextAppearance.AppCompat.Small" />
+            android:textAppearance="@style/TextAppearance.AppCompat.Small"
+            android:visibility="invisible" />
 
         <LinearLayout
             android:id="@+id/item_name_and_type"

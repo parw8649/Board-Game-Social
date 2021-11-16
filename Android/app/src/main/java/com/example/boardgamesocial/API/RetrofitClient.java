@@ -20,9 +20,12 @@ import java.util.Map;
 import java.util.Objects;
 
 import io.reactivex.Flowable;
+import io.reactivex.Observable;
+import io.reactivex.Single;
 import io.reactivex.observers.DisposableObserver;
 import io.reactivex.schedulers.Schedulers;
 import okhttp3.OkHttpClient;
+import retrofit2.Response;
 import retrofit2.Call;
 import retrofit2.Retrofit;
 import retrofit2.adapter.rxjava2.RxJava2CallAdapterFactory;
@@ -32,7 +35,7 @@ public class RetrofitClient {
 
     public static final String TAG = "RetrofitClient";
 
-    public static UrlToggle urlToggle = UrlToggle.DEV;
+    public static APIMode apiMode = APIMode.DEV;
     private final API api;
     private static RetrofitClient retrofitClient;
 
@@ -41,10 +44,11 @@ public class RetrofitClient {
                 .Builder()
                 .addInterceptor(new HeaderInterceptor())
                 .addInterceptor(new LoggingInterceptor())
+                .addInterceptor(new ValidatorInterceptor())
                 .build();
 
         Retrofit retrofit = new Retrofit.Builder()
-                .baseUrl(Objects.requireNonNull(API.BASE_URL.get(urlToggle)))
+                .baseUrl(Objects.requireNonNull(API.BASE_URL.get(apiMode)))
                 .addConverterFactory(GsonConverterFactory.create())
                 .addCallAdapterFactory(RxJava2CallAdapterFactory.create())
                 .client(httpClient)
@@ -81,32 +85,39 @@ public class RetrofitClient {
         HeaderInterceptor.token.setToken(token.getToken());
     }
 
-    public Flowable<User> signUpCall(User user){
-        return api.signUpCall(user).subscribeOn(Schedulers.io());
+    public Observable<User> signUpCall(User user){
+        Observable<User> observable = api.signUpCall(user);
+        return (apiMode == APIMode.TEST) ? observable : observable.subscribeOn(Schedulers.io());
     }
 
-    public Flowable<Token> loginCall(User user){
-        return api.loginCall(user).subscribeOn(Schedulers.io());
+    public Observable<Token> loginCall(User user){
+        Observable<Token> observable = api.loginCall(user);
+        return (apiMode == APIMode.TEST) ? observable : observable.subscribeOn(Schedulers.io());
     }
 
-    public Flowable<JsonObject> logoutCall(Map<String, String> userIdMap){
-        return api.logoutCall(userIdMap).subscribeOn(Schedulers.io());
+    public Observable<JsonObject> logoutCall(Map<String, String> userIdMap){
+        Observable<JsonObject> observable = api.logoutCall(userIdMap);
+        return (apiMode == APIMode.TEST) ? observable : observable.subscribeOn(Schedulers.io());
     }
 
-    public Flowable<JsonArray> getCall(Class<?> cls, Map<String, String> filters){
-        return api.getCall(URL_MAP.get(cls), filters).subscribeOn(Schedulers.io());
+    public Observable<JsonArray> getCall(Class<?> cls, Map<String, String> filters){
+        Observable<JsonArray> observable = api.getCall(URL_MAP.get(cls), filters);
+        return (apiMode == APIMode.TEST) ? observable : observable.subscribeOn(Schedulers.io());
     }
 
-    public Flowable<JsonObject> postCall(Class<?> cls, Object object){
-        return api.postCall(URL_MAP.get(cls), object).subscribeOn(Schedulers.io());
+    public Observable<JsonObject> postCall(Class<?> cls, Object object){
+        Observable<JsonObject> observable = api.postCall(URL_MAP.get(cls), object);
+        return (apiMode == APIMode.TEST) ? observable : observable.subscribeOn(Schedulers.io());
     }
 
-    public Flowable<JsonObject> putCall(Class<?> cls, Map<String, String> filters){
-        return api.putCall(URL_MAP.get(cls), filters).subscribeOn(Schedulers.io());
+    public Observable<JsonObject> putCall(Class<?> cls, Map<String, String> filters){
+        Observable<JsonObject> observable = api.putCall(URL_MAP.get(cls), filters);
+        return (apiMode == APIMode.TEST) ? observable : observable.subscribeOn(Schedulers.io());
     }
 
-    public Flowable<JsonArray> deleteCall(Class<?> cls, Map<String, String> filters){
-        return api.deleteCall(URL_MAP.get(cls), filters).subscribeOn(Schedulers.io());
+    public Observable<JsonArray> deleteCall(Class<?> cls, Map<String, String> filters){
+        Observable<JsonArray> observable = api.deleteCall(URL_MAP.get(cls), filters);
+        return (apiMode == APIMode.TEST) ? observable : observable.subscribeOn(Schedulers.io());
     }
 
 

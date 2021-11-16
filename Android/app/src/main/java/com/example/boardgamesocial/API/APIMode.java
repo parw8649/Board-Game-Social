@@ -1,6 +1,6 @@
 package com.example.boardgamesocial.API;
 
-public enum UrlToggle {
+public enum APIMode {
     DEV,
     PROD,
     TEST
