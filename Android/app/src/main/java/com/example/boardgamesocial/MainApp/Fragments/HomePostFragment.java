@@ -26,6 +26,8 @@ import java.util.List;
 
 public class HomePostFragment extends Fragment implements DataClsAdapter.OnItemListener {
 
+    public static final String TAG = "HomePostFragment";
+
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
     private static final String ARG_PARAM1 = "param1";
@@ -100,7 +102,6 @@ public class HomePostFragment extends Fragment implements DataClsAdapter.OnItemL
 
     @Override
     public void onItemClick(int position) {
-        // TODO: add fragment transition here
         NavHostFragment.findNavController(HomePostFragment.this)
                 .navigate(R.id.action_HomePostFragment_to_singlePostFragment);
         Toast.makeText(getContext(),"Item clicked", Toast.LENGTH_LONG).show();
