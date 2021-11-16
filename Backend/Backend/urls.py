@@ -17,7 +17,8 @@ from django.contrib import admin
 from django.urls import path, include
 from rest_framework.authtoken.views import obtain_auth_token
 from BoardGameSocialAPI.views import *
-
+from django.conf.urls.static import static
+from django.conf import settings
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('login/', obtain_auth_token, name="login"),
@@ -37,4 +38,4 @@ urlpatterns = [
         path('review/', ReviewView.as_view(), name="review"),
         path('hosted_game_to_user/', HostedGameToUserView.as_view(), name="hosted_game_to_user"),
     ]))
-]
+]+ static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)
