@@ -14,6 +14,7 @@ import com.example.boardgamesocial.DataClasses.Token;
 import com.example.boardgamesocial.DataClasses.User;
 import com.google.gson.JsonArray;
 
+import org.junit.Assert;
 import org.junit.BeforeClass;
 import org.junit.Test;
 
@@ -24,6 +25,10 @@ import java.util.List;
 import io.reactivex.Scheduler;
 import io.reactivex.functions.Action;
 import io.reactivex.schedulers.Schedulers;
+
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertTrue;
 
 
 public class RequestChainTests {
@@ -42,9 +47,36 @@ public class RequestChainTests {
         retrofitClient.getCall(User.class, new HashMap<>())
                 .flatMap(jsonArray -> {
                     User user = getObjectList(jsonArray, User.class).get(0);
+                    assertNotNull(user);
                     return retrofitClient.getCall(Post.class, new HashMap<String, String>(){{
                         put("userId", String.valueOf(user.getId()));
                     }});
-                }).subscribe();
+                })
+                .test()
+                .assertNoErrors();
+    }
+
+    @Test
+    public void multiGetCallChainTest() {
+        retrofitClient.getCall(User.class, new HashMap<>())
+                .doOnNext(jsonArray -> {
+                    List<User> userList = getObjectList(jsonArray, User.class);
+                    JsonArray postList = new JsonArray();
+                    for (User user: userList) {
+                        retrofitClient.getCall(Post.class, new HashMap<String, String>(){{
+                                    put("userId", String.valueOf(user.getId()));
+                                }})
+                                .doOnNext(jsonArray2 -> {
+                                    postList.addAll(jsonArray2);
+                                    Log.i(TAG, String.format("multiGetCallChainTest: %s", postList));
+                                    assertFalse(postList.isEmpty());
+                                })
+                                .test()
+                                .assertNoErrors();
+                    }
+                    assertFalse(jsonArray.isEmpty());
+                })
+                .test()
+                .assertNoErrors();
     }
 }
