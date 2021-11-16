@@ -70,8 +70,7 @@ public class HomePostFragment extends Fragment implements DataClsAdapter.OnItemL
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                             Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        binding = FragmentHomePostBinding.inflate(inflater, container, false);
-        return binding.getRoot();
+        return inflater.inflate(R.layout.fragment_home_post, container, false);
     }
 
     public void onViewCreated(@NonNull View view, Bundle savedInstanceState) {
@@ -102,6 +101,8 @@ public class HomePostFragment extends Fragment implements DataClsAdapter.OnItemL
     @Override
     public void onItemClick(int position) {
         // TODO: add fragment transition here
+        NavHostFragment.findNavController(HomePostFragment.this)
+                .navigate(R.id.action_HomePostFragment_to_singlePostFragment);
         Toast.makeText(getContext(),"Item clicked", Toast.LENGTH_LONG).show();
     }
 }
