@@ -1,10 +1,8 @@
 package com.example.boardgamesocial.API;
 
 import static com.example.boardgamesocial.API.API.BASE_URL_LOCAL;
-import static com.example.boardgamesocial.API.API.BASE_URL_TESTS;
 import static com.example.boardgamesocial.API.API.urlMap;
 
-import com.example.boardgamesocial.DataClasses.DataClass;
 import com.example.boardgamesocial.DataClasses.Token;
 import com.example.boardgamesocial.DataClasses.User;
 import com.google.gson.Gson;
@@ -12,22 +10,14 @@ import com.google.gson.JsonArray;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 
-import org.json.JSONArray;
-import org.json.JSONObject;
-
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
-import java.util.Objects;
 
 import okhttp3.OkHttpClient;
 import retrofit2.Call;
 import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
-import retrofit2.http.Body;
-import retrofit2.http.GET;
-import retrofit2.http.POST;
-import retrofit2.http.QueryMap;
 
 public class RetrofitClient {
     private final API api;
@@ -73,8 +63,9 @@ public class RetrofitClient {
         return new Gson().fromJson(jsonObject, cls);
     }
 
-    public void setAuthToken(Token token) {
-        HeaderInterceptor.token.setToken(token.getToken());
+    //Changed from Token Object to String token as SharedPreference is used for user session
+    public void setAuthToken(String token) {
+        HeaderInterceptor.token.setToken(token);
     }
 
     public Call<User> signUpCall(User user){

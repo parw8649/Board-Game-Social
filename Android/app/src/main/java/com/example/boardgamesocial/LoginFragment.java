@@ -14,8 +14,8 @@ import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 import androidx.navigation.fragment.NavHostFragment;
 
-import com.example.boardgamesocial.API.HeaderInterceptor;
 import com.example.boardgamesocial.API.RetrofitClient;
+import com.example.boardgamesocial.DataClasses.Commons.Utils;
 import com.example.boardgamesocial.DataClasses.Token;
 import com.example.boardgamesocial.DataClasses.User;
 import com.example.boardgamesocial.databinding.FragmentLoginBinding;
@@ -34,8 +34,6 @@ public class LoginFragment extends Fragment {
 
     private EditText etUsername, etPassword;
 
-    private Token token;
-
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
 
@@ -45,6 +43,10 @@ public class LoginFragment extends Fragment {
 
     public void onViewCreated(@NonNull View view, Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
+
+        //TODO: Uncomment below line once logout functionality is completed!
+        //Utils.checkForUser(requireContext());
+
         Button signUpBtn = view.findViewById(R.id.btn_signup);
         Button loginBtn = view.findViewById(R.id.btn_login);
         etUsername = view.findViewById(R.id.et_login_username);
@@ -77,12 +79,15 @@ public class LoginFragment extends Fragment {
             public void onResponse(Call<Token> call, Response<Token> response) {
                 if (response.isSuccessful()) {
                     assert response.body() != null;
-                    token = response.body();
+                    Token token = response.body();
                     Log.i("Token", token.toString());
-                    retrofitClient.setAuthToken(token);
+
+                    retrofitClient.setAuthToken(token.getToken());
                     Toast.makeText(getContext(), "Login Successful", Toast.LENGTH_LONG).show();
-                    Intent goToHomePostActivity = HomePostActivity.getIntent(getContext());
-                    startActivity(goToHomePostActivity);
+
+                    Utils.addUserToPreferences(getContext(), token);
+                    Intent goToMainAppActivity = MainAppActivity.getIntent(getContext());
+                    startActivity(goToMainAppActivity);
 
                 } else {
                     Toast.makeText(getContext(), "Unable to log in with provided credentials", Toast.LENGTH_LONG).show();
@@ -99,6 +104,5 @@ public class LoginFragment extends Fragment {
                 }
             }
         });
-
     }
 }

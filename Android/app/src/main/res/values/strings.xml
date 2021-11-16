@@ -23,10 +23,18 @@
     <string name="new_user_sign_up">New user? sign-up!</string>
     <string name="btn_register">register</string>
     <string name="already_a_user_sign_in">Already a user? sign-in!</string>
+
+    <!-- Strings used for Games Collection -->
     <string name="tv_games_collection">Games Collection</string>
-    <string name="game_items_tv_game_title">Game title</string>
-    <string name="game_items_tv_game_genre">Game genre</string>
-    <string name="game_item_tv_game_min_max_players">Min max players</string>
+    <string name="game_items_tv_title">Game title</string>
+    <string name="game_items_tv_genre">Genre</string>
+    <string name="game_item_tv_min_players">Min players: 2</string>
+    <string name="game_item_tv_max_players">Max players: 4</string>
+    <string name="game_item_tv_overall_play_count">Overall play count: 10</string>
+    <string name="game_items_tv_description">Description</string>
+    <string name="game_min_player_text">Min players: %1$d</string>
+    <string name="game_max_player_text">Max players: %1$d</string>
+    <string name="game_overall_play_count_text">Overall play count: %1$d</string>
 
     <string name="title_activity_app">AppActivity</string>
     <string name="title_activity_home_post">HomePostActivity</string>
