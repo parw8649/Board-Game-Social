@@ -32,6 +32,9 @@
     <string name="game_item_tv_max_players">Max players: 4</string>
     <string name="game_item_tv_overall_play_count">Overall play count: 10</string>
     <string name="game_items_tv_description">Description</string>
+    <string name="game_min_player_text">Min players: %1$d</string>
+    <string name="game_max_player_text">Max players: %1$d</string>
+    <string name="game_overall_play_count_text">Overall play count: %1$d</string>
 
     <string name="title_activity_app">AppActivity</string>
     <string name="title_activity_home_post">HomePostActivity</string>
