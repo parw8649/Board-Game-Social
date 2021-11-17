@@ -7,12 +7,13 @@ import com.example.boardgamesocial.DataClasses.DataClass;
 
 import java.io.IOException;
 import java.lang.reflect.Field;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 
-public class StageSettings<T> {
+public class StageSettings<DC extends DataClass> {
     private Map<TestStage, StageAction> stageActionMap;
     private Map<String, String> stageFilterBeforeAdd;
     private Map<String, String> stageFilterAfterAdd;
@@ -21,7 +22,7 @@ public class StageSettings<T> {
     private DataClass stageAddObject;
     private Map<String, String> stageUpdateObject;
     private Map<String, String> stageDeleteObject;
-    private Class<T> dataClass;
+    private Class<DC> dataClass;
     private RetrofitClient retrofit;
 
     public StageSettings(
@@ -32,7 +33,7 @@ public class StageSettings<T> {
             Map<String, String> stageFilterAfterDelete,
             DataClass stageAddObject,
             Map<String, String> stageUpdateObject,
-            Class<T> dataClass,
+            Class<DC> dataClass,
             RetrofitClient retrofit
     ) {
         this.stageActionMap = stageActionMap;
@@ -111,11 +112,11 @@ public class StageSettings<T> {
         this.stageDeleteObject = stageDeleteObject;
     }
 
-    public Class<T> getDataClass() {
+    public Class<DC> getDataClass() {
         return dataClass;
     }
 
-    public void setDataClass(Class<T> dataClass) {
+    public void setDataClass(Class<DC> dataClass) {
         this.dataClass = dataClass;
     }
 
@@ -129,7 +130,9 @@ public class StageSettings<T> {
 
     public void setObjectId() throws IOException, IllegalAccessException, NoSuchFieldException {
         if (!stageDeleteObject.containsKey("id") || !stageUpdateObject.containsKey("id")){
-            List<T> foundObjects = getObjectList(retrofit.getCall(dataClass, stageFilterAfterAdd).execute().body(), dataClass);
+            List<DC> foundObjects = new ArrayList<>();
+            retrofit.getCall(dataClass, stageFilterAfterAdd)
+                    .subscribe(jsonArray -> foundObjects.addAll(getObjectList(jsonArray, dataClass)));
             Field idField = dataClass.getDeclaredField("id");
             idField.setAccessible(true);
             if (!stageDeleteObject.containsKey("id")) {
@@ -143,34 +146,47 @@ public class StageSettings<T> {
 
     public void runStageTests() throws IOException, IllegalAccessException, NoSuchFieldException {
         if (stageActionMap.containsKey(TestStage.GET_TEST_FILTER)){
-            Objects.requireNonNull(stageActionMap.get(TestStage.GET_TEST_FILTER))
-                    .runActions(retrofit.getCall(dataClass, stageFilterBeforeAdd).execute().body());
+            retrofit.getCall(dataClass, stageFilterBeforeAdd)
+                    .subscribe(jsonArray -> Objects.requireNonNull(stageActionMap.get(TestStage.GET_TEST_FILTER))
+                            .runActions(jsonArray));
         }
+
         if (stageActionMap.containsKey(TestStage.POST_TEST)){
-            Objects.requireNonNull(stageActionMap.get(TestStage.POST_TEST))
-                    .runActions(retrofit.postCall(dataClass, stageAddObject).execute().body());
+            retrofit.postCall(dataClass, stageAddObject)
+                    .subscribe(jsonObject -> Objects.requireNonNull(stageActionMap.get(TestStage.POST_TEST))
+                            .runActions(jsonObject));
         }
+
         if (stageActionMap.containsKey(TestStage.GET_TEST_POST)){
-            Objects.requireNonNull(stageActionMap.get(TestStage.GET_TEST_POST))
-                    .runActions(retrofit.getCall(dataClass, stageFilterAfterAdd).execute().body());
+            retrofit.getCall(dataClass, stageFilterAfterAdd)
+                    .subscribe(jsonArray -> Objects.requireNonNull(stageActionMap.get(TestStage.GET_TEST_POST))
+                            .runActions(jsonArray));
         }
+
         if (stageActionMap.containsKey(TestStage.PUT_TEST)){
             setObjectId();
-            Objects.requireNonNull(stageActionMap.get(TestStage.PUT_TEST))
-                    .runActions(retrofit.putCall(dataClass, stageUpdateObject).execute().body());
+            retrofit.putCall(dataClass, stageUpdateObject)
+                    .subscribe(jsonObject -> Objects.requireNonNull(stageActionMap.get(TestStage.PUT_TEST))
+                            .runActions(jsonObject));
         }
+
         if (stageActionMap.containsKey(TestStage.GET_TEST_PUT)){
-            Objects.requireNonNull(stageActionMap.get(TestStage.GET_TEST_PUT))
-                    .runActions(retrofit.getCall(dataClass, stageFilterAfterUpdate).execute().body());
+            retrofit.getCall(dataClass, stageFilterAfterUpdate)
+                    .subscribe(jsonArray -> Objects.requireNonNull(stageActionMap.get(TestStage.GET_TEST_PUT))
+                            .runActions(jsonArray));
         }
+
         if (stageActionMap.containsKey(TestStage.DELETE_TEST)){
             setObjectId();
-            Objects.requireNonNull(stageActionMap.get(TestStage.DELETE_TEST))
-                    .runActions(retrofit.deleteCall(dataClass, stageDeleteObject).execute().body());
+            retrofit.deleteCall(dataClass, stageDeleteObject)
+                    .subscribe(jsonArray -> Objects.requireNonNull(stageActionMap.get(TestStage.DELETE_TEST))
+                            .runActions(jsonArray));
         }
+
         if (stageActionMap.containsKey(TestStage.GET_TEST_DELETE)){
-            Objects.requireNonNull(stageActionMap.get(TestStage.GET_TEST_DELETE))
-                    .runActions(retrofit.getCall(dataClass, stageFilterAfterDelete).execute().body());
+            retrofit.getCall(dataClass, stageFilterAfterDelete)
+                    .subscribe(jsonArray -> Objects.requireNonNull(stageActionMap.get(TestStage.GET_TEST_DELETE))
+                            .runActions(jsonArray));
         }
     }
 

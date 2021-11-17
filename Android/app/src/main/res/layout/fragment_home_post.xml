@@ -5,7 +5,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".MainAppActivity">
+    tools:context=".MainApp.MainAppActivity">
 
     <RelativeLayout
         android:layout_width="match_parent"
@@ -16,7 +16,8 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="8dp"
-            tools:listitem="@layout/item">
+            tools:listitem="@layout/post_item"
+            android:orientation="vertical">
         </androidx.recyclerview.widget.RecyclerView>
     </RelativeLayout>
 </androidx.coordinatorlayout.widget.CoordinatorLayout>

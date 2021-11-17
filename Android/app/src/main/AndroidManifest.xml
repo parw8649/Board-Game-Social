@@ -13,13 +13,13 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.BoardGameSocial" >
         <activity
-            android:name=".MainAppActivity"
+            android:name=".MainApp.MainAppActivity"
             android:exported="true"
             android:label="@string/title_activity_main_app"
             android:theme="@style/Theme.BoardGameSocial.NoActionBar" >
         </activity>
         <activity
-            android:name=".LoginAndSignUpActivity"
+            android:name=".LoginAndSignUp.LoginAndSignUpActivity"
             android:exported="true"
             android:label="@string/title_activity_app"
             android:theme="@style/Theme.BoardGameSocial.NoActionBar" >

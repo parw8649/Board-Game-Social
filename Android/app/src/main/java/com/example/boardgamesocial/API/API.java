@@ -1,5 +1,6 @@
 package com.example.boardgamesocial.API;
 
+
 import com.example.boardgamesocial.DataClasses.Comment;
 import com.example.boardgamesocial.DataClasses.DataClass;
 import com.example.boardgamesocial.DataClasses.Event;
@@ -21,7 +22,11 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import io.reactivex.Flowable;
+import io.reactivex.Observable;
+import io.reactivex.Single;
 import retrofit2.Call;
+import retrofit2.Response;
 import retrofit2.http.Body;
 import retrofit2.http.DELETE;
 import retrofit2.http.GET;
@@ -31,11 +36,14 @@ import retrofit2.http.QueryMap;
 import retrofit2.http.Url;
 
 public interface API {
-    String BASE_URL_LOCAL = "http://10.0.2.2:8000/";
-    String BASE_URL_TESTS = "http://0.0.0.0:8000/";
-    String BASE_URL_DEV = "https://boardgamesocial.herokuapp.com/";
 
-    HashMap<Class<?>, String> urlMap = new HashMap<Class<?>, String>() {{
+    Map<APIMode, String> BASE_URL = new HashMap<APIMode, String>(){{
+       put(APIMode.DEV, "http://10.0.2.2:8000/");
+       put(APIMode.PROD, "https://boardgamesocial.herokuapp.com/");
+       put(APIMode.TEST, "http://0.0.0.0:8000/");
+    }};
+
+    HashMap<Class<?>, String> URL_MAP = new HashMap<Class<?>, String>() {{
         put(User.class, "api/user/");
         put(Event.class, "api/event/");
         put(Post.class, "api/post/");
@@ -51,40 +59,40 @@ public interface API {
     }};
 
     @POST("sign_up/")
-    Call<User> signUpCall(
+    Observable<User> signUpCall(
             @Body User user
     );
 
     @POST("login/")
-    Call<Token> loginCall(
+    Observable<Token> loginCall(
             @Body User user
     );
 
     @GET("logout/")
-    Call<JsonObject> logoutCall(
+    Observable<JsonObject> logoutCall(
             @QueryMap Map<String, String> userIdMap
     );
 
     @GET
-    Call<JsonArray> getCall(
+    Observable<JsonArray> getCall(
             @Url String url,
             @QueryMap Map<String, String> filters
     );
 
     @POST
-    Call<JsonObject> postCall(
+    Observable<JsonObject> postCall(
             @Url String url,
             @Body Object object
     );
 
     @PUT
-    Call<JsonObject> putCall(
+    Observable<JsonObject> putCall(
             @Url String url,
             @Body Map<String, String> filters
     );
 
     @DELETE
-    Call<JsonArray> deleteCall(
+    Observable<JsonArray> deleteCall(
             @Url String url,
             @QueryMap Map<String, String> filters
     );

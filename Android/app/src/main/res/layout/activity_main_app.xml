@@ -6,7 +6,7 @@
     android:layout_height="match_parent"
     android:orientation="vertical"
 
-    tools:context=".MainAppActivity">
+    tools:context=".MainApp.MainAppActivity">
 
     <include
         android:id="@+id/include_main_app_fragment"

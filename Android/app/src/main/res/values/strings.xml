@@ -77,4 +77,5 @@
     <string name="profile_btn_view_user_gamelist">view [user]\'s gamelist</string>
     <string name="btn_text_sign_in">sign in</string>
     <string name="btn_text_sign_up">sign up</string>
+    <string name="title_activity_mvvm_test">MvvmTest</string>
 </resources>
