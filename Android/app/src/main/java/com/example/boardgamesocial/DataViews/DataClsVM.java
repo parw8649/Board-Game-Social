@@ -18,6 +18,7 @@ import java.util.Map;
 
 
 import io.reactivex.BackpressureStrategy;
+import io.reactivex.Observable;
 
 public class DataClsVM extends ViewModel {
     private static DataClsVM liveDataConnector;
@@ -36,11 +37,11 @@ public class DataClsVM extends ViewModel {
         return liveDataConnector;
     }
 
-    public <DC extends DataClass> MediatorLiveData<List<DC>> getMutableLiveData(Class<DC> dataClass, Map<String, String> filter) {
+    public <DC extends DataClass> MediatorLiveData<List<DC>> getMutableLiveData(Observable<JsonArray> observable, Class<DC> dataClass) {
         if (!mutableLiveDataMap.containsKey(dataClass)){
             MediatorLiveData<List<DC>> mediatorLiveData = new MediatorLiveData<>();
             final LiveData<JsonArray> source = LiveDataReactiveStreams.fromPublisher(
-                    retrofitClient.getCall(dataClass, filter).toFlowable(BackpressureStrategy.BUFFER)
+                    observable.toFlowable(BackpressureStrategy.BUFFER)
             );
             mediatorLiveData.addSource(source, jsonArray -> {
                 List<DC> dcList = getObjectList(jsonArray, dataClass);

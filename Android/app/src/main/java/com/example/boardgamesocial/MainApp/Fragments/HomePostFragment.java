@@ -12,6 +12,7 @@ import androidx.navigation.fragment.NavHostFragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.example.boardgamesocial.API.RetrofitClient;
 import com.example.boardgamesocial.DataClasses.Post;
 import com.example.boardgamesocial.DataViews.Adapters.DataClsAdapter;
 import com.example.boardgamesocial.DataViews.Adapters.ViewHolders.PostVH;
@@ -85,10 +86,11 @@ public class HomePostFragment extends Fragment implements DataClsAdapter.OnItemL
         recyclerView.setAdapter(dataClsAdapter);
 
         DataClsVM dataClsVM = DataClsVM.getInstance();
-        dataClsVM.getMutableLiveData(Post.class, new HashMap<>()).observe(getViewLifecycleOwner(), newPosts -> {
-            posts.addAll(newPosts);
-            dataClsAdapter.notifyDataSetChanged();
-        });
+        dataClsVM.getMutableLiveData(RetrofitClient.getClient().getCall(Post.class, new HashMap<>()), Post.class)
+                .observe(getViewLifecycleOwner(), newPosts -> {
+                    posts.addAll(newPosts);
+                    dataClsAdapter.notifyDataSetChanged();
+                });
     }
 
     @Override
