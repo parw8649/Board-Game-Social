@@ -72,8 +72,12 @@ public class ProfileFragment extends Fragment {
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         Button buttonEditProfile = view.findViewById(R.id.profile_btn_edit);
+        Button btnUserGames = view.findViewById(R.id.profile_btn_view_user_gamelist);
 
         buttonEditProfile.setOnClickListener(view1 -> NavHostFragment.findNavController(ProfileFragment.this)
                 .navigate(R.id.action_profileFragment_to_editProfileFragment));
+
+        btnUserGames.setOnClickListener(view1 -> NavHostFragment.findNavController(ProfileFragment.this)
+                .navigate(R.id.action_profileFragment_to_userGamesFragment));
     }
 }

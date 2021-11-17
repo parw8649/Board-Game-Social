@@ -55,8 +55,8 @@
             android:id="@+id/action_profileFragment_to_userFriendsFragment"
             app:destination="@id/userFriendsFragment" />
         <action
-            android:id="@+id/action_profileFragment_to_gameCollectionFragment"
-            app:destination="@id/gameCollectionFragment" />
+            android:id="@+id/action_profileFragment_to_userGamesFragment"
+            app:destination="@id/userGamesFragment" />
     </fragment>
     <fragment
         android:id="@+id/addPostFragment"
@@ -101,6 +101,15 @@
         tools:layout="@layout/fragment_game_collection" >
         <action
             android:id="@+id/action_gameCollectionFragment_to_profileFragment"
+            app:destination="@id/profileFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/userGamesFragment"
+        android:name="com.example.boardgamesocial.UserGamesFragment"
+        android:label="fragment_user_games"
+        tools:layout="@layout/fragment_user_games" >
+        <action
+            android:id="@+id/action_userGamesFragment_to_profileFragment"
             app:destination="@id/profileFragment" />
     </fragment>
     <fragment
