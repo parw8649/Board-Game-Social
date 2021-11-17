@@ -157,7 +157,7 @@ public class DBEndPointsTests {
     public static void beforeClass() {
         RetrofitClient.apiMode = APIMode.TEST;
         retrofitClient = RetrofitClient.getClient();
-        retrofitClient.setAuthToken(token);
+        retrofitClient.setAuthToken(token.getToken());
     }
 
     @After

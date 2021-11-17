@@ -39,7 +39,7 @@ public interface API {
 
     Map<APIMode, String> BASE_URL = new HashMap<APIMode, String>(){{
        put(APIMode.DEV, "http://10.0.2.2:8000/");
-       put(APIMode.PROD, "add-heroku-url-here");
+       put(APIMode.PROD, "https://boardgamesocial.herokuapp.com/");
        put(APIMode.TEST, "http://0.0.0.0:8000/");
     }};
 

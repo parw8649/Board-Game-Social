@@ -28,25 +28,6 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity
-            android:name=".HomePostActivity"
-            android:exported="true"
-            android:label="@string/title_activity_home_post"
-            android:theme="@style/Theme.BoardGameSocial.NoActionBar" >
-        </activity>
-        <activity
-            android:name=".LoginAndSignUp.SignUpActivity"
-            android:exported="true"
-            android:label="@string/title_activity_sign_up"
-            android:theme="@style/Theme.BoardGameSocial.NoActionBar" >
-        </activity>
-        <activity
-            android:name=".GamesCollectionActivity"
-            android:exported="true"
-            android:label="@string/title_activity_games_collection"
-            android:theme="@style/Theme.BoardGameSocial.NoActionBar" >
-        </activity>
-
     </application>
 
 </manifest>

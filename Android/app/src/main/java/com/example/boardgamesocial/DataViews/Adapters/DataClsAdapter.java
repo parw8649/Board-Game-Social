@@ -7,12 +7,14 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import androidx.annotation.NonNull;
+import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.boardgamesocial.DataClasses.DataClass;
 import com.example.boardgamesocial.DataClasses.Game;
 import com.example.boardgamesocial.DataClasses.Post;
 import com.example.boardgamesocial.DataViews.Adapters.ViewHolders.DataClsVH;
+import com.example.boardgamesocial.DataViews.Adapters.ViewHolders.GameVH;
 import com.example.boardgamesocial.DataViews.Adapters.ViewHolders.PostVH;
 import com.example.boardgamesocial.DataViews.Adapters.ViewHolders.VHConstructor;
 import com.example.boardgamesocial.DataViews.DataClsVM;
@@ -30,16 +32,19 @@ public class DataClsAdapter <DC extends DataClass, VH extends DataClsVH<DC>> ext
     private final OnItemListener onItemListener;
     private List<DC> objectList;
     private Class<DC> cls;
+    private int itemLayout;
 
     public static final Map<Class<?>, VHConstructor> VH_MAP = new HashMap<Class<?>, VHConstructor>(){{
         put(Post.class, PostVH::new);
+        put(Game.class, GameVH::new);
     }};
 
-    public DataClsAdapter(Activity activity, Class<DC> cls, OnItemListener onItemListener) {
+    public DataClsAdapter( OnItemListener onItemListener, Class<DC> cls, Activity activity, int itemLayout) {
         this.activity = activity;
         this.objectList = new ArrayList<>();
         this.cls = cls;
         this.onItemListener = onItemListener;
+        this.itemLayout = itemLayout;
     }
 
     public void setCls(Class<DC> cls) {
@@ -57,7 +62,7 @@ public class DataClsAdapter <DC extends DataClass, VH extends DataClsVH<DC>> ext
     @NonNull
     @Override
     public VH onCreateViewHolder(ViewGroup parent, int viewType) {
-        View itemView = LayoutInflater.from(parent.getContext()).inflate(R.layout.post_item, parent,false);
+        View itemView = LayoutInflater.from(parent.getContext()).inflate(itemLayout, parent,false);
         return (VH) Objects.requireNonNull(VH_MAP.get(cls)).create(itemView, onItemListener);
     }
 
@@ -75,4 +80,5 @@ public class DataClsAdapter <DC extends DataClass, VH extends DataClsVH<DC>> ext
     public interface OnItemListener {
         void onItemClick(int position);
     }
+
 }

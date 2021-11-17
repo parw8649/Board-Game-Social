@@ -42,13 +42,14 @@ import androidx.annotation.NonNull;
 
 public class RequestChainTests {
     public static final String TAG = "RequestChainTests";
+    public static final Token token = new Token("e4a36ccc86bc71b7e78c5d42bbd3109ab4764af1");
     public static RetrofitClient retrofitClient;
 
     @BeforeClass
     public static void beforeClass() {
         RetrofitClient.apiMode = APIMode.TEST;
         retrofitClient = RetrofitClient.getClient();
-        retrofitClient.setAuthToken(new Token("e4a36ccc86bc71b7e78c5d42bbd3109ab4764af1"));
+        retrofitClient.setAuthToken(token.getToken());
     }
 
     @Test

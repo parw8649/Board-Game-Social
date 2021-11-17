@@ -17,7 +17,7 @@ import com.example.boardgamesocial.R;
 import java.util.HashMap;
 import java.util.List;
 
-public class PostVH extends DataClsVH<Post> implements View.OnClickListener {
+public class PostVH extends DataClsVH<Post> {
     private final TextView textViewUsername;
     private final TextView textViewPostType;
     private final TextView textViewPostBody;
@@ -39,6 +39,7 @@ public class PostVH extends DataClsVH<Post> implements View.OnClickListener {
         textViewPostType.setVisibility(visibility);
         textViewPostBody.setVisibility(visibility);
         itemNumberLikes.setVisibility(visibility);
+        likeImg.setVisibility(visibility);
     }
 
     @Override

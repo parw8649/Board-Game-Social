@@ -41,7 +41,7 @@ RUN pip3 install pipenv
 # RUN pipenv install --skip-lock --system --dev
 
 RUN pip3 install --no-cache-dir -r /app/requirements.txt
-#RUN python manage.py collectstatic
+RUN python manage.py collectstatic
 
 
 

@@ -40,15 +40,12 @@ public class UserAuthTests {
             "testUserRetrofitU",
             "testUserRetrofitP"
     );
-    private static List<Throwable> errorList;
 
     @BeforeClass
     public static void beforeClass() {
         RetrofitClient.apiMode = APIMode.TEST;
         retrofitClient = RetrofitClient.getClient();
-        retrofitClient.setAuthToken(token);
-        errorList = Collections.synchronizedList(new ArrayList<>());
-        RxJavaPlugins.setErrorHandler(errorList::add);;
+        retrofitClient.setAuthToken(token.getToken());
     }
 
     @AfterClass

@@ -1,6 +1,9 @@
 package com.example.boardgamesocial.LoginAndSignUp.Fragments;
 
+import static com.example.boardgamesocial.API.RetrofitClient.getObjectList;
+
 import android.content.Intent;
+import android.content.res.Resources;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -8,33 +11,30 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 import androidx.navigation.fragment.NavHostFragment;
 
 import com.example.boardgamesocial.API.RetrofitClient;
+import com.example.boardgamesocial.Commons.Utils;
 import com.example.boardgamesocial.DataClasses.Token;
 import com.example.boardgamesocial.DataClasses.User;
 import com.example.boardgamesocial.MainApp.MainAppActivity;
 import com.example.boardgamesocial.R;
 import com.example.boardgamesocial.databinding.FragmentLoginBinding;
 
+import java.util.HashMap;
+import java.util.List;
 import java.util.Objects;
-
-import retrofit2.Call;
-import retrofit2.Callback;
-import retrofit2.Response;
 
 public class LoginFragment extends Fragment {
 
+    public static final String TAG = "LoginFragment";
+
     private FragmentLoginBinding binding;
-
     private RetrofitClient retrofitClient;
-
     private EditText etUsername, etPassword;
-
     private Token token;
 
     @Override
@@ -73,12 +73,20 @@ public class LoginFragment extends Fragment {
 
         Log.i("Login", "Username: "+ username +", Password: "+ password);
 
-        retrofitClient.loginCall(new User(username, password)).subscribe(token -> {
-            Log.i("Token", token.toString());
-            retrofitClient.setAuthToken(token);
-            Intent goToMainAppActivity = MainAppActivity.getIntent(getContext());
-            startActivity(goToMainAppActivity);
-        });
+        retrofitClient.loginCall(new User(username, password))
+                .flatMap(token -> {
+                    retrofitClient.setAuthToken(token.getToken());
+                    return retrofitClient.getCall(User.class, new HashMap<String, String>(){{
+                        put("username", username);
+                    }});
+                })
+                .subscribe(jsonArray -> {
+                    List<User> userList = getObjectList(jsonArray, User.class);
+                    assert userList.size() == 1;
+                    Utils.addUserIdToPreferences(getContext(), userList.get(0).getId());
+                    Intent goToMainAppActivity = MainAppActivity.getIntent(getContext());
+                    startActivity(goToMainAppActivity);
+                });
 
     }
 }

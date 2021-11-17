@@ -15,15 +15,15 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.example.boardgamesocial.API.RetrofitClient;
 import com.example.boardgamesocial.DataClasses.Post;
 import com.example.boardgamesocial.DataViews.Adapters.DataClsAdapter;
+import com.example.boardgamesocial.DataViews.Adapters.DataClsAdapter.OnItemListener;
 import com.example.boardgamesocial.DataViews.Adapters.ViewHolders.PostVH;
 import com.example.boardgamesocial.DataViews.DataClsVM;
 import com.example.boardgamesocial.R;
-import com.example.boardgamesocial.databinding.FragmentHomePostBinding;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
 import java.util.HashMap;
 
-public class HomePostFragment extends Fragment implements DataClsAdapter.OnItemListener {
+public class HomePostFragment extends Fragment implements OnItemListener {
 
     public static final String TAG = "HomePostFragment";
 
@@ -35,7 +35,6 @@ public class HomePostFragment extends Fragment implements DataClsAdapter.OnItemL
     // TODO: Rename and change types of parameters
     private String mParam1;
     private String mParam2;
-    private FragmentHomePostBinding binding;
     private FloatingActionButton fab;
 
     public HomePostFragment() {
@@ -80,7 +79,11 @@ public class HomePostFragment extends Fragment implements DataClsAdapter.OnItemL
         RecyclerView recyclerView = view.findViewById(R.id.postFeed_recyclerView);
         recyclerView.setLayoutManager(new LinearLayoutManager(this.getContext()));
 
-        DataClsAdapter<Post, PostVH> dataClsAdapter = new DataClsAdapter<>(getActivity(), Post.class, this);
+        DataClsAdapter<Post, PostVH> dataClsAdapter = new DataClsAdapter<>(
+                this,
+                Post.class,
+                getActivity(),
+                R.layout.post_item);
         recyclerView.setAdapter(dataClsAdapter);
 
         DataClsVM dataClsVM = DataClsVM.getInstance();
@@ -94,7 +97,6 @@ public class HomePostFragment extends Fragment implements DataClsAdapter.OnItemL
     @Override
     public void onDestroyView() {
         super.onDestroyView();
-        binding = null;
     }
 
     @Override
