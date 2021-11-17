@@ -39,7 +39,7 @@ public class DataClsAdapter <DC extends DataClass, VH extends DataClsVH<DC>> ext
         put(Game.class, GameVH::new);
     }};
 
-    public DataClsAdapter( OnItemListener onItemListener, Class<DC> cls, Activity activity, int itemLayout) {
+    public DataClsAdapter(OnItemListener onItemListener, Class<DC> cls, Activity activity, int itemLayout) {
         this.activity = activity;
         this.objectList = new ArrayList<>();
         this.cls = cls;
