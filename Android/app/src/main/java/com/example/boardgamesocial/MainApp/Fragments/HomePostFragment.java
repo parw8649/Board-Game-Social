@@ -81,14 +81,14 @@ public class HomePostFragment extends Fragment implements DataClsAdapter.OnItemL
 
         RecyclerView recyclerView = view.findViewById(R.id.postFeed_recyclerView);
         recyclerView.setLayoutManager(new LinearLayoutManager(this.getContext()));
-        List<Post> posts = new ArrayList<>();
-        DataClsAdapter<Post, PostVH> dataClsAdapter = new DataClsAdapter<>(getActivity(), posts, Post.class, this);
+
+        DataClsAdapter<Post, PostVH> dataClsAdapter = new DataClsAdapter<>(getActivity(), Post.class, this);
         recyclerView.setAdapter(dataClsAdapter);
 
         DataClsVM dataClsVM = DataClsVM.getInstance();
         dataClsVM.getMutableLiveData(RetrofitClient.getClient().getCall(Post.class, new HashMap<>()), Post.class)
                 .observe(getViewLifecycleOwner(), newPosts -> {
-                    posts.addAll(newPosts);
+                    dataClsAdapter.getObjectList().addAll(newPosts);
                     dataClsAdapter.notifyDataSetChanged();
                 });
     }

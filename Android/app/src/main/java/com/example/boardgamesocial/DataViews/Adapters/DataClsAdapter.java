@@ -19,6 +19,7 @@ import com.example.boardgamesocial.DataViews.DataClsVM;
 import com.example.boardgamesocial.R;
 
 import java.lang.reflect.Constructor;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -34,9 +35,9 @@ public class DataClsAdapter <DC extends DataClass, VH extends DataClsVH<DC>> ext
         put(Post.class, PostVH::new);
     }};
 
-    public DataClsAdapter(Activity activity, List<DC> objectList, Class<DC> cls, OnItemListener onItemListener) {
+    public DataClsAdapter(Activity activity, Class<DC> cls, OnItemListener onItemListener) {
         this.activity = activity;
-        this.objectList = objectList;
+        this.objectList = new ArrayList<>();
         this.cls = cls;
         this.onItemListener = onItemListener;
     }
@@ -47,6 +48,10 @@ public class DataClsAdapter <DC extends DataClass, VH extends DataClsVH<DC>> ext
 
     public void setPosts(List<DC> objectList) {
         this.objectList = objectList;
+    }
+
+    public List<DC> getObjectList() {
+        return objectList;
     }
 
     @NonNull
