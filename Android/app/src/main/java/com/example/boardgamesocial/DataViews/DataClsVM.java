@@ -23,11 +23,11 @@ import io.reactivex.Observable;
 public class DataClsVM extends ViewModel {
     private static DataClsVM liveDataConnector;
     private final RetrofitClient retrofitClient;
-    private final Map<Class<?>, MediatorLiveData<?>> mutableLiveDataMap;
+    private final Map<Class<?>, MediatorLiveData<?>> mediatorLiveDataMap;
 
     private DataClsVM(){
         retrofitClient = RetrofitClient.getClient();
-        mutableLiveDataMap = new HashMap<>();
+        mediatorLiveDataMap = new HashMap<>();
     }
 
     public static DataClsVM getInstance(){
@@ -37,8 +37,8 @@ public class DataClsVM extends ViewModel {
         return liveDataConnector;
     }
 
-    public <DC extends DataClass> MediatorLiveData<List<DC>> getMutableLiveData(Observable<JsonArray> observable, Class<DC> dataClass) {
-        if (!mutableLiveDataMap.containsKey(dataClass)){
+    public <DC extends DataClass> MediatorLiveData<List<DC>> getMediatorLiveData(Observable<JsonArray> observable, Class<DC> dataClass) {
+        if (!mediatorLiveDataMap.containsKey(dataClass)){
             MediatorLiveData<List<DC>> mediatorLiveData = new MediatorLiveData<>();
             final LiveData<JsonArray> source = LiveDataReactiveStreams.fromPublisher(
                     observable.toFlowable(BackpressureStrategy.BUFFER)
@@ -49,8 +49,8 @@ public class DataClsVM extends ViewModel {
                 mediatorLiveData.setValue(dcList);
                 mediatorLiveData.removeSource(source);
             });
-            mutableLiveDataMap.put(dataClass, mediatorLiveData);
+            mediatorLiveDataMap.put(dataClass, mediatorLiveData);
         }
-        return (MediatorLiveData<List<DC>>) mutableLiveDataMap.get(dataClass);
+        return (MediatorLiveData<List<DC>>) mediatorLiveDataMap.get(dataClass);
     }
 }

@@ -21,9 +21,7 @@ import com.example.boardgamesocial.R;
 import com.example.boardgamesocial.databinding.FragmentHomePostBinding;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
-import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.List;
 
 public class HomePostFragment extends Fragment implements DataClsAdapter.OnItemListener {
 
@@ -86,7 +84,7 @@ public class HomePostFragment extends Fragment implements DataClsAdapter.OnItemL
         recyclerView.setAdapter(dataClsAdapter);
 
         DataClsVM dataClsVM = DataClsVM.getInstance();
-        dataClsVM.getMutableLiveData(RetrofitClient.getClient().getCall(Post.class, new HashMap<>()), Post.class)
+        dataClsVM.getMediatorLiveData(RetrofitClient.getClient().getCall(Post.class, new HashMap<>()), Post.class)
                 .observe(getViewLifecycleOwner(), newPosts -> {
                     dataClsAdapter.getObjectList().addAll(newPosts);
                     dataClsAdapter.notifyDataSetChanged();
