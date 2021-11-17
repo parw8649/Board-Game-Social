@@ -92,7 +92,7 @@ public class GameCollectionFragment extends Fragment {
     public void onViewCreated(@NonNull View view, Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
-        recyclerView = view.findViewById(R.id.gameFeed_recyclerView);
+        recyclerView = view.findViewById(R.id.gameCollection_recyclerView);
         recyclerView.setLayoutManager(new LinearLayoutManager((this.getContext())));
         gameAdapter = new GameAdapter();
         recyclerView.setAdapter(gameAdapter);
@@ -104,10 +104,7 @@ public class GameCollectionFragment extends Fragment {
 
         retrofitClient.setAuthToken(Utils.getUserToken());
 
-        //TODO: Need to fetch user specific Game Collection.
-        retrofitClient.getCall(Game.class, new HashMap<String, String>(){{
-            put("gameTitle", "7 Wonders Duel");
-        }}).enqueue(new Callback<JsonArray>() {
+        retrofitClient.getCall(Game.class, new HashMap<>()).enqueue(new Callback<JsonArray>() {
             @Override
             public void onResponse(Call<JsonArray> call, Response<JsonArray> response) {
                 if (response.isSuccessful()) {

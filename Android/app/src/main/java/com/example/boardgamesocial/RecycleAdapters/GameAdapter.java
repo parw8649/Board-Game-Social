@@ -15,7 +15,6 @@ import com.example.boardgamesocial.DataClasses.Game;
 import com.example.boardgamesocial.R;
 import com.squareup.picasso.Picasso;
 
-import java.text.MessageFormat;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -39,13 +38,16 @@ public class GameAdapter extends RecyclerView.Adapter<GameAdapter.GameHolder> {
         holder.tvGenre.setText(currentGame.getGenre());
         holder.tvDescription.setText(currentGame.getDescription());
 
-        String minPlayer = String.format(Resources.getSystem().getString(R.string.game_min_player_text), currentGame.getMinPlayer());
+        //Reverted back strings to Constants because layout ids are not being fetched properly
+        //Issue: No package ID 7f found for ID 0x7f10003b.
+        //Reference Link: https://stackoverflow.com/questions/69506374/no-package-id-ff-found-for-id-0xffbb86fc
+        String minPlayer = String.format(Constants.GAME_MIN_PLAYER_TEXT, currentGame.getMinPlayer());
         holder.tvMinPlayer.setText(minPlayer);
 
-        String maxPlayer = String.format(Resources.getSystem().getString(R.string.game_max_player_text), currentGame.getMaxPlayer());
+        String maxPlayer = String.format(Constants.GAME_MAX_PLAYER_TEXT, currentGame.getMaxPlayer());
         holder.tvMaxPlayer.setText(maxPlayer);
 
-        String playCount = String.format(Resources.getSystem().getString(R.string.game_overall_play_count_text), currentGame.getOverallPlayCount());
+        String playCount = String.format(Constants.GAME_OVERALL_PLAY_COUNT_TEXT, currentGame.getOverallPlayCount());
         holder.tvOverallPlayCount.setText(playCount);
 
         Picasso
