@@ -48,15 +48,18 @@ public class MainAppActivity extends AppCompatActivity {
                 case R.id.home_option:
                     navController.navigate(R.id.HomePostFragment);
                     fab.setVisibility(View.VISIBLE);
+                    bottomAppBar.setCradleVerticalOffset(0);
                     break;
                 case R.id.events_option:
                     navController.navigate(R.id.eventsFragment);
                     fab.setVisibility(View.VISIBLE);
+                    bottomAppBar.setCradleVerticalOffset(0);
                     break;
                 case R.id.games_option:
                     // this should direct to a fragment showing all games available in database
                     navController.navigate(R.id.gameCollectionFragment);
                     fab.setVisibility(View.VISIBLE);
+                    bottomAppBar.setCradleVerticalOffset(0);
                     break;
                 case R.id.search_option:
                     navController.navigate(R.id.searchFragment);
