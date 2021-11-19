@@ -78,4 +78,14 @@
     <string name="btn_text_sign_in">sign in</string>
     <string name="btn_text_sign_up">sign up</string>
     <string name="title_activity_mvvm_test">MvvmTest</string>
+
+    <!-- Strings used for event-fragments -->
+    <string name="et_hint_event_name">Event name</string>
+    <string name="et_hint_date_time">Event date</string>
+    <string name="et_hint_event_description">Event description</string>
+    <string name="tv_add_event">Add Event</string>
+
+    <!-- Common string -->
+    <string name="btn_text_save">save</string>
+    <string name="item_button_delete">delete</string>
 </resources>

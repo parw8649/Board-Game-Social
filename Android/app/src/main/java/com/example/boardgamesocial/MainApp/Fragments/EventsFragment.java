@@ -8,12 +8,16 @@ import android.view.ViewGroup;
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 import androidx.navigation.fragment.NavHostFragment;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
+import com.example.boardgamesocial.R;
 import com.example.boardgamesocial.databinding.FragmentEventsBinding;
 
 public class EventsFragment extends Fragment {
 
     private FragmentEventsBinding binding;
+    private RecyclerView recyclerView;
 
     @Override
     public View onCreateView(
@@ -29,13 +33,9 @@ public class EventsFragment extends Fragment {
     public void onViewCreated(@NonNull View view, Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
-//        binding.buttonSecond.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View view) {
-//                NavHostFragment.findNavController(EventsFragment.this)
-//                        .navigate(R.id.action_SecondFragment_to_FirstFragment);
-//            }
-//        });
+        recyclerView = view.findViewById(R.id.eventFeed_recyclerView);
+        recyclerView.setLayoutManager(new LinearLayoutManager(this.getContext()));
+        //recyclerView.setAdapter();
     }
 
     @Override
