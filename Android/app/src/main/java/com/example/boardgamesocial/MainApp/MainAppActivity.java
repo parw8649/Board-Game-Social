@@ -11,6 +11,7 @@ import androidx.navigation.Navigation;
 import androidx.navigation.ui.AppBarConfiguration;
 import androidx.navigation.ui.NavigationUI;
 import android.os.Bundle;
+import android.view.View;
 
 import com.example.boardgamesocial.LoginAndSignUp.LoginAndSignUpActivity;
 import com.example.boardgamesocial.R;
@@ -41,40 +42,39 @@ public class MainAppActivity extends AppCompatActivity {
 
         fab = findViewById(R.id.bottom_app_bar_fab);
 
-        bottomAppBar.setOnMenuItemClickListener(new Toolbar.OnMenuItemClickListener() {
-            @Override
-            public boolean onMenuItemClick(MenuItem item) {
+        bottomAppBar.setOnMenuItemClickListener(item -> {
 
-                switch (item.getItemId()) {
-                    case R.id.home_option:
-                        navController.navigate(R.id.HomePostFragment);
-                        fab.show();
-                        break;
-                    case R.id.events_option:
-                        navController.navigate(R.id.eventsFragment);
-                        fab.show();
-                        break;
-                    case R.id.games_option:
-                        // this should direct to a fragment showing all games available in database
-                        navController.navigate(R.id.gameCollectionFragment);
-                        fab.show();
-                        break;
-                    case R.id.search_option:
-                        navController.navigate(R.id.searchFragment);
-                        fab.hide();
-                        break;
-                    case R.id.profile_option:
-                        navController.navigate(R.id.profileFragment);
-                        fab.hide();
-                        break;
-                    case R.id.logout_option:
-                        Intent goToHomePostActivity = LoginAndSignUpActivity.getIntent(MainAppActivity.this);
-                        startActivity(goToHomePostActivity);
-                        break;
-                }
-                setFabOnClick(item.getItemId());
-                return true;
+            switch (item.getItemId()) {
+                case R.id.home_option:
+                    navController.navigate(R.id.HomePostFragment);
+                    fab.setVisibility(View.VISIBLE);
+                    break;
+                case R.id.events_option:
+                    navController.navigate(R.id.eventsFragment);
+                    fab.setVisibility(View.VISIBLE);
+                    break;
+                case R.id.games_option:
+                    // this should direct to a fragment showing all games available in database
+                    navController.navigate(R.id.gameCollectionFragment);
+                    fab.setVisibility(View.VISIBLE);
+                    break;
+                case R.id.search_option:
+                    navController.navigate(R.id.searchFragment);
+                    fab.setVisibility(View.INVISIBLE);
+                    bottomAppBar.setCradleVerticalOffset(35);
+                    break;
+                case R.id.profile_option:
+                    navController.navigate(R.id.profileFragment);
+                    fab.setVisibility(View.INVISIBLE);
+                    bottomAppBar.setCradleVerticalOffset(35);
+                    break;
+                case R.id.logout_option:
+                    Intent goToHomePostActivity = LoginAndSignUpActivity.getIntent(MainAppActivity.this);
+                    startActivity(goToHomePostActivity);
+                    break;
             }
+            setFabOnClick(item.getItemId());
+            return true;
         });
     }
 
@@ -120,10 +120,6 @@ public class MainAppActivity extends AppCompatActivity {
 //                    navController.navigate(R.id.addGameFragment);
                 });
                 return;
-            case R.id.search_option:
-                fab.hide();
-            case R.id.profile_option:
-                fab.hide();
         }
     }
 }
