@@ -48,23 +48,28 @@ public class MainAppActivity extends AppCompatActivity {
                 case R.id.home_option:
                     navController.navigate(R.id.HomePostFragment);
                     fab.setVisibility(View.VISIBLE);
+                    bottomAppBar.setCradleVerticalOffset(0);
                     break;
                 case R.id.events_option:
                     navController.navigate(R.id.eventsFragment);
                     fab.setVisibility(View.VISIBLE);
+                    bottomAppBar.setCradleVerticalOffset(0);
                     break;
                 case R.id.games_option:
                     // this should direct to a fragment showing all games available in database
                     navController.navigate(R.id.gameCollectionFragment);
                     fab.setVisibility(View.VISIBLE);
+                    bottomAppBar.setCradleVerticalOffset(0);
                     break;
                 case R.id.search_option:
                     navController.navigate(R.id.searchFragment);
                     fab.setVisibility(View.INVISIBLE);
+                    bottomAppBar.setCradleVerticalOffset(35);
                     break;
                 case R.id.profile_option:
                     navController.navigate(R.id.profileFragment);
                     fab.setVisibility(View.INVISIBLE);
+                    bottomAppBar.setCradleVerticalOffset(35);
                     break;
                 case R.id.logout_option:
                     Intent goToHomePostActivity = LoginAndSignUpActivity.getIntent(MainAppActivity.this);
@@ -103,7 +108,7 @@ public class MainAppActivity extends AppCompatActivity {
                             .setAnchorView(R.id.bottom_app_bar_fab).setAction("Action", null).show();
                     navController.navigate(R.id.addPostFragment);
                 });
-                break;
+                return;
             case R.id.events_option:
                 fab.setOnClickListener(v -> {
                     Snackbar.make(v, "Eventually, you'll be able to add a new event", Snackbar.LENGTH_SHORT)
@@ -111,7 +116,7 @@ public class MainAppActivity extends AppCompatActivity {
 //                    TODO: add AddEventFragment navigation to nav_main_app.xml
 //                    navController.navigate(R.id.addEventFragment);
                 });
-                break;
+                return;
             case R.id.games_option:
                 fab.setOnClickListener(v -> {
                     Snackbar.make(v, "Eventually, you'll be able to add a new game to your collection ", Snackbar.LENGTH_SHORT)
@@ -119,7 +124,7 @@ public class MainAppActivity extends AppCompatActivity {
 //                    TODO: add AddGameFragment navigation to nav_main_app.xml
 //                    navController.navigate(R.id.addGameFragment);
                 });
-                break;
+                return;
         }
     }
 }
