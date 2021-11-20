@@ -65,10 +65,7 @@ public class EventsFragment extends Fragment implements DataClsAdapter.OnItemLis
     }
 
     @Override
-    public void onDestroyView() {
-        super.onDestroyView();
-        binding = null;
-    }
+    public void onDestroyView() { super.onDestroyView(); }
 
     @Override
     public void onItemClick(int position) {
