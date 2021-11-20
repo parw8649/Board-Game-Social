@@ -39,6 +39,9 @@
         <action
             android:id="@+id/action_SecondFragment_to_FirstFragment"
             app:destination="@id/HomePostFragment" />
+        <action
+            android:id="@+id/action_EventsFragment_to_singleEventFragment"
+            app:destination="@id/singleEventFragment" />
     </fragment>
     <fragment
         android:id="@+id/profileFragment"

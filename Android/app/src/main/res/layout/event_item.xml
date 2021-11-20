@@ -14,7 +14,7 @@
 
         <TextView
             android:id="@+id/tv_event_name"
-            android:layout_width="245dp"
+            android:layout_width="300dp"
             android:layout_height="wrap_content"
             android:maxLines="1"
             android:text="@string/et_hint_event_name"
@@ -22,7 +22,7 @@
 
         <TextView
             android:id="@+id/tv_event_date_and_time"
-            android:layout_width="245dp"
+            android:layout_width="300dp"
             android:layout_height="wrap_content"
             android:maxLines="1"
             android:text="@string/et_hint_date_time"
@@ -38,17 +38,6 @@
             android:maxLines="10"
             android:textAppearance="@style/TextAppearance.AppCompat.Body2" />
 
-        <Button
-            android:id="@+id/btn_more_event"
-            android:layout_width="@dimen/item_more_btn_width"
-            android:layout_height="45dp"
-            android:layout_toStartOf="@+id/btn_delete_event"
-            android:layout_toEndOf="@+id/tv_event_name"
-            android:backgroundTint="@color/blue_yonder"
-            android:padding="@dimen/btn_padding_slim"
-            android:text="@string/item_button_text"
-            android:textAppearance="@style/TextAppearance.AppCompat.Small" />
-
         <ImageButton
             android:id="@+id/btn_delete_event"
             android:layout_width="@dimen/item_more_btn_width"
@@ -57,8 +46,7 @@
             android:src="@drawable/ic_baseline_delete_24"
             android:backgroundTint="@color/blue_yonder"
             android:padding="@dimen/btn_padding_slim"
-            android:textAppearance="@style/TextAppearance.AppCompat.Small"
-            android:contentDescription="TODO" />
+            android:textAppearance="@style/TextAppearance.AppCompat.Small" />
 
     </RelativeLayout>
 
