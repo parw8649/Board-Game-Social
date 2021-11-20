@@ -103,6 +103,6 @@ public class HomePostFragment extends Fragment implements OnItemListener {
     public void onItemClick(int position) {
         NavHostFragment.findNavController(HomePostFragment.this)
                 .navigate(R.id.action_HomePostFragment_to_singlePostFragment);
-        Toast.makeText(getContext(),"Item clicked", Toast.LENGTH_LONG).show();
+        Toast.makeText(getContext(),"Post clicked", Toast.LENGTH_SHORT).show();
     }
 }

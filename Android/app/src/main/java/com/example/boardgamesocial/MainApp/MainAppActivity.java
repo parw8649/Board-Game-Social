@@ -12,7 +12,9 @@ import androidx.navigation.ui.AppBarConfiguration;
 import androidx.navigation.ui.NavigationUI;
 import android.os.Bundle;
 import android.view.View;
+import android.widget.Toast;
 
+import com.example.boardgamesocial.DataViews.Adapters.DataClsAdapter;
 import com.example.boardgamesocial.LoginAndSignUp.LoginAndSignUpActivity;
 import com.example.boardgamesocial.R;
 import com.example.boardgamesocial.databinding.ActivityMainAppBinding;
@@ -21,6 +23,8 @@ import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.snackbar.Snackbar;
 
 public class MainAppActivity extends AppCompatActivity {
+
+    public static final String TAG = "MainAppActivity";
 
     private AppBarConfiguration appBarConfiguration;
     private ActivityMainAppBinding binding;
@@ -43,7 +47,6 @@ public class MainAppActivity extends AppCompatActivity {
         fab = findViewById(R.id.bottom_app_bar_fab);
 
         bottomAppBar.setOnMenuItemClickListener(item -> {
-
             switch (item.getItemId()) {
                 case R.id.home_option:
                     navController.navigate(R.id.HomePostFragment);
