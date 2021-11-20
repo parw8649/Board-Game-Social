@@ -84,8 +84,15 @@
     <string name="et_hint_date_time">Event date</string>
     <string name="et_hint_event_description">Event description</string>
     <string name="tv_add_event">Add Event</string>
+    <string name="btn_single_event_hosted_games">Hosted Games</string>
+    <string name="btn_single_event_people_in_event">People in event</string>
+    <string name="key_event_name">EVENT_NAME</string>
+    <string name="key_event_date_time">EVENT_DATE_TIME</string>
+    <string name="key_event_description">EVENT_DESCRIPTION</string>
 
     <!-- Common string -->
     <string name="btn_text_save">save</string>
     <string name="item_button_delete">delete</string>
+
+
 </resources>
