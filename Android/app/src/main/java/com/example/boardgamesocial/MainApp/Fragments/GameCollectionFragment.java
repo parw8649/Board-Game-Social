@@ -22,7 +22,6 @@ import com.example.boardgamesocial.DataViews.DataClsVM;
 import com.example.boardgamesocial.R;
 
 import java.util.HashMap;
-import java.util.List;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -34,7 +33,6 @@ public class GameCollectionFragment extends Fragment implements OnItemListener {
     public static final String TAG = "GameCollectionFragment";
 
     private RecyclerView recyclerView;
-    private List<Game> games;
 
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
@@ -105,6 +103,11 @@ public class GameCollectionFragment extends Fragment implements OnItemListener {
                     dataClsAdapter.getObjectList().addAll(newGames);
                     dataClsAdapter.notifyDataSetChanged();
                 });
+    }
+
+    @Override
+    public void onDestroyView() {
+        super.onDestroyView();
     }
 
     @Override
