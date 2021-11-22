@@ -192,4 +192,13 @@
             android:id="@+id/action_userGamesFragment_to_profileFragment"
             app:destination="@id/profileFragment" />
     </fragment>
+    <fragment
+        android:id="@+id/addEventFragment"
+        android:name="com.example.boardgamesocial.MainApp.Fragments.AddEventFragment"
+        android:label="fragment_add_event"
+        tools:layout="@layout/fragment_add_event" >
+        <action
+            android:id="@+id/action_addEventFragment_to_HomePostFragment"
+            app:destination="@id/HomePostFragment" />
+    </fragment>
 </navigation>

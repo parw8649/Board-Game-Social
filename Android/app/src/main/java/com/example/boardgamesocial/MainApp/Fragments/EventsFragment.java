@@ -1,6 +1,7 @@
 package com.example.boardgamesocial.MainApp.Fragments;
 
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -13,34 +14,38 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.boardgamesocial.API.RetrofitClient;
+import com.example.boardgamesocial.Commons.Utils;
 import com.example.boardgamesocial.DataClasses.Event;
 import com.example.boardgamesocial.DataViews.Adapters.DataClsAdapter;
+import com.example.boardgamesocial.DataViews.Adapters.DataClsAdapter.OnItemListener;
 import com.example.boardgamesocial.DataViews.Adapters.ViewHolders.EventVH;
 import com.example.boardgamesocial.DataViews.DataClsVM;
 import com.example.boardgamesocial.R;
-import com.example.boardgamesocial.databinding.FragmentEventsBinding;
 
 import java.util.HashMap;
 
-public class EventsFragment extends Fragment implements DataClsAdapter.OnItemListener {
+public class EventsFragment extends Fragment implements OnItemListener {
 
-    private FragmentEventsBinding binding;
+    public static final String TAG = "EventsFragment";
 
     private RecyclerView recyclerView;
 
+    public EventsFragment() {
+        // Required empty public constructor
+    }
+
     @Override
-    public View onCreateView(
-            LayoutInflater inflater, ViewGroup container,
-            Bundle savedInstanceState
-    ) {
-
-        binding = FragmentEventsBinding.inflate(inflater, container, false);
-        return binding.getRoot();
-
+    public View onCreateView(LayoutInflater inflater, ViewGroup container,
+            Bundle savedInstanceState) {
+        // Inflate the layout for this fragment
+        return inflater.inflate(R.layout.fragment_events, container, false);
     }
 
     public void onViewCreated(@NonNull View view, Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
+
+        Utils.checkForUser(requireContext());
+        Log.i(TAG, String.format("Events - User Id: %s", Utils.getUserId()));
 
         recyclerView = view.findViewById(R.id.eventFeed_recyclerView);
         recyclerView.setLayoutManager(new LinearLayoutManager(this.getContext()));
