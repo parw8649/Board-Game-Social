@@ -14,16 +14,15 @@
         android:textSize="30sp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.498"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.141" />
+        app:layout_constraintVertical_bias="0.073" />
 
     <EditText
         android:id="@+id/et_event_name"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:ems="10"
+        android:ems="15"
         android:hint="@string/et_hint_event_name"
         android:importantForAutofill="no"
         android:inputType="textPersonName"
@@ -38,7 +37,7 @@
         android:id="@+id/et_event_date_time"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:ems="10"
+        android:ems="15"
         android:hint="@string/et_hint_date_time"
         android:inputType="datetime"
         android:minHeight="48dp"
@@ -53,7 +52,7 @@
         android:id="@+id/et_event_description"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:ems="10"
+        android:ems="15"
         android:hint="@string/et_hint_event_description"
         android:inputType="textMultiLine"
         android:minHeight="48dp"
@@ -72,10 +71,23 @@
         android:text="@string/btn_text_save"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.498"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/hostedGameCK_recyclerView"
+        app:layout_constraintVertical_bias="0.303" />
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/hostedGameCK_recyclerView"
+        android:layout_width="325dp"
+        android:layout_height="250dp"
+        android:scrollbars="vertical"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/et_event_description"
-        app:layout_constraintVertical_bias="0.086" />
+        app:layout_constraintVertical_bias="0.139"
+        tools:listitem="@layout/hosted_game_item">
 
-
+    </androidx.recyclerview.widget.RecyclerView>
 
 </androidx.constraintlayout.widget.ConstraintLayout>
