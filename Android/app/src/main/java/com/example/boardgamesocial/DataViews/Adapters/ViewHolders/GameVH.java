@@ -13,6 +13,8 @@ import com.example.boardgamesocial.DataViews.Adapters.DataClsAdapter;
 import com.example.boardgamesocial.R;
 import com.squareup.picasso.Picasso;
 
+import java.util.Objects;
+
 public class GameVH extends DataClsVH<Game> {
     private final ImageView ivImageUrl;
     private final TextView tvGameTitle;
@@ -48,16 +50,29 @@ public class GameVH extends DataClsVH<Game> {
     public void onBind(Activity activity, Game game) {
         tvGameTitle.setText(game.getGameTitle());
         tvGenre.setText(game.getGenre());
-        tvDescription.setText(game.getDescription());
-        tvMinPlayer.setText(
-                String.format(activity.getResources().getString(R.string.game_min_player_text), game.getMinPlayer())
-        );
-        tvMaxPlayer.setText(
-                String.format(activity.getResources().getString(R.string.game_max_player_text), game.getMaxPlayer())
-        );
-        tvOverallPlayCount.setText(
-                String.format(activity.getResources().getString(R.string.game_overall_play_count_text), game.getOverallPlayCount())
-        );
+
+        if(Objects.nonNull(tvDescription)) {
+            tvDescription.setText(game.getDescription());
+        }
+
+        if(Objects.nonNull(tvMinPlayer)) {
+            tvMinPlayer.setText(
+                    String.format(activity.getResources().getString(R.string.game_min_player_text), game.getMinPlayer())
+            );
+        }
+
+        if(Objects.nonNull(tvMaxPlayer)) {
+            tvMaxPlayer.setText(
+                    String.format(activity.getResources().getString(R.string.game_max_player_text), game.getMaxPlayer())
+            );
+        }
+
+        if(Objects.nonNull(tvOverallPlayCount)) {
+            tvOverallPlayCount.setText(
+                    String.format(activity.getResources().getString(R.string.game_overall_play_count_text), game.getOverallPlayCount())
+            );
+        }
+
         Picasso
                 .with(itemView.getContext())
                 .load(game.getImageUrl())

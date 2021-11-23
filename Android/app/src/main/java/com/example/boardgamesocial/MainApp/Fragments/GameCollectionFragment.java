@@ -32,8 +32,6 @@ public class GameCollectionFragment extends Fragment implements OnItemListener {
 
     public static final String TAG = "GameCollectionFragment";
 
-    private RecyclerView recyclerView;
-
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
     private static final String ARG_PARAM1 = "param1";
@@ -87,7 +85,7 @@ public class GameCollectionFragment extends Fragment implements OnItemListener {
     public void onViewCreated(@NonNull View view, Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
-        recyclerView = view.findViewById(R.id.gameFeed_recyclerView);
+        RecyclerView recyclerView = view.findViewById(R.id.gameFeed_recyclerView);
         recyclerView.setLayoutManager(new LinearLayoutManager(this.getContext()));
 
         DataClsAdapter<Game, GameVH> dataClsAdapter = new DataClsAdapter<>(

@@ -2,6 +2,7 @@ package com.example.boardgamesocial.MainApp.Fragments;
 
 import static com.example.boardgamesocial.API.RetrofitClient.getObject;
 
+import android.graphics.Color;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -10,36 +11,45 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.EditText;
+import android.widget.RelativeLayout;
 
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.boardgamesocial.API.RetrofitClient;
 import com.example.boardgamesocial.Commons.Utils;
 import com.example.boardgamesocial.DataClasses.Event;
+import com.example.boardgamesocial.DataClasses.Game;
 import com.example.boardgamesocial.DataClasses.HostedGame;
+import com.example.boardgamesocial.DataViews.Adapters.DataClsAdapter;
+import com.example.boardgamesocial.DataViews.Adapters.DataClsAdapter.OnItemListener;
+import com.example.boardgamesocial.DataViews.Adapters.ViewHolders.GameVH;
+import com.example.boardgamesocial.DataViews.DataClsVM;
 import com.example.boardgamesocial.R;
 
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.Objects;
+import java.util.Set;
 
 /**
  * A simple {@link Fragment} subclass.
  * Use the {@link AddEventFragment#newInstance} factory method to
  * create an instance of this fragment.
  */
-public class AddEventFragment extends Fragment {
+public class AddEventFragment extends Fragment implements OnItemListener {
 
     public static final String TAG = "AddEventFragment";
 
     private EditText etEventName;
     private EditText etEventDateTime;
     private EditText etEventDescription;
-    private EditText etMaxPlayer;
-    private EditText etDescription;
-    private EditText etImageUrl;
-    private EditText etOverallPlayCount;
-    private CheckBox cxIsGamePrivate;
+
+    private RecyclerView recyclerView;
+
+    private Set<Integer> gameIdList = new HashSet<>();
 
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
@@ -97,6 +107,23 @@ public class AddEventFragment extends Fragment {
 
         Button btnSaveEvent = view.findViewById(R.id.btn_save_event);
 
+        recyclerView = view.findViewById(R.id.hostedGameCK_recyclerView);
+        recyclerView.setLayoutManager(new LinearLayoutManager(this.getContext()));
+
+        DataClsAdapter<Game, GameVH> dataClsAdapter = new DataClsAdapter<>(
+                this,
+                Game.class,
+                getActivity(),
+                R.layout.hosted_game_item);
+        recyclerView.setAdapter(dataClsAdapter);
+
+        DataClsVM dataClsVM = DataClsVM.getInstance();
+        dataClsVM.getMediatorLiveData(RetrofitClient.getClient().getCall(Game.class, new HashMap<>()), Game.class)
+                .observe(getViewLifecycleOwner(), newGames -> {
+                    dataClsAdapter.getObjectList().addAll(newGames);
+                    dataClsAdapter.notifyDataSetChanged();
+                });
+
         btnSaveEvent.setOnClickListener(v -> {
 
             String eventName = Objects.nonNull(etEventName) ? etEventName.getText().toString() : null;
@@ -124,37 +151,74 @@ public class AddEventFragment extends Fragment {
                 Log.i(TAG, addedEvent.toString());
                 Log.i(TAG, "Event added successfully");
 
-                HostedGame hostedGame = new HostedGame(addedEvent.getId(), 103, 10);
+                if(!gameIdList.isEmpty()) {
 
-                //Call to add hosted game in db for the event.
-                retrofitClient.postCall(HostedGame.class, hostedGame).subscribe(hostedGameJson -> {
-                    HostedGame addedHostedGame = getObject(hostedGameJson, HostedGame.class);
-                    if (Objects.nonNull(addedHostedGame)) {
-                        Log.i(TAG, addedHostedGame.getId() +" : "+ addedHostedGame.getEventId());
-                        Log.i(TAG, "HostedGame added successfully");
+                    for (Integer gameId : gameIdList) {
+                        HostedGame hostedGame = new HostedGame(addedEvent.getId(), gameId, 10);
 
-                        //Call to update event object with pending values and map hosted games to it.
-                        retrofitClient.putCall(Event.class, new HashMap<String, String>() {{
-                            put("id", String.valueOf(addedEvent.getId()));
-                            put("name", addedEvent.getName());
-                            put("hostUserId", String.valueOf(addedEvent.getHostUserId()));
-                            put("dateTime", eventDateTime);
-                            put("description", eventDescription);
-                            put("hostedGames", String.valueOf(addedHostedGame.getId()));
-                        }}).subscribe(updatedEventJson -> {
-                            Event updatedEvent = getObject(updatedEventJson, Event.class);
-                            if (Objects.nonNull(updatedEvent)) {
-                                Log.i(TAG, updatedEvent.toString());
-                                Log.i(TAG, "Event updated successfully");
+                        //Call to add hosted game in db for the event.
+                        retrofitClient.postCall(HostedGame.class, hostedGame).subscribe(hostedGameJson -> {
+                            HostedGame addedHostedGame = getObject(hostedGameJson, HostedGame.class);
+                            if (Objects.nonNull(addedHostedGame)) {
+                                Log.i(TAG, addedHostedGame.getId() + " : " + addedHostedGame.getEventId());
+                                Log.i(TAG, "HostedGame added successfully");
+
+                                //Call to update event object with pending values and map hosted games to it.
+                                retrofitClient.putCall(Event.class, new HashMap<String, String>() {{
+                                    put("id", String.valueOf(addedEvent.getId()));
+                                    put("name", addedEvent.getName());
+                                    put("hostUserId", String.valueOf(addedEvent.getHostUserId()));
+                                    put("dateTime", eventDateTime);
+                                    put("description", eventDescription);
+                                    put("hostedGames", String.valueOf(addedHostedGame.getId()));
+                                }}).subscribe(updatedEventJson -> {
+                                    Event updatedEvent = getObject(updatedEventJson, Event.class);
+                                    if (Objects.nonNull(updatedEvent)) {
+                                        Log.i(TAG, updatedEvent.toString());
+                                        Log.i(TAG, "Event updated successfully");
+                                    } else
+                                        Log.e(TAG, "Unable to update event at the moment");
+                                });
                             } else
-                                Log.e(TAG, "Unable to update event at the moment");
+                                Log.e(TAG, "Unable to add hosted game at the moment!");
                         });
-                    } else
-                        Log.e(TAG, "Unable to add hosted game at the moment!");
-                });
+                    }
+                } else
+                    Log.i(TAG, "GameIdList is empty!");
 
             } else
                 Log.e(TAG, "Unable to add event at the moment!");
         });
+    }
+
+    @Override
+    public void onItemClick(int position) {
+
+        RecyclerView.ViewHolder viewHolder = recyclerView.findViewHolderForAdapterPosition(position);
+        assert viewHolder != null;
+        CheckBox checkBox = viewHolder.itemView.findViewById(R.id.ck_hosted_game);
+        checkBox.setVisibility(View.INVISIBLE);
+
+        RelativeLayout relativeLayout = viewHolder.itemView.findViewById(R.id.hosted_game_card);
+
+        DataClsAdapter<Game, GameVH> dataClsAdapter = (DataClsAdapter<Game, GameVH>) recyclerView.getAdapter();
+        assert dataClsAdapter != null;
+        Game game = dataClsAdapter.getObjectList().get(position);
+
+        if(Objects.nonNull(game)) {
+            Log.i(TAG, game.getId().toString());
+
+            if(checkBox.isChecked()) {
+                checkBox.setChecked(false);
+                gameIdList.remove(game.getId());
+                relativeLayout.setBackgroundColor(Color.parseColor("#5EFF9B44"));
+            } else {
+                checkBox.setChecked(true);
+                gameIdList.add(game.getId());
+                relativeLayout.setBackgroundColor(Color.parseColor("#60000000"));
+            }
+        }
+
+        gameIdList.forEach(x -> x.toString());
     }
 }
