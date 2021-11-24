@@ -72,6 +72,15 @@ public class DataClsAdapter <DC extends DataClass, VH extends DataClsVH<DC>> ext
         holder.onBind(activity, currentObject);
     }
 
+    public void addNewObjects(List<DC> newObjects) {
+        for (DC object : newObjects) {
+            if (!objectList.contains(object)){
+                objectList.add(object);
+                notifyItemChanged(objectList.indexOf(object));
+            }
+        }
+    }
+
     @Override
     public int getItemCount() {
         return objectList.size();

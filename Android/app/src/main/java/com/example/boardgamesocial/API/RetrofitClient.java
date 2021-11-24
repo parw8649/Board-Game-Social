@@ -63,8 +63,8 @@ public class RetrofitClient {
         return retrofitClient;
     }
 
-    public static <T> List<T> getObjectList(JsonArray jsonArray, Class<T> cls) {
-        List<T> list = new ArrayList<T>();
+    public static <DC extends DataClass> List<DC> getObjectList(JsonArray jsonArray, Class<DC> cls) {
+        List<DC> list = new ArrayList<>();
         try {
             Gson gson = new Gson();
             for (JsonElement jsonElement : jsonArray) {
@@ -77,7 +77,7 @@ public class RetrofitClient {
         return list;
     }
 
-    public static <T> T getObject(JsonObject jsonObject, Class<T> cls) {
+    public static <DC extends DataClass> DC getObject(JsonObject jsonObject, Class<DC> cls) {
         return new Gson().fromJson(jsonObject, cls);
     }
 

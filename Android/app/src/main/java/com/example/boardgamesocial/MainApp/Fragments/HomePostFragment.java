@@ -37,6 +37,8 @@ public class HomePostFragment extends Fragment implements OnItemListener {
     private String mParam2;
     private FloatingActionButton fab;
 
+    private DataClsAdapter<Post, PostVH> dataClsAdapter;
+
     public HomePostFragment() {
         // Required empty public constructor
     }
@@ -79,7 +81,7 @@ public class HomePostFragment extends Fragment implements OnItemListener {
         RecyclerView recyclerView = view.findViewById(R.id.postFeed_recyclerView);
         recyclerView.setLayoutManager(new LinearLayoutManager(this.getContext()));
 
-        DataClsAdapter<Post, PostVH> dataClsAdapter = new DataClsAdapter<>(
+        dataClsAdapter = new DataClsAdapter<>(
                 this,
                 Post.class,
                 getActivity(),
@@ -88,10 +90,7 @@ public class HomePostFragment extends Fragment implements OnItemListener {
 
         DataClsVM dataClsVM = DataClsVM.getInstance();
         dataClsVM.getMediatorLiveData(RetrofitClient.getClient().getCall(Post.class, new HashMap<>()), Post.class)
-                .observe(getViewLifecycleOwner(), newPosts -> {
-                    dataClsAdapter.getObjectList().addAll(newPosts);
-                    dataClsAdapter.notifyDataSetChanged();
-                });
+                .observe(getViewLifecycleOwner(), newPosts -> dataClsAdapter.addNewObjects(newPosts));
     }
 
     @Override
@@ -101,8 +100,10 @@ public class HomePostFragment extends Fragment implements OnItemListener {
 
     @Override
     public void onItemClick(int position) {
+        Bundle bundle = new Bundle();
+//        bundle.putSerializable("post", dataClsAdapter.getObjectList().get(position));
         NavHostFragment.findNavController(HomePostFragment.this)
-                .navigate(R.id.action_HomePostFragment_to_singlePostFragment);
+                .navigate(R.id.action_HomePostFragment_to_singlePostFragment, bundle);
         Toast.makeText(getContext(),"Item clicked", Toast.LENGTH_LONG).show();
     }
 }

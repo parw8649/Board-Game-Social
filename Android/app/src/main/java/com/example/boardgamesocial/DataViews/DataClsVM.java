@@ -15,15 +15,19 @@ import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.concurrent.TimeUnit;
 
 
 import io.reactivex.BackpressureStrategy;
 import io.reactivex.Observable;
+import io.reactivex.ObservableSource;
+import io.reactivex.functions.Function;
 
 public class DataClsVM extends ViewModel {
     private static DataClsVM liveDataConnector;
     private final RetrofitClient retrofitClient;
     private final Map<Class<?>, MediatorLiveData<?>> mediatorLiveDataMap;
+    private static long updateInterval = 5;
 
     private DataClsVM(){
         retrofitClient = RetrofitClient.getClient();
@@ -41,13 +45,14 @@ public class DataClsVM extends ViewModel {
         if (!mediatorLiveDataMap.containsKey(dataClass)){
             MediatorLiveData<List<DC>> mediatorLiveData = new MediatorLiveData<>();
             final LiveData<JsonArray> source = LiveDataReactiveStreams.fromPublisher(
-                    observable.toFlowable(BackpressureStrategy.BUFFER)
+                    Observable.interval(0, updateInterval, TimeUnit.SECONDS)
+                            .flatMap((Function<Long, ObservableSource<JsonArray>>) aLong -> observable)
+                            .toFlowable(BackpressureStrategy.BUFFER)
             );
             mediatorLiveData.addSource(source, jsonArray -> {
-                List<DC> dcList = getObjectList(jsonArray, dataClass);
-                Collections.reverse(dcList);
-                mediatorLiveData.setValue(dcList);
-                mediatorLiveData.removeSource(source);
+                List<DC> objectList = getObjectList(jsonArray, dataClass);
+                Collections.reverse(objectList);
+                mediatorLiveData.setValue(objectList);
             });
             mediatorLiveDataMap.put(dataClass, mediatorLiveData);
         }
