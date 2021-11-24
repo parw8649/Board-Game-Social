@@ -23,7 +23,7 @@ import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
 import java.util.HashMap;
 
-public class HomePostFragment extends Fragment implements OnItemListener {
+public class HomePostFragment extends Fragment implements DataClsAdapter.OnItemListener {
 
     public static final String TAG = "HomePostFragment";
 

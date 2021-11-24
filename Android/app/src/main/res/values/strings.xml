@@ -78,4 +78,6 @@
     <string name="btn_text_sign_in">sign in</string>
     <string name="btn_text_sign_up">sign up</string>
     <string name="title_activity_mvvm_test">MvvmTest</string>
+    <string name="item_textView_friendNamePlaceholder">Friend\'s name</string>
+    <string name="item_textView_lastMessagePlaceholder">Last message</string>
 </resources>
