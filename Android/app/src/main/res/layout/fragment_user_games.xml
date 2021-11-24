@@ -3,14 +3,15 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".MainApp.Fragments.GameCollectionFragment">
+    tools:context=".MainApp.Fragments.UserGamesFragment">
 
     <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="match_parent"
+        tools:ignore="UselessParent">
 
         <androidx.recyclerview.widget.RecyclerView
-            android:id="@+id/gameFeed_recyclerView"
+            android:id="@+id/userGames_recyclerView"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="8dp"
