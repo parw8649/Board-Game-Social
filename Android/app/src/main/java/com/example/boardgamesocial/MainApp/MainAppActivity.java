@@ -45,6 +45,8 @@ public class MainAppActivity extends AppCompatActivity {
         setSupportActionBar(bottomAppBar);
 
         fab = findViewById(R.id.bottom_app_bar_fab);
+        // default fab onClick after login
+        setFabOnClick(R.id.home_option);
 
         bottomAppBar.setOnMenuItemClickListener(item -> {
             switch (item.getItemId()) {
@@ -127,6 +129,10 @@ public class MainAppActivity extends AppCompatActivity {
 //                    TODO: add AddGameFragment navigation to nav_main_app.xml
 //                    navController.navigate(R.id.addGameFragment);
                 });
+                return;
+            case R.id.search_option:
+                return;
+            case R.id.profile_option:
                 return;
         }
     }

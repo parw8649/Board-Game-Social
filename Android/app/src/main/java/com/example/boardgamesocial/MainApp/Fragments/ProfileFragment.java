@@ -2,11 +2,13 @@ package com.example.boardgamesocial.MainApp.Fragments;
 
 import static com.example.boardgamesocial.API.RetrofitClient.getObjectList;
 
+import android.app.Activity;
 import android.os.Bundle;
 
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -35,6 +37,13 @@ public class ProfileFragment extends Fragment {
 
     public static final String TAG = "ProfileFragment";
     private RetrofitClient retrofitClient;
+    private TextView textViewFirstName;
+    private TextView textViewUsername;
+    private TextView textViewUserId;
+    private TextView textViewBio;
+    private Button buttonEditProfile;
+    private Button buttonUserGameList;
+    private Button buttonFriendList;
 
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
@@ -84,39 +93,69 @@ public class ProfileFragment extends Fragment {
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
+        Log.i(TAG, String.format("userId: %s", Utils.getUserId()));
         retrofitClient = RetrofitClient.getClient();
-        TextView textViewFirstName = view.findViewById(R.id.profile_first_name);
-        TextView textViewUsername = view.findViewById(R.id.profile_username);
-        TextView textViewBio = view.findViewById(R.id.profile_bio);
-        Button buttonUserGameList = view.findViewById(R.id.profile_btn_view_user_gamelist);
-        Button buttonEditProfile = view.findViewById(R.id.profile_btn_edit);
-        Button buttonFriendList = view.findViewById(R.id.profile_btn_view_friends);
-        ArrayList<String> names = getNames(Utils.getUserId());
+        textViewBio = view.findViewById(R.id.profile_bio);
+        buttonEditProfile = view.findViewById(R.id.profile_btn_edit);
+        buttonUserGameList = view.findViewById(R.id.profile_btn_view_user_gamelist);
+        buttonFriendList = view.findViewById(R.id.profile_btn_view_friends);
 
-        textViewFirstName.setText(names.get(0));
-        textViewUsername.setText(names.get(1));
-        textViewBio.setText("hmmm...users don't seem to have a bio field in the database?");
-        // https://developer.android.com/guide/topics/resources/string-resource#formatting-strings
-        buttonFriendList.setText(getString(R.string.profile_btn_view_friends, names.get(1)));
-        buttonUserGameList.setText(getString(R.string.profile_btn_view_user_gamelist, names.get(1)));
+        if (Objects.isNull(getArguments())) {
+            buttonEditProfile.setVisibility(view.VISIBLE);
+            buttonEditProfile.setOnClickListener(view1 -> NavHostFragment.findNavController(ProfileFragment.this)
+                    .navigate(R.id.action_profileFragment_to_editProfileFragment));
+        } else {
+            buttonEditProfile.setVisibility(view.GONE);
+        }
 
-        buttonEditProfile.setOnClickListener(view1 -> NavHostFragment.findNavController(ProfileFragment.this)
-                .navigate(R.id.action_profileFragment_to_editProfileFragment));
-        buttonFriendList.setOnClickListener(v -> NavHostFragment.findNavController(ProfileFragment.this)
-                .navigate(R.id.action_profileFragment_to_userFriendsFragment));
-        buttonUserGameList.setOnClickListener(v -> NavHostFragment.findNavController(ProfileFragment.this)
-                .navigate(R.id.action_profileFragment_to_gameCollectionFragment));
+        textViewBio.setText("Empty bios for all!");
+        setNames(view, Utils.getUserId());
+//        String viewUserFriends = String.format(getString(R.string.profile_btn_view_friends), "TestingString");
+//        String viewUserGames = String.format(getString(R.string.profile_btn_view_user_gamelist), "TestingString");
+//        buttonEditProfile.setOnClickListener(view1 -> NavHostFragment.findNavController(ProfileFragment.this)
+//                .navigate(R.id.action_profileFragment_to_editProfileFragment));
+        buttonFriendList.setOnClickListener(v -> {
+            Bundle bundle = new Bundle();
+
+            if (Objects.nonNull(getArguments())) {
+                bundle.putInt("diffUserId", getArguments().getInt("diffUserId"));
+            } else {
+                bundle = null;
+            }
+            NavHostFragment.findNavController(ProfileFragment.this)
+                    .navigate(R.id.action_profileFragment_to_userFriendsFragment, bundle);
+        });
+        buttonUserGameList.setOnClickListener(v -> {
+            Bundle bundle = new Bundle();
+
+            if (Objects.nonNull(getArguments())) {
+                bundle.putInt("diffUserId", getArguments().getInt("diffUserId"));
+            } else {
+                bundle = null;
+            }
+            NavHostFragment.findNavController(ProfileFragment.this)
+                    .navigate(R.id.action_profileFragment_to_gameCollectionFragment, bundle);
+        });
     }
 
-    private ArrayList<String> getNames(Integer userId) {
-        ArrayList<String> names = new ArrayList<>();
+    private void setNames(View view, Integer userId) {
+        Activity activity = getActivity();
+        textViewFirstName = view.findViewById(R.id.profile_first_name);
+        textViewUsername = view.findViewById(R.id.profile_username);
+
         retrofitClient.getCall(User.class, new HashMap<String, String>() {{
-            put("id", userId.toString());
+            put("id", String.valueOf(userId));
         }}).subscribe(jsonArray -> {
             List<User> userList = getObjectList(jsonArray, User.class);
-            names.add(userList.get(0).getFirstName());
-            names.add(userList.get(0).getUsername());
-            return names;
+            activity.runOnUiThread(() -> {
+                textViewFirstName.setText(userList.get(0).getFirstName());
+                textViewUsername.setText(userList.get(0).getUsername());
+                // https://developer.android.com/guide/topics/resources/string-resource#formatting-strings
+                String viewUserFriends = getString(R.string.profile_btn_view_friends, userList.get(0).getUsername());
+                String viewUserGames = getString(R.string.profile_btn_view_user_gamelist, userList.get(0).getUsername());
+                buttonFriendList.setText(viewUserFriends);
+                buttonUserGameList.setText(viewUserGames);
+            });
         });
     }
 }

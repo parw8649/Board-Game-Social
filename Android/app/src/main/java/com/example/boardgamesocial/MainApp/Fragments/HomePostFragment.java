@@ -1,6 +1,7 @@
 package com.example.boardgamesocial.MainApp.Fragments;
 
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -13,6 +14,7 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.boardgamesocial.API.RetrofitClient;
+import com.example.boardgamesocial.Commons.Utils;
 import com.example.boardgamesocial.DataClasses.Post;
 import com.example.boardgamesocial.DataViews.Adapters.DataClsAdapter;
 import com.example.boardgamesocial.DataViews.Adapters.DataClsAdapter.OnItemListener;
@@ -22,6 +24,7 @@ import com.example.boardgamesocial.R;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
 import java.util.HashMap;
+import java.util.Objects;
 
 public class HomePostFragment extends Fragment implements OnItemListener {
 
@@ -75,6 +78,10 @@ public class HomePostFragment extends Fragment implements OnItemListener {
 
     public void onViewCreated(@NonNull View view, Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
+
+        if (Objects.nonNull(Utils.getUserId())) {
+            Log.i(TAG, String.format("Utils.getUserId(): %d", Utils.getUserId()));
+        }
 
         RecyclerView recyclerView = view.findViewById(R.id.postFeed_recyclerView);
         recyclerView.setLayoutManager(new LinearLayoutManager(this.getContext()));

@@ -50,7 +50,7 @@
                     android:layout_marginTop="@dimen/profile_username_v_margin"
                     android:layout_marginBottom="@dimen/profile_username_v_margin"
                     android:text="@string/profile_username_placeholder"
-                    android:textSize="@dimen/textSizeMiddle" />
+                    android:textSize="@dimen/textSizeBig" />
 
                 <Button
                     android:id="@+id/profile_btn_edit"
