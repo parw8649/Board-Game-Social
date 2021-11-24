@@ -211,14 +211,14 @@ public class AddEventFragment extends Fragment implements OnItemListener {
             if(checkBox.isChecked()) {
                 checkBox.setChecked(false);
                 gameIdList.remove(game.getId());
+                Log.i(TAG, "Removed - GameId: " + game.getId().toString());
                 relativeLayout.setBackgroundColor(Color.parseColor("#5EFF9B44"));
             } else {
                 checkBox.setChecked(true);
                 gameIdList.add(game.getId());
+                Log.i(TAG, "Added - GameId: " + game.getId().toString());
                 relativeLayout.setBackgroundColor(Color.parseColor("#60000000"));
             }
         }
-
-        gameIdList.forEach(x -> x.toString());
     }
 }

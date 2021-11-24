@@ -1,18 +1,20 @@
 package com.example.boardgamesocial.DataViews.Adapters.ViewHolders;
 
 import android.app.Activity;
-import android.content.res.Resources;
 import android.view.View;
+import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 
+import com.example.boardgamesocial.API.RetrofitClient;
 import com.example.boardgamesocial.DataClasses.Game;
 import com.example.boardgamesocial.DataViews.Adapters.DataClsAdapter;
 import com.example.boardgamesocial.R;
 import com.squareup.picasso.Picasso;
 
+import java.util.HashMap;
 import java.util.Objects;
 
 public class GameVH extends DataClsVH<Game> {
@@ -23,6 +25,7 @@ public class GameVH extends DataClsVH<Game> {
     private final TextView tvMinPlayer;
     private final TextView tvMaxPlayer;
     private final TextView tvOverallPlayCount;
+    private final ImageButton ibtnDeleteGame;
 
     public GameVH(@NonNull View gameView, DataClsAdapter.OnItemListener onItemListener) {
         super(gameView, onItemListener);
@@ -33,6 +36,7 @@ public class GameVH extends DataClsVH<Game> {
         tvMinPlayer = gameView.findViewById(R.id.tv_min_player_count);
         tvMaxPlayer = gameView.findViewById(R.id.tv_max_player_count);
         tvOverallPlayCount = gameView.findViewById(R.id.overall_play_count);
+        ibtnDeleteGame = gameView.findViewById(R.id.btn_delete_game);
     }
 
     @Override
@@ -44,10 +48,12 @@ public class GameVH extends DataClsVH<Game> {
         tvMinPlayer.setVisibility(visibility);
         tvMaxPlayer.setVisibility(visibility);
         tvOverallPlayCount.setVisibility(visibility);
+        ibtnDeleteGame.setVisibility(visibility);
     }
 
     @Override
     public void onBind(Activity activity, Game game) {
+
         tvGameTitle.setText(game.getGameTitle());
         tvGenre.setText(game.getGenre());
 
@@ -79,5 +85,12 @@ public class GameVH extends DataClsVH<Game> {
                 .fit()
                 .placeholder(R.drawable.ic_image_placeholder)
                 .into(ivImageUrl);
+
+        if(Objects.nonNull(ibtnDeleteGame)) {
+            RetrofitClient retrofitClient = RetrofitClient.getClient();
+            ibtnDeleteGame.setOnClickListener(v -> retrofitClient.deleteCall(Game.class, new HashMap<String, String>() {{
+                put("id", String.valueOf(game.getId()));
+            }}).subscribe());
+        }
     }
 }
