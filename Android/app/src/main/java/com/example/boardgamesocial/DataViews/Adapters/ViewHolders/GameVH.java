@@ -14,6 +14,8 @@ import com.example.boardgamesocial.R;
 import com.squareup.picasso.Picasso;
 
 public class GameVH extends DataClsVH<Game> {
+    public static final String GAME_KEY = "game";
+
     private final ImageView ivImageUrl;
     private final TextView tvGameTitle;
     private final TextView tvGenre;
@@ -46,6 +48,8 @@ public class GameVH extends DataClsVH<Game> {
 
     @Override
     public void onBind(Activity activity, Game game) {
+        contextBundle.putSerializable(GAME_KEY, game);
+
         tvGameTitle.setText(game.getGameTitle());
         tvGenre.setText(game.getGenre());
         tvDescription.setText(game.getDescription());

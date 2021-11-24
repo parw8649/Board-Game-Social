@@ -27,7 +27,7 @@ public class DataClsVM extends ViewModel {
     private static DataClsVM liveDataConnector;
     private final RetrofitClient retrofitClient;
     private final Map<Class<?>, MediatorLiveData<?>> mediatorLiveDataMap;
-    private static long updateInterval = 5;
+    private static long updateInterval = 10;
 
     private DataClsVM(){
         retrofitClient = RetrofitClient.getClient();

@@ -16,8 +16,12 @@ import com.example.boardgamesocial.R;
 
 import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 public class PostVH extends DataClsVH<Post> {
+    public static final String POST_KEY = "post";
+    public static final String USER_KEY = "user";
+
     private final TextView textViewUsername;
     private final TextView textViewPostType;
     private final TextView textViewPostBody;
@@ -54,6 +58,8 @@ public class PostVH extends DataClsVH<Post> {
                 new Exception("Got many Users on primary key: " + users).printStackTrace();
             } else {
                 User user = users.get(0);
+                contextBundle.putSerializable(POST_KEY, post);
+                contextBundle.putSerializable(USER_KEY, user);
                 activity.runOnUiThread(()->{
                     toggleVisibility(View.VISIBLE);
                     textViewUsername.setText(user.getUsername());

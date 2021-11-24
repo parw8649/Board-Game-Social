@@ -1,8 +1,5 @@
 package com.example.boardgamesocial.MainApp.Fragments;
 
-import static com.example.boardgamesocial.API.RetrofitClient.getObjectList;
-
-import android.nfc.Tag;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -18,11 +15,9 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.example.boardgamesocial.API.RetrofitClient;
 import com.example.boardgamesocial.Commons.Utils;
 import com.example.boardgamesocial.DataClasses.Game;
-import com.example.boardgamesocial.DataClasses.Post;
 import com.example.boardgamesocial.DataViews.Adapters.DataClsAdapter;
 import com.example.boardgamesocial.DataViews.Adapters.DataClsAdapter.OnItemListener;
 import com.example.boardgamesocial.DataViews.Adapters.ViewHolders.GameVH;
-import com.example.boardgamesocial.DataViews.Adapters.ViewHolders.PostVH;
 import com.example.boardgamesocial.DataViews.DataClsVM;
 import com.example.boardgamesocial.R;
 
@@ -109,14 +104,11 @@ public class GameCollectionFragment extends Fragment implements OnItemListener {
         dataClsVM.getMediatorLiveData(RetrofitClient.getClient().getCall(Game.class, new HashMap<String, String>(){{
             put("gameTitle", "7 Wonders Duel");
         }}), Game.class)
-                .observe(getViewLifecycleOwner(), newGames -> {
-                    dataClsAdapter.getObjectList().addAll(newGames);
-                    dataClsAdapter.notifyDataSetChanged();
-                });
+                .observe(getViewLifecycleOwner(), dataClsAdapter::addNewObjects);
     }
 
     @Override
-    public void onItemClick(int position) {
+    public void onItemClick(Bundle contextBundle) {
         Toast.makeText(getContext(),"Game clicked", Toast.LENGTH_LONG).show();
     }
 }

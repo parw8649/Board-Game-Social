@@ -1,6 +1,7 @@
 package com.example.boardgamesocial.DataViews.Adapters.ViewHolders;
 
 import android.app.Activity;
+import android.os.Bundle;
 import android.view.View;
 import android.widget.AdapterView;
 
@@ -17,18 +18,24 @@ import com.example.boardgamesocial.R;
 public abstract class DataClsVH <DC extends DataClass> extends RecyclerView.ViewHolder implements View.OnClickListener {
 
     protected final DataClsAdapter.OnItemListener onItemListener;
+    protected final Bundle contextBundle;
 
     public DataClsVH(View itemView, DataClsAdapter.OnItemListener onItemListener) {
         super(itemView);
         this.onItemListener = onItemListener;
+        this.contextBundle = new Bundle();
         itemView.setOnClickListener(this);
     }
 
     public abstract void toggleVisibility(int visibility);
     public abstract void onBind(Activity activity, DC dataClass);
 
+    public Bundle getContextBundle() {
+        return contextBundle;
+    }
+
     @Override
     public void onClick(View view) {
-        onItemListener.onItemClick(getAdapterPosition());
+        onItemListener.onItemClick(contextBundle);
     }
 }

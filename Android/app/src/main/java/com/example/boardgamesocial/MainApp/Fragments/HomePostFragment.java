@@ -90,7 +90,7 @@ public class HomePostFragment extends Fragment implements OnItemListener {
 
         DataClsVM dataClsVM = DataClsVM.getInstance();
         dataClsVM.getMediatorLiveData(RetrofitClient.getClient().getCall(Post.class, new HashMap<>()), Post.class)
-                .observe(getViewLifecycleOwner(), newPosts -> dataClsAdapter.addNewObjects(newPosts));
+                .observe(getViewLifecycleOwner(), dataClsAdapter::addNewObjects);
     }
 
     @Override
@@ -99,11 +99,9 @@ public class HomePostFragment extends Fragment implements OnItemListener {
     }
 
     @Override
-    public void onItemClick(int position) {
-        Bundle bundle = new Bundle();
-//        bundle.putSerializable("post", dataClsAdapter.getObjectList().get(position));
+    public void onItemClick(Bundle contextBundle) {
         NavHostFragment.findNavController(HomePostFragment.this)
-                .navigate(R.id.action_HomePostFragment_to_singlePostFragment, bundle);
+                .navigate(R.id.action_HomePostFragment_to_singlePostFragment, contextBundle);
         Toast.makeText(getContext(),"Item clicked", Toast.LENGTH_LONG).show();
     }
 }

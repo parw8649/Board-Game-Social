@@ -10,6 +10,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Toast;
 
+import com.example.boardgamesocial.DataViews.Adapters.ViewHolders.PostVH;
 import com.example.boardgamesocial.R;
 
 /**
@@ -68,6 +69,7 @@ public class SinglePostFragment extends Fragment {
 
     public void onViewCreated(@NonNull View view, Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        Toast.makeText(getContext(), this.getArguments().getSerializable("post").toString(), Toast.LENGTH_SHORT).show();
+        assert this.getArguments() != null;
+        Toast.makeText(getContext(), this.getArguments().getSerializable(PostVH.POST_KEY).toString(), Toast.LENGTH_SHORT).show();
     }
 }
