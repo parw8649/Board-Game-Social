@@ -15,7 +15,11 @@ import com.example.boardgamesocial.DataViews.Adapters.DataClsAdapter;
 import com.example.boardgamesocial.MainApp.Fragments.ProfileFragment;
 import com.example.boardgamesocial.R;
 
+import java.util.HashMap;
+import java.util.Map;
+
 public abstract class DataClsVH <DC extends DataClass> extends RecyclerView.ViewHolder implements View.OnClickListener {
+    public static final String TAG = "DataClsVH";
 
     protected final DataClsAdapter.OnItemListener onItemListener;
     protected final Bundle contextBundle;
@@ -29,10 +33,6 @@ public abstract class DataClsVH <DC extends DataClass> extends RecyclerView.View
 
     public abstract void toggleVisibility(int visibility);
     public abstract void onBind(Activity activity, DC dataClass);
-
-    public Bundle getContextBundle() {
-        return contextBundle;
-    }
 
     @Override
     public void onClick(View view) {

@@ -2,6 +2,8 @@ package com.example.boardgamesocial.DataViews.Adapters.ViewHolders;
 
 import android.app.Activity;
 import android.content.res.Resources;
+import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -9,9 +11,13 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 
 import com.example.boardgamesocial.DataClasses.Game;
+import com.example.boardgamesocial.DataClasses.Post;
 import com.example.boardgamesocial.DataViews.Adapters.DataClsAdapter;
 import com.example.boardgamesocial.R;
 import com.squareup.picasso.Picasso;
+
+import java.util.HashMap;
+import java.util.Map;
 
 public class GameVH extends DataClsVH<Game> {
     public static final String GAME_KEY = "game";
@@ -49,7 +55,6 @@ public class GameVH extends DataClsVH<Game> {
     @Override
     public void onBind(Activity activity, Game game) {
         contextBundle.putSerializable(GAME_KEY, game);
-
         tvGameTitle.setText(game.getGameTitle());
         tvGenre.setText(game.getGenre());
         tvDescription.setText(game.getDescription());
