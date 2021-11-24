@@ -19,9 +19,11 @@
     <dimen name="item_more_btn_width">50dp</dimen>
     <!--  Main App Activity  -->
     <dimen name="main_app_activity_padding">10dp</dimen>
-    <!--  profile pages -->
+    <!--  profile and edit profile pages -->
+    <dimen name="textSizeSmall">10sp</dimen>
     <dimen name="btn_padding_slim">4dp</dimen>
     <dimen name="btn_height_slim">40dp</dimen>
+    <dimen name="btn_width_slim">50dp</dimen>
     <dimen name="even_spacing_layout_width">0dp</dimen>
     <dimen name="even_spacing_layout_weight">1</dimen>
     <dimen name="profile_v_margin">20dp</dimen>
@@ -30,4 +32,8 @@
     <dimen name="profile_icon_size">100dp</dimen>
     <dimen name="profile_username_v_margin">5dp</dimen>
     <dimen name="linear_vert_padding">10dp</dimen>
+    <dimen name="edit_profile_space_between">10dp</dimen>
+    <dimen name="edit_profile_h_margin">50dp</dimen>
+    <dimen name="edit_profile_editText_width">150dp</dimen>
+    <dimen name="edit_profile_editText_bio_width">200dp</dimen>
 </resources>

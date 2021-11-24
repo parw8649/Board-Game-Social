@@ -1,14 +1,30 @@
 package com.example.boardgamesocial.MainApp.Fragments;
 
+import static com.example.boardgamesocial.API.RetrofitClient.getClient;
+import static com.example.boardgamesocial.API.RetrofitClient.getObject;
+import static com.example.boardgamesocial.API.RetrofitClient.getObjectList;
+
 import android.os.Bundle;
 
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
+import android.widget.EditText;
+import android.widget.TextView;
 
+import com.example.boardgamesocial.API.RetrofitClient;
+import com.example.boardgamesocial.Commons.Utils;
+import com.example.boardgamesocial.DataClasses.User;
 import com.example.boardgamesocial.R;
+import com.google.android.material.snackbar.Snackbar;
+
+import java.util.HashMap;
+import java.util.List;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -25,6 +41,17 @@ public class EditProfileFragment extends Fragment {
     // TODO: Rename and change types of parameters
     private String mParam1;
     private String mParam2;
+    private TextView textViewGreeting;
+    private TextView textViewCurrUsername;
+    private EditText editTextNewUsername;
+    private EditText editTextNewPassword;
+    private EditText editTextConfirmPassword;
+    private EditText editTextNewBio;
+    private Button buttonEditUsername;
+    private Button buttonEditPassword;
+    private Button buttonEditBio;
+    private Button buttonDeleteAcc;
+    private RetrofitClient retrofitClient;
 
     public EditProfileFragment() {
         // Required empty public constructor
@@ -62,5 +89,51 @@ public class EditProfileFragment extends Fragment {
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         return inflater.inflate(R.layout.fragment_edit_profile, container, false);
+    }
+
+    @Override
+    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
+        retrofitClient = getClient();
+        textViewGreeting = view.findViewById(R.id.edit_profile_greeting);
+        textViewCurrUsername = view.findViewById(R.id.edit_profile_current_username);
+        editTextNewUsername = view.findViewById(R.id.edit_profile_editText_username);
+        editTextNewPassword = view.findViewById(R.id.edit_profile_editText_password);
+        editTextConfirmPassword = view.findViewById(R.id.edit_profile_editText_password_confirm);
+        editTextNewBio = view.findViewById(R.id.edit_profile_editText_bio);
+        buttonEditUsername = view.findViewById(R.id.edit_profile_btn_edit_username);
+        buttonEditPassword = view.findViewById(R.id.edit_profile_btn_edit_password);
+        buttonEditBio = view.findViewById(R.id.edit_profile_btn_edit_bio);
+        buttonDeleteAcc = view.findViewById(R.id.edit_profile_btn_delete_account);
+
+        retrofitClient.getCall(User.class, new HashMap<String, String>() {{
+            put("id", String.valueOf(Utils.getUserId()));
+        }}).subscribe(jsonArray -> {
+            List<User> userList = getObjectList(jsonArray, User.class);
+            getActivity().runOnUiThread(() -> {
+                textViewGreeting.setText(getString(R.string.edit_profile_greeting, userList.get(0).getUsername()));
+                textViewCurrUsername.setText(userList.get(0).getUsername());
+            });
+        });
+
+        buttonEditUsername.setOnClickListener(v -> validateUsername(view));
+    }
+
+    private void validateUsername(View view) {
+        try {
+            retrofitClient.putCall(User.class, new HashMap<String, String>() {{
+                put("username", editTextNewUsername.getText().toString());
+            }}).subscribe(jsonObject -> {
+                User user = getObject(jsonObject, User.class);
+                getActivity().runOnUiThread(() -> {
+                    textViewGreeting.setText(getString(R.string.edit_profile_greeting, user.getUsername()));
+                    textViewCurrUsername.setText(user.getUsername());
+                    return;
+                });
+            });
+        }catch (Exception e) {
+            Snackbar.make(view, "Unable to update username", Snackbar.LENGTH_SHORT)
+                    .setAnchorView(R.id.bottom_app_bar).setAction("Action", null).show();
+        }
     }
 }
