@@ -109,7 +109,12 @@ public class ProfileFragment extends Fragment {
         }
 
         textViewBio.setText("Empty bios for all!");
-        setNames(view, Utils.getUserId());
+        if (Objects.nonNull(getArguments())) {
+            setNames(view, getArguments().getInt("diffUserId"));
+        } else {
+            setNames(view, Utils.getUserId());
+        }
+
 //        String viewUserFriends = String.format(getString(R.string.profile_btn_view_friends), "TestingString");
 //        String viewUserGames = String.format(getString(R.string.profile_btn_view_user_gamelist), "TestingString");
 //        buttonEditProfile.setOnClickListener(view1 -> NavHostFragment.findNavController(ProfileFragment.this)
