@@ -1,36 +1,38 @@
 package com.example.boardgamesocial.MainApp.Fragments;
 
 import android.os.Bundle;
-import android.util.Log;
-import android.view.LayoutInflater;
-import android.view.View;
-import android.view.ViewGroup;
-import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.util.Log;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.view.ViewGroup;
+import android.widget.Toast;
+
 import com.example.boardgamesocial.API.RetrofitClient;
 import com.example.boardgamesocial.Commons.Utils;
 import com.example.boardgamesocial.DataClasses.Game;
 import com.example.boardgamesocial.DataViews.Adapters.DataClsAdapter;
-import com.example.boardgamesocial.DataViews.Adapters.DataClsAdapter.OnItemListener;
 import com.example.boardgamesocial.DataViews.Adapters.ViewHolders.GameVH;
 import com.example.boardgamesocial.DataViews.DataClsVM;
 import com.example.boardgamesocial.R;
 
 import java.util.HashMap;
+import java.util.List;
 
 /**
  * A simple {@link Fragment} subclass.
- * Use the {@link GameCollectionFragment#newInstance} factory method to
+ * Use the {@link UserGamesFragment#newInstance} factory method to
  * create an instance of this fragment.
  */
-public class GameCollectionFragment extends Fragment implements OnItemListener {
+public class UserGamesFragment extends Fragment implements DataClsAdapter.OnItemListener {
 
-    public static final String TAG = "GameCollectionFragment";
+    private RecyclerView recyclerView;
+    private List<Game> games;
 
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
@@ -41,7 +43,7 @@ public class GameCollectionFragment extends Fragment implements OnItemListener {
     private String mParam1;
     private String mParam2;
 
-    public GameCollectionFragment() {
+    public UserGamesFragment() {
         // Required empty public constructor
     }
 
@@ -51,11 +53,11 @@ public class GameCollectionFragment extends Fragment implements OnItemListener {
      *
      * @param param1 Parameter 1.
      * @param param2 Parameter 2.
-     * @return A new instance of fragment GameCollectionFragment.
+     * @return A new instance of fragment UserGamesFragment.
      */
     // TODO: Rename and change types and number of parameters
-    public static GameCollectionFragment newInstance(String param1, String param2) {
-        GameCollectionFragment fragment = new GameCollectionFragment();
+    public static UserGamesFragment newInstance(String param1, String param2) {
+        UserGamesFragment fragment = new UserGamesFragment();
         Bundle args = new Bundle();
         args.putString(ARG_PARAM1, param1);
         args.putString(ARG_PARAM2, param2);
@@ -72,21 +74,21 @@ public class GameCollectionFragment extends Fragment implements OnItemListener {
         }
 
         Utils.checkForUser(requireContext());
-        Log.i(TAG, String.format("GamesCollection - User Id: %s", Utils.getUserId()));
+        Log.i("GamesCollection - User Token: ", String.valueOf(Utils.getUserId()));
     }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_game_collection, container, false);
+        return inflater.inflate(R.layout.fragment_user_games, container, false);
     }
 
     public void onViewCreated(@NonNull View view, Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
-        RecyclerView recyclerView = view.findViewById(R.id.gameFeed_recyclerView);
-        recyclerView.setLayoutManager(new LinearLayoutManager(this.getContext()));
+        recyclerView = view.findViewById(R.id.userGames_recyclerView);
+        recyclerView.setLayoutManager(new LinearLayoutManager((this.getContext())));
 
         DataClsAdapter<Game, GameVH> dataClsAdapter = new DataClsAdapter<>(
                 this,
@@ -96,17 +98,13 @@ public class GameCollectionFragment extends Fragment implements OnItemListener {
         recyclerView.setAdapter(dataClsAdapter);
 
         DataClsVM dataClsVM = DataClsVM.getInstance();
+        //TODO: Need to fetch user specific games from db
         dataClsVM.getMediatorLiveData(RetrofitClient.getClient().getCall(Game.class, new HashMap<>()), Game.class)
                 .observe(getViewLifecycleOwner(), dataClsAdapter::addNewObjects);
     }
 
     @Override
-    public void onDestroyView() {
-        super.onDestroyView();
-    }
-
-    @Override
     public void onItemClick(Bundle contextBundle) {
-        Toast.makeText(getContext(),"Game clicked", Toast.LENGTH_LONG).show();
+        Toast.makeText(getContext(),"User Game clicked", Toast.LENGTH_LONG).show();
     }
 }

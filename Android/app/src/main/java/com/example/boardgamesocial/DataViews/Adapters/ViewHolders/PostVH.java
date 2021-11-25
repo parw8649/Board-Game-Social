@@ -66,10 +66,9 @@ public class PostVH extends DataClsVH<Post> {
                     new Exception("Got many Users on primary key: " + users).printStackTrace();
                 } else {
                     performBind(activity, post, users.get(0));
-                    Bundle bundle = new Bundle();
-                    bundle.putSerializable(USER_KEY, users.get(0));
-                    bundle.putSerializable(POST_KEY, post);
-                    localCache.put(post, bundle);
+                    contextBundle.putSerializable(USER_KEY, users.get(0));
+                    contextBundle.putSerializable(POST_KEY, post);
+                    localCache.put(post, contextBundle);
                 }
             });
         }

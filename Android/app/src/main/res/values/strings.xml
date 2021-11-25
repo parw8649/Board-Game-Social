@@ -36,6 +36,16 @@
     <string name="game_max_player_text">Max players: %1$d</string>
     <string name="game_overall_play_count_text">Overall play count: %1$d</string>
 
+    <!-- Strings used for Add Game -->
+    <string name="et_hint_game_title">Game title</string>
+    <string name="et_hint_game_genre">Game genre</string>
+    <string name="et_game_players">Players:</string>
+    <string name="et_hint_game_min_players">Min</string>
+    <string name="et_hint_game_max_players">Max</string>
+    <string name="et_hint_game_overall_play_count">Overall play count</string>
+    <string name="et_hint_game_description">Game description</string>
+    <string name="et_hint_game_image_url">Game image url</string>
+
     <string name="title_activity_app">AppActivity</string>
     <string name="title_activity_home_post">HomePostActivity</string>
     <string name="title_activity_sign_up">SignUpActivity</string>
@@ -78,4 +88,23 @@
     <string name="btn_text_sign_in">sign in</string>
     <string name="btn_text_sign_up">sign up</string>
     <string name="title_activity_mvvm_test">MvvmTest</string>
+
+    <!-- Strings used for event-fragments -->
+    <string name="et_hint_event_name">Event name</string>
+    <string name="et_hint_date_time">Event date</string>
+    <string name="et_hint_event_description">Event description</string>
+    <string name="tv_add_event">Add Event</string>
+    <string name="btn_single_event_hosted_games">Hosted Games</string>
+    <string name="btn_single_event_people_in_event">People in event</string>
+    <string name="key_event_name">EVENT_NAME</string>
+    <string name="key_event_date_time">EVENT_DATE_TIME</string>
+    <string name="key_event_description">EVENT_DESCRIPTION</string>
+
+    <!-- Common string -->
+    <string name="btn_text_save">save</string>
+    <string name="item_button_delete">delete</string>
+    <string name="tv_add_new_game">Add New Game</string>
+    <string name="cx_text_create_a_private_game">Create a private game?</string>
+
+
 </resources>

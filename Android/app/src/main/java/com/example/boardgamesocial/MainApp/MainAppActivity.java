@@ -110,14 +110,14 @@ public class MainAppActivity extends AppCompatActivity {
                 fab.setOnClickListener(v -> {
                     Snackbar.make(v, "Eventually, you'll be able to add a new event", Snackbar.LENGTH_SHORT)
                             .setAnchorView(R.id.bottom_app_bar_fab).setAction("Action", null).show();
-//                    navController.navigate(R.id.addEventFragment);
+                    navController.navigate(R.id.addEventFragment);
                 });
                 return;
             case R.id.games_option:
                 fab.setOnClickListener(v -> {
-                    Snackbar.make(v, "Eventually, you'll be able to add a new game to your collection ", Snackbar.LENGTH_SHORT)
-                            .setAnchorView(R.id.bottom_app_bar_fab).setAction("Action", null).show();
-//                    navController.navigate(R.id.addGameFragment);
+                    /*Snackbar.make(v, "Eventually, you'll be able to add a new game to your collection ", Snackbar.LENGTH_SHORT)
+                            .setAnchorView(R.id.bottom_app_bar_fab).setAction("Action", null).show();*/
+                    navController.navigate(R.id.addGameFragment);
                 });
                 return;
             case R.id.search_option:

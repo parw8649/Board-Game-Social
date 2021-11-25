@@ -11,7 +11,7 @@
     <item
         android:id="@+id/games_option"
         android:title="@string/games_option_title"
-        android:icon="@drawable/ic_baseline_reorder_24_blue_yonder"
+        android:icon="@drawable/ic_baseline_games_24"
         app:showAsAction="always" />
 
     <item

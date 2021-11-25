@@ -10,9 +10,11 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.boardgamesocial.DataClasses.DataClass;
+import com.example.boardgamesocial.DataClasses.Event;
 import com.example.boardgamesocial.DataClasses.Game;
 import com.example.boardgamesocial.DataClasses.Post;
 import com.example.boardgamesocial.DataViews.Adapters.ViewHolders.DataClsVH;
+import com.example.boardgamesocial.DataViews.Adapters.ViewHolders.EventVH;
 import com.example.boardgamesocial.DataViews.Adapters.ViewHolders.GameVH;
 import com.example.boardgamesocial.DataViews.Adapters.ViewHolders.PostVH;
 import com.example.boardgamesocial.DataViews.Adapters.ViewHolders.VHConstructor;
@@ -33,6 +35,7 @@ public class DataClsAdapter <DC extends DataClass, VH extends DataClsVH<DC>> ext
     public static final Map<Class<?>, VHConstructor> VH_MAP = new HashMap<Class<?>, VHConstructor>(){{
         put(Post.class, PostVH::new);
         put(Game.class, GameVH::new);
+        put(Event.class, EventVH::new);
     }};
 
     public DataClsAdapter(OnItemListener onItemListener, Class<DC> cls, Activity activity, int itemLayout) {

@@ -1,8 +1,6 @@
 package com.example.boardgamesocial.DataClasses;
 
 
-import androidx.annotation.NonNull;
-
 import java.util.Date;
 import java.util.Objects;
 
