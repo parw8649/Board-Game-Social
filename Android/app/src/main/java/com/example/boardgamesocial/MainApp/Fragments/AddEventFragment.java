@@ -119,10 +119,7 @@ public class AddEventFragment extends Fragment implements OnItemListener {
 
         DataClsVM dataClsVM = DataClsVM.getInstance();
         dataClsVM.getMediatorLiveData(RetrofitClient.getClient().getCall(Game.class, new HashMap<>()), Game.class)
-                .observe(getViewLifecycleOwner(), newGames -> {
-                    dataClsAdapter.getObjectList().addAll(newGames);
-                    dataClsAdapter.notifyDataSetChanged();
-                });
+                .observe(getViewLifecycleOwner(), dataClsAdapter::addNewObjects);
 
         btnSaveEvent.setOnClickListener(v -> {
 
@@ -192,22 +189,23 @@ public class AddEventFragment extends Fragment implements OnItemListener {
     }
 
     @Override
-    public void onItemClick(int position) {
-
-        RecyclerView.ViewHolder viewHolder = recyclerView.findViewHolderForAdapterPosition(position);
-        assert viewHolder != null;
-        CheckBox checkBox = viewHolder.itemView.findViewById(R.id.ck_hosted_game);
-        checkBox.setVisibility(View.INVISIBLE);
-
-        RelativeLayout relativeLayout = viewHolder.itemView.findViewById(R.id.hosted_game_card);
-
+    public void onItemClick(Bundle contextBundle) {
+        Game game = (Game) contextBundle.getSerializable(GameVH.GAME_KEY);
         DataClsAdapter<Game, GameVH> dataClsAdapter = (DataClsAdapter<Game, GameVH>) recyclerView.getAdapter();
         assert dataClsAdapter != null;
-        Game game = dataClsAdapter.getObjectList().get(position);
+
+        RecyclerView.ViewHolder viewHolder = recyclerView
+                .findViewHolderForAdapterPosition(dataClsAdapter
+                        .getObjectList()
+                        .indexOf(game));
+        assert viewHolder != null;
+
+        CheckBox checkBox = viewHolder.itemView.findViewById(R.id.ck_hosted_game);
+        checkBox.setVisibility(View.INVISIBLE);
+        RelativeLayout relativeLayout = viewHolder.itemView.findViewById(R.id.hosted_game_card);
 
         if(Objects.nonNull(game)) {
             Log.i(TAG, game.getId().toString());
-
             if(checkBox.isChecked()) {
                 checkBox.setChecked(false);
                 gameIdList.remove(game.getId());
