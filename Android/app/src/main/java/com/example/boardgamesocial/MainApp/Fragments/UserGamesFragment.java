@@ -100,14 +100,11 @@ public class UserGamesFragment extends Fragment implements DataClsAdapter.OnItem
         DataClsVM dataClsVM = DataClsVM.getInstance();
         //TODO: Need to fetch user specific games from db
         dataClsVM.getMediatorLiveData(RetrofitClient.getClient().getCall(Game.class, new HashMap<>()), Game.class)
-                .observe(getViewLifecycleOwner(), newGames -> {
-                    dataClsAdapter.getObjectList().addAll(newGames);
-                    dataClsAdapter.notifyDataSetChanged();
-                });
+                .observe(getViewLifecycleOwner(), dataClsAdapter::addNewObjects);
     }
 
     @Override
-    public void onItemClick(int position) {
+    public void onItemClick(Bundle contextBundle) {
         Toast.makeText(getContext(),"User Game clicked", Toast.LENGTH_LONG).show();
     }
 }

@@ -63,8 +63,8 @@ public class RetrofitClient {
         return retrofitClient;
     }
 
-    public static <T> List<T> getObjectList(JsonArray jsonArray, Class<T> cls) {
-        List<T> list = new ArrayList<T>();
+    public static <DC extends DataClass> List<DC> getObjectList(JsonArray jsonArray, Class<DC> cls) {
+        List<DC> list = new ArrayList<>();
         try {
             Gson gson = new Gson();
             for (JsonElement jsonElement : jsonArray) {
@@ -77,7 +77,7 @@ public class RetrofitClient {
         return list;
     }
 
-    public static <T> T getObject(JsonObject jsonObject, Class<T> cls) {
+    public static <DC extends DataClass> DC getObject(JsonObject jsonObject, Class<DC> cls) {
         return new Gson().fromJson(jsonObject, cls);
     }
 
@@ -100,22 +100,22 @@ public class RetrofitClient {
         return (apiMode == APIMode.TEST) ? observable : observable.subscribeOn(Schedulers.io());
     }
 
-    public Observable<JsonArray> getCall(Class<?> cls, Map<String, String> filters){
+    public Observable<JsonArray> getCall(Class<? extends DataClass> cls, Map<String, String> filters){
         Observable<JsonArray> observable = api.getCall(URL_MAP.get(cls), filters);
         return (apiMode == APIMode.TEST) ? observable : observable.subscribeOn(Schedulers.io());
     }
 
-    public Observable<JsonObject> postCall(Class<?> cls, Object object){
+    public Observable<JsonObject> postCall(Class<? extends DataClass> cls, Object object){
         Observable<JsonObject> observable = api.postCall(URL_MAP.get(cls), object);
         return (apiMode == APIMode.TEST) ? observable : observable.subscribeOn(Schedulers.io());
     }
 
-    public Observable<JsonObject> putCall(Class<?> cls, Map<String, String> filters){
+    public Observable<JsonObject> putCall(Class<? extends DataClass> cls, Map<String, String> filters){
         Observable<JsonObject> observable = api.putCall(URL_MAP.get(cls), filters);
         return (apiMode == APIMode.TEST) ? observable : observable.subscribeOn(Schedulers.io());
     }
 
-    public Observable<JsonArray> deleteCall(Class<?> cls, Map<String, String> filters){
+    public Observable<JsonArray> deleteCall(Class<? extends DataClass> cls, Map<String, String> filters){
         Observable<JsonArray> observable = api.deleteCall(URL_MAP.get(cls), filters);
         return (apiMode == APIMode.TEST) ? observable : observable.subscribeOn(Schedulers.io());
     }

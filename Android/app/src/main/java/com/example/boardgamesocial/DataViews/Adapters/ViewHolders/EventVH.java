@@ -13,6 +13,8 @@ import com.example.boardgamesocial.R;
 import java.util.HashMap;
 
 public class EventVH extends DataClsVH<Event> {
+    public static final String EVENT_KEY = "event";
+
     private final TextView tvEventName;
     private final TextView tvEventDateTime;
     private final TextView tvEventDescription;
@@ -36,8 +38,8 @@ public class EventVH extends DataClsVH<Event> {
 
     @Override
     public void onBind(Activity activity, Event event) {
-        
         toggleVisibility(View.INVISIBLE);
+        contextBundle.putSerializable(EVENT_KEY, event);
         RetrofitClient retrofitClient = RetrofitClient.getClient();
         /*retrofitClient.getCall(User.class, new HashMap<String, String>(){{
             put("id", String.valueOf(event.getHostUserId()));

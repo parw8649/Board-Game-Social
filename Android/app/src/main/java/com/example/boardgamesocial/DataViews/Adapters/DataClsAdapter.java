@@ -1,6 +1,7 @@
 package com.example.boardgamesocial.DataViews.Adapters;
 
 import android.app.Activity;
+import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -70,12 +71,22 @@ public class DataClsAdapter <DC extends DataClass, VH extends DataClsVH<DC>> ext
         holder.onBind(activity, currentObject);
     }
 
+    public void addNewObjects(List<DC> newObjects) {
+        for (DC object : newObjects) {
+            if (!objectList.contains(object)){
+                objectList.add(object);
+                notifyItemChanged(objectList.indexOf(object));
+            }
+        }
+    }
+
     @Override
     public int getItemCount() {
         return objectList.size();
     }
 
     public interface OnItemListener {
-        void onItemClick(int position);
+        void onItemClick(Bundle contextBundle);
     }
+
 }
