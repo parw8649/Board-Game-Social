@@ -137,7 +137,7 @@ public class ProfileFragment extends Fragment {
                 bundle = null;
             }
             NavHostFragment.findNavController(ProfileFragment.this)
-                    .navigate(R.id.action_profileFragment_to_gameCollectionFragment, bundle);
+                    .navigate(R.id.action_profileFragment_to_userGamesFragment, bundle);
         });
     }
 
