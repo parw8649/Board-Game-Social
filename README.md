@@ -39,6 +39,7 @@ Django tokens will be used to verify valid user activity when sending and receiv
 ## Libraries Used:<br>
 - [Retrofit](https://square.github.io/retrofit/#download)
 - [RxJava](https://github.com/ReactiveX/RxJava)
+- [Picasso](https://square.github.io/picasso/)
 
 ## Additional Documentation:<br>
 
