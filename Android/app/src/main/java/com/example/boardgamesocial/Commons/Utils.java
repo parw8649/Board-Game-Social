@@ -39,12 +39,12 @@ public class Utils {
     public static void addUserIdToPreferences(Context context, Integer userId) {
         if(mPreferences == null) { getPrefs(context); }
         SharedPreferences.Editor editor = mPreferences.edit();
-        editor.putString(Constants.USER_ID, String.valueOf(userId));
+        editor.putInt(Constants.USER_ID, userId);
         editor.apply();
     }
 
     public static Integer getUserId() {
-        return userId;
+        return mPreferences.getInt(Constants.USER_ID, -1);
     }
 
     private static void switchToMainAppActivity(Context context) {

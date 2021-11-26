@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_marginEnd="8dp"
+    android:layout_marginStart="8dp"
+    android:layout_marginTop="8dp"
+    android:backgroundTint="@color/very_light_tangelo_light_var" >
+
+    <RelativeLayout
+        android:id="@+id/hosted_game_card"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:padding="8dp">
+
+        <ImageView
+            android:id="@+id/game_icon"
+            android:layout_width="55dp"
+            android:layout_height="75dp"
+            android:layout_alignParentStart="true"
+            android:padding="7dp"
+            android:src="@drawable/ic_image_placeholder" />
+
+        <LinearLayout
+            android:id="@+id/game_title_and_genre"
+            android:layout_width="220dp"
+            android:layout_height="wrap_content"
+            android:layout_toEndOf="@+id/game_icon"
+            android:orientation="vertical">
+
+            <TextView
+                android:id="@+id/tv_game_title"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:maxLines="1"
+                android:text="@string/game_items_tv_title"
+                android:textAppearance="@style/TextAppearance.AppCompat.Title" />
+
+            <TextView
+                android:id="@+id/tv_game_genre"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:maxLines="1"
+                android:text="@string/game_items_tv_genre"
+                android:textAppearance="@style/TextAppearance.AppCompat.Body1" />
+        </LinearLayout>
+
+        <CheckBox
+            android:id="@+id/ck_hosted_game"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_toEndOf="@+id/game_title_and_genre"
+            tools:ignore="TouchTargetSizeCheck"
+            android:visibility="invisible"/>
+
+    </RelativeLayout>
+
+</androidx.cardview.widget.CardView>
