@@ -4,26 +4,20 @@ import static com.example.boardgamesocial.API.RetrofitClient.getObjectList;
 
 import android.app.Activity;
 import android.os.Bundle;
-
-import androidx.annotation.Nullable;
-import androidx.fragment.app.Fragment;
-
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.TextView;
-
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.fragment.app.Fragment;
 import androidx.navigation.fragment.NavHostFragment;
-
 import com.example.boardgamesocial.API.RetrofitClient;
 import com.example.boardgamesocial.Commons.Utils;
 import com.example.boardgamesocial.DataClasses.User;
 import com.example.boardgamesocial.R;
-
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Objects;
@@ -36,10 +30,10 @@ import java.util.Objects;
 public class ProfileFragment extends Fragment {
 
     public static final String TAG = "ProfileFragment";
+
     private RetrofitClient retrofitClient;
     private TextView textViewFirstName;
     private TextView textViewUsername;
-    private TextView textViewUserId;
     private TextView textViewBio;
     private Button buttonEditProfile;
     private Button buttonUserGameList;
@@ -50,7 +44,7 @@ public class ProfileFragment extends Fragment {
     private static final String ARG_PARAM1 = "param1";
     private static final String ARG_PARAM2 = "param2";
 
-//    // TODO: Rename and change types of parameters
+    // TODO: Rename and change types of parameters
     private String mParam1;
     private String mParam2;
 
@@ -115,10 +109,6 @@ public class ProfileFragment extends Fragment {
             setNames(view, Utils.getUserId());
         }
 
-//        String viewUserFriends = String.format(getString(R.string.profile_btn_view_friends), "TestingString");
-//        String viewUserGames = String.format(getString(R.string.profile_btn_view_user_gamelist), "TestingString");
-//        buttonEditProfile.setOnClickListener(view1 -> NavHostFragment.findNavController(ProfileFragment.this)
-//                .navigate(R.id.action_profileFragment_to_editProfileFragment));
         buttonFriendList.setOnClickListener(v -> {
             Bundle bundle = new Bundle();
 

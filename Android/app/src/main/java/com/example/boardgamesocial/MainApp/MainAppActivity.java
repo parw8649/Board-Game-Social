@@ -2,22 +2,17 @@ package com.example.boardgamesocial.MainApp;
 
 import android.content.Context;
 import android.content.Intent;
+import android.os.Bundle;
 import android.view.Menu;
-import android.view.MenuItem;
+import android.view.View;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.appcompat.widget.Toolbar;
 import androidx.navigation.NavController;
 import androidx.navigation.Navigation;
 import androidx.navigation.ui.AppBarConfiguration;
 import androidx.navigation.ui.NavigationUI;
-import android.os.Bundle;
-import android.view.View;
-import android.widget.Toast;
-
-import com.example.boardgamesocial.DataViews.Adapters.DataClsAdapter;
+import com.example.boardgamesocial.databinding.ActivityMainAppBinding;
 import com.example.boardgamesocial.LoginAndSignUp.LoginAndSignUpActivity;
 import com.example.boardgamesocial.R;
-import com.example.boardgamesocial.databinding.ActivityMainAppBinding;
 import com.google.android.material.bottomappbar.BottomAppBar;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.snackbar.Snackbar;

@@ -6,13 +6,11 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Toast;
-
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 import androidx.navigation.fragment.NavHostFragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
-
 import com.example.boardgamesocial.API.RetrofitClient;
 import com.example.boardgamesocial.Commons.Utils;
 import com.example.boardgamesocial.DataClasses.Post;
@@ -22,7 +20,6 @@ import com.example.boardgamesocial.DataViews.Adapters.ViewHolders.PostVH;
 import com.example.boardgamesocial.DataViews.DataClsVM;
 import com.example.boardgamesocial.R;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
-
 import java.util.HashMap;
 import java.util.Objects;
 
