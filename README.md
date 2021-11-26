@@ -172,88 +172,86 @@ Response, body:
 ## Retrofit Calls:
 | Return Type  |  Function Name  | Parameters | Token Protected |
 | :-------: | :-------: | :-------: | :-------: |
-| User | signUpCall | User | :x: |
-| Token | loginCall | User | :x: |
-| JsonObject | logoutCall | Map<String, String> | :x: |
-| JsonArray | getCall | Class<?>, Map<String, String> | :white_check_mark: |
-| JsonObject | postCall | Class<?>, Object | :white_check_mark: |
-| JsonObject | putCall | Class<?>, Map<String, String> | :white_check_mark: |
-| JsonArray | deleteCall | Class<?>, Map<String, String> | :white_check_mark: |
+| Observable\<User> | signUpCall | User | :x: |
+| Observable\<Token> | loginCall | User | :x: |
+| Observable\<JsonObject> | logoutCall | Map<String, String> | :x: |
+| Observable\<JsonArray> | getCall | Class<?>, Map<String, String> | :white_check_mark: |
+| Observable\<JsonObject> | postCall | Class<?>, Object | :white_check_mark: |
+| Observable\<JsonObject> | putCall | Class<?>, Map<String, String> | :white_check_mark: |
+| Observable\<JsonArray> | deleteCall | Class<?>, Map<String, String> | :white_check_mark: |
 
-## How to use it:
-There are 2 types of Calls this implementation of Retrofit can do:
-- AuthCalls (for `login`, `sign_up`, `logout` routes)
-- DBCalls (for any db queries, routes will start with `api`) 
-You do not need to `login` user if you are using AuthCalls, since they do not require token. However you must login the user and set token if you want to access database. Once you get the token from `loginCall` you can set token like this:
+Call parameters did not change since backend was not changed. The only thing that changed is that now instead of `Call` Retrofit returns `Observable`. Inorder for `Observable` to emit(send request) it needs to have an `Observer`. In order to set `Observer` for `Observable` you can run `subscribe` on `Observable`. In our code it will look like this:
 ```java
-HeaderInterceptor.token.setToken("your-token-here");
-```   
-Once token is set you can make queries to database.
-
-## DBQueries:
-When using DBCalls you will either receive `JsonArray` or `JsonObject` use this function to convert them to `List` or `Object` respectively:
-```java
-getObjectList(JsonArray jsonArray, Class<T> cls)
-getObject(JsonObject jsonObject, Class<T> cls)
-``` 
-`cls` needs to be a class of your response. For example if you send `getCall` to `api/user/` endpoint, you will receive `List<User>` but in `JsonArray` format. So you will need to parse it like this:
-```java
-List<User> listOfUsers = getObjectList(jsonArray, User.class);
+retrofitClient.your_call_here(your_call_params_here).subscribe(your_response_here -> {
+            do_something_once_response_received 
+        });
 ```
-Also make sure to pass correct class to DBCalls, they are used to deduct the url to send the request to. For example:
+[Here is a Login example with RxJava](https://github.com/parw8649/CST438-Project3/blob/844ba1ab24385aa1b9c03ef09f01a88de547a86d/Android/app/src/main/java/com/example/boardgamesocial/LoginAndSignUp/Fragments/LoginFragment.java#L76-L89)
+
+### Chain requests
+In order to make chain requests or a bit more complex operations than just getting response, you might want to use these [operations](http://reactivex.io/documentation/operators.html)
+
+Here is an example of a chain request for Posts to retrieve private posts from user's friends and all public posts:
 ```java
-retrofitClient.getCall(Game.class, new HashMap<String, String>(){{
-            put("gameTitle", "7 Wonders Duel");
-        }})
-```
-will send `GET` request to `api/game/` with query `gameTitle=7 Wonders Duel`, this will return `JsonArray` with all games that matched this`gameTitle`.
-
-Here is `urlMap` for reference, however it should quite intuitive:
-```java
-HashMap<Class<?>, String> urlMap = new HashMap<Class<?>, String>() {{ 
-     put(User.class, "api/user/"); 
-     put(Event.class, "api/event/"); 
-     put(Post.class, "api/post/"); 
-     put(Game.class, "api/game/"); 
-     put(UserToUser.class, "api/user_to_user/"); 
-     put(Message.class, "api/message/"); 
-     put(EventToUser.class, "api/event_to_user/"); 
-     put(Comment.class, "api/comment/"); 
-     put(GameToUser.class, "api/game_to_user/"); 
-     put(HostedGame.class, "api/hosted_game/"); 
-     put(Review.class, "api/review/"); 
-     put(HostedGameToUser.class, "api/hosted_game_to_user/"); 
- }}; 
-```
-
-Keep in mind, when making requests with Retrofit in activities, you must use `enqueue`, here is an example:
-```java
-retrofitClient = RetrofitClient.getClient();
-
-// This token needs to be acquired with login request
-HeaderInterceptor.token.setToken("e4a36ccc86bc71b7e78c5d42bbd3109ab4764af1");
-
-retrofitClient.getCall(Game.class, new HashMap<String, String>(){{
-    put("gameTitle", "7 Wonders Duel");
-}}).enqueue(new Callback<JsonArray>() {
-    @Override
-    public void onResponse(Call<JsonArray> call, Response<JsonArray> response) {
-        if (response.isSuccessful()) {
-            assert response.body() != null;
-            List<Game> list = getObjectList(response.body(), Game.class);
-            Log.i("Game", list.get(0).getGameTitle());
-        } else {
-            new Exception("Request failed, code: " + response.code()).printStackTrace();
+RetrofitClient retrofitClient = RetrofitClient.getClient();
+Integer userId = 245;
+retrofitClient.getCall(UserToUser.class, new HashMap<String, String>(){{
+        put("userOneId", String.valueOf(userId));
+    }})
+    // We use flatMap to make new Observable(request),
+    // while consuming emitted data(response) from previous Observable(request)
+    .flatMap(jsonArray -> {
+        Observable<JsonArray> postsObservable = retrofitClient.getCall(Post.class, new HashMap<String, String>(){{
+            put("private", "False");
+        }});
+        List<UserToUser> usersWithPrivateAccess = getObjectList(jsonArray, UserToUser.class);
+        for (UserToUser userWithPrivateAccess : usersWithPrivateAccess) {
+            // We use mergeWith in order to merge emitters from Observables(requests) into one Observable,
+            // that will emit data from merged Observables(requests) as single emit data(response)
+            postsObservable.mergeWith(retrofitClient.getCall(Post.class, new HashMap<String, String>(){{
+                put("userId", String.valueOf(userWithPrivateAccess.getUserTwoId()));
+                put("private", "True");
+            }})).subscribe();
         }
-    }
-
-    @Override
-    public void onFailure(Call<JsonArray> call, Throwable t) {
-        try {
-            throw t;
-        } catch (Throwable throwable) {
-            throwable.printStackTrace();
-        }
-    }
-});
+        return postsObservable;
+    })
+    // We use scan in order to combine all emitted data(responses) into singe object.
+    // It is similar to map reduce.
+    .scan((cumulativeJsonArray, newJsonArray) -> {
+        cumulativeJsonArray.addAll(newJsonArray);
+        return cumulativeJsonArray;
+    })
+    // We subscribe in order to run Observables(send requests), and act on emitted data(response)
+    .subscribe(jsonArrayCombined -> Log.i(TAG, String.format("All Posts available for userId 245: %s", jsonArrayCombined)));
 ```
+
+## MVVM(RecyclerView) implementation
+
+In order to create `RecyclerView`, start with creation of `RecyclerView` instance, like this:
+```java
+RecyclerView recyclerView = view.findViewById(R.id.your_id_for_recyclerView_in_xml);
+recyclerView.setLayoutManager(new LinearLayoutManager(this.getContext()));
+```
+Then we create a `DataClsAdapter` that will need a `DataClass` that will be used for the list of items in the `RecyclerView`. We also need to pass `ViewHolder` for that `DataClass`, so the android knows how to show it on the screen.
+```java
+DataClsAdapter<your_DataClass, your_ViewHolder> dataClsAdapter = new DataClsAdapter<>(
+                this,
+                your_DataClass.class,
+                getActivity(),
+                R.layout.your_ViewHolder_layout);
+recyclerView.setAdapter(dataClsAdapter);
+```
+Then we will need to get the `DataClsVM` in order to set up mutable data for `RecyclerView`. Once we have an instance of `DataClsVM` we can run `getMutableLiveData` on it and pass it `Observable`(basically getCall) as a parameter. Then `getMediatorLiveData` will return `MediatorLiveData<List<your_data_class_here>>`. We will need to `observe` the changes to the live data and update `RecyclerView` accordingly. 
+```java
+DataClsVM dataClsVM = DataClsVM.getInstance();
+dataClsVM.getMediatorLiveData(RetrofitClient.getClient().getCall(your_DataClass.class, new HashMap<>()), your_DataClass.class)
+        .observe(getViewLifecycleOwner(), new_objects_of_your_DataClass -> {
+            dataClsAdapter.getObjectList().addAll(new_objects_of_your_DataClass);
+            dataClsAdapter.notifyDataSetChanged();
+        });
+```
+
+[Here is an example with Posts](https://github.com/parw8649/CST438-Project3/blob/844ba1ab24385aa1b9c03ef09f01a88de547a86d/Android/app/src/main/java/com/example/boardgamesocial/MainApp/Fragments/HomePostFragment.java#L79-L95)
+
+### On Click for items in RecyclerView
+Any Fragment or Activity that uses RecyclerView needs to implement `DataClsAdapter.OnItemListener`. When implementing `DataClsAdapter.OnItemListener`you will need to override `onItemClick`. This function will define the behaviour once the item of RecyclerView is clicked.
