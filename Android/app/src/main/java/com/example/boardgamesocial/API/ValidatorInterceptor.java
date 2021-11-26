@@ -16,7 +16,7 @@ public class ValidatorInterceptor implements Interceptor {
             throw new IllegalStateException(
                 String.format("Response code %d with body: %s",
                     response.code(),
-                    response.body()
+                    response.body().string() //Added string() method in-order to display response messages instead of Object
             ));
         }
         return response;

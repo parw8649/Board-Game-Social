@@ -87,12 +87,18 @@ public class ProfileFragment extends Fragment {
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
+        Button buttonEditProfile = view.findViewById(R.id.profile_btn_edit);
+        Button btnUserGames = view.findViewById(R.id.profile_btn_view_user_gamelist);
+
         Log.i(TAG, String.format("userId: %s", Utils.getUserId()));
         retrofitClient = RetrofitClient.getClient();
         textViewBio = view.findViewById(R.id.profile_bio);
         buttonEditProfile = view.findViewById(R.id.profile_btn_edit);
         buttonUserGameList = view.findViewById(R.id.profile_btn_view_user_gamelist);
         buttonFriendList = view.findViewById(R.id.profile_btn_view_friends);
+
+        btnUserGames.setOnClickListener(view1 -> NavHostFragment.findNavController(ProfileFragment.this)
+                .navigate(R.id.action_profileFragment_to_userGamesFragment));
 
         if (Objects.isNull(getArguments())) {
             buttonEditProfile.setVisibility(view.VISIBLE);
@@ -103,6 +109,7 @@ public class ProfileFragment extends Fragment {
         }
 
         textViewBio.setText("Empty bios for all!");
+
         if (Objects.nonNull(getArguments())) {
             setNames(view, getArguments().getInt("diffUserId"));
         } else {
@@ -120,6 +127,7 @@ public class ProfileFragment extends Fragment {
             NavHostFragment.findNavController(ProfileFragment.this)
                     .navigate(R.id.action_profileFragment_to_userFriendsFragment, bundle);
         });
+
         buttonUserGameList.setOnClickListener(v -> {
             Bundle bundle = new Bundle();
 

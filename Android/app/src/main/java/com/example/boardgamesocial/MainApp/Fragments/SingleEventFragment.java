@@ -1,12 +1,15 @@
 package com.example.boardgamesocial.MainApp.Fragments;
 
 import android.os.Bundle;
-
-import androidx.fragment.app.Fragment;
-
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
+import android.widget.TextView;
+
+import androidx.annotation.NonNull;
+import androidx.fragment.app.Fragment;
+import androidx.navigation.fragment.NavHostFragment;
 
 import com.example.boardgamesocial.R;
 
@@ -62,5 +65,35 @@ public class SingleEventFragment extends Fragment {
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         return inflater.inflate(R.layout.fragment_single_event, container, false);
+    }
+
+    public void onViewCreated(@NonNull View view, Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
+
+        TextView tvEventName = view.findViewById(R.id.tv_single_event_title);
+        TextView tvEventDateTime = view.findViewById(R.id.tv_single_event_date_time);
+        TextView tvEventDescription = view.findViewById(R.id.tv_single_event_description);
+        Button btnHostedGames = view.findViewById(R.id.btn_single_event_hosted_games);
+        Button btnPeopleInEvent = view.findViewById(R.id.btn_single_event_people_in_event);
+
+        //Retrieve the value
+        assert getArguments() != null;
+        String eventName = getArguments().getString(getString(R.string.key_event_name));
+        String eventDateAndTime = getArguments().getString(getString(R.string.key_event_date_time));
+        String eventDescription = getArguments().getString(getString(R.string.key_event_description));
+
+        tvEventName.setText(eventName);
+        tvEventDateTime.setText(eventDateAndTime);
+        tvEventDescription.setText(eventDescription);
+
+        btnHostedGames.setOnClickListener(v -> {
+            NavHostFragment.findNavController(SingleEventFragment.this)
+                    .navigate(R.id.action_singleEventFragment_to_hostedGamesFragment);
+        });
+
+        btnPeopleInEvent.setOnClickListener(v -> {
+            NavHostFragment.findNavController(SingleEventFragment.this)
+                    .navigate(R.id.action_singleEventFragment_to_eventAttendeesFragment);
+        });
     }
 }
