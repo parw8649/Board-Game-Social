@@ -8,8 +8,7 @@ import androidx.annotation.NonNull;
 import com.example.boardgamesocial.DataClasses.Comment;
 import com.example.boardgamesocial.DataViews.Adapters.DataClsAdapter;
 
-public class CommentVH extends DataClsVH<Comment>
-{
+public class CommentVH extends DataClsVH<Comment> {
     public static final String COMMENT_KEY = "comment";
     // TODO: Add TextViews once xml is created
     public CommentVH(@NonNull View commentView, DataClsAdapter.OnItemListener onItemListener) {

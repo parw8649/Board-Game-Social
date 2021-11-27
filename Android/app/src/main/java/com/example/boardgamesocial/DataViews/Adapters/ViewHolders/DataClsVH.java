@@ -9,6 +9,7 @@ import androidx.annotation.NonNull;
 import androidx.navigation.fragment.NavHostFragment;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.example.boardgamesocial.API.RetrofitClient;
 import com.example.boardgamesocial.DataClasses.DataClass;
 import com.example.boardgamesocial.DataClasses.Post;
 import com.example.boardgamesocial.DataViews.Adapters.DataClsAdapter;
@@ -21,6 +22,7 @@ import java.util.Map;
 public abstract class DataClsVH <DC extends DataClass> extends RecyclerView.ViewHolder implements View.OnClickListener {
     public static final String TAG = "DataClsVH";
 
+    protected static final RetrofitClient retrofitClient = RetrofitClient.getClient();
     protected final DataClsAdapter.OnItemListener onItemListener;
     protected final Bundle contextBundle;
 

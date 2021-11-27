@@ -105,6 +105,8 @@
     <string name="item_button_delete">delete</string>
     <string name="tv_add_new_game">Add New Game</string>
     <string name="cx_text_create_a_private_game">Create a private game?</string>
+    <string name="item_textView_friendNamePlaceholder">Friend\'s name</string>
+    <string name="item_textView_lastMessagePlaceholder">Last message</string>
 
 
 </resources>

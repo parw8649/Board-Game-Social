@@ -26,7 +26,6 @@ public class PostVH extends DataClsVH<Post> {
     public static final String USER_KEY = "user";
 
     private static final Map<Post, Bundle> localCache = new HashMap<>();
-    private static final RetrofitClient retrofitClient = RetrofitClient.getClient();
 
     private final TextView textViewUsername;
     private final TextView textViewPostType;

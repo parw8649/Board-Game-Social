@@ -27,7 +27,7 @@
             android:orientation="vertical">
 
             <TextView
-                android:id="@+id/item_poster"
+                android:id="@+id/item_friends_name"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:maxLines="1"
@@ -35,7 +35,7 @@
                 android:textAppearance="@style/TextAppearance.AppCompat.Title" />
 
             <TextView
-                android:id="@+id/item_body"
+                android:id="@+id/item_last_message"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:maxLines="4"

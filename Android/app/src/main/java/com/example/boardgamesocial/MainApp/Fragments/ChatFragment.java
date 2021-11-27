@@ -22,6 +22,7 @@ import com.example.boardgamesocial.DataClasses.Post;
 import com.example.boardgamesocial.DataClasses.Relationships.UserToUser;
 import com.example.boardgamesocial.DataClasses.User;
 import com.example.boardgamesocial.DataViews.Adapters.DataClsAdapter;
+import com.example.boardgamesocial.DataViews.Adapters.ViewHolders.ChatVH;
 import com.example.boardgamesocial.DataViews.Adapters.ViewHolders.PostVH;
 import com.example.boardgamesocial.DataViews.DataClsVM;
 import com.example.boardgamesocial.R;
@@ -113,15 +114,16 @@ public class ChatFragment extends Fragment implements DataClsAdapter.OnItemListe
                         }}));
                     }
                     return Observable.merge(friendsDataObservables);
+                })
+                .scan((allFiendsJsonArray, newFiendsJsonArray) -> {
+                    allFiendsJsonArray.addAll(newFiendsJsonArray);
+                    return allFiendsJsonArray;
                 }), User.class)
-                .observe(getViewLifecycleOwner(), newFriends -> {
-                    dataClsAdapter.getObjectList().addAll(newFriends);
-                    dataClsAdapter.notifyDataSetChanged();
-                });
+                .observe(getViewLifecycleOwner(), dataClsAdapter::addNewObjects);
     }
 
     @Override
-    public void onItemClick(int position) {
+    public void onItemClick(Bundle contextBundle) {
         NavHostFragment.findNavController(ChatFragment.this)
                 .navigate(R.id.action_chatFragment_to_friendChatFragment);
         Toast.makeText(getContext(),"Item clicked", Toast.LENGTH_LONG).show();
