@@ -80,7 +80,7 @@
         android:id="@+id/hostedGameCK_recyclerView"
         android:layout_width="325dp"
         android:layout_height="250dp"
-        android:scrollbars="vertical"
+        android:orientation="vertical"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
