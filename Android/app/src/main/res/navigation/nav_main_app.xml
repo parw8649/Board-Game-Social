@@ -182,6 +182,9 @@
         android:name="com.example.boardgamesocial.MainApp.Fragments.AddGameFragment"
         android:label="fragment_user_games"
         tools:layout="@layout/fragment_add_game" >
+        <action
+            android:id="@+id/action_addGameFragment_to_gameCollectionFragment"
+            app:destination="@id/gameCollectionFragment" />
     </fragment>
     <fragment
         android:id="@+id/userGamesFragment"
