@@ -11,6 +11,8 @@ import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 import androidx.navigation.fragment.NavHostFragment;
 
+import com.example.boardgamesocial.DataClasses.Event;
+import com.example.boardgamesocial.DataViews.Adapters.ViewHolders.EventVH;
 import com.example.boardgamesocial.R;
 
 /**
@@ -78,22 +80,16 @@ public class SingleEventFragment extends Fragment {
 
         //Retrieve the value
         assert getArguments() != null;
-        String eventName = getArguments().getString(getString(R.string.key_event_name));
-        String eventDateAndTime = getArguments().getString(getString(R.string.key_event_date_time));
-        String eventDescription = getArguments().getString(getString(R.string.key_event_description));
+        Event event = (Event) getArguments().getSerializable(EventVH.EVENT_KEY);
 
-        tvEventName.setText(eventName);
-        tvEventDateTime.setText(eventDateAndTime);
-        tvEventDescription.setText(eventDescription);
+        tvEventName.setText(event.getName());
+        tvEventDateTime.setText(event.getDateTime().toString());
+        tvEventDescription.setText(event.getDescription());
 
-        btnHostedGames.setOnClickListener(v -> {
-            NavHostFragment.findNavController(SingleEventFragment.this)
-                    .navigate(R.id.action_singleEventFragment_to_hostedGamesFragment);
-        });
+        btnHostedGames.setOnClickListener(v -> NavHostFragment.findNavController(SingleEventFragment.this)
+                .navigate(R.id.action_singleEventFragment_to_hostedGamesFragment));
 
-        btnPeopleInEvent.setOnClickListener(v -> {
-            NavHostFragment.findNavController(SingleEventFragment.this)
-                    .navigate(R.id.action_singleEventFragment_to_eventAttendeesFragment);
-        });
+        btnPeopleInEvent.setOnClickListener(v -> NavHostFragment.findNavController(SingleEventFragment.this)
+                .navigate(R.id.action_singleEventFragment_to_eventAttendeesFragment));
     }
 }

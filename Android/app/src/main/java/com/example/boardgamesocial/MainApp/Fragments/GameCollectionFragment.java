@@ -97,10 +97,7 @@ public class GameCollectionFragment extends Fragment implements OnItemListener {
 
         DataClsVM dataClsVM = DataClsVM.getInstance();
         dataClsVM.getMediatorLiveData(RetrofitClient.getClient().getCall(Game.class, new HashMap<>()), Game.class)
-                .observe(getViewLifecycleOwner(), newGames -> {
-                    dataClsAdapter.getObjectList().addAll(newGames);
-                    dataClsAdapter.notifyDataSetChanged();
-                });
+                .observe(getViewLifecycleOwner(), dataClsAdapter::addNewObjects);
     }
 
     @Override
@@ -109,7 +106,7 @@ public class GameCollectionFragment extends Fragment implements OnItemListener {
     }
 
     @Override
-    public void onItemClick(int position) {
+    public void onItemClick(Bundle contextBundle) {
         Toast.makeText(getContext(),"Game clicked", Toast.LENGTH_LONG).show();
     }
 }
