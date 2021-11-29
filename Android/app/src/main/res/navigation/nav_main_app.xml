@@ -42,6 +42,9 @@
         <action
             android:id="@+id/action_EventsFragment_to_singleEventFragment"
             app:destination="@id/singleEventFragment" />
+        <action
+            android:id="@+id/action_eventsFragment_to_addEventFragment"
+            app:destination="@id/addEventFragment" />
     </fragment>
     <fragment
         android:id="@+id/profileFragment"
@@ -200,5 +203,8 @@
         <action
             android:id="@+id/action_addEventFragment_to_HomePostFragment"
             app:destination="@id/HomePostFragment" />
+        <action
+            android:id="@+id/action_addEventFragment_to_eventsFragment"
+            app:destination="@id/eventsFragment" />
     </fragment>
 </navigation>

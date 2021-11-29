@@ -68,8 +68,8 @@
     <string name="title_fragment_search">Search Fragment</string>
     <string name="title_fragment_game_collection">Game Collection Fragment</string>
     <string name="title_fragment_events">Events Fragment</string>
-    <string name="title_fragment_add_post">Add Post Fragment</string>
-    <!-- Strings used for fragment_profile-->
+    <string name="title_fragment_add_post">Add Post</string>
+    <!-- Strings used for fragment_profile -->
     <string name="profile_first_name_placeholder">firstName</string>
     <string name="profile_username_placeholder">username</string>
     <string name="profile_btn_edit">edit profile</string>
@@ -106,5 +106,24 @@
     <string name="tv_add_new_game">Add New Game</string>
     <string name="cx_text_create_a_private_game">Create a private game?</string>
 
-
+    <!-- Strings used for fragment_add_post -->
+    <string name="add_post_view_setting_label">View Setting:</string>
+    <string name="add_post_view_private">Private</string>
+    <string name="add_post_view_public">Public</string>
+    <string name="add_post_view_error">Please select a view setting and try again.</string>
+    <string name="add_post_type_label">Post Type:</string>
+    <string name="add_post_spinner_placeholder"> - Select Post Type - </string>
+    <string-array name="post_types">
+        <item> - Select Post Type - </item>
+        <item>General</item>
+        <item>Event</item>
+        <item>Review</item>
+    </string-array>
+    <string name="add_post_type_error">Please select a post type and try again.</string>
+    <string name="add_post_body_label">Body:</string>
+    <string name="add_post_body_hint">Add Post Body</string>
+    <string name="add_post_body_error">Please add a body to your post and try again.</string>
+    <string name="add_post_btn_add_post">Add Post</string>
+    <string name="add_post_error">Unable to create post. Please try again later.</string>
+    <string name="add_post_success">Post created.</string>
 </resources>
