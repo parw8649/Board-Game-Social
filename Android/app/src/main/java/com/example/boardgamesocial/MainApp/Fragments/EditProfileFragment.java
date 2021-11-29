@@ -23,6 +23,7 @@ import com.example.boardgamesocial.DataClasses.User;
 import com.example.boardgamesocial.R;
 import com.google.android.material.snackbar.Snackbar;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
@@ -41,6 +42,7 @@ public class EditProfileFragment extends Fragment {
     // TODO: Rename and change types of parameters
     private String mParam1;
     private String mParam2;
+    private String username;
     private TextView textViewGreeting;
     private TextView textViewCurrUsername;
     private EditText editTextNewUsername;
@@ -111,28 +113,116 @@ public class EditProfileFragment extends Fragment {
         }}).subscribe(jsonArray -> {
             List<User> userList = getObjectList(jsonArray, User.class);
             getActivity().runOnUiThread(() -> {
-                textViewGreeting.setText(getString(R.string.edit_profile_greeting, userList.get(0).getUsername()));
-                textViewCurrUsername.setText(userList.get(0).getUsername());
+                username = userList.get(0).getUsername();
+                textViewGreeting.setText(getString(R.string.edit_profile_greeting, username));
+                textViewCurrUsername.setText(username);
             });
         });
 
-        buttonEditUsername.setOnClickListener(v -> validateUsername(view));
+        buttonEditUsername.setOnClickListener(v -> {
+            if(validateUsername(v)) {
+                updateUsername(v);
+            }
+        });
+
+        buttonEditPassword.setOnClickListener(v -> {
+            if(validatePassword(v)) {
+                updatePassword(v);
+            }
+        });
     }
 
-    private void validateUsername(View view) {
+    private boolean validateUsername(View view) {
+        boolean isFree = false;
+        if (editTextNewUsername.getText().toString().isEmpty() || username.equals(editTextNewUsername.getText().toString())) {
+            Snackbar.make(view, "Please enter a new username for update.", Snackbar.LENGTH_LONG)
+                    .setAnchorView(R.id.bottom_app_bar).setAction("Action", null).show();
+            return false;
+        }
+
+        retrofitClient.getCall(User.class, new HashMap<String, String>() {{
+            put("username", editTextNewUsername.getText().toString());
+        }}).subscribe(jsonArray -> {
+            getActivity().runOnUiThread(() -> {
+                List<User> users = getObjectList(jsonArray, User.class);
+                if (users.size() > 0) {
+                    Snackbar.make(view, "Please enter a new username for update.", Snackbar.LENGTH_LONG)
+                            .setAnchorView(R.id.bottom_app_bar).setAction("Action", null).show();
+                } else {
+//                    TODO: how would I go about doing this within the observable?
+//                    isFree = true;
+                }
+            });
+        });
+
+        return isFree;
+    }
+
+    private void updateUsername(View view) {
         try {
             retrofitClient.putCall(User.class, new HashMap<String, String>() {{
+                put("id", Utils.getUserId().toString());
                 put("username", editTextNewUsername.getText().toString());
             }}).subscribe(jsonObject -> {
                 User user = getObject(jsonObject, User.class);
                 getActivity().runOnUiThread(() -> {
                     textViewGreeting.setText(getString(R.string.edit_profile_greeting, user.getUsername()));
                     textViewCurrUsername.setText(user.getUsername());
+                    Snackbar.make(view, "Username updated", Snackbar.LENGTH_SHORT)
+                            .setAnchorView(R.id.bottom_app_bar).setAction("Action", null).show();
                     return;
                 });
             });
         }catch (Exception e) {
             Snackbar.make(view, "Unable to update username", Snackbar.LENGTH_SHORT)
+                    .setAnchorView(R.id.bottom_app_bar).setAction("Action", null).show();
+        }
+    }
+
+    private boolean validatePassword(View view) {
+//        HashMap<String,Integer> passReqs = {"length":6, }
+        if (editTextNewPassword.getText().toString().isEmpty()) {
+            Snackbar.make(view, "Please enter a new password for update.", Snackbar.LENGTH_SHORT)
+                    .setAnchorView(R.id.bottom_app_bar).setAction("Action", null).show();
+            return false;
+        }
+        if (editTextConfirmPassword.getText().toString().isEmpty()) {
+            Snackbar.make(view, "Please confirm new password for update.", Snackbar.LENGTH_SHORT)
+                    .setAnchorView(R.id.bottom_app_bar).setAction("Action", null).show();
+            return false;
+        }
+        if (!editTextNewPassword.getText().toString().equals(editTextConfirmPassword.getText().toString())){
+            Snackbar.make(view, "Passwords do not match.", Snackbar.LENGTH_SHORT)
+                    .setAnchorView(R.id.bottom_app_bar).setAction("Action", null).show();
+            return false;
+        }
+        if (editTextConfirmPassword.getText().toString().length() < 6) {
+            Snackbar.make(view, "Password must be 6 or more characters.", Snackbar.LENGTH_LONG)
+                    .setAnchorView(R.id.bottom_app_bar).setAction("Action", null).show();
+            return false;
+        }
+//        TODO: validatePassword does not check if new password is different to current password
+        return true;
+
+    }
+
+    private void updatePassword(View view) {
+        try {
+            retrofitClient.putCall(User.class, new HashMap<String, String>() {{
+                put("id", Utils.getUserId().toString());
+                put("password", editTextConfirmPassword.getText().toString());
+            }}).subscribe(jsonObject -> {
+                User user = getObject(jsonObject, User.class);
+                getActivity().runOnUiThread(() -> {
+                    editTextNewPassword.setText("");
+                    editTextConfirmPassword.setText("");
+                    Snackbar.make(view, "Password updated.", Snackbar.LENGTH_SHORT)
+                            .setAnchorView(R.id.bottom_app_bar).setAction("Action", null).show();
+                    return;
+                });
+            });
+        }catch (Exception e) {
+            Snackbar.make(view, "Unable to update password", Snackbar.LENGTH_SHORT)
                     .setAnchorView(R.id.bottom_app_bar).setAction("Action", null).show();
         }
     }
