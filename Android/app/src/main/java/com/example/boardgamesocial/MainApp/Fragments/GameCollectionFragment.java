@@ -1,8 +1,5 @@
 package com.example.boardgamesocial.MainApp.Fragments;
 
-import static com.example.boardgamesocial.API.RetrofitClient.getObjectList;
-
-import android.nfc.Tag;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -18,16 +15,13 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.example.boardgamesocial.API.RetrofitClient;
 import com.example.boardgamesocial.Commons.Utils;
 import com.example.boardgamesocial.DataClasses.Game;
-import com.example.boardgamesocial.DataClasses.Post;
 import com.example.boardgamesocial.DataViews.Adapters.DataClsAdapter;
 import com.example.boardgamesocial.DataViews.Adapters.DataClsAdapter.OnItemListener;
 import com.example.boardgamesocial.DataViews.Adapters.ViewHolders.GameVH;
-import com.example.boardgamesocial.DataViews.Adapters.ViewHolders.PostVH;
 import com.example.boardgamesocial.DataViews.DataClsVM;
 import com.example.boardgamesocial.R;
 
 import java.util.HashMap;
-import java.util.List;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -37,9 +31,6 @@ import java.util.List;
 public class GameCollectionFragment extends Fragment implements OnItemListener {
 
     public static final String TAG = "GameCollectionFragment";
-
-    private RecyclerView recyclerView;
-    private List<Game> games;
 
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
@@ -94,7 +85,7 @@ public class GameCollectionFragment extends Fragment implements OnItemListener {
     public void onViewCreated(@NonNull View view, Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
-        recyclerView = view.findViewById(R.id.gameFeed_recyclerView);
+        RecyclerView recyclerView = view.findViewById(R.id.gameFeed_recyclerView);
         recyclerView.setLayoutManager(new LinearLayoutManager(this.getContext()));
 
         DataClsAdapter<Game, GameVH> dataClsAdapter = new DataClsAdapter<>(
@@ -105,14 +96,16 @@ public class GameCollectionFragment extends Fragment implements OnItemListener {
         recyclerView.setAdapter(dataClsAdapter);
 
         DataClsVM dataClsVM = DataClsVM.getInstance();
-        //TODO: Need to fetch user specific Game Collection.
-        dataClsVM.getMediatorLiveData(RetrofitClient.getClient().getCall(Game.class, new HashMap<String, String>(){{
-            put("gameTitle", "7 Wonders Duel");
-        }}), Game.class)
+        dataClsVM.getMediatorLiveData(RetrofitClient.getClient().getCall(Game.class, new HashMap<>()), Game.class)
                 .observe(getViewLifecycleOwner(), newGames -> {
                     dataClsAdapter.getObjectList().addAll(newGames);
                     dataClsAdapter.notifyDataSetChanged();
                 });
+    }
+
+    @Override
+    public void onDestroyView() {
+        super.onDestroyView();
     }
 
     @Override

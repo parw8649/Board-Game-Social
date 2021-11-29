@@ -39,6 +39,12 @@
         <action
             android:id="@+id/action_SecondFragment_to_FirstFragment"
             app:destination="@id/HomePostFragment" />
+        <action
+            android:id="@+id/action_EventsFragment_to_singleEventFragment"
+            app:destination="@id/singleEventFragment" />
+        <action
+            android:id="@+id/action_eventsFragment_to_addEventFragment"
+            app:destination="@id/addEventFragment" />
     </fragment>
     <fragment
         android:id="@+id/profileFragment"
@@ -55,8 +61,8 @@
             android:id="@+id/action_profileFragment_to_userFriendsFragment"
             app:destination="@id/userFriendsFragment" />
         <action
-            android:id="@+id/action_profileFragment_to_gameCollectionFragment"
-            app:destination="@id/gameCollectionFragment" />
+            android:id="@+id/action_profileFragment_to_userGamesFragment"
+            app:destination="@id/userGamesFragment" />
     </fragment>
     <fragment
         android:id="@+id/addPostFragment"
@@ -174,4 +180,31 @@
         android:name="com.example.boardgamesocial.MainApp.Fragments.SearchFragment"
         android:label="fragment_search"
         tools:layout="@layout/fragment_search" />
+    <fragment
+        android:id="@+id/addGameFragment"
+        android:name="com.example.boardgamesocial.MainApp.Fragments.AddGameFragment"
+        android:label="fragment_user_games"
+        tools:layout="@layout/fragment_add_game" >
+    </fragment>
+    <fragment
+        android:id="@+id/userGamesFragment"
+        android:name="com.example.boardgamesocial.MainApp.Fragments.UserGamesFragment"
+        android:label="fragment_user_games"
+        tools:layout="@layout/fragment_user_games" >
+        <action
+            android:id="@+id/action_userGamesFragment_to_profileFragment"
+            app:destination="@id/profileFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/addEventFragment"
+        android:name="com.example.boardgamesocial.MainApp.Fragments.AddEventFragment"
+        android:label="fragment_add_event"
+        tools:layout="@layout/fragment_add_event" >
+        <action
+            android:id="@+id/action_addEventFragment_to_HomePostFragment"
+            app:destination="@id/HomePostFragment" />
+        <action
+            android:id="@+id/action_addEventFragment_to_eventsFragment"
+            app:destination="@id/eventsFragment" />
+    </fragment>
 </navigation>

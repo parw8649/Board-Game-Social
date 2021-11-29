@@ -1,26 +1,23 @@
 package com.example.boardgamesocial.DataViews.Adapters;
 
 import android.app.Activity;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
 import androidx.annotation.NonNull;
-import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.boardgamesocial.DataClasses.DataClass;
+import com.example.boardgamesocial.DataClasses.Event;
 import com.example.boardgamesocial.DataClasses.Game;
 import com.example.boardgamesocial.DataClasses.Post;
 import com.example.boardgamesocial.DataViews.Adapters.ViewHolders.DataClsVH;
+import com.example.boardgamesocial.DataViews.Adapters.ViewHolders.EventVH;
 import com.example.boardgamesocial.DataViews.Adapters.ViewHolders.GameVH;
 import com.example.boardgamesocial.DataViews.Adapters.ViewHolders.PostVH;
 import com.example.boardgamesocial.DataViews.Adapters.ViewHolders.VHConstructor;
-import com.example.boardgamesocial.DataViews.DataClsVM;
-import com.example.boardgamesocial.R;
 
-import java.lang.reflect.Constructor;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -37,6 +34,7 @@ public class DataClsAdapter <DC extends DataClass, VH extends DataClsVH<DC>> ext
     public static final Map<Class<?>, VHConstructor> VH_MAP = new HashMap<Class<?>, VHConstructor>(){{
         put(Post.class, PostVH::new);
         put(Game.class, GameVH::new);
+        put(Event.class, EventVH::new);
     }};
 
     public DataClsAdapter(OnItemListener onItemListener, Class<DC> cls, Activity activity, int itemLayout) {
@@ -80,5 +78,4 @@ public class DataClsAdapter <DC extends DataClass, VH extends DataClsVH<DC>> ext
     public interface OnItemListener {
         void onItemClick(int position);
     }
-
 }

@@ -1,14 +1,27 @@
 package com.example.boardgamesocial.MainApp.Fragments;
 
+import static com.example.boardgamesocial.API.RetrofitClient.getObject;
+
 import android.os.Bundle;
 
+import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
+import android.widget.CheckBox;
+import android.widget.EditText;
 
+import com.example.boardgamesocial.API.RetrofitClient;
+import com.example.boardgamesocial.Commons.Utils;
+import com.example.boardgamesocial.DataClasses.Game;
+import com.example.boardgamesocial.DataClasses.Relationships.GameToUser;
 import com.example.boardgamesocial.R;
+
+import java.util.Objects;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -16,6 +29,17 @@ import com.example.boardgamesocial.R;
  * create an instance of this fragment.
  */
 public class AddGameFragment extends Fragment {
+
+    public static final String TAG = "AddGameFragment";
+
+    private EditText etGameTitle;
+    private EditText etGenre;
+    private EditText etMinPlayer;
+    private EditText etMaxPlayer;
+    private EditText etDescription;
+    private EditText etImageUrl;
+    private EditText etOverallPlayCount;
+    private CheckBox cxIsGamePrivate;
 
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
@@ -62,5 +86,59 @@ public class AddGameFragment extends Fragment {
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         return inflater.inflate(R.layout.fragment_add_game, container, false);
+    }
+
+    public void onViewCreated(@NonNull View view, Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
+
+        etGameTitle = view.findViewById(R.id.et_game_title);
+        etGenre = view.findViewById(R.id.et_game_genre);
+        etMinPlayer = view.findViewById(R.id.et_game_min_players);
+        etMaxPlayer = view.findViewById(R.id.et_game_max_players);
+        etDescription = view.findViewById(R.id.et_game_description);
+        etImageUrl = view.findViewById(R.id.et_game_image_url);
+        etOverallPlayCount = view.findViewById(R.id.et_game_overall_play_count);
+        cxIsGamePrivate = view.findViewById(R.id.cx_private_game);
+
+        Button btnSaveGame = view.findViewById(R.id.btn_save_game);
+
+        btnSaveGame.setOnClickListener(v -> {
+
+            String gameTitle = Objects.nonNull(etGameTitle) ? etGameTitle.getText().toString() : null;
+            String genre = Objects.nonNull(etGenre) ? etGenre.getText().toString() : null;
+            Integer minPlayer = Objects.nonNull(etMinPlayer) ? Integer.parseInt(etMinPlayer.getText().toString()) : 0;
+            Integer maxPlayer = Objects.nonNull(etMaxPlayer) ? Integer.parseInt(etMaxPlayer.getText().toString()) : 0;
+            String description = Objects.nonNull(etDescription) ? etDescription.getText().toString() : null;
+            String imageUrl = Objects.nonNull(etImageUrl) ? etImageUrl.getText().toString() : "";
+            Integer overallPlayCount = Objects.nonNull(etOverallPlayCount) ? Integer.parseInt(etOverallPlayCount.getText().toString()) : 0;
+
+            addGame(new Game(gameTitle, genre, minPlayer, maxPlayer, description, imageUrl, overallPlayCount));
+        });
+    }
+
+    private void addGame(Game game) {
+
+        Log.i(TAG, game.toString());
+
+        RetrofitClient retrofitClient = RetrofitClient.getClient();
+
+        retrofitClient.postCall(Game.class, game).subscribe(jsonObject -> {
+            Game addedGame = getObject(jsonObject, Game.class);
+            if (Objects.nonNull(addedGame)) {
+                Log.i(TAG, "Game added successfully");
+
+                boolean isPrivateGame = Objects.nonNull(cxIsGamePrivate) && cxIsGamePrivate.isChecked();
+                GameToUser userGame = new GameToUser(Utils.getUserId(), game.getId(), isPrivateGame);
+                retrofitClient.postCall(GameToUser.class, userGame).subscribe(jsonObject1 -> {
+                    GameToUser gameToUser = getObject(jsonObject, GameToUser.class);
+
+                    if (Objects.nonNull(gameToUser))
+                        Log.i(TAG, "Game mapped to user successfully");
+                    else
+                        Log.i(TAG, "Unable to map game to user at the moment!");
+                });
+            } else
+                Log.i(TAG, "Unable to add game at the moment!");
+        });
     }
 }

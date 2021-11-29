@@ -36,6 +36,16 @@
     <string name="game_max_player_text">Max players: %1$d</string>
     <string name="game_overall_play_count_text">Overall play count: %1$d</string>
 
+    <!-- Strings used for Add Game -->
+    <string name="et_hint_game_title">Game title</string>
+    <string name="et_hint_game_genre">Game genre</string>
+    <string name="et_game_players">Players:</string>
+    <string name="et_hint_game_min_players">Min</string>
+    <string name="et_hint_game_max_players">Max</string>
+    <string name="et_hint_game_overall_play_count">Overall play count</string>
+    <string name="et_hint_game_description">Game description</string>
+    <string name="et_hint_game_image_url">Game image url</string>
+
     <string name="title_activity_app">AppActivity</string>
     <string name="title_activity_home_post">HomePostActivity</string>
     <string name="title_activity_sign_up">SignUpActivity</string>
@@ -58,8 +68,8 @@
     <string name="title_fragment_search">Search Fragment</string>
     <string name="title_fragment_game_collection">Game Collection Fragment</string>
     <string name="title_fragment_events">Events Fragment</string>
-    <string name="title_fragment_add_post">Add Post Fragment</string>
-    <!-- Strings used for fragment_profile-->
+    <string name="title_fragment_add_post">Add Post</string>
+    <!-- Strings used for fragment_profile -->
     <string name="profile_first_name_placeholder">firstName</string>
     <string name="profile_username_placeholder">username</string>
     <string name="profile_btn_edit">edit profile</string>
@@ -78,6 +88,44 @@
     <string name="btn_text_sign_in">sign in</string>
     <string name="btn_text_sign_up">sign up</string>
     <string name="title_activity_mvvm_test">MvvmTest</string>
+
+    <!-- Strings used for event-fragments -->
+    <string name="et_hint_event_name">Event name</string>
+    <string name="et_hint_date_time">Event date</string>
+    <string name="et_hint_event_description">Event description</string>
+    <string name="tv_add_event">Add Event</string>
+    <string name="btn_single_event_hosted_games">Hosted Games</string>
+    <string name="btn_single_event_people_in_event">People in event</string>
+    <string name="key_event_name">EVENT_NAME</string>
+    <string name="key_event_date_time">EVENT_DATE_TIME</string>
+    <string name="key_event_description">EVENT_DESCRIPTION</string>
+
+    <!-- Common string -->
+    <string name="btn_text_save">save</string>
+    <string name="item_button_delete">delete</string>
+    <string name="tv_add_new_game">Add New Game</string>
+    <string name="cx_text_create_a_private_game">Create a private game?</string>
+
+    <!-- Strings used for fragment_add_post -->
+    <string name="add_post_view_setting_label">View Setting:</string>
+    <string name="add_post_view_private">Private</string>
+    <string name="add_post_view_public">Public</string>
+    <string name="add_post_view_error">Please select a view setting and try again.</string>
+    <string name="add_post_type_label">Post Type:</string>
+    <string name="add_post_spinner_placeholder"> - Select Post Type - </string>
+    <string-array name="post_types">
+        <item> - Select Post Type - </item>
+        <item>General</item>
+        <item>Event</item>
+        <item>Review</item>
+    </string-array>
+    <string name="add_post_type_error">Please select a post type and try again.</string>
+    <string name="add_post_body_label">Body:</string>
+    <string name="add_post_body_hint">Add Post Body</string>
+    <string name="add_post_body_error">Please add a body to your post and try again.</string>
+    <string name="add_post_btn_add_post">Add Post</string>
+    <string name="add_post_error">Unable to create post. Please try again later.</string>
+    <string name="add_post_success">Post created.</string>
     <!--  Strings used for fragment_edit_profile  -->
     <string name="edit_profile_greeting">Hello, %1$s!</string>
     <string name="edit_profile_btn_edit_icon">edit icon</string>

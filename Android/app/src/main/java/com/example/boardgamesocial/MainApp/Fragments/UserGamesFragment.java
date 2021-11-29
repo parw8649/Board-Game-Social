@@ -1,31 +1,38 @@
 package com.example.boardgamesocial.MainApp.Fragments;
 
 import android.os.Bundle;
+
+import androidx.annotation.NonNull;
+import androidx.fragment.app.Fragment;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
+
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Toast;
-import androidx.annotation.NonNull;
-import androidx.fragment.app.Fragment;
-import androidx.navigation.fragment.NavHostFragment;
-import androidx.recyclerview.widget.LinearLayoutManager;
-import androidx.recyclerview.widget.RecyclerView;
+
 import com.example.boardgamesocial.API.RetrofitClient;
 import com.example.boardgamesocial.Commons.Utils;
-import com.example.boardgamesocial.DataClasses.Post;
+import com.example.boardgamesocial.DataClasses.Game;
 import com.example.boardgamesocial.DataViews.Adapters.DataClsAdapter;
-import com.example.boardgamesocial.DataViews.Adapters.DataClsAdapter.OnItemListener;
-import com.example.boardgamesocial.DataViews.Adapters.ViewHolders.PostVH;
+import com.example.boardgamesocial.DataViews.Adapters.ViewHolders.GameVH;
 import com.example.boardgamesocial.DataViews.DataClsVM;
 import com.example.boardgamesocial.R;
-import com.google.android.material.floatingactionbutton.FloatingActionButton;
+
 import java.util.HashMap;
-import java.util.Objects;
+import java.util.List;
 
-public class HomePostFragment extends Fragment implements OnItemListener {
+/**
+ * A simple {@link Fragment} subclass.
+ * Use the {@link UserGamesFragment#newInstance} factory method to
+ * create an instance of this fragment.
+ */
+public class UserGamesFragment extends Fragment implements DataClsAdapter.OnItemListener {
 
-    public static final String TAG = "HomePostFragment";
+    private RecyclerView recyclerView;
+    private List<Game> games;
 
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
@@ -35,9 +42,8 @@ public class HomePostFragment extends Fragment implements OnItemListener {
     // TODO: Rename and change types of parameters
     private String mParam1;
     private String mParam2;
-    private FloatingActionButton fab;
 
-    public HomePostFragment() {
+    public UserGamesFragment() {
         // Required empty public constructor
     }
 
@@ -45,11 +51,13 @@ public class HomePostFragment extends Fragment implements OnItemListener {
      * Use this factory method to create a new instance of
      * this fragment using the provided parameters.
      *
-     * returns a new instance of fragment ProfileFragment.
+     * @param param1 Parameter 1.
+     * @param param2 Parameter 2.
+     * @return A new instance of fragment UserGamesFragment.
      */
     // TODO: Rename and change types and number of parameters
-    public static HomePostFragment newInstance(String param1, String param2) {
-        HomePostFragment fragment = new HomePostFragment();
+    public static UserGamesFragment newInstance(String param1, String param2) {
+        UserGamesFragment fragment = new UserGamesFragment();
         Bundle args = new Bundle();
         args.putString(ARG_PARAM1, param1);
         args.putString(ARG_PARAM2, param2);
@@ -64,49 +72,42 @@ public class HomePostFragment extends Fragment implements OnItemListener {
             mParam1 = getArguments().getString(ARG_PARAM1);
             mParam2 = getArguments().getString(ARG_PARAM2);
         }
+
+        Utils.checkForUser(requireContext());
+        Log.i("GamesCollection - User Token: ", String.valueOf(Utils.getUserId()));
     }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
-                            Bundle savedInstanceState) {
+                             Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_home_post, container, false);
+        return inflater.inflate(R.layout.fragment_user_games, container, false);
     }
 
     public void onViewCreated(@NonNull View view, Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
-        if (Objects.nonNull(Utils.getUserId())) {
-            Log.i(TAG, String.format("Utils.getUserId(): %d", Utils.getUserId()));
-        }
+        recyclerView = view.findViewById(R.id.userGames_recyclerView);
+        recyclerView.setLayoutManager(new LinearLayoutManager((this.getContext())));
 
-        RecyclerView recyclerView = view.findViewById(R.id.postFeed_recyclerView);
-        recyclerView.setLayoutManager(new LinearLayoutManager(this.getContext()));
-
-        DataClsAdapter<Post, PostVH> dataClsAdapter = new DataClsAdapter<>(
+        DataClsAdapter<Game, GameVH> dataClsAdapter = new DataClsAdapter<>(
                 this,
-                Post.class,
+                Game.class,
                 getActivity(),
-                R.layout.post_item);
+                R.layout.game_item);
         recyclerView.setAdapter(dataClsAdapter);
 
         DataClsVM dataClsVM = DataClsVM.getInstance();
-        dataClsVM.getMediatorLiveData(RetrofitClient.getClient().getCall(Post.class, new HashMap<>()), Post.class)
-                .observe(getViewLifecycleOwner(), newPosts -> {
-                    dataClsAdapter.getObjectList().addAll(newPosts);
+        //TODO: Need to fetch user specific games from db
+        dataClsVM.getMediatorLiveData(RetrofitClient.getClient().getCall(Game.class, new HashMap<>()), Game.class)
+                .observe(getViewLifecycleOwner(), newGames -> {
+                    dataClsAdapter.getObjectList().addAll(newGames);
                     dataClsAdapter.notifyDataSetChanged();
                 });
     }
 
     @Override
-    public void onDestroyView() {
-        super.onDestroyView();
-    }
-
-    @Override
     public void onItemClick(int position) {
-        NavHostFragment.findNavController(HomePostFragment.this)
-                .navigate(R.id.action_HomePostFragment_to_singlePostFragment);
-        Toast.makeText(getContext(),String.format("Post #%d clicked", position), Toast.LENGTH_SHORT).show();
+        Toast.makeText(getContext(),"User Game clicked", Toast.LENGTH_LONG).show();
     }
 }

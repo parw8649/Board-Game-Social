@@ -2,22 +2,18 @@ package com.example.boardgamesocial.MainApp;
 
 import android.content.Context;
 import android.content.Intent;
+import android.os.Bundle;
+import android.util.Log;
 import android.view.Menu;
-import android.view.MenuItem;
+import android.view.View;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.appcompat.widget.Toolbar;
 import androidx.navigation.NavController;
 import androidx.navigation.Navigation;
 import androidx.navigation.ui.AppBarConfiguration;
 import androidx.navigation.ui.NavigationUI;
-import android.os.Bundle;
-import android.view.View;
-import android.widget.Toast;
-
-import com.example.boardgamesocial.DataViews.Adapters.DataClsAdapter;
+import com.example.boardgamesocial.databinding.ActivityMainAppBinding;
 import com.example.boardgamesocial.LoginAndSignUp.LoginAndSignUpActivity;
 import com.example.boardgamesocial.R;
-import com.example.boardgamesocial.databinding.ActivityMainAppBinding;
 import com.google.android.material.bottomappbar.BottomAppBar;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.snackbar.Snackbar;
@@ -31,6 +27,8 @@ public class MainAppActivity extends AppCompatActivity {
     private NavController navController;
     private BottomAppBar bottomAppBar;
     private FloatingActionButton fab;
+    private float fabOffsetVisible = 0.0f;
+    private float fabOffsetInvisible = 35.0f;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -48,33 +46,34 @@ public class MainAppActivity extends AppCompatActivity {
         // default fab onClick after login
         setFabOnClick(R.id.home_option);
 
+
         bottomAppBar.setOnMenuItemClickListener(item -> {
             switch (item.getItemId()) {
                 case R.id.home_option:
                     navController.navigate(R.id.HomePostFragment);
+                    bottomAppBar.setCradleVerticalOffset(fabOffsetVisible);
                     fab.setVisibility(View.VISIBLE);
-                    bottomAppBar.setCradleVerticalOffset(0);
                     break;
                 case R.id.events_option:
                     navController.navigate(R.id.eventsFragment);
+                    bottomAppBar.setCradleVerticalOffset(fabOffsetVisible);
                     fab.setVisibility(View.VISIBLE);
-                    bottomAppBar.setCradleVerticalOffset(0);
                     break;
                 case R.id.games_option:
                     // this should direct to a fragment showing all games available in database
                     navController.navigate(R.id.gameCollectionFragment);
+                    bottomAppBar.setCradleVerticalOffset(fabOffsetVisible);
                     fab.setVisibility(View.VISIBLE);
-                    bottomAppBar.setCradleVerticalOffset(0);
                     break;
                 case R.id.search_option:
                     navController.navigate(R.id.searchFragment);
+                    bottomAppBar.setCradleVerticalOffset(fabOffsetInvisible);
                     fab.setVisibility(View.INVISIBLE);
-                    bottomAppBar.setCradleVerticalOffset(35);
                     break;
                 case R.id.profile_option:
                     navController.navigate(R.id.profileFragment);
+                    bottomAppBar.setCradleVerticalOffset(fabOffsetInvisible);
                     fab.setVisibility(View.INVISIBLE);
-                    bottomAppBar.setCradleVerticalOffset(35);
                     break;
                 case R.id.logout_option:
                     Intent goToHomePostActivity = LoginAndSignUpActivity.getIntent(MainAppActivity.this);
@@ -109,25 +108,32 @@ public class MainAppActivity extends AppCompatActivity {
         switch (fragmentId) {
             case R.id.home_option:
                 fab.setOnClickListener(v -> {
-                    Snackbar.make(v, "Eventually, you'll be able to add a new post ", Snackbar.LENGTH_SHORT)
-                            .setAnchorView(R.id.bottom_app_bar_fab).setAction("Action", null).show();
+//                    Snackbar.make(v, "Testing phase of adding a new post ", Snackbar.LENGTH_SHORT)
+//                            .setAnchorView(R.id.bottom_app_bar_fab).setAction("Action", null).show();
+                    bottomAppBar.setCradleVerticalOffset(fabOffsetInvisible);
+                    fab.setVisibility(View.INVISIBLE);
+                    Log.i(TAG, "setFabOnClick: fab cradle margin: " + bottomAppBar.getFabCradleMargin());
+                    Log.i(TAG, "setFabOnClick: fab vertical offset: " + bottomAppBar.getCradleVerticalOffset());
+                    Log.i(TAG, "setFabOnClick: fab cradle corner radius: " + bottomAppBar.getFabCradleRoundedCornerRadius());
                     navController.navigate(R.id.addPostFragment);
                 });
                 return;
             case R.id.events_option:
                 fab.setOnClickListener(v -> {
-                    Snackbar.make(v, "Eventually, you'll be able to add a new event", Snackbar.LENGTH_SHORT)
-                            .setAnchorView(R.id.bottom_app_bar_fab).setAction("Action", null).show();
-//                    TODO: add AddEventFragment navigation to nav_main_app.xml
-//                    navController.navigate(R.id.addEventFragment);
+//                    Snackbar.make(v, "Eventually, you'll be able to add a new event", Snackbar.LENGTH_SHORT)
+//                            .setAnchorView(R.id.bottom_app_bar_fab).setAction("Action", null).show();
+                    bottomAppBar.setCradleVerticalOffset(fabOffsetInvisible);
+                    fab.setVisibility(View.INVISIBLE);
+                    navController.navigate(R.id.addEventFragment);
                 });
                 return;
             case R.id.games_option:
                 fab.setOnClickListener(v -> {
-                    Snackbar.make(v, "Eventually, you'll be able to add a new game to your collection ", Snackbar.LENGTH_SHORT)
-                            .setAnchorView(R.id.bottom_app_bar_fab).setAction("Action", null).show();
-//                    TODO: add AddGameFragment navigation to nav_main_app.xml
-//                    navController.navigate(R.id.addGameFragment);
+                    /*Snackbar.make(v, "Eventually, you'll be able to add a new game to your collection ", Snackbar.LENGTH_SHORT)
+                            .setAnchorView(R.id.bottom_app_bar_fab).setAction("Action", null).show();*/
+                    bottomAppBar.setCradleVerticalOffset(fabOffsetInvisible);
+                    fab.setVisibility(View.INVISIBLE);
+                    navController.navigate(R.id.addGameFragment);
                 });
                 return;
             case R.id.search_option:

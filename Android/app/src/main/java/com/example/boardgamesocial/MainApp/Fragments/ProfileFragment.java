@@ -4,26 +4,20 @@ import static com.example.boardgamesocial.API.RetrofitClient.getObjectList;
 
 import android.app.Activity;
 import android.os.Bundle;
-
-import androidx.annotation.Nullable;
-import androidx.fragment.app.Fragment;
-
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.TextView;
-
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.fragment.app.Fragment;
 import androidx.navigation.fragment.NavHostFragment;
-
 import com.example.boardgamesocial.API.RetrofitClient;
 import com.example.boardgamesocial.Commons.Utils;
 import com.example.boardgamesocial.DataClasses.User;
 import com.example.boardgamesocial.R;
-
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Objects;
@@ -36,10 +30,10 @@ import java.util.Objects;
 public class ProfileFragment extends Fragment {
 
     public static final String TAG = "ProfileFragment";
+
     private RetrofitClient retrofitClient;
     private TextView textViewFirstName;
     private TextView textViewUsername;
-    private TextView textViewUserId;
     private TextView textViewBio;
     private Button buttonEditProfile;
     private Button buttonUserGameList;
@@ -50,7 +44,7 @@ public class ProfileFragment extends Fragment {
     private static final String ARG_PARAM1 = "param1";
     private static final String ARG_PARAM2 = "param2";
 
-//    // TODO: Rename and change types of parameters
+    // TODO: Rename and change types of parameters
     private String mParam1;
     private String mParam2;
 
@@ -93,12 +87,18 @@ public class ProfileFragment extends Fragment {
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
+        Button buttonEditProfile = view.findViewById(R.id.profile_btn_edit);
+        Button btnUserGames = view.findViewById(R.id.profile_btn_view_user_gamelist);
+
         Log.i(TAG, String.format("userId: %s", Utils.getUserId()));
         retrofitClient = RetrofitClient.getClient();
         textViewBio = view.findViewById(R.id.profile_bio);
         buttonEditProfile = view.findViewById(R.id.profile_btn_edit);
         buttonUserGameList = view.findViewById(R.id.profile_btn_view_user_gamelist);
         buttonFriendList = view.findViewById(R.id.profile_btn_view_friends);
+
+        btnUserGames.setOnClickListener(view1 -> NavHostFragment.findNavController(ProfileFragment.this)
+                .navigate(R.id.action_profileFragment_to_userGamesFragment));
 
         if (Objects.isNull(getArguments())) {
             buttonEditProfile.setVisibility(view.VISIBLE);
@@ -109,11 +109,13 @@ public class ProfileFragment extends Fragment {
         }
 
         textViewBio.setText("Empty bios for all!");
-        setNames(view, Utils.getUserId());
-//        String viewUserFriends = String.format(getString(R.string.profile_btn_view_friends), "TestingString");
-//        String viewUserGames = String.format(getString(R.string.profile_btn_view_user_gamelist), "TestingString");
-//        buttonEditProfile.setOnClickListener(view1 -> NavHostFragment.findNavController(ProfileFragment.this)
-//                .navigate(R.id.action_profileFragment_to_editProfileFragment));
+
+        if (Objects.nonNull(getArguments())) {
+            setNames(view, getArguments().getInt("diffUserId"));
+        } else {
+            setNames(view, Utils.getUserId());
+        }
+
         buttonFriendList.setOnClickListener(v -> {
             Bundle bundle = new Bundle();
 
@@ -125,6 +127,7 @@ public class ProfileFragment extends Fragment {
             NavHostFragment.findNavController(ProfileFragment.this)
                     .navigate(R.id.action_profileFragment_to_userFriendsFragment, bundle);
         });
+
         buttonUserGameList.setOnClickListener(v -> {
             Bundle bundle = new Bundle();
 
@@ -134,7 +137,7 @@ public class ProfileFragment extends Fragment {
                 bundle = null;
             }
             NavHostFragment.findNavController(ProfileFragment.this)
-                    .navigate(R.id.action_profileFragment_to_gameCollectionFragment, bundle);
+                    .navigate(R.id.action_profileFragment_to_userGamesFragment, bundle);
         });
     }
 
