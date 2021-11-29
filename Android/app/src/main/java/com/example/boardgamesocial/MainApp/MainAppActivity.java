@@ -112,9 +112,6 @@ public class MainAppActivity extends AppCompatActivity {
 //                            .setAnchorView(R.id.bottom_app_bar_fab).setAction("Action", null).show();
                     bottomAppBar.setCradleVerticalOffset(fabOffsetInvisible);
                     fab.setVisibility(View.INVISIBLE);
-                    Log.i(TAG, "setFabOnClick: fab cradle margin: " + bottomAppBar.getFabCradleMargin());
-                    Log.i(TAG, "setFabOnClick: fab vertical offset: " + bottomAppBar.getCradleVerticalOffset());
-                    Log.i(TAG, "setFabOnClick: fab cradle corner radius: " + bottomAppBar.getFabCradleRoundedCornerRadius());
                     navController.navigate(R.id.addPostFragment);
                 });
                 return;
