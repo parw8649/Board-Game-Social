@@ -100,11 +100,22 @@
     <string name="key_event_date_time">EVENT_DATE_TIME</string>
     <string name="key_event_description">EVENT_DESCRIPTION</string>
 
+    <!-- Strings used in search-page -->
+    <string name="search_hint">Enter a name or keywords...</string>
+    <string-array name="search_options">
+        <item>Games</item>
+        <item>People</item>
+        <item>Events</item>
+
+    </string-array>
+
     <!-- Common string -->
     <string name="btn_text_save">save</string>
     <string name="item_button_delete">delete</string>
     <string name="tv_add_new_game">Add New Game</string>
     <string name="cx_text_create_a_private_game">Create a private game?</string>
+    <string name="search">Search</string>
+
 
 
 </resources>
