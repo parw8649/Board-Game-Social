@@ -1,14 +1,19 @@
 package com.example.boardgamesocial.MainApp.Fragments;
 
 import android.os.Bundle;
-
-import androidx.fragment.app.Fragment;
-
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
+import android.widget.TextView;
 
+import androidx.annotation.NonNull;
+import androidx.fragment.app.Fragment;
+
+import com.example.boardgamesocial.DataClasses.Game;
+import com.example.boardgamesocial.DataViews.Adapters.ViewHolders.GameVH;
 import com.example.boardgamesocial.R;
+import com.squareup.picasso.Picasso;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -62,5 +67,40 @@ public class SingleHostedGameFragment extends Fragment {
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         return inflater.inflate(R.layout.fragment_single_hosted_game, container, false);
+    }
+
+    public void onViewCreated(@NonNull View view, Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
+
+        TextView tvGameTitle = view.findViewById(R.id.tv_game_title);
+        TextView tvGenre = view.findViewById(R.id.tv_game_genre);
+        TextView tvMinPlayer = view.findViewById(R.id.tv_single_game_min_player_count);
+        TextView tvMaxPlayer = view.findViewById(R.id.tv_single_game_max_player_count);
+        TextView tvDescription = view.findViewById(R.id.tv_game_description);
+        ImageView ivImageUrl = view.findViewById(R.id.game_icon);
+        TextView tvOverallPlayCount = view.findViewById(R.id.tv_single_game_overall_play_count);
+        TextView tvSeatsAvailable = view.findViewById(R.id.tv_single_game_seats_available);
+
+        //Retrieve the value
+        assert getArguments() != null;
+        Game game = (Game) getArguments().getSerializable(GameVH.GAME_KEY);
+
+        tvGameTitle.setText(game.getGameTitle());
+        tvGenre.setText(game.getGenre());
+        tvMinPlayer.setText(game.getMinPlayer());
+        tvMaxPlayer.setText(game.getMaxPlayer());
+        tvDescription.setText(game.getDescription());
+
+        Picasso
+                .with(view.getContext())
+                .load(game.getImageUrl())
+                .fit()
+                .placeholder(R.drawable.ic_image_placeholder)
+                .into(ivImageUrl);
+
+        tvOverallPlayCount.setText(game.getOverallPlayCount());
+
+        int seatsAvailable = getArguments().getInt("SEATS_AVAILABLE");
+        tvSeatsAvailable.setText(seatsAvailable);
     }
 }

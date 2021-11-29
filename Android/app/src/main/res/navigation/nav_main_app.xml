@@ -127,9 +127,6 @@
         android:label="fragment_hosted_games"
         tools:layout="@layout/fragment_hosted_games" >
         <action
-            android:id="@+id/action_hostedGamesFragment_to_singleEventFragment"
-            app:destination="@id/singleEventFragment" />
-        <action
             android:id="@+id/action_hostedGamesFragment_to_singleHostedGameFragment"
             app:destination="@id/singleHostedGameFragment" />
     </fragment>
@@ -182,6 +179,9 @@
         android:name="com.example.boardgamesocial.MainApp.Fragments.AddGameFragment"
         android:label="fragment_user_games"
         tools:layout="@layout/fragment_add_game" >
+        <action
+            android:id="@+id/action_addGameFragment_to_gameCollectionFragment"
+            app:destination="@id/gameCollectionFragment" />
     </fragment>
     <fragment
         android:id="@+id/userGamesFragment"
