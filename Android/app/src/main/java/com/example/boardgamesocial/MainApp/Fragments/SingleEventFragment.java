@@ -87,7 +87,7 @@ public class SingleEventFragment extends Fragment {
         tvEventDescription.setText(event.getDescription());
 
         btnHostedGames.setOnClickListener(v -> NavHostFragment.findNavController(SingleEventFragment.this)
-                .navigate(R.id.action_singleEventFragment_to_hostedGamesFragment));
+                .navigate(R.id.action_singleEventFragment_to_hostedGamesFragment, getArguments()));
 
         btnPeopleInEvent.setOnClickListener(v -> NavHostFragment.findNavController(SingleEventFragment.this)
                 .navigate(R.id.action_singleEventFragment_to_eventAttendeesFragment));

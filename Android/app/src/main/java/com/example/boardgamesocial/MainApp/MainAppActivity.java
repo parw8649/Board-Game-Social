@@ -117,8 +117,6 @@ public class MainAppActivity extends AppCompatActivity {
                 return;
             case R.id.events_option:
                 fab.setOnClickListener(v -> {
-//                    Snackbar.make(v, "Eventually, you'll be able to add a new event", Snackbar.LENGTH_SHORT)
-//                            .setAnchorView(R.id.bottom_app_bar_fab).setAction("Action", null).show();
                     bottomAppBar.setCradleVerticalOffset(fabOffsetInvisible);
                     fab.setVisibility(View.INVISIBLE);
                     navController.navigate(R.id.addEventFragment);
