@@ -1,6 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
@@ -50,7 +49,7 @@
         app:layout_constraintVertical_bias="0.062" />
 
     <TextView
-        android:id="@+id/game_description"
+        android:id="@+id/tv_game_description"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_below="@id/game_icon"
@@ -66,10 +65,10 @@
         app:layout_constraintVertical_bias="0.08" />
 
     <TextView
-        android:id="@+id/tv_min_player_count"
+        android:id="@+id/tv_single_game_min_player_count"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_below="@id/game_description"
+        android:layout_below="@id/tv_game_description"
         android:ems="7"
         android:hint="@string/game_item_tv_min_players"
         android:minHeight="35dp"
@@ -78,16 +77,16 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.235"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/game_description"
+        app:layout_constraintTop_toBottomOf="@+id/tv_game_description"
         app:layout_constraintVertical_bias="0.119" />
 
     <TextView
-        android:id="@+id/tv_max_player_count"
+        android:id="@+id/tv_single_game_max_player_count"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_below="@id/game_description"
+        android:layout_below="@id/tv_game_description"
         android:layout_marginStart="2dp"
-        android:layout_toEndOf="@id/tv_min_player_count"
+        android:layout_toEndOf="@id/tv_single_game_min_player_count"
         android:ems="7"
         android:hint="@string/game_item_tv_max_players"
         android:minHeight="35dp"
@@ -96,14 +95,14 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.74"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/game_description"
+        app:layout_constraintTop_toBottomOf="@+id/tv_game_description"
         app:layout_constraintVertical_bias="0.119" />
 
     <TextView
-        android:id="@+id/overall_play_count"
+        android:id="@+id/tv_single_game_overall_play_count"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_below="@id/tv_min_player_count"
+        android:layout_below="@id/tv_single_game_max_player_count"
         android:ems="15"
         android:hint="@string/game_item_tv_overall_play_count"
         android:minHeight="48dp"
@@ -112,14 +111,14 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.457"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/tv_max_player_count"
+        app:layout_constraintTop_toBottomOf="@+id/tv_single_game_max_player_count"
         app:layout_constraintVertical_bias="0.146" />
 
     <TextView
-        android:id="@+id/seats_available"
+        android:id="@+id/tv_single_game_seats_available"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_below="@id/overall_play_count"
+        android:layout_below="@id/tv_single_game_overall_play_count"
         android:ems="15"
         android:hint="@string/tv_seats_available"
         android:minHeight="48dp"
@@ -128,7 +127,7 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.457"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/overall_play_count"
+        app:layout_constraintTop_toBottomOf="@+id/tv_single_game_overall_play_count"
         app:layout_constraintVertical_bias="0.132" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
