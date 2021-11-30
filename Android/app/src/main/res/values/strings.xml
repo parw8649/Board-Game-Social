@@ -68,8 +68,8 @@
     <string name="title_fragment_search">Search Fragment</string>
     <string name="title_fragment_game_collection">Game Collection Fragment</string>
     <string name="title_fragment_events">Events Fragment</string>
-    <string name="title_fragment_add_post">Add Post Fragment</string>
-    <!-- Strings used for fragment_profile-->
+    <string name="title_fragment_add_post">Add Post</string>
+    <!-- Strings used for fragment_profile -->
     <string name="profile_first_name_placeholder">firstName</string>
     <string name="profile_username_placeholder">username</string>
     <string name="profile_btn_edit">edit profile</string>
@@ -83,8 +83,8 @@
         ooo ooooo oooooo ooooo oo oooo ooooo oooo ooooo ooo ooo oooooo oooooo oooooooo oooooo oooooo
         ooooo oooooo oooooo ooooo ooooooo oooooo ooooo ooooo oooooooo oooooo oooooo ooooo oooooo oooooo
         ooooo ooooooo oooooo ooooooo ooooo ooooooo oooooo oooooo</string>
-    <string name="profile_btn_view_friends">view friends</string>
-    <string name="profile_btn_view_user_gamelist">view [user]\'s gamelist</string>
+    <string name="profile_btn_view_friends">view %1$s\'s friends</string>
+    <string name="profile_btn_view_user_gamelist">view %1$s\'s gamelist</string>
     <string name="btn_text_sign_in">sign in</string>
     <string name="btn_text_sign_up">sign up</string>
     <string name="title_activity_mvvm_test">MvvmTest</string>
@@ -100,6 +100,10 @@
     <string name="key_event_date_time">EVENT_DATE_TIME</string>
     <string name="key_event_description">EVENT_DESCRIPTION</string>
 
+    <!-- Strings used for hosted games in an event -->
+    <string name="tv_event_hosted_games">Hosted games from the event</string>
+    <string name="tv_seats_available">Seats available: 10</string>
+
     <!-- Common string -->
     <string name="btn_text_save">save</string>
     <string name="item_button_delete">delete</string>
@@ -108,5 +112,24 @@
     <string name="item_textView_friendNamePlaceholder">Friend\'s name</string>
     <string name="item_textView_lastMessagePlaceholder">Last message</string>
 
-
+    <!-- Strings used for fragment_add_post -->
+    <string name="add_post_view_setting_label">View Setting:</string>
+    <string name="add_post_view_private">Private</string>
+    <string name="add_post_view_public">Public</string>
+    <string name="add_post_view_error">Please select a view setting and try again.</string>
+    <string name="add_post_type_label">Post Type:</string>
+    <string name="add_post_spinner_placeholder"> - Select Post Type - </string>
+    <string-array name="post_types">
+        <item> - Select Post Type - </item>
+        <item>General</item>
+        <item>Event</item>
+        <item>Review</item>
+    </string-array>
+    <string name="add_post_type_error">Please select a post type and try again.</string>
+    <string name="add_post_body_label">Body:</string>
+    <string name="add_post_body_hint">Add Post Body</string>
+    <string name="add_post_body_error">Please add a body to your post and try again.</string>
+    <string name="add_post_btn_add_post">Add Post</string>
+    <string name="add_post_error">Unable to create post. Please try again later.</string>
+    <string name="add_post_success">Post created.</string>
 </resources>

@@ -5,10 +5,114 @@
     android:layout_height="match_parent"
     tools:context=".MainApp.Fragments.AddPostFragment">
 
-    <!-- TODO: Update blank fragment layout -->
-    <TextView
+    <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:text="@string/title_fragment_add_post" />
+        android:layout_height="wrap_content"
+        android:layout_marginVertical="@dimen/fragment_v_margin"
+        android:orientation="vertical"
+        android:gravity="center_horizontal">
 
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="@dimen/linear_vert_padding"
+            android:textAppearance="@style/TextAppearance.AppCompat.Title"
+            android:text="@string/title_fragment_add_post" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:gravity="center_vertical"
+            android:padding="@dimen/linear_vert_padding"
+            android:layout_marginBottom="@dimen/linear_vert_padding">
+
+            <TextView
+                android:id="@+id/add_post_title_label"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginRight="@dimen/h_spacer"
+                android:textAppearance="@style/TextAppearance.AppCompat.Medium"
+                android:text="@string/add_post_view_setting_label" />
+
+            <RadioGroup
+                android:id="@+id/add_post_radioGroup_view_setting"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal" >
+                <RadioButton
+                    android:id="@+id/add_post_radioBtn_private"
+                    android:layout_width="wrap_content"
+                    android:layout_height="@dimen/btn_height_slim"
+                    android:paddingRight="@dimen/h_spacer"
+                    android:buttonTint="@color/blue_yonder"
+                    android:text="@string/add_post_view_private" />
+                <RadioButton
+                    android:id="@+id/add_post_radioBtn_public"
+                    android:layout_width="wrap_content"
+                    android:layout_height="@dimen/btn_height_slim"
+                    android:buttonTint="@color/blue_yonder"
+                    android:text="@string/add_post_view_public" />
+            </RadioGroup>
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:padding="@dimen/linear_vert_padding"
+            android:layout_marginBottom="@dimen/linear_vert_padding">
+
+            <TextView
+                android:id="@+id/add_post_type_label"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginRight="@dimen/h_spacer"
+                android:textAppearance="@style/TextAppearance.AppCompat.Medium"
+                android:text="@string/add_post_type_label" />
+
+            <Spinner
+                android:id="@+id/add_post_spinner_type"
+                style="@style/Widget.AppCompat.Spinner.DropDown"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textAppearance="@style/TextAppearance.AppCompat.Small" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="@dimen/linear_vert_padding"
+            android:orientation="horizontal"
+            android:padding="@dimen/linear_vert_padding" >
+
+            <TextView
+                android:id="@+id/add_post_body_label"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="start"
+                android:layout_marginRight="@dimen/h_spacer"
+                android:text="@string/add_post_body_label"
+                android:textAppearance="@style/TextAppearance.AppCompat.Medium" />
+
+            <EditText
+                android:id="@+id/add_post_editText_body"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="@string/add_post_body_hint"
+                android:scrollbars="vertical"
+                android:scrollbarDefaultDelayBeforeFade="@integer/material_motion_duration_short_1"
+                android:maxLines="20"
+                android:textAppearance="@style/TextAppearance.AppCompat.Small" />
+        </LinearLayout>
+
+        <Button
+            android:id="@+id/add_post_button"
+            android:layout_width="wrap_content"
+            android:layout_height="@dimen/btn_height_slim"
+            android:padding="@dimen/btn_padding_slim"
+            android:backgroundTint="@color/blue_yonder"
+            android:textAppearance="@style/TextAppearance.AppCompat.Small"
+            android:text="@string/add_post_btn_add_post" />
+    </LinearLayout>
 </FrameLayout>

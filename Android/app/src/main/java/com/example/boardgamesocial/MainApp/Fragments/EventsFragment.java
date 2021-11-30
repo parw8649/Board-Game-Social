@@ -77,7 +77,6 @@ public class EventsFragment extends Fragment implements OnItemListener {
 
         NavHostFragment.findNavController(EventsFragment.this)
                 .navigate(R.id.action_EventsFragment_to_singleEventFragment, contextBundle);
-        Toast.makeText(getContext(),"Event clicked", Toast.LENGTH_LONG).show();
     }
 
 }
