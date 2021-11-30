@@ -1,14 +1,32 @@
 package com.example.boardgamesocial.MainApp.Fragments;
 
+import static com.example.boardgamesocial.API.RetrofitClient.getObjectList;
+
+import android.app.Activity;
 import android.os.Bundle;
 
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
+import androidx.navigation.fragment.NavHostFragment;
 
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
+import android.widget.TextView;
 
+import com.example.boardgamesocial.API.RetrofitClient;
+import com.example.boardgamesocial.Commons.Utils;
+import com.example.boardgamesocial.DataClasses.User;
+import com.example.boardgamesocial.DataViews.Adapters.ViewHolders.RelationshipVH.UserToUserVH;
 import com.example.boardgamesocial.R;
+import com.google.android.material.snackbar.Snackbar;
+
+import java.util.HashMap;
+import java.util.List;
+import java.util.Objects;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -16,6 +34,16 @@ import com.example.boardgamesocial.R;
  * create an instance of this fragment.
  */
 public class UserProfileFragment extends Fragment {
+
+    public static final String TAG = "ProfileFragment";
+
+    private RetrofitClient retrofitClient;
+    private TextView textViewFirstName;
+    private TextView textViewUsername;
+    private TextView textViewBio;
+    private Button buttonEditProfile;
+    private Button buttonUserGameList;
+    private Button buttonFriendList;
 
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
@@ -62,5 +90,73 @@ public class UserProfileFragment extends Fragment {
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         return inflater.inflate(R.layout.fragment_profile, container, false);
+    }
+
+    @Override
+    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
+        Snackbar.make(view, getArguments().getSerializable(UserToUserVH.USER_TO_USER_KEY).toString(), Snackbar.LENGTH_LONG)
+                .setAction("Action", null).show();
+
+        Button buttonEditProfile = view.findViewById(R.id.profile_btn_edit);
+        Button btnUserGames = view.findViewById(R.id.profile_btn_view_user_gamelist);
+
+        Log.i(TAG, String.format("userId: %s", Utils.getUserId()));
+        retrofitClient = RetrofitClient.getClient();
+        textViewBio = view.findViewById(R.id.profile_bio);
+        buttonEditProfile = view.findViewById(R.id.profile_btn_edit);
+        buttonUserGameList = view.findViewById(R.id.profile_btn_view_user_gamelist);
+        buttonFriendList = view.findViewById(R.id.profile_btn_view_friends);
+
+        btnUserGames.setOnClickListener(view1 -> NavHostFragment.findNavController(UserProfileFragment.this)
+                .navigate(R.id.action_profileFragment_to_userGamesFragment));
+
+        if (Objects.isNull(getArguments())) {
+            buttonEditProfile.setVisibility(view.VISIBLE);
+            buttonEditProfile.setOnClickListener(view1 -> NavHostFragment.findNavController(UserProfileFragment.this)
+                    .navigate(R.id.action_profileFragment_to_editProfileFragment));
+        } else {
+            buttonEditProfile.setVisibility(view.GONE);
+        }
+
+        textViewBio.setText("Empty bios for all!");
+
+        if (Objects.nonNull(getArguments())) {
+            setNames(view, getArguments().getInt("diffUserId"));
+        } else {
+            setNames(view, Utils.getUserId());
+        }
+
+        buttonFriendList.setOnClickListener(v -> {
+            Bundle bundle = new Bundle();
+
+            if (Objects.isNull(getArguments().getSerializable(UserToUserVH.USER_TO_USER_KEY))) {
+                bundle.putInt("diffUserId", getArguments().getInt("diffUserId"));
+            } else {
+                bundle = null;
+            }
+            NavHostFragment.findNavController(UserProfileFragment.this)
+                    .navigate(R.id.action_userProfileFragment_to_userFriendsFragment, bundle);
+        });
+
+        buttonUserGameList.setOnClickListener(v -> {
+            Bundle bundle = new Bundle();
+
+            if (Objects.nonNull(getArguments())) {
+                bundle.putInt("diffUserId", getArguments().getInt("diffUserId"));
+            } else {
+                bundle = null;
+            }
+            NavHostFragment.findNavController(UserProfileFragment.this)
+                    .navigate(R.id.action_userProfileFragment_to_userGamesFragment, bundle);
+        });
+    }
+
+    private void setNames(View view, Integer userId) {
+        Activity activity = getActivity();
+        textViewFirstName = view.findViewById(R.id.userProfile_first_name);
+        textViewUsername = view.findViewById(R.id.userProfile_username);
+
+
     }
 }

@@ -17,6 +17,7 @@ import androidx.navigation.fragment.NavHostFragment;
 import com.example.boardgamesocial.API.RetrofitClient;
 import com.example.boardgamesocial.Commons.Utils;
 import com.example.boardgamesocial.DataClasses.User;
+import com.example.boardgamesocial.DataViews.Adapters.ViewHolders.RelationshipVH.UserToUserVH;
 import com.example.boardgamesocial.R;
 import java.util.HashMap;
 import java.util.List;
@@ -119,7 +120,7 @@ public class ProfileFragment extends Fragment {
         buttonFriendList.setOnClickListener(v -> {
             Bundle bundle = new Bundle();
 
-            if (Objects.nonNull(getArguments())) {
+            if (Objects.isNull(getArguments().getSerializable(UserToUserVH.USER_TO_USER_KEY))) {
                 bundle.putInt("diffUserId", getArguments().getInt("diffUserId"));
             } else {
                 bundle = null;
