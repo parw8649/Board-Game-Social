@@ -49,7 +49,7 @@ public class EditProfileFragment extends Fragment {
     private EditText editTextNewUsername;
     private EditText editTextNewPassword;
     private EditText editTextConfirmPassword;
-    private EditText editTextNewBio;
+    private EditText editTextBio;
     private Button buttonEditUsername;
     private Button buttonEditPassword;
     private Button buttonEditBio;
@@ -103,7 +103,7 @@ public class EditProfileFragment extends Fragment {
         editTextNewUsername = view.findViewById(R.id.edit_profile_editText_username);
         editTextNewPassword = view.findViewById(R.id.edit_profile_editText_password);
         editTextConfirmPassword = view.findViewById(R.id.edit_profile_editText_password_confirm);
-        editTextNewBio = view.findViewById(R.id.edit_profile_editText_bio);
+        editTextBio = view.findViewById(R.id.edit_profile_editText_bio);
         buttonEditUsername = view.findViewById(R.id.edit_profile_btn_edit_username);
         buttonEditPassword = view.findViewById(R.id.edit_profile_btn_edit_password);
         buttonEditBio = view.findViewById(R.id.edit_profile_btn_edit_bio);
@@ -128,6 +128,8 @@ public class EditProfileFragment extends Fragment {
                 updatePassword(v);
             }
         });
+
+        buttonEditBio.setOnClickListener(v -> updateBio(v));
     }
 
     private void validateUsername(View view) {
@@ -175,14 +177,10 @@ public class EditProfileFragment extends Fragment {
     }
 
     private boolean validatePassword(View view) {
-//        HashMap<String,Integer> passReqs = {"length":6, }
-        if (editTextNewPassword.getText().toString().isEmpty()) {
+        if (editTextNewPassword.getText().toString().isEmpty()
+                || editTextConfirmPassword.getText().toString().isEmpty()
+                || secret.equals(editTextConfirmPassword.getText().toString())) {
             Snackbar.make(view, "Please enter a new password for update.", Snackbar.LENGTH_SHORT)
-                    .setAnchorView(R.id.bottom_app_bar).setAction("Action", null).show();
-            return false;
-        }
-        if (editTextConfirmPassword.getText().toString().isEmpty()) {
-            Snackbar.make(view, "Please confirm new password for update.", Snackbar.LENGTH_SHORT)
                     .setAnchorView(R.id.bottom_app_bar).setAction("Action", null).show();
             return false;
         }
@@ -196,13 +194,7 @@ public class EditProfileFragment extends Fragment {
                     .setAnchorView(R.id.bottom_app_bar).setAction("Action", null).show();
             return false;
         }
-//        TODO: validatePassword does not check if new password is different to current password
-        if (secret.equals(editTextConfirmPassword.getText().toString())) {
-
-        }
-
         return true;
-
     }
 
     private void updatePassword(View view) {
@@ -214,6 +206,7 @@ public class EditProfileFragment extends Fragment {
             }}).subscribe(jsonObject -> {
                 User user = getObject(jsonObject, User.class);
                 getActivity().runOnUiThread(() -> {
+                    secret = editTextConfirmPassword.getText().toString();
                     editTextNewPassword.setText("");
                     editTextConfirmPassword.setText("");
                     Snackbar.make(view, "Password updated.", Snackbar.LENGTH_SHORT)
@@ -225,5 +218,37 @@ public class EditProfileFragment extends Fragment {
             Snackbar.make(view, "Unable to update password", Snackbar.LENGTH_SHORT)
                     .setAnchorView(R.id.bottom_app_bar).setAction("Action", null).show();
         }
+    }
+
+    private void updateBio(View view) {
+//        try {
+//            retrofitClient.putCall(User.class, new HashMap<String, String>() {{
+//                put("id", Utils.getUserId().toString());
+//                put("username", textViewCurrUsername.getText().toString());
+//                put("password", secret);
+//                put("bio", editTextBio.getText().toString());
+//            }}).subscribe(jsonObject -> {
+//                User user = getObject(jsonObject, User.class);
+//                getActivity().runOnUiThread(() -> {
+//                    editTextNewPassword.setText("");
+//                    editTextConfirmPassword.setText("");
+//                    Snackbar.make(view, "Bio updated.", Snackbar.LENGTH_SHORT)
+//                            .setAnchorView(R.id.bottom_app_bar).setAction("Action", null).show();
+//                    return;
+//                });
+//            });
+//        }catch (Exception e) {
+//            Snackbar.make(view, "Unable to update password", Snackbar.LENGTH_SHORT)
+//                    .setAnchorView(R.id.bottom_app_bar).setAction("Action", null).show();
+//        }
+        Snackbar.make(view, "inside updateBio function :D", Snackbar.LENGTH_SHORT)
+                            .setAnchorView(R.id.bottom_app_bar).setAction("Action", null).show();
+    }
+
+    private void deleteAccount(View v) {
+        // TODO: popup confirmation needed!
+        // https://developer.android.com/reference/android/widget/PopupWindow
+
+
     }
 }
