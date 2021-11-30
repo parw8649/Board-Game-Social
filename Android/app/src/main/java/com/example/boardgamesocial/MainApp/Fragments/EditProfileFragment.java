@@ -43,6 +43,7 @@ public class EditProfileFragment extends Fragment {
     private String mParam1;
     private String mParam2;
     private String username;
+    private String secret;
     private TextView textViewGreeting;
     private TextView textViewCurrUsername;
     private EditText editTextNewUsername;
@@ -114,16 +115,13 @@ public class EditProfileFragment extends Fragment {
             List<User> userList = getObjectList(jsonArray, User.class);
             getActivity().runOnUiThread(() -> {
                 username = userList.get(0).getUsername();
+                secret = userList.get(0).getPassword();
                 textViewGreeting.setText(getString(R.string.edit_profile_greeting, username));
                 textViewCurrUsername.setText(username);
             });
         });
 
-        buttonEditUsername.setOnClickListener(v -> {
-            if(validateUsername(v)) {
-                updateUsername(v);
-            }
-        });
+        buttonEditUsername.setOnClickListener(v -> updateUsername(v));
 
         buttonEditPassword.setOnClickListener(v -> {
             if(validatePassword(v)) {
@@ -132,12 +130,11 @@ public class EditProfileFragment extends Fragment {
         });
     }
 
-    private boolean validateUsername(View view) {
-        boolean isFree = false;
+    private void validateUsername(View view) {
         if (editTextNewUsername.getText().toString().isEmpty() || username.equals(editTextNewUsername.getText().toString())) {
             Snackbar.make(view, "Please enter a new username for update.", Snackbar.LENGTH_LONG)
                     .setAnchorView(R.id.bottom_app_bar).setAction("Action", null).show();
-            return false;
+            return;
         }
 
         retrofitClient.getCall(User.class, new HashMap<String, String>() {{
@@ -149,19 +146,17 @@ public class EditProfileFragment extends Fragment {
                     Snackbar.make(view, "Please enter a new username for update.", Snackbar.LENGTH_LONG)
                             .setAnchorView(R.id.bottom_app_bar).setAction("Action", null).show();
                 } else {
-//                    TODO: how would I go about doing this within the observable?
-//                    isFree = true;
+                    updateUsername(view);
                 }
             });
         });
-
-        return isFree;
     }
 
     private void updateUsername(View view) {
         try {
             retrofitClient.putCall(User.class, new HashMap<String, String>() {{
                 put("id", Utils.getUserId().toString());
+                put("password", secret);
                 put("username", editTextNewUsername.getText().toString());
             }}).subscribe(jsonObject -> {
                 User user = getObject(jsonObject, User.class);
@@ -202,6 +197,10 @@ public class EditProfileFragment extends Fragment {
             return false;
         }
 //        TODO: validatePassword does not check if new password is different to current password
+        if (secret.equals(editTextConfirmPassword.getText().toString())) {
+
+        }
+
         return true;
 
     }
@@ -210,6 +209,7 @@ public class EditProfileFragment extends Fragment {
         try {
             retrofitClient.putCall(User.class, new HashMap<String, String>() {{
                 put("id", Utils.getUserId().toString());
+                put("username", textViewCurrUsername.getText().toString());
                 put("password", editTextConfirmPassword.getText().toString());
             }}).subscribe(jsonObject -> {
                 User user = getObject(jsonObject, User.class);
