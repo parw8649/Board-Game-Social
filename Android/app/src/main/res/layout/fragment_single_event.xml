@@ -31,10 +31,9 @@
         android:textSize="20sp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.519"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/tv_single_event_title"
-        app:layout_constraintVertical_bias="0.052" />
+        app:layout_constraintVertical_bias="0.049" />
 
     <TextView
         android:id="@+id/tv_single_event_description"
@@ -60,10 +59,10 @@
         android:text="@string/btn_single_event_hosted_games"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.497"
+        app:layout_constraintHorizontal_bias="0.117"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/tv_single_event_description"
-        app:layout_constraintVertical_bias="0.197" />
+        app:layout_constraintVertical_bias="0.207" />
 
     <Button
         android:id="@+id/btn_single_event_people_in_event"
@@ -73,8 +72,20 @@
         android:text="@string/btn_single_event_people_in_event"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.497"
+        app:layout_constraintHorizontal_bias="0.875"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/tv_single_event_description"
+        app:layout_constraintVertical_bias="0.207" />
+
+    <Button
+        android:id="@+id/btn_join_event"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/btn_title_join_event"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.498"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/btn_single_event_hosted_games"
-        app:layout_constraintVertical_bias="0.252" />
+        app:layout_constraintVertical_bias="0.183" />
 </androidx.constraintlayout.widget.ConstraintLayout>

@@ -35,6 +35,7 @@
     <string name="game_min_player_text">Min players: %1$d</string>
     <string name="game_max_player_text">Max players: %1$d</string>
     <string name="game_overall_play_count_text">Overall play count: %1$d</string>
+    <string name="game_seats_available_text">Seats available: %1$d</string>
 
     <!-- Strings used for Add Game -->
     <string name="et_hint_game_title">Game title</string>
@@ -130,4 +131,5 @@
     <string name="add_post_btn_add_post">Add Post</string>
     <string name="add_post_error">Unable to create post. Please try again later.</string>
     <string name="add_post_success">Post created.</string>
+    <string name="btn_title_join_event">Join event</string>
 </resources>

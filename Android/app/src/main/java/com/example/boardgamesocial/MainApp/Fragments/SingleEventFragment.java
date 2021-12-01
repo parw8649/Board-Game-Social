@@ -77,6 +77,7 @@ public class SingleEventFragment extends Fragment {
         TextView tvEventDescription = view.findViewById(R.id.tv_single_event_description);
         Button btnHostedGames = view.findViewById(R.id.btn_single_event_hosted_games);
         Button btnPeopleInEvent = view.findViewById(R.id.btn_single_event_people_in_event);
+        Button btnJoinEvent = view.findViewById(R.id.btn_join_event);
 
         //Retrieve the value
         assert getArguments() != null;
@@ -91,5 +92,11 @@ public class SingleEventFragment extends Fragment {
 
         btnPeopleInEvent.setOnClickListener(v -> NavHostFragment.findNavController(SingleEventFragment.this)
                 .navigate(R.id.action_singleEventFragment_to_eventAttendeesFragment));
+
+        btnJoinEvent.setOnClickListener(v -> {
+
+            String btnText = btnJoinEvent.getText().toString();
+            btnJoinEvent.setText(btnText.equalsIgnoreCase("Join Event") ? "Un-Join Event" : "Join Event");
+        });
     }
 }
