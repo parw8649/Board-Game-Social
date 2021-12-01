@@ -89,7 +89,6 @@ public class ProfileFragment extends Fragment {
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         Button buttonEditProfile = view.findViewById(R.id.profile_btn_edit);
-        Button btnUserGames = view.findViewById(R.id.profile_btn_view_user_gamelist);
 
         Log.i(TAG, String.format("userId: %s", Utils.getUserId()));
         retrofitClient = RetrofitClient.getClient();
@@ -98,57 +97,34 @@ public class ProfileFragment extends Fragment {
         buttonUserGameList = view.findViewById(R.id.profile_btn_view_user_gamelist);
         buttonFriendList = view.findViewById(R.id.profile_btn_view_friends);
 
-        btnUserGames.setOnClickListener(view1 -> NavHostFragment.findNavController(ProfileFragment.this)
+        buttonUserGameList.setOnClickListener(view1 -> NavHostFragment.findNavController(ProfileFragment.this)
                 .navigate(R.id.action_profileFragment_to_userGamesFragment));
 
-        if (Objects.isNull(getArguments())) {
-            buttonEditProfile.setVisibility(view.VISIBLE);
-            buttonEditProfile.setOnClickListener(view1 -> NavHostFragment.findNavController(ProfileFragment.this)
-                    .navigate(R.id.action_profileFragment_to_editProfileFragment));
-        } else {
-            buttonEditProfile.setVisibility(view.GONE);
-        }
+        buttonEditProfile.setOnClickListener(view1 -> NavHostFragment.findNavController(ProfileFragment.this)
+                .navigate(R.id.action_profileFragment_to_editProfileFragment));
 
         textViewBio.setText("Empty bios for all!");
 
-        if (Objects.nonNull(getArguments())) {
-            setNames(view, getArguments().getInt("diffUserId"));
-        } else {
-            setNames(view, Utils.getUserId());
-        }
+        setNames(view);
 
         buttonFriendList.setOnClickListener(v -> {
-            Bundle bundle = new Bundle();
-
-            if (Objects.isNull(getArguments().getSerializable(UserToUserVH.USER_TO_USER_KEY))) {
-                bundle.putInt("diffUserId", getArguments().getInt("diffUserId"));
-            } else {
-                bundle = null;
-            }
             NavHostFragment.findNavController(ProfileFragment.this)
-                    .navigate(R.id.action_profileFragment_to_userFriendsFragment, bundle);
+                    .navigate(R.id.action_profileFragment_to_userFriendsFragment);
         });
 
         buttonUserGameList.setOnClickListener(v -> {
-            Bundle bundle = new Bundle();
-
-            if (Objects.nonNull(getArguments())) {
-                bundle.putInt("diffUserId", getArguments().getInt("diffUserId"));
-            } else {
-                bundle = null;
-            }
             NavHostFragment.findNavController(ProfileFragment.this)
-                    .navigate(R.id.action_profileFragment_to_userGamesFragment, bundle);
+                    .navigate(R.id.action_profileFragment_to_userGamesFragment);
         });
     }
 
-    private void setNames(View view, Integer userId) {
+    private void setNames(View view) {
         Activity activity = getActivity();
         textViewFirstName = view.findViewById(R.id.profile_first_name);
         textViewUsername = view.findViewById(R.id.profile_username);
 
         retrofitClient.getCall(User.class, new HashMap<String, String>() {{
-            put("id", String.valueOf(userId));
+            put("id", String.valueOf(Utils.getUserId()));
         }}).subscribe(jsonArray -> {
             List<User> userList = getObjectList(jsonArray, User.class);
             activity.runOnUiThread(() -> {
