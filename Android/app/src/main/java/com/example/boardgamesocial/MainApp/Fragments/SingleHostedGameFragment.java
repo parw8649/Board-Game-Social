@@ -1,6 +1,7 @@
 package com.example.boardgamesocial.MainApp.Fragments;
 
 import android.os.Bundle;
+import android.text.method.ScrollingMovementMethod;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -74,11 +75,11 @@ public class SingleHostedGameFragment extends Fragment {
 
         TextView tvGameTitle = view.findViewById(R.id.tv_game_title);
         TextView tvGenre = view.findViewById(R.id.tv_game_genre);
-        TextView tvMinPlayer = view.findViewById(R.id.tv_single_game_min_player_count);
-        TextView tvMaxPlayer = view.findViewById(R.id.tv_single_game_max_player_count);
+        TextView tvMinPlayer = view.findViewById(R.id.tv_min_player_count);
+        TextView tvMaxPlayer = view.findViewById(R.id.tv_max_player_count);
         TextView tvDescription = view.findViewById(R.id.tv_game_description);
         ImageView ivImageUrl = view.findViewById(R.id.game_icon);
-        TextView tvOverallPlayCount = view.findViewById(R.id.tv_single_game_overall_play_count);
+        TextView tvOverallPlayCount = view.findViewById(R.id.tv_overall_play_count);
         TextView tvSeatsAvailable = view.findViewById(R.id.tv_single_game_seats_available);
 
         //Retrieve the value
@@ -87,9 +88,10 @@ public class SingleHostedGameFragment extends Fragment {
 
         tvGameTitle.setText(game.getGameTitle());
         tvGenre.setText(game.getGenre());
-        tvMinPlayer.setText(game.getMinPlayer());
-        tvMaxPlayer.setText(game.getMaxPlayer());
+        tvMinPlayer.setText(String.format(getString(R.string.game_min_player_text), game.getMinPlayer()));
+        tvMaxPlayer.setText(String.format(getString(R.string.game_max_player_text), game.getMaxPlayer()));
         tvDescription.setText(game.getDescription());
+        tvDescription.setMovementMethod(new ScrollingMovementMethod());
 
         Picasso
                 .with(view.getContext())
@@ -98,9 +100,9 @@ public class SingleHostedGameFragment extends Fragment {
                 .placeholder(R.drawable.ic_image_placeholder)
                 .into(ivImageUrl);
 
-        tvOverallPlayCount.setText(game.getOverallPlayCount());
+        tvOverallPlayCount.setText(String.format(getString(R.string.game_overall_play_count_text), game.getOverallPlayCount()));
 
         int seatsAvailable = getArguments().getInt("SEATS_AVAILABLE");
-        tvSeatsAvailable.setText(seatsAvailable);
+        tvSeatsAvailable.setText(String.format(getString(R.string.game_seats_available_text), seatsAvailable));
     }
 }
