@@ -23,12 +23,15 @@ import com.example.boardgamesocial.DataViews.Adapters.ViewHolders.EventVH;
 import com.example.boardgamesocial.DataViews.Adapters.ViewHolders.GameVH;
 import com.example.boardgamesocial.DataViews.DataClsVM;
 import com.example.boardgamesocial.R;
+import com.google.gson.JsonArray;
 
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Objects;
 import java.util.OptionalInt;
+
+import io.reactivex.Observable;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -111,12 +114,28 @@ public class HostedGamesFragment extends Fragment implements OnItemListener {
 
         /*Map<String, String> gameFilter = new HashMap<>();
 
-        Log.i(TAG, "HostedGameList: " + hostedGameList.stream().map(HostedGame::getId).map(Object::toString).collect(Collectors.joining(", ")));
-        gameFilter.put("hostedgame", hostedGameList.stream().map(HostedGame::getId).map(Object::toString).collect(Collectors.joining(", ")));*/
+        Log.i(TAG, "HostedGameList: " + hostedGameList.stream().map(HostedGame::getGameId).map(Object::toString).collect(Collectors.joining(", ")));
 
-        /*Observable<JsonArray> arrayObservable = hostedGameList.stream().map(hostedGame -> RetrofitClient.getClient().getCall(Game.class, new HashMap<String, String>() {{
+        hostedGameList.forEach(hostedGame -> gameFilter.put("hostedgame", hostedGame.getGameId().toString()));
+        gameFilter.put("hostedgame", hostedGameList.stream().map(HostedGame::getId).map(Object::toString).collect(Collectors.joining(", ")));
+
+        Observable<JsonArray> arrayObservable =
+                hostedGameList.stream().map(hostedGame -> RetrofitClient.getClient().getCall(Game.class, new HashMap<String, String>() {{
             put("hostedgame", hostedGame.getId().toString());
-        }}));*/
+        }}).subscribe(JsonElement::getAsJsonObject)).collect();*/
+
+        JsonArray jsonArray = new JsonArray();
+
+        hostedGameList.forEach(hostedGame -> {
+            RetrofitClient.getClient().getCall(Game.class, new HashMap<String, String>() {{
+                put("id", hostedGame.getGameId().toString());
+            }}).blockingSubscribe(j -> {
+                if(!j.isEmpty())
+                    jsonArray.add(j.get(0));
+            });
+        });
+
+        Observable<JsonArray> arrayObservable = Observable.fromArray(jsonArray);
 
         recyclerView = view.findViewById(R.id.eventHostedGame_recyclerView);
         recyclerView.setLayoutManager(new LinearLayoutManager(this.getContext()));
@@ -129,8 +148,7 @@ public class HostedGamesFragment extends Fragment implements OnItemListener {
         recyclerView.setAdapter(dataClsAdapter);
 
         DataClsVM dataClsVM = DataClsVM.getInstance();
-        //TODO: Need to show only hosted games in the specified event.
-        dataClsVM.getMediatorLiveData(RetrofitClient.getClient().getCall(Game.class, new HashMap<>()), Game.class)
+        dataClsVM.getMediatorLiveData(arrayObservable, Game.class)
                 .observe(getViewLifecycleOwner(), dataClsAdapter::addNewObjects);
     }
 
