@@ -35,13 +35,13 @@ import java.util.Objects;
  */
 public class UserProfileFragment extends Fragment {
 
-    public static final String TAG = "ProfileFragment";
+    public static final String TAG = "UserProfileFragment";
 
-    private RetrofitClient retrofitClient;
+    private User user;
+    private Bundle userBundle;
     private TextView textViewFirstName;
     private TextView textViewUsername;
     private TextView textViewBio;
-    private Button buttonEditProfile;
     private Button buttonUserGameList;
     private Button buttonFriendList;
 
@@ -97,66 +97,51 @@ public class UserProfileFragment extends Fragment {
         super.onViewCreated(view, savedInstanceState);
         Snackbar.make(view, getArguments().getSerializable(UserToUserVH.USER_TO_USER_KEY).toString(), Snackbar.LENGTH_LONG)
                 .setAction("Action", null).show();
+        // grab user info from viewholder that was tapped on friendlist
+        // this is assuming that the viewholder holds the all user information
+        user = (User) getArguments().getSerializable(UserToUserVH.USER_TO_USER_KEY);
+        // make a custom bundle to send to UserFriendsFragment and UserGamesFragment to minimize retrofit calls?
+        userBundle = new Bundle();
+        userBundle.putInt("userId", user.getId());
+        userBundle.putString("username", user.getUsername());
+        Log.i(TAG, String.format("userBundle: %s", userBundle));
 
-        Button buttonEditProfile = view.findViewById(R.id.profile_btn_edit);
-        Button btnUserGames = view.findViewById(R.id.profile_btn_view_user_gamelist);
+        textViewBio = view.findViewById(R.id.userProfile_bio);
+        buttonUserGameList = view.findViewById(R.id.userProfile_btn_view_user_gamelist);
+        buttonFriendList = view.findViewById(R.id.userProfile_btn_view_friends);
 
-        Log.i(TAG, String.format("userId: %s", Utils.getUserId()));
-        retrofitClient = RetrofitClient.getClient();
-        textViewBio = view.findViewById(R.id.profile_bio);
-        buttonEditProfile = view.findViewById(R.id.profile_btn_edit);
-        buttonUserGameList = view.findViewById(R.id.profile_btn_view_user_gamelist);
-        buttonFriendList = view.findViewById(R.id.profile_btn_view_friends);
-
-        btnUserGames.setOnClickListener(view1 -> NavHostFragment.findNavController(UserProfileFragment.this)
-                .navigate(R.id.action_profileFragment_to_userGamesFragment));
-
-        if (Objects.isNull(getArguments())) {
-            buttonEditProfile.setVisibility(view.VISIBLE);
-            buttonEditProfile.setOnClickListener(view1 -> NavHostFragment.findNavController(UserProfileFragment.this)
-                    .navigate(R.id.action_profileFragment_to_editProfileFragment));
-        } else {
-            buttonEditProfile.setVisibility(view.GONE);
-        }
+        buttonUserGameList.setOnClickListener(view1 -> NavHostFragment.findNavController(UserProfileFragment.this)
+                .navigate(R.id.action_userProfileFragment_to_userGamesFragment));
 
         textViewBio.setText("Empty bios for all!");
 
-        if (Objects.nonNull(getArguments())) {
-            setNames(view, getArguments().getInt("diffUserId"));
-        } else {
-            setNames(view, Utils.getUserId());
-        }
+        setNames(view);
 
         buttonFriendList.setOnClickListener(v -> {
-            Bundle bundle = new Bundle();
-
-            if (Objects.isNull(getArguments().getSerializable(UserToUserVH.USER_TO_USER_KEY))) {
-                bundle.putInt("diffUserId", getArguments().getInt("diffUserId"));
-            } else {
-                bundle = null;
-            }
+            // this is specifically sending only the user's id and username in a custom bundle
+            // should the getArguments() bundle be sent instead?
             NavHostFragment.findNavController(UserProfileFragment.this)
-                    .navigate(R.id.action_userProfileFragment_to_userFriendsFragment, bundle);
+                    .navigate(R.id.action_userProfileFragment_to_userFriendsFragment, userBundle);
         });
 
         buttonUserGameList.setOnClickListener(v -> {
-            Bundle bundle = new Bundle();
-
-            if (Objects.nonNull(getArguments())) {
-                bundle.putInt("diffUserId", getArguments().getInt("diffUserId"));
-            } else {
-                bundle = null;
-            }
+            // this is specifically sending only the user's id and username in a custom bundle
+            // should the getArguments() bundle be sent instead?
             NavHostFragment.findNavController(UserProfileFragment.this)
-                    .navigate(R.id.action_userProfileFragment_to_userGamesFragment, bundle);
+                    .navigate(R.id.action_userProfileFragment_to_userGamesFragment, userBundle);
         });
     }
 
-    private void setNames(View view, Integer userId) {
-        Activity activity = getActivity();
+    private void setNames(View view) {
         textViewFirstName = view.findViewById(R.id.userProfile_first_name);
         textViewUsername = view.findViewById(R.id.userProfile_username);
 
-
+        textViewFirstName.setText(user.getFirstName());
+        textViewUsername.setText(user.getUsername());
+        // https://developer.android.com/guide/topics/resources/string-resource#formatting-strings
+        String viewUserFriends = getString(R.string.profile_btn_view_friends, user.getUsername());
+        String viewUserGames = getString(R.string.profile_btn_view_user_gamelist, user.getUsername());
+        buttonFriendList.setText(viewUserFriends);
+        buttonUserGameList.setText(viewUserGames);
     }
 }
