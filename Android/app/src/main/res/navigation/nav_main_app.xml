@@ -112,8 +112,8 @@
         android:label="fragment_user_friends"
         tools:layout="@layout/fragment_user_friends" >
         <action
-            android:id="@+id/action_userFriendsFragment_to_profileFragment"
-            app:destination="@id/profileFragment" />
+            android:id="@+id/action_userFriendsFragment_to_userProfileFragment"
+            app:destination="@id/userProfileFragment" />
     </fragment>
     <fragment
         android:id="@+id/gameCollectionFragment"

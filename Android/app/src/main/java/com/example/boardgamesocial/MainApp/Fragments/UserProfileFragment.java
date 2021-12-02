@@ -16,6 +16,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.example.boardgamesocial.API.RetrofitClient;
 import com.example.boardgamesocial.Commons.Utils;
@@ -95,27 +96,8 @@ public class UserProfileFragment extends Fragment {
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        Snackbar.make(view, getArguments().getSerializable(UserToUserVH.USER_TO_USER_KEY).toString(), Snackbar.LENGTH_LONG)
-                .setAction("Action", null).show();
-        // grab user info from viewholder that was tapped on friendlist
-        // this is assuming that the viewholder holds the all user information
-        user = (User) getArguments().getSerializable(UserToUserVH.USER_TO_USER_KEY);
-        // make a custom bundle to send to UserFriendsFragment and UserGamesFragment to minimize retrofit calls?
-        userBundle = new Bundle();
-        userBundle.putInt("userId", user.getId());
-        userBundle.putString("username", user.getUsername());
-        Log.i(TAG, String.format("userBundle: %s", userBundle));
 
-        textViewBio = view.findViewById(R.id.userProfile_bio);
-        buttonUserGameList = view.findViewById(R.id.userProfile_btn_view_user_gamelist);
-        buttonFriendList = view.findViewById(R.id.userProfile_btn_view_friends);
-
-        buttonUserGameList.setOnClickListener(view1 -> NavHostFragment.findNavController(UserProfileFragment.this)
-                .navigate(R.id.action_userProfileFragment_to_userGamesFragment));
-
-        textViewBio.setText("Empty bios for all!");
-
-        setNames(view);
+        Toast.makeText(getContext(), "UserProfileFragment", Toast.LENGTH_LONG).show();
 
         buttonFriendList.setOnClickListener(v -> {
             // this is specifically sending only the user's id and username in a custom bundle

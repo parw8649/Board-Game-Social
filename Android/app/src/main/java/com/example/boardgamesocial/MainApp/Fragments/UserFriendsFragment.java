@@ -5,6 +5,7 @@ import android.os.Bundle;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
+import androidx.navigation.fragment.NavHostFragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -103,6 +104,7 @@ public class UserFriendsFragment extends Fragment implements DataClsAdapter.OnIt
 
     @Override
     public void onItemClick(Bundle contextBundle) {
-
+        NavHostFragment.findNavController(UserFriendsFragment.this)
+                .navigate(R.id.action_userFriendsFragment_to_userProfileFragment, contextBundle);
     }
 }
