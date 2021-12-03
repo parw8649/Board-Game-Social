@@ -22,6 +22,8 @@ import com.example.boardgamesocial.R;
  */
 public class SingleEventFragment extends Fragment {
 
+    public static final String TAG = "SingleEventFragment";
+
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
     private static final String ARG_PARAM1 = "param1";
@@ -77,7 +79,6 @@ public class SingleEventFragment extends Fragment {
         TextView tvEventDescription = view.findViewById(R.id.tv_single_event_description);
         Button btnHostedGames = view.findViewById(R.id.btn_single_event_hosted_games);
         Button btnPeopleInEvent = view.findViewById(R.id.btn_single_event_people_in_event);
-        Button btnJoinEvent = view.findViewById(R.id.btn_join_event);
 
         //Retrieve the value
         assert getArguments() != null;
@@ -92,11 +93,5 @@ public class SingleEventFragment extends Fragment {
 
         btnPeopleInEvent.setOnClickListener(v -> NavHostFragment.findNavController(SingleEventFragment.this)
                 .navigate(R.id.action_singleEventFragment_to_eventAttendeesFragment));
-
-        btnJoinEvent.setOnClickListener(v -> {
-
-            String btnText = btnJoinEvent.getText().toString();
-            btnJoinEvent.setText(btnText.equalsIgnoreCase("Join Event") ? "Un-Join Event" : "Join Event");
-        });
     }
 }

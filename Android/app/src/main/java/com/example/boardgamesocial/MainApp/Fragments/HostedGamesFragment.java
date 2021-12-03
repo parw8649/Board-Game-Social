@@ -29,6 +29,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Objects;
+import java.util.Optional;
 import java.util.OptionalInt;
 
 import io.reactivex.Observable;
@@ -44,7 +45,8 @@ public class HostedGamesFragment extends Fragment implements OnItemListener {
 
     private RecyclerView recyclerView;
 
-    private List<Integer> gameIdList;
+    private Event event;
+
     List<HostedGame> hostedGameList;
 
     // TODO: Rename parameter arguments, choose names that match
@@ -99,9 +101,9 @@ public class HostedGamesFragment extends Fragment implements OnItemListener {
 
         //Retrieve the value
         assert getArguments() != null;
-        Event event = (Event) getArguments().getSerializable(EventVH.EVENT_KEY);
+        event = (Event) getArguments().getSerializable(EventVH.EVENT_KEY);
 
-        gameIdList = new ArrayList<>();
+        //List<Integer> gameIdList = new ArrayList<>();
 
         RetrofitClient.getClient().getCall(HostedGame.class, new HashMap<String, String>() {{
             put("eventId", event.getId().toString());
@@ -162,8 +164,15 @@ public class HostedGamesFragment extends Fragment implements OnItemListener {
 
         Game game = (Game) contextBundle.getSerializable(GameVH.GAME_KEY);
 
-        if(Objects.nonNull(game))
+        if(Objects.nonNull(game)) {
             contextBundle.putInt("SEATS_AVAILABLE", getSeatsAvailableByGameId(game.getId()));
+
+            Optional<HostedGame> optionalHostedGame = hostedGameList.stream()
+                    .filter(hostedGame -> hostedGame.getGameId().equals(game.getId()))
+                    .findFirst();
+
+            optionalHostedGame.ifPresent(hostedGame -> contextBundle.putSerializable("HOSTED_GAME", hostedGame));
+        }
 
         DataClsAdapter<Game, GameVH> dataClsAdapter = (DataClsAdapter<Game, GameVH>) recyclerView.getAdapter();
         assert dataClsAdapter != null;
