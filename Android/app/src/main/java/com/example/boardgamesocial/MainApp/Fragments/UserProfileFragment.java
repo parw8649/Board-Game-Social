@@ -90,14 +90,15 @@ public class UserProfileFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_profile, container, false);
+        return inflater.inflate(R.layout.fragment_user_profile, container, false);
     }
 
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
-        Toast.makeText(getContext(), "UserProfileFragment", Toast.LENGTH_LONG).show();
+        buttonFriendList = view.findViewById(R.id.userProfile_btn_view_friends);
+        buttonUserGameList = view.findViewById(R.id.userProfile_btn_view_user_gamelist);
 
         buttonFriendList.setOnClickListener(v -> {
             // this is specifically sending only the user's id and username in a custom bundle

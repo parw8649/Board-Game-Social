@@ -66,7 +66,7 @@
     </fragment>
     <fragment
         android:id="@+id/userProfileFragment"
-        android:name="com.example.boardgamesocial.MainApp.Fragments.ProfileFragment"
+        android:name="com.example.boardgamesocial.MainApp.Fragments.UserProfileFragment"
         android:label="fragment_userProfile"
         tools:layout="@layout/fragment_user_profile" >
         <action
