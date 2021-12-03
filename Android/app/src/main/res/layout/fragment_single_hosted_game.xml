@@ -126,4 +126,16 @@
         app:layout_constraintTop_toBottomOf="@+id/tv_overall_play_count"
         app:layout_constraintVertical_bias="0.098" />
 
+    <Button
+        android:id="@+id/btn_join_game"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/btn_title_join_game"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.498"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/tv_single_game_seats_available"
+        app:layout_constraintVertical_bias="0.183" />
+
 </androidx.constraintlayout.widget.ConstraintLayout>

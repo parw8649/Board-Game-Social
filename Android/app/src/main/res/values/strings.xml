@@ -131,5 +131,5 @@
     <string name="add_post_btn_add_post">Add Post</string>
     <string name="add_post_error">Unable to create post. Please try again later.</string>
     <string name="add_post_success">Post created.</string>
-    <string name="btn_title_join_event">Join event</string>
+    <string name="btn_title_join_game">Join game</string>
 </resources>
