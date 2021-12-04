@@ -89,7 +89,6 @@ public class GameVH extends DataClsVH<Game> {
                 .into(ivImageUrl);
 
         if(Objects.nonNull(ibtnDeleteGame)) {
-            RetrofitClient retrofitClient = RetrofitClient.getClient();
             ibtnDeleteGame.setOnClickListener(v -> retrofitClient.deleteCall(Game.class, new HashMap<String, String>() {{
                 put("id", String.valueOf(game.getId()));
             }}).subscribe());

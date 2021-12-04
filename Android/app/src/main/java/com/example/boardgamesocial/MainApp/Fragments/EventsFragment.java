@@ -62,7 +62,7 @@ public class EventsFragment extends Fragment implements OnItemListener {
         tvEventDescription.setVisibility(View.GONE);*/
 
         DataClsVM dataClsVM = DataClsVM.getInstance();
-        dataClsVM.getMediatorLiveData(RetrofitClient.getClient().getCall(Event.class, new HashMap<>()), Event.class)
+        dataClsVM.getMediatorLiveData(RetrofitClient.getClient().getCall(Event.class, new HashMap<>()), Event.class, false)
                 .observe(getViewLifecycleOwner(), dataClsAdapter::addNewObjects);
     }
 

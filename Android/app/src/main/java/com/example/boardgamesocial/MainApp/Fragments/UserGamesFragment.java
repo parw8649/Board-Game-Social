@@ -107,7 +107,7 @@ public class UserGamesFragment extends Fragment implements DataClsAdapter.OnItem
         recyclerView.setAdapter(dataClsAdapter);
 
         DataClsVM dataClsVM = DataClsVM.getInstance();
-        dataClsVM.getMediatorLiveData(RetrofitClient.getClient().getCall(Game.class, new HashMap<>()), Game.class)
+        dataClsVM.getMediatorLiveData(RetrofitClient.getClient().getCall(Game.class, new HashMap<>()), Game.class, false)
                 .observe(getViewLifecycleOwner(), dataClsAdapter::addNewObjects);
     }
 

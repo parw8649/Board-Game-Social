@@ -132,4 +132,6 @@
     <string name="add_post_error">Unable to create post. Please try again later.</string>
     <string name="add_post_success">Post created.</string>
     <string name="btn_title_join_game">Join game</string>
+    <string name="VH_user_name">Username</string>
+    <string name="VH_user_image_des">user_image</string>
 </resources>

@@ -151,7 +151,7 @@ public class HostedGamesFragment extends Fragment implements OnItemListener {
         recyclerView.setAdapter(dataClsAdapter);
 
         DataClsVM dataClsVM = DataClsVM.getInstance();
-        dataClsVM.getMediatorLiveData(arrayObservable, Game.class)
+        dataClsVM.getMediatorLiveData(arrayObservable, Game.class, false)
                 .observe(getViewLifecycleOwner(), dataClsAdapter::addNewObjects);
     }
 
