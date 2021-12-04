@@ -3,10 +3,6 @@ package com.example.boardgamesocial.MainApp.Fragments;
 import static com.example.boardgamesocial.API.RetrofitClient.getObject;
 
 import android.os.Bundle;
-
-import androidx.annotation.NonNull;
-import androidx.fragment.app.Fragment;
-
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -14,6 +10,10 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.EditText;
+
+import androidx.annotation.NonNull;
+import androidx.fragment.app.Fragment;
+import androidx.navigation.fragment.NavHostFragment;
 
 import com.example.boardgamesocial.API.RetrofitClient;
 import com.example.boardgamesocial.Commons.Utils;
@@ -113,6 +113,7 @@ public class AddGameFragment extends Fragment {
             Integer overallPlayCount = Objects.nonNull(etOverallPlayCount) ? Integer.parseInt(etOverallPlayCount.getText().toString()) : 0;
 
             addGame(new Game(gameTitle, genre, minPlayer, maxPlayer, description, imageUrl, overallPlayCount));
+            NavHostFragment.findNavController(AddGameFragment.this).navigate(R.id.action_addGameFragment_to_gameCollectionFragment);
         });
     }
 
@@ -128,17 +129,20 @@ public class AddGameFragment extends Fragment {
                 Log.i(TAG, "Game added successfully");
 
                 boolean isPrivateGame = Objects.nonNull(cxIsGamePrivate) && cxIsGamePrivate.isChecked();
-                GameToUser userGame = new GameToUser(Utils.getUserId(), game.getId(), isPrivateGame);
+                GameToUser userGame = new GameToUser(Utils.getUserId(), addedGame.getId(), isPrivateGame);
                 retrofitClient.postCall(GameToUser.class, userGame).subscribe(jsonObject1 -> {
                     GameToUser gameToUser = getObject(jsonObject, GameToUser.class);
 
-                    if (Objects.nonNull(gameToUser))
+                    if (Objects.nonNull(gameToUser)) {
                         Log.i(TAG, "Game mapped to user successfully");
-                    else
+                        //Toast.makeText(requireContext(), "Game added successfully!", Toast.LENGTH_LONG).show();
+                    } else
                         Log.i(TAG, "Unable to map game to user at the moment!");
                 });
-            } else
+            } else {
                 Log.i(TAG, "Unable to add game at the moment!");
+                //Toast.makeText(requireContext(), "Unable to add game at the moment!", Toast.LENGTH_LONG).show();
+            }
         });
     }
 }
