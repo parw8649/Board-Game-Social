@@ -3,6 +3,7 @@ package com.example.boardgamesocial.MainApp.Fragments;
 import static com.example.boardgamesocial.API.RetrofitClient.getObjectList;
 
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -192,5 +193,32 @@ public class HostedGamesFragment extends Fragment implements OnItemListener {
             return noOfSeatsAvailable.getAsInt();
         else
             return 0;
+    }
+
+    //Method added for updating hostedGames in an event
+    private Observable<JsonArray> fetchUpdatedEventHostedGames() {
+
+        Log.i(TAG, "Inside fetchUpdatedEventHostedGames");
+
+        //Retrieve the value
+        assert getArguments() != null;
+        event = (Event) getArguments().getSerializable(EventVH.EVENT_KEY);
+
+        //Fetching all games in the specified event
+        RetrofitClient.getClient().getCall(HostedGame.class, new HashMap<String, String>() {{
+            put("eventId", event.getId().toString());
+        }}).blockingSubscribe(hosted -> hostedGameList = getObjectList(hosted, HostedGame.class));
+
+        JsonArray jsonArray = new JsonArray();
+
+        //Fetching game details for game ids
+        hostedGameList.forEach(hostedGame -> RetrofitClient.getClient().getCall(Game.class, new HashMap<String, String>() {{
+            put("id", hostedGame.getGameId().toString());
+        }}).blockingSubscribe(j -> {
+            if(!j.isEmpty())
+                jsonArray.add(j.get(0));
+        }));
+
+        return Observable.fromArray(jsonArray);
     }
 }

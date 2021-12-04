@@ -15,6 +15,7 @@ import android.widget.RelativeLayout;
 
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
+import androidx.navigation.fragment.NavHostFragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -131,7 +132,10 @@ public class AddEventFragment extends Fragment implements OnItemListener {
             eventDateTime = String.valueOf(java.time.Clock.systemUTC().instant());
 
             addEvent(new Event(eventName, Utils.getUserId()), eventDateTime, eventDescription);
-            requireActivity().getSupportFragmentManager().popBackStack();
+            //requireActivity().getSupportFragmentManager().popBackStack();
+            NavHostFragment
+                    .findNavController(AddEventFragment.this)
+                    .navigate(R.id.action_addEventFragment_to_eventsFragment);
         });
     }
 
