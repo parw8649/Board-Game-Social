@@ -9,6 +9,7 @@ import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
+import androidx.navigation.fragment.NavHostFragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -31,8 +32,6 @@ import java.util.HashMap;
 public class GameCollectionFragment extends Fragment implements OnItemListener {
 
     public static final String TAG = "GameCollectionFragment";
-
-    private DataClsAdapter<Game, GameVH> dataClsAdapter;
 
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
@@ -90,7 +89,7 @@ public class GameCollectionFragment extends Fragment implements OnItemListener {
         RecyclerView recyclerView = view.findViewById(R.id.gameFeed_recyclerView);
         recyclerView.setLayoutManager(new LinearLayoutManager(this.getContext()));
 
-        dataClsAdapter = new DataClsAdapter<>(
+        DataClsAdapter<Game, GameVH> dataClsAdapter = new DataClsAdapter<>(
                 this,
                 Game.class,
                 getActivity(),
@@ -110,5 +109,8 @@ public class GameCollectionFragment extends Fragment implements OnItemListener {
     @Override
     public void onItemClick(Bundle contextBundle) {
         Toast.makeText(getContext(),"Reviews functionality to be implemented!", Toast.LENGTH_LONG).show();
+
+        NavHostFragment.findNavController(GameCollectionFragment.this)
+                .navigate(R.id.action_gameCollectionFragment_to_gameReviews, contextBundle);
     }
 }

@@ -106,8 +106,8 @@
         android:label="fragment_game_collection"
         tools:layout="@layout/fragment_game_collection" >
         <action
-            android:id="@+id/action_gameCollectionFragment_to_profileFragment"
-            app:destination="@id/profileFragment" />
+            android:id="@+id/action_gameCollectionFragment_to_gameReviews"
+            app:destination="@id/gameReviews" />
     </fragment>
     <fragment
         android:id="@+id/singleEventFragment"
@@ -206,5 +206,11 @@
         <action
             android:id="@+id/action_addEventFragment_to_eventsFragment"
             app:destination="@id/eventsFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/gameReviews"
+        android:name="com.example.boardgamesocial.MainApp.Fragments.GameReviewsFragment"
+        android:label="fragment_game_reviews"
+        tools:layout="@layout/fragment_game_reviews">
     </fragment>
 </navigation>
