@@ -1,21 +1,43 @@
 package com.example.boardgamesocial.MainApp.Fragments;
 
+import static com.example.boardgamesocial.API.RetrofitClient.getObjectList;
+
 import android.os.Bundle;
-
-import androidx.fragment.app.Fragment;
-
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.TextView;
 
+import androidx.annotation.NonNull;
+import androidx.fragment.app.Fragment;
+
+import com.example.boardgamesocial.API.RetrofitClient;
+import com.example.boardgamesocial.DataClasses.Event;
+import com.example.boardgamesocial.DataClasses.Relationships.EventToUser;
+import com.example.boardgamesocial.DataClasses.User;
+import com.example.boardgamesocial.DataViews.Adapters.DataClsAdapter.OnItemListener;
+import com.example.boardgamesocial.DataViews.Adapters.ViewHolders.EventVH;
 import com.example.boardgamesocial.R;
+import com.google.gson.GsonBuilder;
+import com.google.gson.JsonArray;
+import com.google.gson.JsonParser;
+
+import java.util.HashMap;
+import java.util.List;
 
 /**
  * A simple {@link Fragment} subclass.
  * Use the {@link EventAttendeesFragment#newInstance} factory method to
  * create an instance of this fragment.
  */
-public class EventAttendeesFragment extends Fragment {
+public class EventAttendeesFragment extends Fragment implements OnItemListener {
+
+    public static final String TAG = "EventAttendeesFragment";
+
+    private Event event;
+
+    private List<EventToUser> eventToUserList;
 
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
@@ -62,5 +84,57 @@ public class EventAttendeesFragment extends Fragment {
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         return inflater.inflate(R.layout.fragment_event_attendees, container, false);
+    }
+
+    public void onViewCreated(@NonNull View view, Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
+
+        //Retrieve the value
+        assert getArguments() != null;
+        event = (Event) getArguments().getSerializable(EventVH.EVENT_KEY);
+
+        //Fetching userIds from EventToUser based on specified event
+        RetrofitClient.getClient().getCall(EventToUser.class, new HashMap<String, String>() {{
+            put("eventId", event.getId().toString());
+        }}).blockingSubscribe(usersInEventJson -> {
+            eventToUserList = getObjectList(usersInEventJson, EventToUser.class);
+        });
+
+        JsonArray jsonArray = new JsonArray();
+
+        //Fetching user details based on users in the event
+        eventToUserList.forEach(eventToUser -> {
+            RetrofitClient.getClient().getCall(User.class, new HashMap<String, String>() {{
+                put("id", eventToUser.getUserId().toString());
+            }}).blockingSubscribe(j -> {
+                if(!j.isEmpty())
+                    jsonArray.add(j.get(0));
+            });
+        });
+
+        Log.i(TAG, "Attendees: " + jsonArray);
+        TextView tvAttendees = view.findViewById(R.id.tv_attendees);
+        tvAttendees.setText(new GsonBuilder().setPrettyPrinting().create().toJson(JsonParser.parseString(jsonArray.toString())));
+
+        /*Observable<JsonArray> arrayObservable = Observable.fromArray(jsonArray);
+
+        RecyclerView recyclerView = view.findViewById(R.id.eventHostedGame_recyclerView);
+        recyclerView.setLayoutManager(new LinearLayoutManager(this.getContext()));
+
+        DataClsAdapter<Game, GameVH> dataClsAdapter = new DataClsAdapter<>(
+                this,
+                Game.class,
+                getActivity(),
+                R.layout.hosted_game_item);
+        recyclerView.setAdapter(dataClsAdapter);
+
+        DataClsVM dataClsVM = DataClsVM.getInstance();
+        dataClsVM.getMediatorLiveData(arrayObservable, Game.class)
+                .observe(getViewLifecycleOwner(), dataClsAdapter::addNewObjects);*/
+    }
+
+    @Override
+    public void onItemClick(Bundle contextBundle) {
+
     }
 }

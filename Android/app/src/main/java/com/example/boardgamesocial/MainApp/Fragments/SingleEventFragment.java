@@ -92,6 +92,6 @@ public class SingleEventFragment extends Fragment {
                 .navigate(R.id.action_singleEventFragment_to_hostedGamesFragment, getArguments()));
 
         btnPeopleInEvent.setOnClickListener(v -> NavHostFragment.findNavController(SingleEventFragment.this)
-                .navigate(R.id.action_singleEventFragment_to_eventAttendeesFragment));
+                .navigate(R.id.action_singleEventFragment_to_eventAttendeesFragment, getArguments()));
     }
 }
