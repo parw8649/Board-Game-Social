@@ -37,8 +37,9 @@ import io.reactivex.Observable;
  */
 public class UserGamesFragment extends Fragment implements DataClsAdapter.OnItemListener {
 
+    public static final String TAG = "UserGamesFragment";
+
     private RecyclerView recyclerView;
-    private List<Game> games;
 
     private List<GameToUser> gameToUserList;
 
@@ -111,6 +112,8 @@ public class UserGamesFragment extends Fragment implements DataClsAdapter.OnItem
     }
 
     private Observable<JsonArray> fetchUserSpecificGames() {
+
+        Log.i(TAG, "Inside fetchUserSpecificGames");
 
         gameToUserList = new ArrayList<>();
 

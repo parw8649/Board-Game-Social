@@ -32,6 +32,8 @@ public class GameCollectionFragment extends Fragment implements OnItemListener {
 
     public static final String TAG = "GameCollectionFragment";
 
+    private DataClsAdapter<Game, GameVH> dataClsAdapter;
+
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
     private static final String ARG_PARAM1 = "param1";
@@ -88,7 +90,7 @@ public class GameCollectionFragment extends Fragment implements OnItemListener {
         RecyclerView recyclerView = view.findViewById(R.id.gameFeed_recyclerView);
         recyclerView.setLayoutManager(new LinearLayoutManager(this.getContext()));
 
-        DataClsAdapter<Game, GameVH> dataClsAdapter = new DataClsAdapter<>(
+        dataClsAdapter = new DataClsAdapter<>(
                 this,
                 Game.class,
                 getActivity(),
@@ -107,6 +109,6 @@ public class GameCollectionFragment extends Fragment implements OnItemListener {
 
     @Override
     public void onItemClick(Bundle contextBundle) {
-        Toast.makeText(getContext(),"Game clicked", Toast.LENGTH_LONG).show();
+        Toast.makeText(getContext(),"Reviews functionality to be implemented!", Toast.LENGTH_LONG).show();
     }
 }

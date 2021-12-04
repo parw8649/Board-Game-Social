@@ -72,8 +72,9 @@ public class SignUpFragment extends Fragment {
         String username = Objects.nonNull(etUsername.getText()) ? etUsername.getText().toString() : null;
         String password = Objects.nonNull(etPassword.getText()) ? etPassword.getText().toString() : null;
 
-        retrofitClient.signUpCall(new User(firstName, lastName, email, username, password)).subscribe(user -> {
+        retrofitClient.signUpCall(new User(firstName, lastName, email, username, password)).blockingSubscribe(user -> {
             Log.i("User", user.toString());
+            Toast.makeText(getContext(), "User registered!", Toast.LENGTH_LONG).show();
             NavHostFragment
                     .findNavController(SignUpFragment.this)
                     .navigate(R.id.action_SecondFragment_to_FirstFragment);
