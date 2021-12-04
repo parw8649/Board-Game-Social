@@ -1,22 +1,32 @@
 package com.example.boardgamesocial.MainApp;
 
+import static com.example.boardgamesocial.API.RetrofitClient.getObject;
+
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.Menu;
 import android.view.View;
+import android.widget.Toast;
+
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.navigation.NavController;
 import androidx.navigation.Navigation;
 import androidx.navigation.ui.AppBarConfiguration;
 import androidx.navigation.ui.NavigationUI;
+
+import com.example.boardgamesocial.API.RetrofitClient;
+import com.example.boardgamesocial.Commons.Utils;
+import com.example.boardgamesocial.DataClasses.User;
 import com.example.boardgamesocial.databinding.ActivityMainAppBinding;
 import com.example.boardgamesocial.LoginAndSignUp.LoginAndSignUpActivity;
 import com.example.boardgamesocial.R;
 import com.google.android.material.bottomappbar.BottomAppBar;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.snackbar.Snackbar;
+
+import java.util.HashMap;
 
 public class MainAppActivity extends AppCompatActivity {
 
@@ -76,8 +86,7 @@ public class MainAppActivity extends AppCompatActivity {
                     fab.setVisibility(View.INVISIBLE);
                     break;
                 case R.id.logout_option:
-                    Intent goToHomePostActivity = LoginAndSignUpActivity.getIntent(MainAppActivity.this);
-                    startActivity(goToHomePostActivity);
+                    userLogout();
                     break;
             }
             setFabOnClick(item.getItemId());
@@ -141,5 +150,20 @@ public class MainAppActivity extends AppCompatActivity {
             case R.id.profile_option:
                 return;
         }
+    }
+
+    private void userLogout() {
+        RetrofitClient.getClient().logoutCall(new HashMap<String, String>() {{
+            put("id", Utils.getUserId().toString());
+        }}).subscribe(jsonObject -> {
+            User user = getObject(jsonObject, User.class);
+            this.runOnUiThread(() -> {
+                if (user.getId() == Utils.getUserId()) {
+                    Toast.makeText(this,"Successful logout", Toast.LENGTH_SHORT).show();
+                    Intent goToHomePostActivity = LoginAndSignUpActivity.getIntent(MainAppActivity.this);
+                    startActivity(goToHomePostActivity);
+                }
+            });
+        });
     }
 }

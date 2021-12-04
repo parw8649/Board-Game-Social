@@ -19,6 +19,7 @@
     <dimen name="item_more_btn_width">50dp</dimen>
     <!--  Main App Activity  -->
     <dimen name="main_app_activity_padding">10dp</dimen>
+    <dimen name="main_app_activity_bottom_margin">55dp</dimen>
     <!--  profile fragments -->
     <!--  profile and edit profile pages -->
     <dimen name="textSizeSmall">10sp</dimen>
@@ -41,5 +42,5 @@
     <!--  add post fragment  -->
     <dimen name="add_post_body_height">200dp</dimen>
     <!--  popup  -->
-    <dimen name="popup_edge_padding">20dp</dimen>
+    <dimen name="popup_edge_padding">10dp</dimen>
 </resources>

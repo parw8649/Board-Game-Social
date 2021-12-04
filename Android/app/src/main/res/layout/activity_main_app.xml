@@ -14,6 +14,7 @@
         android:layout_height="match_parent"
         layout="@layout/content_main_app"
         android:padding="@dimen/main_app_activity_padding"
+        android:layout_marginBottom="@dimen/main_app_activity_bottom_margin"
         tools:layout_editor_absoluteX="0dp" />
 
     <!--  https://youtu.be/IfgV9WzYOn8?t=443  -->
