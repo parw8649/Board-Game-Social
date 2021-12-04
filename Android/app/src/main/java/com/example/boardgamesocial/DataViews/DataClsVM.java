@@ -25,12 +25,10 @@ import io.reactivex.functions.Function;
 
 public class DataClsVM extends ViewModel {
     private static DataClsVM liveDataConnector;
-    private final RetrofitClient retrofitClient;
     private final Map<Class<?>, MediatorLiveData<?>> mediatorLiveDataMap;
     private static long updateInterval = 10;
 
     private DataClsVM(){
-        retrofitClient = RetrofitClient.getClient();
         mediatorLiveDataMap = new HashMap<>();
     }
 
@@ -41,8 +39,8 @@ public class DataClsVM extends ViewModel {
         return liveDataConnector;
     }
 
-    public <DC extends DataClass> MediatorLiveData<List<DC>> getMediatorLiveData(Observable<JsonArray> observable, Class<DC> dataClass) {
-        if (!mediatorLiveDataMap.containsKey(dataClass)){
+    public <DC extends DataClass> MediatorLiveData<List<DC>> getMediatorLiveData(Observable<JsonArray> observable, Class<DC> dataClass, boolean reset) {
+        if (!mediatorLiveDataMap.containsKey(dataClass) || reset){
             MediatorLiveData<List<DC>> mediatorLiveData = new MediatorLiveData<>();
             final LiveData<JsonArray> source = LiveDataReactiveStreams.fromPublisher(
                     Observable.interval(0, updateInterval, TimeUnit.SECONDS)

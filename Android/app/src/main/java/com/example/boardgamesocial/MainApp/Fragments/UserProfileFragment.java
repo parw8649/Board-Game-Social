@@ -1,8 +1,6 @@
 package com.example.boardgamesocial.MainApp.Fragments;
 
-import static com.example.boardgamesocial.API.RetrofitClient.getObjectList;
 
-import android.app.Activity;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
@@ -16,17 +14,12 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.example.boardgamesocial.API.RetrofitClient;
-import com.example.boardgamesocial.Commons.Utils;
 import com.example.boardgamesocial.DataClasses.User;
 import com.example.boardgamesocial.DataViews.Adapters.ViewHolders.RelationshipVH.UserToUserVH;
 import com.example.boardgamesocial.R;
-import com.google.android.material.snackbar.Snackbar;
 
-import java.util.HashMap;
-import java.util.List;
 import java.util.Objects;
 
 /**
@@ -38,8 +31,6 @@ public class UserProfileFragment extends Fragment {
 
     public static final String TAG = "UserProfileFragment";
 
-    private User user;
-    private Bundle userBundle;
     private TextView textViewFirstName;
     private TextView textViewUsername;
     private TextView textViewBio;
@@ -97,34 +88,31 @@ public class UserProfileFragment extends Fragment {
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
+        textViewFirstName = view.findViewById(R.id.userProfile_first_name);
+        textViewUsername = view.findViewById(R.id.userProfile_username);
         buttonFriendList = view.findViewById(R.id.userProfile_btn_view_friends);
         buttonUserGameList = view.findViewById(R.id.userProfile_btn_view_user_gamelist);
+
+        User user = (User) requireArguments().getSerializable(UserToUserVH.USER_KEY);
+        Log.i(TAG, "onViewCreated: " + user);
+
+        textViewFirstName.setText(user.getFirstName());
+        textViewUsername.setText(user.getUsername());
+        buttonFriendList.setText(getString(R.string.profile_btn_view_friends, user.getUsername()));
+        buttonUserGameList.setText(getString(R.string.profile_btn_view_user_gamelist, user.getUsername()));
 
         buttonFriendList.setOnClickListener(v -> {
             // this is specifically sending only the user's id and username in a custom bundle
             // should the getArguments() bundle be sent instead?
             NavHostFragment.findNavController(UserProfileFragment.this)
-                    .navigate(R.id.action_userProfileFragment_to_userFriendsFragment, userBundle);
+                    .navigate(R.id.action_userProfileFragment_to_userFriendsFragment, requireArguments());
         });
 
         buttonUserGameList.setOnClickListener(v -> {
             // this is specifically sending only the user's id and username in a custom bundle
             // should the getArguments() bundle be sent instead?
             NavHostFragment.findNavController(UserProfileFragment.this)
-                    .navigate(R.id.action_userProfileFragment_to_userGamesFragment, userBundle);
+                    .navigate(R.id.action_userProfileFragment_to_userGamesFragment, requireArguments());
         });
-    }
-
-    private void setNames(View view) {
-        textViewFirstName = view.findViewById(R.id.userProfile_first_name);
-        textViewUsername = view.findViewById(R.id.userProfile_username);
-
-        textViewFirstName.setText(user.getFirstName());
-        textViewUsername.setText(user.getUsername());
-        // https://developer.android.com/guide/topics/resources/string-resource#formatting-strings
-        String viewUserFriends = getString(R.string.profile_btn_view_friends, user.getUsername());
-        String viewUserGames = getString(R.string.profile_btn_view_user_gamelist, user.getUsername());
-        buttonFriendList.setText(viewUserFriends);
-        buttonUserGameList.setText(viewUserGames);
     }
 }
