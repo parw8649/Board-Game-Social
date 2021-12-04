@@ -175,8 +175,6 @@ public class HostedGamesFragment extends Fragment implements OnItemListener {
             optionalHostedGame.ifPresent(hostedGame -> contextBundle.putSerializable("HOSTED_GAME", hostedGame));
         }
 
-        DataClsAdapter<Game, GameVH> dataClsAdapter = (DataClsAdapter<Game, GameVH>) recyclerView.getAdapter();
-        assert dataClsAdapter != null;
 
         NavHostFragment.findNavController(HostedGamesFragment.this)
                 .navigate(R.id.action_hostedGamesFragment_to_singleHostedGameFragment, contextBundle);

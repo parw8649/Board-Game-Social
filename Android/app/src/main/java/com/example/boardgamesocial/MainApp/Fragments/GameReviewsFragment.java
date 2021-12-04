@@ -1,16 +1,28 @@
 package com.example.boardgamesocial.MainApp.Fragments;
 
+import static com.example.boardgamesocial.API.RetrofitClient.getObjectList;
+
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.TextView;
 
+import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 
+import com.example.boardgamesocial.API.RetrofitClient;
 import com.example.boardgamesocial.DataClasses.Game;
 import com.example.boardgamesocial.DataClasses.Review;
+import com.example.boardgamesocial.DataClasses.User;
+import com.example.boardgamesocial.DataViews.Adapters.ViewHolders.GameVH;
 import com.example.boardgamesocial.R;
+import com.google.gson.GsonBuilder;
+import com.google.gson.JsonArray;
+import com.google.gson.JsonParser;
 
+import java.util.HashMap;
 import java.util.List;
 
 /**
@@ -71,5 +83,54 @@ public class GameReviewsFragment extends Fragment {
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         return inflater.inflate(R.layout.fragment_game_reviews, container, false);
+    }
+
+    public void onViewCreated(@NonNull View view, Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
+
+        //Retrieve the value
+        assert getArguments() != null;
+        game = (Game) getArguments().getSerializable(GameVH.GAME_KEY);
+
+        //Fetching reviews from Review based on specified game
+        RetrofitClient.getClient().getCall(Review.class, new HashMap<String, String>() {{
+            put("gameId", game.getId().toString());
+        }}).blockingSubscribe(reviewJson -> {
+            reviewList = getObjectList(reviewJson, Review.class);
+        });
+
+        JsonArray jsonArray = new JsonArray();
+
+        //Fetching user details based on users in the event
+        reviewList.forEach(review -> {
+            RetrofitClient.getClient().getCall(User.class, new HashMap<String, String>() {{
+                put("id", review.getUserId().toString());
+            }}).blockingSubscribe(j -> {
+                if(!j.isEmpty()) {
+                    jsonArray.add(j.get(0));
+                    jsonArray.add(review.getContent());
+                }
+            });
+        });
+
+        Log.i(TAG, "Attendees: " + jsonArray);
+        TextView tvAttendees = view.findViewById(R.id.tv_game_reviews);
+        tvAttendees.setText(new GsonBuilder().setPrettyPrinting().create().toJson(JsonParser.parseString(jsonArray.toString())));
+
+        //Observable<JsonArray> arrayObservable = Observable.fromArray(jsonArray);
+
+        /*RecyclerView recyclerView = view.findViewById(R.id.gameFeed_recyclerView);
+        recyclerView.setLayoutManager(new LinearLayoutManager(this.getContext()));
+
+        DataClsAdapter<Game, GameVH> dataClsAdapter = new DataClsAdapter<>(
+                this,
+                Game.class,
+                getActivity(),
+                R.layout.game_item);
+        recyclerView.setAdapter(dataClsAdapter);
+
+        DataClsVM dataClsVM = DataClsVM.getInstance();
+        dataClsVM.getMediatorLiveData(RetrofitClient.getClient().getCall(Game.class, new HashMap<>()), Game.class)
+                .observe(getViewLifecycleOwner(), dataClsAdapter::addNewObjects);*/
     }
 }
