@@ -1,14 +1,26 @@
 package com.example.boardgamesocial.MainApp.Fragments;
 
+
 import android.os.Bundle;
 
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
+import androidx.navigation.fragment.NavHostFragment;
 
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
+import android.widget.TextView;
 
+import com.example.boardgamesocial.API.RetrofitClient;
+import com.example.boardgamesocial.DataClasses.User;
+import com.example.boardgamesocial.DataViews.Adapters.ViewHolders.RelationshipVH.UserToUserVH;
 import com.example.boardgamesocial.R;
+
+import java.util.Objects;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -16,6 +28,14 @@ import com.example.boardgamesocial.R;
  * create an instance of this fragment.
  */
 public class UserProfileFragment extends Fragment {
+
+    public static final String TAG = "UserProfileFragment";
+
+    private TextView textViewFirstName;
+    private TextView textViewUsername;
+    private TextView textViewBio;
+    private Button buttonUserGameList;
+    private Button buttonFriendList;
 
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
@@ -61,6 +81,38 @@ public class UserProfileFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_profile, container, false);
+        return inflater.inflate(R.layout.fragment_user_profile, container, false);
+    }
+
+    @Override
+    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
+
+        textViewFirstName = view.findViewById(R.id.userProfile_first_name);
+        textViewUsername = view.findViewById(R.id.userProfile_username);
+        buttonFriendList = view.findViewById(R.id.userProfile_btn_view_friends);
+        buttonUserGameList = view.findViewById(R.id.userProfile_btn_view_user_gamelist);
+
+        User user = (User) requireArguments().getSerializable(UserToUserVH.USER_KEY);
+        Log.i(TAG, "onViewCreated: " + user);
+
+        textViewFirstName.setText(user.getFirstName());
+        textViewUsername.setText(user.getUsername());
+        buttonFriendList.setText(getString(R.string.profile_btn_view_friends, user.getUsername()));
+        buttonUserGameList.setText(getString(R.string.profile_btn_view_user_gamelist, user.getUsername()));
+
+        buttonFriendList.setOnClickListener(v -> {
+            // this is specifically sending only the user's id and username in a custom bundle
+            // should the getArguments() bundle be sent instead?
+            NavHostFragment.findNavController(UserProfileFragment.this)
+                    .navigate(R.id.action_userProfileFragment_to_userFriendsFragment, requireArguments());
+        });
+
+        buttonUserGameList.setOnClickListener(v -> {
+            // this is specifically sending only the user's id and username in a custom bundle
+            // should the getArguments() bundle be sent instead?
+            NavHostFragment.findNavController(UserProfileFragment.this)
+                    .navigate(R.id.action_userProfileFragment_to_userGamesFragment, requireArguments());
+        });
     }
 }
