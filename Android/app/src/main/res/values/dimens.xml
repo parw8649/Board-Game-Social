@@ -40,5 +40,6 @@
     <dimen name="h_spacer">10dp</dimen>
     <!--  add post fragment  -->
     <dimen name="add_post_body_height">200dp</dimen>
-
+    <!--  popup  -->
+    <dimen name="popup_edge_padding">20dp</dimen>
 </resources>

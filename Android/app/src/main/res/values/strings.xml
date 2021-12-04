@@ -143,4 +143,11 @@
     <string name="edit_profile_btn_edit_bio">edit bio</string>
     <string name="edit_profile_btn_delete_account">delete account</string>
     <string name="imageView_contentDescription">user icon</string>
+    <!--  Strings used for popup_window  -->
+    <string name="popup_type_warning">-- Warning --</string>
+    <string name="delete_acc_title">Delete Account Chosen</string>
+    <string name="delete_acc_warning">You are about to delete your Movie Social account.</string>
+    <string name="delete_acc_confirm">Yes, delete account</string>
+    <string name="delete_acc_deny">No, keep account</string>
+    <string name="popup_continue_msg">Do you want to continue?</string>
 </resources>

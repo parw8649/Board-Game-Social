@@ -1,0 +1,74 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:padding="@dimen/popup_edge_padding"
+    android:orientation="vertical"
+    android:background="@color/ice_blue">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:padding="@dimen/popup_edge_padding"
+        android:layout_marginBottom="@dimen/linear_vert_padding"
+        android:background="@color/coral_reef">
+
+        <TextView
+            android:id="@+id/popup_type"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/popup_type_warning"
+            android:textAppearance="@style/TextAppearance.AppCompat.Headline"
+            android:textStyle="bold"
+            android:textAlignment="center" />
+
+        <TextView
+            android:id="@+id/popup_title"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/delete_acc_title"
+            android:textAppearance="@style/TextAppearance.AppCompat.Headline"
+            android:textAlignment="center" />
+    </LinearLayout>
+
+    <TextView
+        android:id="@+id/popup_message"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="@dimen/linear_vert_padding"
+        android:text="@string/delete_acc_warning"
+        android:textAppearance="@style/TextAppearance.AppCompat.Large"
+        android:textAlignment="center" />
+
+    <TextView
+        android:id="@+id/popup_continue"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="@dimen/linear_vert_padding"
+        android:text="@string/popup_continue_msg"
+        android:textAppearance="@style/TextAppearance.AppCompat.Large"
+        android:textAlignment="center"/>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
+
+        <Button
+            android:layout_width="@dimen/even_spacing_layout_width"
+            android:layout_weight="@dimen/even_spacing_layout_weight"
+            android:layout_height="@dimen/btn_height_slim"
+            android:layout_marginRight="@dimen/h_spacer"
+            android:text="@string/delete_acc_confirm"
+            android:textAppearance="@style/TextAppearance.AppCompat.Small" />
+
+        <Button
+            android:layout_width="@dimen/even_spacing_layout_width"
+            android:layout_weight="@dimen/even_spacing_layout_weight"
+            android:layout_height="@dimen/btn_height_slim"
+            android:text="@string/delete_acc_deny"
+            android:textAppearance="@style/TextAppearance.AppCompat.Small" />
+    </LinearLayout>
+
+</LinearLayout>
