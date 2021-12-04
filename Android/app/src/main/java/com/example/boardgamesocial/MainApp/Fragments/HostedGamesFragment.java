@@ -100,7 +100,7 @@ public class HostedGamesFragment extends Fragment implements OnItemListener {
     public void onViewCreated(@NonNull View view, Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
-        //Retrieve the value
+        /*//Retrieve the value
         assert getArguments() != null;
         event = (Event) getArguments().getSerializable(EventVH.EVENT_KEY);
 
@@ -110,12 +110,12 @@ public class HostedGamesFragment extends Fragment implements OnItemListener {
             put("eventId", event.getId().toString());
         }}).blockingSubscribe(hosted -> {
             hostedGameList = getObjectList(hosted, HostedGame.class);
-            /*if (Objects.nonNull(hostedGameList) && !hostedGameList.isEmpty()) {
+            *//*if (Objects.nonNull(hostedGameList) && !hostedGameList.isEmpty()) {
                 hostedGameList.forEach(hostedGame -> gameIdList.add(hostedGame.getGameId()));
-            }*/
+            }*//*
         });
 
-        /*Map<String, String> gameFilter = new HashMap<>();
+        *//*Map<String, String> gameFilter = new HashMap<>();
 
         Log.i(TAG, "HostedGameList: " + hostedGameList.stream().map(HostedGame::getGameId).map(Object::toString).collect(Collectors.joining(", ")));
 
@@ -125,7 +125,7 @@ public class HostedGamesFragment extends Fragment implements OnItemListener {
         Observable<JsonArray> arrayObservable =
                 hostedGameList.stream().map(hostedGame -> RetrofitClient.getClient().getCall(Game.class, new HashMap<String, String>() {{
             put("hostedgame", hostedGame.getId().toString());
-        }}).subscribe(JsonElement::getAsJsonObject)).collect();*/
+        }}).subscribe(JsonElement::getAsJsonObject)).collect();*//*
 
         JsonArray jsonArray = new JsonArray();
 
@@ -138,7 +138,7 @@ public class HostedGamesFragment extends Fragment implements OnItemListener {
             });
         });
 
-        Observable<JsonArray> arrayObservable = Observable.fromArray(jsonArray);
+        Observable<JsonArray> arrayObservable = Observable.fromArray(jsonArray);*/
 
         recyclerView = view.findViewById(R.id.eventHostedGame_recyclerView);
         recyclerView.setLayoutManager(new LinearLayoutManager(this.getContext()));
@@ -151,7 +151,7 @@ public class HostedGamesFragment extends Fragment implements OnItemListener {
         recyclerView.setAdapter(dataClsAdapter);
 
         DataClsVM dataClsVM = DataClsVM.getInstance();
-        dataClsVM.getMediatorLiveData(arrayObservable, Game.class, false)
+        dataClsVM.getMediatorLiveData(fetchUpdatedEventHostedGames(), Game.class, true)
                 .observe(getViewLifecycleOwner(), dataClsAdapter::addNewObjects);
     }
 
