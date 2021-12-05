@@ -1,27 +1,24 @@
 package com.example.boardgamesocial.MainApp.Fragments;
 
-import static com.example.boardgamesocial.API.RetrofitClient.getObjectList;
-
 import android.os.Bundle;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.boardgamesocial.API.RetrofitClient;
 import com.example.boardgamesocial.DataClasses.Event;
 import com.example.boardgamesocial.DataClasses.Relationships.EventToUser;
-import com.example.boardgamesocial.DataClasses.User;
+import com.example.boardgamesocial.DataViews.Adapters.DataClsAdapter;
 import com.example.boardgamesocial.DataViews.Adapters.DataClsAdapter.OnItemListener;
 import com.example.boardgamesocial.DataViews.Adapters.ViewHolders.EventVH;
+import com.example.boardgamesocial.DataViews.Adapters.ViewHolders.RelationshipVH.EventToUserVH;
+import com.example.boardgamesocial.DataViews.DataClsVM;
 import com.example.boardgamesocial.R;
-import com.google.gson.GsonBuilder;
-import com.google.gson.JsonArray;
-import com.google.gson.JsonParser;
 
 import java.util.HashMap;
 import java.util.List;
@@ -93,7 +90,7 @@ public class EventAttendeesFragment extends Fragment implements OnItemListener {
         assert getArguments() != null;
         event = (Event) getArguments().getSerializable(EventVH.EVENT_KEY);
 
-        //Fetching userIds from EventToUser based on specified event
+        /*//Fetching userIds from EventToUser based on specified event
         RetrofitClient.getClient().getCall(EventToUser.class, new HashMap<String, String>() {{
             put("eventId", event.getId().toString());
         }}).blockingSubscribe(usersInEventJson -> {
@@ -114,23 +111,25 @@ public class EventAttendeesFragment extends Fragment implements OnItemListener {
 
         Log.i(TAG, "Attendees: " + jsonArray);
         TextView tvAttendees = view.findViewById(R.id.tv_attendees);
-        tvAttendees.setText(new GsonBuilder().setPrettyPrinting().create().toJson(JsonParser.parseString(jsonArray.toString())));
+        tvAttendees.setText(new GsonBuilder().setPrettyPrinting().create().toJson(JsonParser.parseString(jsonArray.toString())));*/
 
-        /*Observable<JsonArray> arrayObservable = Observable.fromArray(jsonArray);
+        //Observable<JsonArray> arrayObservable = Observable.fromArray(jsonArray);
 
-        RecyclerView recyclerView = view.findViewById(R.id.eventHostedGame_recyclerView);
+        RecyclerView recyclerView = view.findViewById(R.id.attendeesFeed_recyclerView);
         recyclerView.setLayoutManager(new LinearLayoutManager(this.getContext()));
 
-        DataClsAdapter<Game, GameVH> dataClsAdapter = new DataClsAdapter<>(
+        DataClsAdapter<EventToUser, EventToUserVH> dataClsAdapter = new DataClsAdapter<>(
                 this,
-                Game.class,
+                EventToUser.class,
                 getActivity(),
-                R.layout.hosted_game_item);
+                R.layout.user_item);
         recyclerView.setAdapter(dataClsAdapter);
 
         DataClsVM dataClsVM = DataClsVM.getInstance();
-        dataClsVM.getMediatorLiveData(arrayObservable, Game.class)
-                .observe(getViewLifecycleOwner(), dataClsAdapter::addNewObjects);*/
+        dataClsVM.getMediatorLiveData(RetrofitClient.getClient().getCall(EventToUser.class, new HashMap<String, String>(){{
+            put("eventId", String.valueOf(event.getId()));
+        }}), EventToUser.class, true)
+                .observe(getViewLifecycleOwner(), dataClsAdapter::addNewObjects);
     }
 
     @Override
