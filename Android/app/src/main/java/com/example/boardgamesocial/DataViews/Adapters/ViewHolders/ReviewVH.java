@@ -30,12 +30,14 @@ public class ReviewVH extends DataClsVH<Review>{
     private final TextView textViewUsername;
     private final ImageView imageViewUserIcon;
     private final TextView textViewGameReview;
+    private final TextView textViewMsgNoReviews;
 
     public ReviewVH(@NonNull View reviewView, DataClsAdapter.OnItemListener onItemListener) {
         super(reviewView, onItemListener);
         textViewUsername = reviewView.findViewById(R.id.item_username);
         imageViewUserIcon = reviewView.findViewById(R.id.item_user_icon);
         textViewGameReview = reviewView.findViewById(R.id.item_game_review);
+        textViewMsgNoReviews = reviewView.findViewById(R.id.tv_msg_no_reviews);
     }
 
     @Override

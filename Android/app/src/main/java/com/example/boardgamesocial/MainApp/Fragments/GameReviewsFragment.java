@@ -7,6 +7,8 @@ import android.view.ViewGroup;
 
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
+import androidx.navigation.NavController;
+import androidx.navigation.Navigation;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -18,6 +20,8 @@ import com.example.boardgamesocial.DataViews.Adapters.ViewHolders.GameVH;
 import com.example.boardgamesocial.DataViews.Adapters.ViewHolders.ReviewVH;
 import com.example.boardgamesocial.DataViews.DataClsVM;
 import com.example.boardgamesocial.R;
+import com.google.android.material.bottomappbar.BottomAppBar;
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
 import java.util.HashMap;
 import java.util.List;
@@ -34,6 +38,13 @@ public class GameReviewsFragment extends Fragment implements DataClsAdapter.OnIt
     private Game game;
 
     private List<Review> reviewList;
+
+    private BottomAppBar bottomAppBar;
+    private FloatingActionButton fab;
+    private NavController navController;
+
+    private float fabOffsetVisible = 5.0f;
+    private float fabOffsetInvisible = 35.0f;
 
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
@@ -131,6 +142,19 @@ public class GameReviewsFragment extends Fragment implements DataClsAdapter.OnIt
             put("gameId", String.valueOf(game.getId()));
         }}), Review.class, true)
                 .observe(getViewLifecycleOwner(), dataClsAdapter::addNewObjects);
+
+        navController = Navigation.findNavController(requireActivity(), R.id.nav_host_fragment_content_main_app);
+
+        bottomAppBar = requireActivity().findViewById(R.id.bottom_app_bar);
+        bottomAppBar.setCradleVerticalOffset(fabOffsetVisible);
+        fab = requireActivity().findViewById(R.id.bottom_app_bar_fab);
+        fab.setVisibility(View.VISIBLE);
+        fab.setOnClickListener(v -> {
+            navController.navigate(R.id.addGameReviewFragment, getArguments());
+            bottomAppBar.setCradleVerticalOffset(fabOffsetInvisible);
+            fab.setVisibility(View.INVISIBLE);
+        });
+
     }
 
     @Override

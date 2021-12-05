@@ -122,7 +122,7 @@
         tools:layout="@layout/fragment_game_collection" >
         <action
             android:id="@+id/action_gameCollectionFragment_to_gameReviews"
-            app:destination="@id/gameReviews" />
+            app:destination="@id/gameReviewsFragment" />
     </fragment>
     <fragment
         android:id="@+id/singleEventFragment"
@@ -223,9 +223,18 @@
             app:destination="@id/eventsFragment" />
     </fragment>
     <fragment
-        android:id="@+id/gameReviews"
+        android:id="@+id/gameReviewsFragment"
         android:name="com.example.boardgamesocial.MainApp.Fragments.GameReviewsFragment"
         android:label="fragment_game_reviews"
         tools:layout="@layout/fragment_game_reviews">
+    </fragment>
+    <fragment
+        android:id="@+id/addGameReviewFragment"
+        android:name="com.example.boardgamesocial.MainApp.Fragments.AddGameReviewFragment"
+        android:label="fragment_add_game_review"
+        tools:layout="@layout/fragment_add_game_review">
+        <action
+            android:id="@+id/action_addGameReviewFragment_to_gameReviewsFragment"
+            app:destination="@id/gameReviewsFragment" />
     </fragment>
 </navigation>
