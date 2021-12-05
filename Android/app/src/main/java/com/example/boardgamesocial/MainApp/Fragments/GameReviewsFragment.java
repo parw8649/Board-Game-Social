@@ -1,26 +1,23 @@
 package com.example.boardgamesocial.MainApp.Fragments;
 
-import static com.example.boardgamesocial.API.RetrofitClient.getObjectList;
-
 import android.os.Bundle;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.boardgamesocial.API.RetrofitClient;
 import com.example.boardgamesocial.DataClasses.Game;
 import com.example.boardgamesocial.DataClasses.Review;
-import com.example.boardgamesocial.DataClasses.User;
+import com.example.boardgamesocial.DataViews.Adapters.DataClsAdapter;
 import com.example.boardgamesocial.DataViews.Adapters.ViewHolders.GameVH;
+import com.example.boardgamesocial.DataViews.Adapters.ViewHolders.ReviewVH;
+import com.example.boardgamesocial.DataViews.DataClsVM;
 import com.example.boardgamesocial.R;
-import com.google.gson.GsonBuilder;
-import com.google.gson.JsonArray;
-import com.google.gson.JsonParser;
 
 import java.util.HashMap;
 import java.util.List;
@@ -30,7 +27,7 @@ import java.util.List;
  * Use the {@link GameReviewsFragment#newInstance} factory method to
  * create an instance of this fragment.
  */
-public class GameReviewsFragment extends Fragment {
+public class GameReviewsFragment extends Fragment implements DataClsAdapter.OnItemListener {
 
     public static final String TAG = "GameReviewsFragment";
 
@@ -92,7 +89,7 @@ public class GameReviewsFragment extends Fragment {
         assert getArguments() != null;
         game = (Game) getArguments().getSerializable(GameVH.GAME_KEY);
 
-        //Fetching reviews from Review based on specified game
+        /*//Fetching reviews from Review based on specified game
         RetrofitClient.getClient().getCall(Review.class, new HashMap<String, String>() {{
             put("gameId", game.getId().toString());
         }}).blockingSubscribe(reviewJson -> {
@@ -115,22 +112,29 @@ public class GameReviewsFragment extends Fragment {
 
         Log.i(TAG, "Attendees: " + jsonArray);
         TextView tvAttendees = view.findViewById(R.id.tv_game_reviews);
-        tvAttendees.setText(new GsonBuilder().setPrettyPrinting().create().toJson(JsonParser.parseString(jsonArray.toString())));
+        tvAttendees.setText(new GsonBuilder().setPrettyPrinting().create().toJson(JsonParser.parseString(jsonArray.toString())));*/
 
         //Observable<JsonArray> arrayObservable = Observable.fromArray(jsonArray);
 
-        /*RecyclerView recyclerView = view.findViewById(R.id.gameFeed_recyclerView);
+        RecyclerView recyclerView = view.findViewById(R.id.gameReviewsFeed_recyclerView);
         recyclerView.setLayoutManager(new LinearLayoutManager(this.getContext()));
 
-        DataClsAdapter<Game, GameVH> dataClsAdapter = new DataClsAdapter<>(
+        DataClsAdapter<Review, ReviewVH> dataClsAdapter = new DataClsAdapter<>(
                 this,
-                Game.class,
+                Review.class,
                 getActivity(),
-                R.layout.game_item);
+                R.layout.user_game_review_item);
         recyclerView.setAdapter(dataClsAdapter);
 
         DataClsVM dataClsVM = DataClsVM.getInstance();
-        dataClsVM.getMediatorLiveData(RetrofitClient.getClient().getCall(Game.class, new HashMap<>()), Game.class)
-                .observe(getViewLifecycleOwner(), dataClsAdapter::addNewObjects);*/
+        dataClsVM.getMediatorLiveData(RetrofitClient.getClient().getCall(Review.class, new HashMap<String, String>(){{
+            put("gameId", String.valueOf(game.getId()));
+        }}), Review.class, true)
+                .observe(getViewLifecycleOwner(), dataClsAdapter::addNewObjects);
+    }
+
+    @Override
+    public void onItemClick(Bundle contextBundle) {
+
     }
 }
