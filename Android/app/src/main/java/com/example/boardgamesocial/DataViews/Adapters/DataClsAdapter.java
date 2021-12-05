@@ -92,6 +92,13 @@ public class DataClsAdapter <DC extends DataClass, VH extends DataClsVH<DC>> ext
         }
     }
 
+//    public void filterSearch(String searchQuery, String filterBy){
+//
+//
+//    }
+
+
+
     @Override
     public int getItemCount() {
         return objectList.size();

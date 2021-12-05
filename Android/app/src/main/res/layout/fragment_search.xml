@@ -15,58 +15,87 @@
         android:layout_height="wrap_content"
         android:text="@string/search"
         android:textSize="34sp"
+        app:layout_constraintBottom_toTopOf="@+id/layoutSearch"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintBottom_toTopOf="@+id/layoutSearch"/>
+        app:layout_constraintTop_toTopOf="parent" />
 
     <LinearLayout
         android:id="@+id/layoutSearch"
         android:layout_width="match_parent"
         android:layout_height="53dp"
         android:orientation="horizontal"
-        app:layout_constraintBottom_toTopOf="@+id/btnSearch"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/tvSearchTitle">
+        app:layout_constraintTop_toBottomOf="@id/tvSearchTitle"
+        app:layout_constraintBottom_toTopOf="@id/guideline2">
 
-        <EditText
-            android:id="@+id/etSearch"
+        <SearchView
+            android:id="@+id/svSearch"
             android:layout_width="100pt"
             android:layout_height="wrap_content"
             android:hint="@string/search_hint"
             android:inputType="text" />
 
         <Spinner
-            android:id="@+id/spSearch"
+            android:id="@+id/sp_search"
             android:layout_width="50pt"
             android:layout_height="match_parent"
             android:layout_weight="1" />
     </LinearLayout>
 
-    <Button
-        android:id="@+id/btnSearch"
-        android:layout_width="409dp"
-        android:layout_height="wrap_content"
-        android:backgroundTint="@color/blue_yonder"
-        android:text="@string/search"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.5"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/layoutSearch" />
 
     <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/rvGamesSearch"
         android:layout_width="409dp"
         android:layout_height="583dp"
         android:layout_marginStart="8dp"
+        android:layout_marginTop="43dp"
         android:layout_marginEnd="8dp"
         android:layout_marginBottom="8dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/btnSearch" />
+        app:layout_constraintTop_toBottomOf="@+id/guideline2"
+        tools:listitem="@layout/game_item" />
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/rvEventsSearch"
+        android:layout_width="409dp"
+        android:layout_height="583dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginEnd="8dp"
+        android:layout_marginBottom="8dp"
+        android:visibility="gone"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/guideline2"
+        tools:listitem="@layout/event_item" />
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/rvPeopleSearch"
+        android:layout_width="409dp"
+        android:layout_height="583dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginEnd="8dp"
+        android:layout_marginBottom="8dp"
+        android:visibility="gone"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintTop_toBottomOf="@+id/guideline2"
+        app:layout_constraintStart_toStartOf="parent" />
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/guideline2"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        app:layout_constraintGuide_begin="112dp" />
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>
