@@ -4,6 +4,7 @@ import android.os.Bundle;
 
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
+import androidx.lifecycle.Observer;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -29,25 +30,27 @@ import com.example.boardgamesocial.DataViews.Adapters.ViewHolders.EventVH;
 import com.example.boardgamesocial.DataViews.Adapters.ViewHolders.GameVH;
 import com.example.boardgamesocial.DataViews.DataClsVM;
 import com.example.boardgamesocial.R;
+import com.google.gson.JsonArray;
 
 
 import java.util.HashMap;
+import java.util.Objects;
 import java.util.concurrent.TimeUnit;
 
-import io.reactivex.rxjava3.core.Observable;
-import io.reactivex.rxjava3.core.ObservableEmitter;
-import io.reactivex.rxjava3.core.ObservableOnSubscribe;
-import io.reactivex.rxjava3.core.Observer;
-import io.reactivex.rxjava3.disposables.CompositeDisposable;
-import io.reactivex.rxjava3.disposables.Disposable;
-import io.reactivex.rxjava3.schedulers.Schedulers;
+import io.reactivex.Observable;
+import io.reactivex.ObservableEmitter;
+import io.reactivex.ObservableOnSubscribe;
+import io.reactivex.android.schedulers.AndroidSchedulers;
+import io.reactivex.disposables.CompositeDisposable;
+import io.reactivex.disposables.Disposable;
+import io.reactivex.schedulers.Schedulers;
 
 /**
  * A simple {@link Fragment} subclass.
  * Use the {@link SearchFragment#newInstance} factory method to
  * create an instance of this fragment.
  */
-public class SearchFragment extends Fragment implements AdapterView.OnItemSelectedListener {
+public class SearchFragment extends Fragment implements AdapterView.OnItemSelectedListener, DataClsAdapter.OnItemListener {
 
 
     // TODO: Rename parameter arguments, choose names that match
@@ -68,9 +71,9 @@ public class SearchFragment extends Fragment implements AdapterView.OnItemSelect
     private RecyclerView rvPeople;
     private CompositeDisposable disposables = new CompositeDisposable();
     private boolean gamesLoaded;
-    RetrofitClient retrofitClient;
-    DataClsAdapter<Game, GameVH> dataClsAdapterGames;
-    DataClsVM dataClsVMGames;
+    private RetrofitClient retrofitClient;
+    private DataClsAdapter<Game, GameVH> dataClsAdapterGames;
+    private DataClsVM dataClsVM;
 
     public SearchFragment() {
         // Required empty public constructor
@@ -124,6 +127,7 @@ public class SearchFragment extends Fragment implements AdapterView.OnItemSelect
         gamesLoaded = false;
 
         retrofitClient = RetrofitClient.getClient();
+        dataClsVM = DataClsVM.getInstance();
 
         ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(this.getContext(),
                 R.array.search_options, android.R.layout.simple_spinner_item);
@@ -138,54 +142,31 @@ public class SearchFragment extends Fragment implements AdapterView.OnItemSelect
 
 
         Observable<String> observableQueryText = Observable
-                .create(new ObservableOnSubscribe<String>() {
+                .create((ObservableOnSubscribe<String>) emitter -> svSearchBar.setOnQueryTextListener(
+                new SearchView.OnQueryTextListener() {
                     @Override
-                    public void subscribe(final ObservableEmitter<String> emitter) throws Exception {
-
-                        // Listen for text input into the SearchView
-                        svSearchBar.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
-                            @Override
-                            public boolean onQueryTextSubmit(String query) {
-                                return false;
-                            }
-
-                            @Override
-                            public boolean onQueryTextChange(final String newText) {
-                                if (!emitter.isDisposed()) {
-                                    if (!newText.isEmpty()) {
-                                        emitter.onNext(newText); // Pass the query to the emitter
-                                    }
-                                }
-                                return false;
-                            }
-                        });
+                    public boolean onQueryTextSubmit(String query) {
+                        return false;
                     }
-                })
+                    @Override
+                    public boolean onQueryTextChange(final String newText) {
+                        if (!emitter.isDisposed()) {
+                            if (!newText.isEmpty()) {
+                                emitter.onNext(newText); // Pass the query to the emitter
+                            }
+                        }
+                        return false;
+                    }
+                }))
                 .debounce(500, TimeUnit.MILLISECONDS) // Apply Debounce() operator to limit requests
-                .subscribeOn(Schedulers.io());
+                .subscribeOn(AndroidSchedulers.mainThread());
 
-        observableQueryText.subscribe(new Observer<String>() {
-            @Override
-            public void onSubscribe(Disposable d) {
-                disposables.add(d);
-            }
-
-            @Override
-            public void onNext(String s) {
-                Log.d(TAG, "onNext: search query: " + s);
-
-                // method for sending a request to the server
-                //sendRequestToServer(s);
-                search(s);
-            }
-
-            @Override
-            public void onError(Throwable e) {
-            }
-
-            @Override
-            public void onComplete() {
-            }
+        observableQueryText.subscribe(res -> {
+            Log.d(TAG, "onNext: search query: " + res);
+            // method for sending a request to the server
+            //sendRequestToServer(s);
+            requireActivity().runOnUiThread(()-> search(res));
+//            search(res);
         });
     }
 
@@ -193,7 +174,7 @@ public class SearchFragment extends Fragment implements AdapterView.OnItemSelect
     @Override
     public void onItemSelected(AdapterView<?> adapterView, View view, int pos, long id) {
         searchOption = adapterView.getItemAtPosition(pos).toString();
-        //TODO: Figure out how to limit calls after called at least onces
+        //TODO: Figure out how to limit calls after called at least once
 
         switch (searchOption) {
             case "Games":
@@ -202,16 +183,15 @@ public class SearchFragment extends Fragment implements AdapterView.OnItemSelect
                 if (!gamesLoaded) {
                     rvGames.setLayoutManager(new LinearLayoutManager(this.getContext()));
 
-                   dataClsAdapterGames = new DataClsAdapter<>(
-                            this::onCreate,
-                            Game.class,
-                            getActivity(),
-                            R.layout.game_item);
+                    dataClsAdapterGames = new DataClsAdapter<>(
+                        this,
+                        Game.class,
+                        getActivity(),
+                        R.layout.game_item);
                     rvGames.setAdapter(dataClsAdapterGames);
 
-                     dataClsVMGames = DataClsVM.getInstance();
-                    dataClsVMGames.getMediatorLiveData(RetrofitClient.getClient().getCall(Game.class, new HashMap<>()), Game.class)
-                            .observe(getViewLifecycleOwner(), dataClsAdapterGames::addNewObjects);
+                    dataClsVM.getMediatorLiveData(RetrofitClient.getClient().getCall(Game.class, new HashMap<>()), Game.class, true)
+                        .observe(getViewLifecycleOwner(), dataClsAdapterGames::addNewObjects);
                     gamesLoaded = true;
                 }
                 break;
@@ -224,14 +204,13 @@ public class SearchFragment extends Fragment implements AdapterView.OnItemSelect
                 rvEvents.setLayoutManager(new LinearLayoutManager(this.getContext()));
 
                 DataClsAdapter<Event, EventVH> dataClsAdapterEvents = new DataClsAdapter<>(
-                        this::onCreate,
+                        this,
                         Event.class,
                         getActivity(),
                         R.layout.event_item);
                 rvEvents.setAdapter(dataClsAdapterEvents);
 
-                DataClsVM dataClsVMEvents = DataClsVM.getInstance();
-                dataClsVMEvents.getMediatorLiveData(RetrofitClient.getClient().getCall(Event.class, new HashMap<>()), Event.class)
+                dataClsVM.getMediatorLiveData(RetrofitClient.getClient().getCall(Event.class, new HashMap<>()), Event.class, true)
                         .observe(getViewLifecycleOwner(), dataClsAdapterEvents::addNewObjects);
                 break;
             default:
@@ -279,20 +258,23 @@ public class SearchFragment extends Fragment implements AdapterView.OnItemSelect
     }
 
 
-    public void search(String searchQuery)
-    {
+    public void search(String searchQuery) {
+//      TODO: validate query
         switch(searchOption) {
             case "Games":
                 Log.i(TAG,"Games Search");
-                //retrofitClient.getCall(Game.class,new HashMap<String, String>(){{put("title",searchQuery)}}).
-                //ToDO: Add filter to adapter
-                //dataClsAdapterGames.filterSearch(searchQuery,"gameTitle");
-
-//                dataClsVMGames.getMediatorLiveData(retrofitClient.getCall(Game.class, new HashMap<String, String>(){{
-//                    put("gameTitle",searchQuery);
-//                }}),
-//                        Game.class)
-//                        .observe(getViewLifecycleOwner(), dataClsAdapterGames::addNewObjects);
+                Observable<JsonArray> gameQuery = retrofitClient.getCall(Game.class, new HashMap<String, String>(){{
+                    put("gameTitle", searchQuery);
+                }}).mergeWith(retrofitClient.getCall(Game.class, new HashMap<String, String>(){{
+                    put("genre", searchQuery);
+                }})).mergeWith(retrofitClient.getCall(Game.class, new HashMap<String, String>(){{
+                    put("description", searchQuery);
+                }})).scan((cumulativeJsonArray, newJsonArray) -> {
+                    cumulativeJsonArray.addAll(newJsonArray);
+                    return cumulativeJsonArray;
+                });
+                dataClsVM.getMediatorLiveData(gameQuery, Game.class, true)
+                        .observe(getViewLifecycleOwner(), dataClsAdapterGames::addNewObjects);
                 break;
             case "People":
                 Log.i(TAG,"People Search");
@@ -303,9 +285,13 @@ public class SearchFragment extends Fragment implements AdapterView.OnItemSelect
             default:
                 break;
 
+        }
     }
-}
 
+    @Override
+    public void onItemClick(Bundle contextBundle) {
+
+    }
 }
 
 

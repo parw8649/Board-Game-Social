@@ -100,9 +100,7 @@ public class RequestChainTests {
                     cumulativeJsonArray.addAll(newJsonArray);
                     return cumulativeJsonArray;
                 })
-                .doOnNext(jsonArrayCombined -> {
-                    Log.i(TAG, String.format("mergeGetCallChainTest: %s", jsonArrayCombined));
-                })
+                .doOnNext(jsonArrayCombined -> Log.i(TAG, String.format("mergeGetCallChainTest: %s", jsonArrayCombined)))
                 .test()
                 .assertNoErrors();
     }
