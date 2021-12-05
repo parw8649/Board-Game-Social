@@ -134,4 +134,6 @@
     <string name="btn_title_join_game">Join game</string>
     <string name="VH_user_name">Username</string>
     <string name="VH_user_image_des">user_image</string>
+
+    <string name="tv_title_people_in_event">People in the event</string>
 </resources>
