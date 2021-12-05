@@ -1,5 +1,7 @@
 package com.example.boardgamesocial.MainApp.Fragments;
 
+import static com.example.boardgamesocial.API.RetrofitClient.getObjectList;
+
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -16,13 +18,25 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.example.boardgamesocial.API.RetrofitClient;
 import com.example.boardgamesocial.Commons.Utils;
 import com.example.boardgamesocial.DataClasses.Game;
+import com.example.boardgamesocial.DataClasses.Relationships.GameToUser;
 import com.example.boardgamesocial.DataViews.Adapters.DataClsAdapter;
 import com.example.boardgamesocial.DataViews.Adapters.DataClsAdapter.OnItemListener;
 import com.example.boardgamesocial.DataViews.Adapters.ViewHolders.GameVH;
 import com.example.boardgamesocial.DataViews.DataClsVM;
 import com.example.boardgamesocial.R;
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
+import com.google.gson.JsonArray;
+import com.google.gson.JsonElement;
+import com.google.gson.JsonObject;
 
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
+import java.util.Objects;
+import java.util.stream.Collectors;
+
+import io.reactivex.Observable;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -32,6 +46,10 @@ import java.util.HashMap;
 public class GameCollectionFragment extends Fragment implements OnItemListener {
 
     public static final String TAG = "GameCollectionFragment";
+
+    private final Gson gson = new GsonBuilder().create();
+
+    private List<GameToUser> gameToUserList;
 
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
@@ -97,7 +115,7 @@ public class GameCollectionFragment extends Fragment implements OnItemListener {
         recyclerView.setAdapter(dataClsAdapter);
 
         DataClsVM dataClsVM = DataClsVM.getInstance();
-        dataClsVM.getMediatorLiveData(RetrofitClient.getClient().getCall(Game.class, new HashMap<>()), Game.class, true)
+        dataClsVM.getMediatorLiveData(fetchNonPrivateGames(), Game.class, true)
                 .observe(getViewLifecycleOwner(), dataClsAdapter::addNewObjects);
     }
 
@@ -112,5 +130,39 @@ public class GameCollectionFragment extends Fragment implements OnItemListener {
 
         NavHostFragment.findNavController(GameCollectionFragment.this)
                 .navigate(R.id.action_gameCollectionFragment_to_gameReviews, contextBundle);
+    }
+
+    //Method to remove private games from the games collection
+    private Observable<JsonArray> fetchNonPrivateGames() {
+
+        Log.i(TAG, "Inside fetchNonPrivateGames");
+
+        gameToUserList = new ArrayList<>();
+
+        RetrofitClient.getClient().getCall(GameToUser.class, new HashMap<String, String>() {{
+            put("private", "True");
+        }}).blockingSubscribe(gameToUserJson -> gameToUserList = getObjectList(gameToUserJson, GameToUser.class));
+
+        List<Integer> gameIdList = gameToUserList.stream().map(GameToUser::getGameId).collect(Collectors.toList());
+
+        JsonArray jsonArray = new JsonArray();
+
+        RetrofitClient.getClient().getCall(Game.class, new HashMap<>()).blockingSubscribe(j -> {
+            if(!j.isEmpty()) {
+
+                List<Game> gameList = getObjectList(j, Game.class);
+
+                if(Objects.nonNull(gameList) && !gameList.isEmpty()) {
+
+                    gameList.forEach(game -> {
+                        if(!gameIdList.contains(game.getId())) {
+                            jsonArray.add(gson.toJsonTree(game));
+                        }
+                    });
+                }
+            }
+        });
+
+        return Observable.fromArray(jsonArray);
     }
 }
