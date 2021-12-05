@@ -136,4 +136,6 @@
     <string name="VH_user_image_des">user_image</string>
 
     <string name="tv_title_people_in_event">People in the event</string>
+    <string name="tv_title_game_review">Game reviews</string>
+    <string name="VH_game_review">Game review</string>
 </resources>
