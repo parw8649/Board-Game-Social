@@ -126,7 +126,7 @@ public class GameCollectionFragment extends Fragment implements OnItemListener {
 
     @Override
     public void onItemClick(Bundle contextBundle) {
-        Toast.makeText(getContext(),"Reviews functionality to be implemented!", Toast.LENGTH_LONG).show();
+        //Toast.makeText(getContext(),"Reviews functionality to be implemented!", Toast.LENGTH_LONG).show();
 
         NavHostFragment.findNavController(GameCollectionFragment.this)
                 .navigate(R.id.action_gameCollectionFragment_to_gameReviews, contextBundle);

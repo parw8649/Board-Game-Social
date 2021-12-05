@@ -3,6 +3,8 @@ package com.example.boardgamesocial.MainApp.Fragments;
 import static com.example.boardgamesocial.API.RetrofitClient.getObject;
 import static com.example.boardgamesocial.API.RetrofitClient.getObjectList;
 
+import android.app.DatePickerDialog;
+import android.app.TimePickerDialog;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.util.Log;
@@ -12,7 +14,9 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.EditText;
+import android.widget.ImageButton;
 import android.widget.RelativeLayout;
+import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
@@ -36,6 +40,7 @@ import com.google.gson.GsonBuilder;
 import com.google.gson.JsonArray;
 
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
@@ -59,8 +64,9 @@ public class AddEventFragment extends Fragment implements OnItemListener {
     private List<GameToUser> gameToUserList;
 
     private EditText etEventName;
-    private EditText etEventDateTime;
+    private TextView tvEventDateTime;
     private EditText etEventDescription;
+    private int mYear, mMonth, mDay, mHour, mMinute, mSeconds, mMilliseconds;
 
     private RecyclerView recyclerView;
 
@@ -117,8 +123,9 @@ public class AddEventFragment extends Fragment implements OnItemListener {
         super.onViewCreated(view, savedInstanceState);
 
         etEventName = view.findViewById(R.id.et_event_name);
-        etEventDateTime = view.findViewById(R.id.et_event_date_time);
+        tvEventDateTime = view.findViewById(R.id.et_event_date_time);
         etEventDescription = view.findViewById(R.id.et_event_description);
+        ImageButton ibtnSetDate = view.findViewById(R.id.btn_set_date);
 
         Button btnSaveEvent = view.findViewById(R.id.btn_save_event);
 
@@ -136,14 +143,47 @@ public class AddEventFragment extends Fragment implements OnItemListener {
         dataClsVM.getMediatorLiveData(fetchNonPrivateGames(), Game.class, true)
                 .observe(getViewLifecycleOwner(), dataClsAdapter::addNewObjects);
 
+        ibtnSetDate.setOnClickListener(s -> {
+
+            Log.i(TAG, "Acceptable time format: " + java.time.Clock.systemUTC().instant());
+
+            //StringBuilder dateTime = new StringBuilder();
+
+            // Get Current Date
+            final Calendar c = Calendar.getInstance();
+            mYear = c.get(Calendar.YEAR);
+            mMonth = c.get(Calendar.MONTH);
+            mDay = c.get(Calendar.DAY_OF_MONTH);
+            mHour = c.get(Calendar.HOUR_OF_DAY);
+            mMinute = c.get(Calendar.MINUTE);
+            mSeconds = c.get(Calendar.SECOND);
+            mMilliseconds = c.get(Calendar.MILLISECOND);
+
+            // Launch Time Picker Dialog
+            TimePickerDialog timePickerDialog = new TimePickerDialog(requireContext(),
+                    (view12, hourOfDay, minute) ->
+                            tvEventDateTime.append("T" + hourOfDay + ":" + minute + ":" + mSeconds + ":" + mMilliseconds + "Z"), mHour, mMinute, true);
+            timePickerDialog.show();
+
+            DatePickerDialog datePickerDialog = new DatePickerDialog(requireContext(),
+                    (DatePickerDialog.OnDateSetListener)
+                            (view1, year, monthOfYear, dayOfMonth) ->
+                                    tvEventDateTime.append(dayOfMonth + "-" + (monthOfYear + 1) + "-" + year),
+                    mYear, mMonth, mDay);
+
+            datePickerDialog.show();
+
+            Log.i(TAG, "-------------------------> dateTime: " + tvEventDateTime.getText().toString());
+        });
+
         btnSaveEvent.setOnClickListener(v -> {
 
             String eventName = Objects.nonNull(etEventName) ? etEventName.getText().toString() : null;
-            String eventDateTime = Objects.nonNull(etEventDateTime) ? etEventDateTime.getText().toString() : null;
+            String eventDateTime = Objects.nonNull(tvEventDateTime) ? tvEventDateTime.getText().toString() : String.valueOf(java.time.Clock.systemUTC().instant());
             String eventDescription = Objects.nonNull(etEventDescription) ? etEventDescription.getText().toString() : null;
 
-            //TODO: Need to add date picker at FE
-            eventDateTime = String.valueOf(java.time.Clock.systemUTC().instant());
+            //Need to add date picker at FE
+            //eventDateTime = String.valueOf(java.time.Clock.systemUTC().instant());
 
             addEvent(new Event(eventName, Utils.getUserId()), eventDateTime, eventDescription);
             //requireActivity().getSupportFragmentManager().popBackStack();
@@ -151,6 +191,38 @@ public class AddEventFragment extends Fragment implements OnItemListener {
                     .findNavController(AddEventFragment.this)
                     .navigate(R.id.action_addEventFragment_to_eventsFragment);
         });
+    }
+
+    @Override
+    public void onItemClick(Bundle contextBundle) {
+        Game game = (Game) contextBundle.getSerializable(GameVH.GAME_KEY);
+        DataClsAdapter<Game, GameVH> dataClsAdapter = (DataClsAdapter<Game, GameVH>) recyclerView.getAdapter();
+        assert dataClsAdapter != null;
+
+        RecyclerView.ViewHolder viewHolder = recyclerView
+                .findViewHolderForAdapterPosition(dataClsAdapter
+                        .getObjectList()
+                        .indexOf(game));
+        assert viewHolder != null;
+
+        CheckBox checkBox = viewHolder.itemView.findViewById(R.id.ck_hosted_game);
+        checkBox.setVisibility(View.INVISIBLE);
+        RelativeLayout relativeLayout = viewHolder.itemView.findViewById(R.id.hosted_game_card);
+
+        if(Objects.nonNull(game)) {
+            Log.i(TAG, game.getId().toString());
+            if(checkBox.isChecked()) {
+                checkBox.setChecked(false);
+                gameIdList.remove(game.getId());
+                Log.i(TAG, "Removed - GameId: " + game.getId().toString());
+                relativeLayout.setBackgroundColor(Color.parseColor("#5EFF9B44"));
+            } else {
+                checkBox.setChecked(true);
+                gameIdList.add(game.getId());
+                Log.i(TAG, "Added - GameId: " + game.getId().toString());
+                relativeLayout.setBackgroundColor(Color.parseColor("#60000000"));
+            }
+        }
     }
 
     private void addEvent(Event event, String eventDateTime, String eventDescription) {
@@ -204,38 +276,6 @@ public class AddEventFragment extends Fragment implements OnItemListener {
             } else
                 Log.e(TAG, "Unable to add event at the moment!");
         });
-    }
-
-    @Override
-    public void onItemClick(Bundle contextBundle) {
-        Game game = (Game) contextBundle.getSerializable(GameVH.GAME_KEY);
-        DataClsAdapter<Game, GameVH> dataClsAdapter = (DataClsAdapter<Game, GameVH>) recyclerView.getAdapter();
-        assert dataClsAdapter != null;
-
-        RecyclerView.ViewHolder viewHolder = recyclerView
-                .findViewHolderForAdapterPosition(dataClsAdapter
-                        .getObjectList()
-                        .indexOf(game));
-        assert viewHolder != null;
-
-        CheckBox checkBox = viewHolder.itemView.findViewById(R.id.ck_hosted_game);
-        checkBox.setVisibility(View.INVISIBLE);
-        RelativeLayout relativeLayout = viewHolder.itemView.findViewById(R.id.hosted_game_card);
-
-        if(Objects.nonNull(game)) {
-            Log.i(TAG, game.getId().toString());
-            if(checkBox.isChecked()) {
-                checkBox.setChecked(false);
-                gameIdList.remove(game.getId());
-                Log.i(TAG, "Removed - GameId: " + game.getId().toString());
-                relativeLayout.setBackgroundColor(Color.parseColor("#5EFF9B44"));
-            } else {
-                checkBox.setChecked(true);
-                gameIdList.add(game.getId());
-                Log.i(TAG, "Added - GameId: " + game.getId().toString());
-                relativeLayout.setBackgroundColor(Color.parseColor("#60000000"));
-            }
-        }
     }
 
     //Method to remove private games from the games collection

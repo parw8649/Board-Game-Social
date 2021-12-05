@@ -6,6 +6,18 @@
     android:layout_height="match_parent"
     tools:context=".MainApp.Fragments.AddEventFragment">
 
+    <ImageButton
+        android:id="@+id/btn_set_date"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:src="@drawable/ic_baseline_event_24_blue_yonder"
+        app:layout_constraintBottom_toTopOf="@+id/et_event_description"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.886"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/et_event_name"
+        app:layout_constraintVertical_bias="0.51" />
+
     <TextView
         android:id="@+id/tv_add_event"
         android:layout_width="wrap_content"
@@ -33,20 +45,21 @@
         app:layout_constraintTop_toBottomOf="@+id/tv_add_event"
         app:layout_constraintVertical_bias="0.058" />
 
-    <EditText
+    <TextView
         android:id="@+id/et_event_date_time"
-        android:layout_width="wrap_content"
+        android:layout_width="250dp"
         android:layout_height="wrap_content"
         android:ems="15"
         android:hint="@string/et_hint_date_time"
-        android:inputType="datetime"
+        android:importantForAutofill="no"
         android:minHeight="48dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintEnd_toStartOf="@+id/btn_set_date"
+        app:layout_constraintHorizontal_bias="0.689"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/et_event_name"
-        app:layout_constraintVertical_bias="0.036"
-        android:importantForAutofill="no" />
+        app:layout_constraintVertical_bias="0.035" />
 
     <EditText
         android:id="@+id/et_event_description"

@@ -44,6 +44,8 @@ public class SingleHostedGameFragment extends Fragment {
 
     private RetrofitClient retrofitClient;
 
+    private Integer eventId;
+
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
     private static final String ARG_PARAM1 = "param1";
@@ -129,13 +131,15 @@ public class SingleHostedGameFragment extends Fragment {
 
         HostedGame hostedGame = (HostedGame) getArguments().getSerializable("HOSTED_GAME");
 
+        eventId = hostedGame.getEventId();
+
         retrofitClient = RetrofitClient.getClient();
 
         btnJoinGame.setText(doesHostedGameToUserExists(hostedGame.getGameId()) ? "Un-Join Game" : "Join Game");
 
         btnJoinGame.setOnClickListener(v -> {
 
-            HostedGame updatedHostedGame = getHostedGameByGameId(hostedGame.getEventId(), hostedGame.getGameId());
+            HostedGame updatedHostedGame = getHostedGameByGameId(eventId, hostedGame.getGameId());
             int availableSeats = updatedHostedGame.getSeatsAvailable();
 
             if(availableSeats <= 0)
@@ -276,17 +280,20 @@ public class SingleHostedGameFragment extends Fragment {
 
         try {
 
-            int userId = Utils.getUserId();
-            retrofitClient.getCall(HostedGameToUser.class, new HashMap<String, String>() {{
-                put("gameId", String.valueOf(gameId));
-                put("userId", String.valueOf(userId));
-            }}).blockingSubscribe(hostedGameToUserJson -> {
-                List<HostedGameToUser> hostedGameToUserList = getObjectList(hostedGameToUserJson, HostedGameToUser.class);
-                if (Objects.nonNull(hostedGameToUserList) && !hostedGameToUserList.isEmpty()) {
-                    hostedGameToUserExists.set(true);
-                } else
-                    Log.i(TAG, "No HostedGameToUser Records found!");
-            });
+            if(doesEventToUserExists(eventId)) {
+
+                int userId = Utils.getUserId();
+                retrofitClient.getCall(HostedGameToUser.class, new HashMap<String, String>() {{
+                    put("gameId", String.valueOf(gameId));
+                    put("userId", String.valueOf(userId));
+                }}).blockingSubscribe(hostedGameToUserJson -> {
+                    List<HostedGameToUser> hostedGameToUserList = getObjectList(hostedGameToUserJson, HostedGameToUser.class);
+                    if (Objects.nonNull(hostedGameToUserList) && !hostedGameToUserList.isEmpty()) {
+                        hostedGameToUserExists.set(true);
+                    } else
+                        Log.i(TAG, "No HostedGameToUser Records found!");
+                });
+            }
 
         } catch(Exception ex) {
             ex.printStackTrace();
