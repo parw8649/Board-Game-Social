@@ -21,7 +21,7 @@
 
         <TextView
             android:id="@+id/item_username"
-            android:layout_width="match_parent"
+            android:layout_width="240dp"
             android:layout_height="wrap_content"
             android:layout_marginStart="@dimen/profile_bio_padding"
             android:layout_marginTop="5dp"
@@ -34,7 +34,7 @@
 
         <TextView
             android:id="@+id/item_game_review"
-            android:layout_width="match_parent"
+            android:layout_width="240dp"
             android:layout_height="wrap_content"
             android:layout_marginStart="@dimen/profile_bio_padding"
             android:layout_marginTop="35dp"
@@ -45,5 +45,14 @@
             android:text="@string/VH_game_review"
             android:textAppearance="@style/TextAppearance.AppCompat.Body1" />
 
+        <ImageButton
+            android:id="@+id/btn_delete_review"
+            android:layout_width="@dimen/item_more_btn_width"
+            android:layout_height="45dp"
+            android:layout_alignParentEnd="true"
+            android:backgroundTint="@color/blue_yonder"
+            android:padding="@dimen/btn_padding_slim"
+            android:src="@drawable/ic_baseline_delete_24"
+            android:textAppearance="@style/TextAppearance.AppCompat.Small" />
     </RelativeLayout>
 </androidx.cardview.widget.CardView>
