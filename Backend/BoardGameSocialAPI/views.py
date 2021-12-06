@@ -79,7 +79,7 @@ class MessageView(DataAccessView):
 
 class EventToUserView(DataAccessView):
     serializer_class = EventToUserSerializer
-    queryset = Event.objects.all()
+    queryset = EventToUser.objects.all()
     model = EventToUser
     url_conf = {
         "get": "get_models",
