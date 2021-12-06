@@ -1,20 +1,15 @@
 package com.example.boardgamesocial.MainApp.Fragments;
 
-import static android.content.Context.LAYOUT_INFLATER_SERVICE;
 import static com.example.boardgamesocial.API.RetrofitClient.getClient;
 import static com.example.boardgamesocial.API.RetrofitClient.getObject;
 import static com.example.boardgamesocial.API.RetrofitClient.getObjectList;
-import static com.example.boardgamesocial.Commons.Constants.fabOffsetInvisible;
-import static com.example.boardgamesocial.Commons.Constants.fabOffsetVisible;
 
-import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
-import androidx.navigation.fragment.NavHostFragment;
 
 import android.util.Log;
 import android.view.Gravity;
@@ -32,21 +27,11 @@ import com.example.boardgamesocial.API.RetrofitClient;
 import com.example.boardgamesocial.Commons.Utils;
 import com.example.boardgamesocial.DataClasses.User;
 import com.example.boardgamesocial.LoginAndSignUp.LoginAndSignUpActivity;
-import com.example.boardgamesocial.MainApp.MainAppActivity;
 import com.example.boardgamesocial.R;
-import com.google.android.material.bottomappbar.BottomAppBar;
-import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.snackbar.Snackbar;
-import com.google.gson.JsonArray;
 
-import java.security.SecureRandom;
-import java.security.spec.KeySpec;
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
-
-import javax.crypto.SecretKeyFactory;
-import javax.crypto.spec.PBEKeySpec;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -64,8 +49,6 @@ public class EditProfileFragment extends Fragment {
     // TODO: Rename and change types of parameters
     private String mParam1;
     private String mParam2;
-    private BottomAppBar bottomAppBar;
-    private FloatingActionButton fab;
     private String username;
     private String secret;
     private TextView textViewGreeting;
@@ -292,12 +275,13 @@ public class EditProfileFragment extends Fragment {
         int height = LinearLayout.LayoutParams.WRAP_CONTENT;
         boolean focusable = true; // lets taps outside the popup also dismiss it
         final PopupWindow popupWindow = new PopupWindow(popupView, width, height, focusable);
-        buttonDeleteAccConfirm = view.findViewById(R.id.btn_popup_confirm);
-        buttonDeleteAccDeny = view.findViewById(R.id.btn_popup_deny);
+
 
         // show the popup window
         // which view you pass in doesn't matter, it is only used for the window tolken
         popupWindow.showAtLocation(view, Gravity.CENTER, 0, 0);
+        buttonDeleteAccConfirm = popupView.findViewById(R.id.btn_popup_confirm);
+        buttonDeleteAccDeny = popupView.findViewById(R.id.btn_popup_deny);
 
         // dismiss the popup window when touched
         popupView.setOnTouchListener(new View.OnTouchListener() {
@@ -307,6 +291,7 @@ public class EditProfileFragment extends Fragment {
                 return true;
             }
         });
+
         buttonDeleteAccConfirm.setOnClickListener(v -> {
             try {
                 retrofitClient.deleteCall(User.class, new HashMap<String, String>() {{
@@ -332,10 +317,15 @@ public class EditProfileFragment extends Fragment {
     }
 
     private void setAppBarFab(View view) {
-        bottomAppBar = view.findViewById(R.id.bottom_app_bar);
-        fab = view.findViewById(R.id.bottom_app_bar_fab);
+//        bottomAppBar = view.findViewById(R.id.bottom_app_bar);
+//        fab = view.findViewById(R.id.bottom_app_bar_fab);
+//
+//        bottomAppBar.setCradleVerticalOffset(fabOffsetInvisible);
+//        fab.setVisibility(View.INVISIBLE);
 
-        bottomAppBar.setCradleVerticalOffset(fabOffsetInvisible);
-        fab.setVisibility(View.INVISIBLE);
+        Bundle result = new Bundle();
+        result.putInt("visibility", View.INVISIBLE);
+        // The child fragment needs to still set the result on its parent fragment manager
+        getParentFragmentManager().setFragmentResult("requestKey", result);
     }
 }

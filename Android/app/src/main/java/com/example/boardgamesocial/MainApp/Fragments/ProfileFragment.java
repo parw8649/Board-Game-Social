@@ -116,7 +116,7 @@ public class ProfileFragment extends Fragment {
             buttonEditProfile.setVisibility(view.GONE);
         }
 
-        textViewBio.setText("Empty bios for all!");
+        textViewBio.setText(getString(R.string.profile_bio_placeholder));
 
         if (Objects.nonNull(getArguments())) {
             setNames(view, getArguments().getInt("diffUserId"));
@@ -171,10 +171,15 @@ public class ProfileFragment extends Fragment {
     }
 
     private void setAppBarFab(View view) {
-        bottomAppBar = view.findViewById(R.id.bottom_app_bar);
-        fab = view.findViewById(R.id.bottom_app_bar_fab);
+//        bottomAppBar = view.findViewById(R.id.bottom_app_bar);
+//        fab = view.findViewById(R.id.bottom_app_bar_fab);
+//
+//        bottomAppBar.setCradleVerticalOffset(fabOffsetInvisible);
+//        fab.setVisibility(View.INVISIBLE);
 
-        bottomAppBar.setCradleVerticalOffset(fabOffsetInvisible);
-        fab.setVisibility(View.INVISIBLE);
+        Bundle result = new Bundle();
+        result.putInt("visibility", View.INVISIBLE);
+        // The child fragment needs to still set the result on its parent fragment manager
+        getParentFragmentManager().setFragmentResult("requestKey", result);
     }
 }
