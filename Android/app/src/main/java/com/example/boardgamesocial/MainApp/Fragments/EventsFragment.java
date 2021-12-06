@@ -63,30 +63,20 @@ public class EventsFragment extends Fragment implements OnItemListener {
 
         DataClsVM dataClsVM = DataClsVM.getInstance();
         dataClsVM.getMediatorLiveData(RetrofitClient.getClient().getCall(Event.class, new HashMap<>()), Event.class)
-                .observe(getViewLifecycleOwner(), newEvents -> {
-                    dataClsAdapter.getObjectList().addAll(newEvents);
-                    dataClsAdapter.notifyDataSetChanged();
-                });
+                .observe(getViewLifecycleOwner(), dataClsAdapter::addNewObjects);
     }
 
     @Override
     public void onDestroyView() { super.onDestroyView(); }
 
     @Override
-    public void onItemClick(int position) {
+    public void onItemClick(Bundle contextBundle) {
 
         DataClsAdapter<Event, EventVH> dataClsAdapter = (DataClsAdapter<Event, EventVH>) recyclerView.getAdapter();
         assert dataClsAdapter != null;
-        Event event = dataClsAdapter.getObjectList().get(position);
-
-        Bundle args = new Bundle();
-        args.putString(getString(R.string.key_event_name), event.getName());
-        args.putString(getString(R.string.key_event_date_time), event.getDateTime().toString());
-        args.putString(getString(R.string.key_event_description), event.getDescription());
 
         NavHostFragment.findNavController(EventsFragment.this)
-                .navigate(R.id.action_EventsFragment_to_singleEventFragment, args);
-        Toast.makeText(getContext(),"Event clicked", Toast.LENGTH_LONG).show();
+                .navigate(R.id.action_EventsFragment_to_singleEventFragment, contextBundle);
     }
 
 }

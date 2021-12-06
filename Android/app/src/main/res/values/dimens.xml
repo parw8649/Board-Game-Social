@@ -20,11 +20,7 @@
     <!--  Main App Activity  -->
     <dimen name="main_app_activity_padding">10dp</dimen>
     <dimen name="main_app_activity_bottom_margin">55dp</dimen>
-    <!--  profile fragments -->
-    <!--  profile and edit profile pages -->
-    <dimen name="textSizeSmall">10sp</dimen>
-    <dimen name="even_spacing_layout_width">0dp</dimen>
-    <dimen name="even_spacing_layout_weight">1</dimen>
+    <!--  profile and edit fragments -->
     <dimen name="profile_bio_bottom_margin">30dp</dimen>
     <dimen name="profile_bio_padding">15dp</dimen>
     <dimen name="profile_icon_size">100dp</dimen>
@@ -33,11 +29,14 @@
     <dimen name="edit_profile_editText_width">150dp</dimen>
     <dimen name="edit_profile_editText_bio_width">200dp</dimen>
     <!--  common dimens? -->
+    <dimen name="textSizeSmall">10sp</dimen>
+    <dimen name="even_spacing_layout_width">0dp</dimen>
+    <dimen name="even_spacing_layout_weight">1</dimen>
     <dimen name="linear_vert_padding">10dp</dimen>
     <dimen name="fragment_v_margin">20dp</dimen>
     <dimen name="btn_padding_slim">4dp</dimen>
-    <dimen name="btn_width_slim">50dp</dimen>
     <dimen name="btn_height_slim">40dp</dimen>
+    <dimen name="btn_width_slim">50dp</dimen>
     <dimen name="h_spacer">10dp</dimen>
     <!--  add post fragment  -->
     <dimen name="add_post_body_height">200dp</dimen>

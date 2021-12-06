@@ -1,6 +1,7 @@
 package com.example.boardgamesocial.DataViews.Adapters;
 
 import android.app.Activity;
+import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -70,12 +71,37 @@ public class DataClsAdapter <DC extends DataClass, VH extends DataClsVH<DC>> ext
         holder.onBind(activity, currentObject);
     }
 
+    public void addNewObjects(List<DC> newObjects) {
+        objectList = new ArrayList<>();
+        /** Note: Commented below lines for add functionality
+         * Inorder to have newly added object at the top of the list.
+         * which also helps for delete functionality.
+         * This will help for all CRUD operations on objects.
+         * */
+        /*for (DC object : newObjects) {
+            if (!objectList.contains(object)){
+                objectList.add(object);
+                notifyItemChanged(objectList.indexOf(object));
+            }
+
+            objectList.removeIf(obj -> {
+                boolean exists = newObjects.contains(obj);
+                if(!exists)
+                    notifyDataSetChanged();
+                return !exists;
+            });
+        }*/
+        objectList.addAll(newObjects);
+        notifyDataSetChanged();
+    }
+
     @Override
     public int getItemCount() {
         return objectList.size();
     }
 
     public interface OnItemListener {
-        void onItemClick(int position);
+        void onItemClick(Bundle contextBundle);
     }
+
 }

@@ -13,6 +13,7 @@ import android.view.View;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
+import android.view.View;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.FragmentResultListener;
 import androidx.navigation.NavController;
@@ -23,6 +24,7 @@ import androidx.navigation.ui.NavigationUI;
 import com.example.boardgamesocial.API.RetrofitClient;
 import com.example.boardgamesocial.Commons.Utils;
 import com.example.boardgamesocial.DataClasses.User;
+import com.example.boardgamesocial.databinding.ActivityMainAppBinding;
 import com.example.boardgamesocial.databinding.ActivityMainAppBinding;
 import com.example.boardgamesocial.LoginAndSignUp.LoginAndSignUpActivity;
 import com.example.boardgamesocial.R;
@@ -57,7 +59,6 @@ public class MainAppActivity extends AppCompatActivity {
         fab = findViewById(R.id.bottom_app_bar_fab);
         // default fab onClick after login
         setFabOnClick(R.id.home_option);
-
 
         bottomAppBar.setOnMenuItemClickListener(item -> {
             switch (item.getItemId()) {
@@ -130,10 +131,6 @@ public class MainAppActivity extends AppCompatActivity {
         switch (fragmentId) {
             case R.id.home_option:
                 fab.setOnClickListener(v -> {
-//                    Snackbar.make(v, "Testing phase of adding a new post ", Snackbar.LENGTH_SHORT)
-//                            .setAnchorView(R.id.bottom_app_bar_fab).setAction("Action", null).show();
-//                    bottomAppBar.setCradleVerticalOffset(fabOffsetInvisible);
-//                    fab.setVisibility(View.INVISIBLE);
                     setAppBarFab(v, View.INVISIBLE);
                     Log.i(TAG, "setFabOnClick: fab cradle margin: " + bottomAppBar.getFabCradleMargin());
                     Log.i(TAG, "setFabOnClick: fab vertical offset: " + bottomAppBar.getCradleVerticalOffset());
@@ -143,20 +140,12 @@ public class MainAppActivity extends AppCompatActivity {
                 return;
             case R.id.events_option:
                 fab.setOnClickListener(v -> {
-//                    Snackbar.make(v, "Eventually, you'll be able to add a new event", Snackbar.LENGTH_SHORT)
-//                            .setAnchorView(R.id.bottom_app_bar_fab).setAction("Action", null).show();
-//                    bottomAppBar.setCradleVerticalOffset(fabOffsetInvisible);
-//                    fab.setVisibility(View.INVISIBLE);
                     setAppBarFab(v, View.INVISIBLE);
                     navController.navigate(R.id.addEventFragment);
                 });
                 return;
             case R.id.games_option:
                 fab.setOnClickListener(v -> {
-                    /*Snackbar.make(v, "Eventually, you'll be able to add a new game to your collection ", Snackbar.LENGTH_SHORT)
-                            .setAnchorView(R.id.bottom_app_bar_fab).setAction("Action", null).show();*/
-//                    bottomAppBar.setCradleVerticalOffset(fabOffsetInvisible);
-//                    fab.setVisibility(View.INVISIBLE);
                     setAppBarFab(v, View.INVISIBLE);
                     navController.navigate(R.id.addGameFragment);
                 });

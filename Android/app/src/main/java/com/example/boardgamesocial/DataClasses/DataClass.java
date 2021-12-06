@@ -1,5 +1,7 @@
 package com.example.boardgamesocial.DataClasses;
 
-public interface DataClass {
+import java.io.Serializable;
+
+public interface DataClass extends Serializable {
     Integer getPrimaryKey();
 }

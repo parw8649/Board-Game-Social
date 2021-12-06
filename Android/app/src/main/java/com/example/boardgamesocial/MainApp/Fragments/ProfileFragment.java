@@ -1,7 +1,6 @@
 package com.example.boardgamesocial.MainApp.Fragments;
 
 import static com.example.boardgamesocial.API.RetrofitClient.getObjectList;
-import static com.example.boardgamesocial.Commons.Constants.fabOffsetInvisible;
 
 import android.app.Activity;
 import android.os.Bundle;
@@ -19,9 +18,6 @@ import com.example.boardgamesocial.API.RetrofitClient;
 import com.example.boardgamesocial.Commons.Utils;
 import com.example.boardgamesocial.DataClasses.User;
 import com.example.boardgamesocial.R;
-import com.google.android.material.bottomappbar.BottomAppBar;
-import com.google.android.material.floatingactionbutton.FloatingActionButton;
-
 import java.util.HashMap;
 import java.util.List;
 import java.util.Objects;
@@ -36,8 +32,6 @@ public class ProfileFragment extends Fragment {
     public static final String TAG = "ProfileFragment";
 
     private RetrofitClient retrofitClient;
-    private BottomAppBar bottomAppBar;
-    private FloatingActionButton fab;
     private TextView textViewFirstName;
     private TextView textViewUsername;
     private TextView textViewBio;
@@ -105,9 +99,6 @@ public class ProfileFragment extends Fragment {
         buttonUserGameList = view.findViewById(R.id.profile_btn_view_user_gamelist);
         buttonFriendList = view.findViewById(R.id.profile_btn_view_friends);
 
-        btnUserGames.setOnClickListener(view1 -> NavHostFragment.findNavController(ProfileFragment.this)
-                .navigate(R.id.action_profileFragment_to_userGamesFragment));
-
         if (Objects.isNull(getArguments())) {
             buttonEditProfile.setVisibility(view.VISIBLE);
             buttonEditProfile.setOnClickListener(view1 -> NavHostFragment.findNavController(ProfileFragment.this)
@@ -116,7 +107,7 @@ public class ProfileFragment extends Fragment {
             buttonEditProfile.setVisibility(view.GONE);
         }
 
-        textViewBio.setText(getString(R.string.profile_bio_placeholder));
+        textViewBio.setText("Empty bios for all!");
 
         if (Objects.nonNull(getArguments())) {
             setNames(view, getArguments().getInt("diffUserId"));
@@ -171,12 +162,6 @@ public class ProfileFragment extends Fragment {
     }
 
     private void setAppBarFab(View view) {
-//        bottomAppBar = view.findViewById(R.id.bottom_app_bar);
-//        fab = view.findViewById(R.id.bottom_app_bar_fab);
-//
-//        bottomAppBar.setCradleVerticalOffset(fabOffsetInvisible);
-//        fab.setVisibility(View.INVISIBLE);
-
         Bundle result = new Bundle();
         result.putInt("visibility", View.INVISIBLE);
         // The child fragment needs to still set the result on its parent fragment manager

@@ -1,21 +1,48 @@
 package com.example.boardgamesocial.MainApp.Fragments;
 
+import static com.example.boardgamesocial.API.RetrofitClient.getObjectList;
+
 import android.os.Bundle;
-
-import androidx.fragment.app.Fragment;
-
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import androidx.annotation.NonNull;
+import androidx.fragment.app.Fragment;
+import androidx.navigation.fragment.NavHostFragment;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
+
+import com.example.boardgamesocial.API.RetrofitClient;
+import com.example.boardgamesocial.DataClasses.Event;
+import com.example.boardgamesocial.DataClasses.Game;
+import com.example.boardgamesocial.DataClasses.HostedGame;
+import com.example.boardgamesocial.DataViews.Adapters.DataClsAdapter;
+import com.example.boardgamesocial.DataViews.Adapters.DataClsAdapter.OnItemListener;
+import com.example.boardgamesocial.DataViews.Adapters.ViewHolders.EventVH;
+import com.example.boardgamesocial.DataViews.Adapters.ViewHolders.GameVH;
+import com.example.boardgamesocial.DataViews.DataClsVM;
 import com.example.boardgamesocial.R;
+
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Objects;
+import java.util.OptionalInt;
 
 /**
  * A simple {@link Fragment} subclass.
  * Use the {@link HostedGamesFragment#newInstance} factory method to
  * create an instance of this fragment.
  */
-public class HostedGamesFragment extends Fragment {
+public class HostedGamesFragment extends Fragment implements OnItemListener {
+
+    public static final String TAG = "HostedGamesFragment";
+
+    private RecyclerView recyclerView;
+
+    private List<Integer> gameIdList;
+    List<HostedGame> hostedGameList;
 
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
@@ -62,5 +89,81 @@ public class HostedGamesFragment extends Fragment {
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         return inflater.inflate(R.layout.fragment_hosted_games, container, false);
+    }
+
+    public void onViewCreated(@NonNull View view, Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
+
+        //Retrieve the value
+        assert getArguments() != null;
+        Event event = (Event) getArguments().getSerializable(EventVH.EVENT_KEY);
+
+        gameIdList = new ArrayList<>();
+
+        RetrofitClient.getClient().getCall(HostedGame.class, new HashMap<String, String>() {{
+            put("eventId", event.getId().toString());
+        }}).blockingSubscribe(hosted -> {
+            hostedGameList = getObjectList(hosted, HostedGame.class);
+            /*if (Objects.nonNull(hostedGameList) && !hostedGameList.isEmpty()) {
+                hostedGameList.forEach(hostedGame -> gameIdList.add(hostedGame.getGameId()));
+            }*/
+        });
+
+        /*Map<String, String> gameFilter = new HashMap<>();
+
+        Log.i(TAG, "HostedGameList: " + hostedGameList.stream().map(HostedGame::getId).map(Object::toString).collect(Collectors.joining(", ")));
+        gameFilter.put("hostedgame", hostedGameList.stream().map(HostedGame::getId).map(Object::toString).collect(Collectors.joining(", ")));*/
+
+        /*Observable<JsonArray> arrayObservable = hostedGameList.stream().map(hostedGame -> RetrofitClient.getClient().getCall(Game.class, new HashMap<String, String>() {{
+            put("hostedgame", hostedGame.getId().toString());
+        }}));*/
+
+        recyclerView = view.findViewById(R.id.eventHostedGame_recyclerView);
+        recyclerView.setLayoutManager(new LinearLayoutManager(this.getContext()));
+
+        DataClsAdapter<Game, GameVH> dataClsAdapter = new DataClsAdapter<>(
+                this,
+                Game.class,
+                getActivity(),
+                R.layout.hosted_game_item);
+        recyclerView.setAdapter(dataClsAdapter);
+
+        DataClsVM dataClsVM = DataClsVM.getInstance();
+        //TODO: Need to show only hosted games in the specified event.
+        dataClsVM.getMediatorLiveData(RetrofitClient.getClient().getCall(Game.class, new HashMap<>()), Game.class)
+                .observe(getViewLifecycleOwner(), dataClsAdapter::addNewObjects);
+    }
+
+    @Override
+    public void onDestroyView() {
+        super.onDestroyView();
+    }
+
+    @Override
+    public void onItemClick(Bundle contextBundle) {
+
+        Game game = (Game) contextBundle.getSerializable(GameVH.GAME_KEY);
+
+        if(Objects.nonNull(game))
+            contextBundle.putInt("SEATS_AVAILABLE", getSeatsAvailableByGameId(game.getId()));
+
+        DataClsAdapter<Game, GameVH> dataClsAdapter = (DataClsAdapter<Game, GameVH>) recyclerView.getAdapter();
+        assert dataClsAdapter != null;
+
+        NavHostFragment.findNavController(HostedGamesFragment.this)
+                .navigate(R.id.action_hostedGamesFragment_to_singleHostedGameFragment, contextBundle);
+    }
+
+    private Integer getSeatsAvailableByGameId(Integer gameId) {
+
+        OptionalInt noOfSeatsAvailable = hostedGameList.stream()
+                .filter(hostedGame -> hostedGame.getGameId().equals(gameId))
+                .mapToInt(HostedGame::getSeatsAvailable)
+                .findFirst();
+
+        if(noOfSeatsAvailable.isPresent())
+            return noOfSeatsAvailable.getAsInt();
+        else
+            return 0;
     }
 }
