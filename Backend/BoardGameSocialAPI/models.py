@@ -3,10 +3,12 @@ from django.utils import timezone
 from django.contrib.auth.models import User
 
 
-class Profile:
+class Profile(models.Model):
     class Meta:
-        proxy = True
-    # bio = models.OneToOneRel(db_column='bio')
+        db_table = "profile"
+
+    userId = models.ForeignKey(User, on_delete=models.CASCADE, db_column='userId')
+    bio = models.TextField(default="None", db_column='bio')
     iconUrl = models.TextField(default="None", db_column='iconUrl')
 
 

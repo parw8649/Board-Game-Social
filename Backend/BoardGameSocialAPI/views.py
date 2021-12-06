@@ -36,6 +36,12 @@ class UserView(DataAccessView):
     model = User
 
 
+class ProfileView(DataAccessView):
+    serializer_class = ProfileSerializer
+    queryset = Profile.objects.all()
+    model = Profile
+
+
 class EventView(DataAccessView):
     serializer_class = EventSerializer
     queryset = Event.objects.all()
@@ -110,4 +116,3 @@ class HostedGameToUserView(DataAccessView):
     serializer_class = HostedGameToUserSerializer
     queryset = HostedGameToUser.objects.all()
     model = HostedGameToUser
-

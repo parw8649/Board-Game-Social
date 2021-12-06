@@ -26,6 +26,15 @@ class UserSerializer(serializers.ModelSerializer):
         return user
 
 
+class ProfileSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Profile
+        fields = [
+            'bio',
+            'iconUrl',
+        ]
+
+
 class EventSerializer(serializers.ModelSerializer):
     class Meta:
         model = Event
