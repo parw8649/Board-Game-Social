@@ -13,7 +13,6 @@ import android.view.View;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
-import android.view.View;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.FragmentResultListener;
 import androidx.navigation.NavController;
@@ -24,7 +23,6 @@ import androidx.navigation.ui.NavigationUI;
 import com.example.boardgamesocial.API.RetrofitClient;
 import com.example.boardgamesocial.Commons.Utils;
 import com.example.boardgamesocial.DataClasses.User;
-import com.example.boardgamesocial.databinding.ActivityMainAppBinding;
 import com.example.boardgamesocial.databinding.ActivityMainAppBinding;
 import com.example.boardgamesocial.LoginAndSignUp.LoginAndSignUpActivity;
 import com.example.boardgamesocial.R;
