@@ -140,7 +140,7 @@ public class GameReviewsFragment extends Fragment implements DataClsAdapter.OnIt
         DataClsVM dataClsVM = DataClsVM.getInstance();
         dataClsVM.getMediatorLiveData(RetrofitClient.getClient().getCall(Review.class, new HashMap<String, String>(){{
             put("gameId", String.valueOf(game.getId()));
-        }}), Review.class, true)
+        }}), Review.class, false)
                 .observe(getViewLifecycleOwner(), dataClsAdapter::addNewObjects);
 
         navController = Navigation.findNavController(requireActivity(), R.id.nav_host_fragment_content_main_app);

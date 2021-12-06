@@ -4,13 +4,14 @@ import static com.example.boardgamesocial.API.RetrofitClient.getObjectList;
 
 import android.app.Activity;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
+import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 
-import com.example.boardgamesocial.DataClasses.Relationships.EventToUser;
 import com.example.boardgamesocial.DataClasses.Review;
 import com.example.boardgamesocial.DataClasses.User;
 import com.example.boardgamesocial.DataViews.Adapters.DataClsAdapter;
@@ -31,6 +32,7 @@ public class ReviewVH extends DataClsVH<Review>{
     private final ImageView imageViewUserIcon;
     private final TextView textViewGameReview;
     private final TextView textViewMsgNoReviews;
+    private final ImageButton imageButtonDeleteReview;
 
     public ReviewVH(@NonNull View reviewView, DataClsAdapter.OnItemListener onItemListener) {
         super(reviewView, onItemListener);
@@ -38,6 +40,7 @@ public class ReviewVH extends DataClsVH<Review>{
         imageViewUserIcon = reviewView.findViewById(R.id.item_user_icon);
         textViewGameReview = reviewView.findViewById(R.id.item_game_review);
         textViewMsgNoReviews = reviewView.findViewById(R.id.tv_msg_no_reviews);
+        imageButtonDeleteReview = reviewView.findViewById(R.id.btn_delete_review);
     }
 
     @Override
@@ -45,6 +48,7 @@ public class ReviewVH extends DataClsVH<Review>{
         textViewUsername.setVisibility(visibility);
         imageViewUserIcon.setVisibility(visibility);
         textViewGameReview.setVisibility(visibility);
+        imageButtonDeleteReview.setVisibility(visibility);
     }
 
     @Override
@@ -66,6 +70,12 @@ public class ReviewVH extends DataClsVH<Review>{
                 }
             });
         }
+
+        imageButtonDeleteReview.setOnClickListener(view -> retrofitClient.deleteCall(Review.class, new HashMap<String, String>() {{
+            put("id", String.valueOf(review.getId()));
+        }}).blockingSubscribe(jsonArray -> {
+            Log.i(TAG, "Review deleted!");
+        }));
     }
 
     private void performBind(Activity activity, User user, Review review){

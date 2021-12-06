@@ -280,7 +280,7 @@ public class SingleHostedGameFragment extends Fragment {
 
         try {
 
-            if(doesEventToUserExists(eventId)) {
+            //if(doesEventToUserExists(eventId)) {
 
                 int userId = Utils.getUserId();
                 retrofitClient.getCall(HostedGameToUser.class, new HashMap<String, String>() {{
@@ -293,7 +293,7 @@ public class SingleHostedGameFragment extends Fragment {
                     } else
                         Log.i(TAG, "No HostedGameToUser Records found!");
                 });
-            }
+            //}
 
         } catch(Exception ex) {
             ex.printStackTrace();
