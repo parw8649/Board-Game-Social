@@ -155,6 +155,16 @@ public class MainAppActivity extends AppCompatActivity {
         }
     }
 
+    private void setAppBarFab(View view, int visibility) {
+        if (visibility == View.VISIBLE) {
+            bottomAppBar.setCradleVerticalOffset(fabOffsetVisible);
+            fab.setVisibility(View.VISIBLE);
+        } else {
+            bottomAppBar.setCradleVerticalOffset(fabOffsetInvisible);
+            fab.setVisibility(View.INVISIBLE);
+        }
+    }
+
     private void userLogout() {
         try {
             RetrofitClient.getClient().logoutCall(new HashMap<String, String>() {{
@@ -170,13 +180,4 @@ public class MainAppActivity extends AppCompatActivity {
 
     }
 
-    private void setAppBarFab(View view, int visibility) {
-        if (visibility == View.VISIBLE) {
-            bottomAppBar.setCradleVerticalOffset(fabOffsetVisible);
-            fab.setVisibility(View.VISIBLE);
-        } else {
-            bottomAppBar.setCradleVerticalOffset(fabOffsetInvisible);
-            fab.setVisibility(View.INVISIBLE);
-        }
-    }
 }

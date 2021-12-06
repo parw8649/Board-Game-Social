@@ -87,6 +87,7 @@ public class EditProfileFragment extends Fragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        setAppBarFab();
         if (getArguments() != null) {
             mParam1 = getArguments().getString(ARG_PARAM1);
             mParam2 = getArguments().getString(ARG_PARAM2);
@@ -257,9 +258,6 @@ public class EditProfileFragment extends Fragment {
         // TODO: popup confirmation needed!
         // https://developer.android.com/reference/android/widget/PopupWindow
         // https://newbedev.com/how-to-create-a-popup-window-popupwindow-in-android
-
-        Snackbar.make(view, "inside deleteAccount function :D", Snackbar.LENGTH_SHORT)
-                .setAnchorView(R.id.bottom_app_bar).setAction("Action", null).show();
 
         // inflate the layout of the popup window
         LayoutInflater inflater = (LayoutInflater) view.getContext().getSystemService(view.getContext().LAYOUT_INFLATER_SERVICE);

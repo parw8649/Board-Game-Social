@@ -73,6 +73,7 @@ public class AddPostFragment extends Fragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        setAppBarFab();
         if (getArguments() != null) {
             mParam1 = getArguments().getString(ARG_PARAM1);
             mParam2 = getArguments().getString(ARG_PARAM2);
@@ -89,6 +90,9 @@ public class AddPostFragment extends Fragment {
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
+
+        setAppBarFab();
+
         RadioButton radioButtonPrivate = view.findViewById(R.id.add_post_radioBtn_private);
         RadioButton radioButtonPublic = view.findViewById(R.id.add_post_radioBtn_public);
         Button buttonAddPost = view.findViewById(R.id.add_post_button);
@@ -174,5 +178,12 @@ public class AddPostFragment extends Fragment {
                 .setAction("Action", null).show();
         NavHostFragment.findNavController(AddPostFragment.this)
                 .navigate(R.id.action_addPostFragment_to_HomePostFragment);
+    }
+
+    private void setAppBarFab() {
+        Bundle result = new Bundle();
+        result.putInt("visibility", View.INVISIBLE);
+        // The child fragment needs to still set the result on its parent fragment manager
+        getParentFragmentManager().setFragmentResult("requestKey", result);
     }
 }
