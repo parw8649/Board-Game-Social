@@ -7,6 +7,7 @@
     <string name="games_option_title">Games</string>
     <string name="events_option_title">Events</string>
     <string name="search_option_title">Search</string>
+    <string name="chat_option_title">Chat</string>
     <!-- Strings used for item -->
     <string name="item_textView_posterPlaceHolder">Poster\'s Name</string>
     <string name="item_textView_postTypePlaceHolder">Post Type</string>

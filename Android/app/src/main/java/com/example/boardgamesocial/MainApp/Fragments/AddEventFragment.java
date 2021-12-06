@@ -16,7 +16,6 @@ import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.RelativeLayout;
-import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
@@ -46,6 +45,7 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Objects;
 import java.util.Set;
+import java.util.concurrent.atomic.AtomicReference;
 import java.util.stream.Collectors;
 
 import io.reactivex.Observable;
@@ -64,9 +64,9 @@ public class AddEventFragment extends Fragment implements OnItemListener {
     private List<GameToUser> gameToUserList;
 
     private EditText etEventName;
-    private TextView tvEventDateTime;
+    private EditText etEventDateTime;
     private EditText etEventDescription;
-    private int mYear, mMonth, mDay, mHour, mMinute, mSeconds, mMilliseconds;
+    private int mYear, mMonth, mDay, mHour, mMinute, mSeconds;
 
     private RecyclerView recyclerView;
 
@@ -123,7 +123,7 @@ public class AddEventFragment extends Fragment implements OnItemListener {
         super.onViewCreated(view, savedInstanceState);
 
         etEventName = view.findViewById(R.id.et_event_name);
-        tvEventDateTime = view.findViewById(R.id.et_event_date_time);
+        etEventDateTime = view.findViewById(R.id.et_event_date_time);
         etEventDescription = view.findViewById(R.id.et_event_description);
         ImageButton ibtnSetDate = view.findViewById(R.id.btn_set_date);
 
@@ -143,9 +143,13 @@ public class AddEventFragment extends Fragment implements OnItemListener {
         dataClsVM.getMediatorLiveData(fetchNonPrivateGames(), Game.class, true)
                 .observe(getViewLifecycleOwner(), dataClsAdapter::addNewObjects);
 
+        AtomicReference<StringBuilder> sbEventDateTime = new AtomicReference<>();
+
         ibtnSetDate.setOnClickListener(s -> {
 
-            Log.i(TAG, "Acceptable time format: " + java.time.Clock.systemUTC().instant());
+            sbEventDateTime.set(new StringBuilder());
+
+            //Log.i(TAG, "Acceptable time format: " + java.time.Clock.systemUTC().instant());
 
             //StringBuilder dateTime = new StringBuilder();
 
@@ -157,33 +161,55 @@ public class AddEventFragment extends Fragment implements OnItemListener {
             mHour = c.get(Calendar.HOUR_OF_DAY);
             mMinute = c.get(Calendar.MINUTE);
             mSeconds = c.get(Calendar.SECOND);
-            mMilliseconds = c.get(Calendar.MILLISECOND);
+            //mMilliseconds = c.get(Calendar.MILLISECOND);
 
             // Launch Time Picker Dialog
             TimePickerDialog timePickerDialog = new TimePickerDialog(requireContext(),
-                    (view12, hourOfDay, minute) ->
-                            tvEventDateTime.append("T" + hourOfDay + ":" + minute + ":" + mSeconds + ":" + mMilliseconds + "Z"), mHour, mMinute, true);
+                    (view12, hourOfDay, minute) -> {
+
+                        sbEventDateTime.get()
+                                .append(" | ")
+                                .append(hourOfDay).append(":")
+                                .append(minute).append(":")
+                                .append(mSeconds);
+
+                        etEventDateTime.setText(sbEventDateTime.toString());
+                    }, mHour, mMinute, true);
+
             timePickerDialog.show();
 
             DatePickerDialog datePickerDialog = new DatePickerDialog(requireContext(),
-                    (DatePickerDialog.OnDateSetListener)
-                            (view1, year, monthOfYear, dayOfMonth) ->
-                                    tvEventDateTime.append(dayOfMonth + "-" + (monthOfYear + 1) + "-" + year),
+                    (view1, year, monthOfYear, dayOfMonth) -> {
+
+                        sbEventDateTime.get()
+                                .append(year).append("-")
+                                .append(monthOfYear + 1).append("-")
+                                .append(dayOfMonth);
+
+                        etEventDateTime.setText(sbEventDateTime.toString());
+                    },
                     mYear, mMonth, mDay);
 
             datePickerDialog.show();
 
-            Log.i(TAG, "-------------------------> dateTime: " + tvEventDateTime.getText().toString());
+            //Log.i(TAG, "-------------------------> dateTime: " + tvEventDateTime.getText().toString());
         });
 
         btnSaveEvent.setOnClickListener(v -> {
 
+            etEventDateTime.setText(sbEventDateTime.toString());
+            Log.i(TAG, "-----------------------> Updated Event Date Time: " + etEventDateTime.getText().toString());
+
             String eventName = Objects.nonNull(etEventName) ? etEventName.getText().toString() : null;
-            String eventDateTime = Objects.nonNull(tvEventDateTime) ? tvEventDateTime.getText().toString() : String.valueOf(java.time.Clock.systemUTC().instant());
+
+            String eventDateTime = Objects.nonNull(etEventDateTime)
+                    ? etEventDateTime.getText().toString()
+                    : String.valueOf(java.time.Clock.systemUTC().instant());
+
             String eventDescription = Objects.nonNull(etEventDescription) ? etEventDescription.getText().toString() : null;
 
             //Need to add date picker at FE
-            //eventDateTime = String.valueOf(java.time.Clock.systemUTC().instant());
+            eventDateTime = String.valueOf(java.time.Clock.systemUTC().instant());
 
             addEvent(new Event(eventName, Utils.getUserId()), eventDateTime, eventDescription);
             //requireActivity().getSupportFragmentManager().popBackStack();
@@ -311,4 +337,71 @@ public class AddEventFragment extends Fragment implements OnItemListener {
 
         return Observable.fromArray(jsonArray);
     }
+
+    //-------------------------------------------update date---//
+    /*private void updateDate() {
+        mDateDisplay.setText(
+                new StringBuilder()
+                        // Month is 0 based so add 1
+                        .append(mDay).append("/")
+                        .append(mMonth + 1).append("/")
+                        .append(mYear).append(" "));
+        showDialog(TIME_DIALOG_ID);
+    }
+
+    //-------------------------------------------update time---//
+    public void updatetime() {
+        mTimeDisplay.setText(
+                new StringBuilder()
+                        .append(pad(mhour)).append(":")
+                        .append(pad(mminute)));
+    }
+
+    private static String pad(int c) {
+        if (c >= 10)
+            return String.valueOf(c);
+        else
+            return "0" + String.valueOf(c);
+
+
+        //Datepicker dialog generation
+
+        private DatePickerDialog.OnDateSetListener mDateSetListener =
+                new DatePickerDialog.OnDateSetListener() {
+
+                    public void onDateSet(DatePicker view, int year,
+                                          int monthOfYear, int dayOfMonth) {
+                        mYear = year;
+                        mMonth = monthOfYear;
+                        mDay = dayOfMonth;
+                        updateDate();
+                    }
+                };
+
+
+        // Timepicker dialog generation
+        private TimePickerDialog.OnTimeSetListener mTimeSetListener =
+                new TimePickerDialog.OnTimeSetListener() {
+                    public void onTimeSet(TimePicker view, int hourOfDay, int minute) {
+                        mhour = hourOfDay;
+                        mminute = minute;
+                        updatetime();
+                    }
+                };
+
+        @Override
+        protected Dialog onCreateDialog(int id) {
+            switch (id) {
+                case DATE_DIALOG_ID:
+                    return new DatePickerDialog(this,
+                            mDateSetListener,
+                            mYear, mMonth, mDay);
+
+                case TIME_DIALOG_ID:
+                    return new TimePickerDialog(this,
+                            mTimeSetListener, mhour, mminute, false);
+
+            }
+            return null;
+        }*/
 }

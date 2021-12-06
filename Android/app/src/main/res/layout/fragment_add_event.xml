@@ -45,7 +45,7 @@
         app:layout_constraintTop_toBottomOf="@+id/tv_add_event"
         app:layout_constraintVertical_bias="0.058" />
 
-    <TextView
+    <EditText
         android:id="@+id/et_event_date_time"
         android:layout_width="250dp"
         android:layout_height="wrap_content"
@@ -59,7 +59,7 @@
         app:layout_constraintHorizontal_bias="0.689"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/et_event_name"
-        app:layout_constraintVertical_bias="0.035" />
+        app:layout_constraintVertical_bias="0.041" />
 
     <EditText
         android:id="@+id/et_event_description"
@@ -102,5 +102,62 @@
         tools:listitem="@layout/hosted_game_item">
 
     </androidx.recyclerview.widget.RecyclerView>
+
+    <!--<DatePicker
+        android:id="@+id/date_picker"
+        android:layout_width="match_parent"
+        android:calendarViewShown="true"
+        android:spinnersShown="false"
+        android:layout_weight="4"
+        android:layout_height="0dp" />
+
+    <TimePicker
+        android:id="@+id/time_picker"
+        android:layout_weight="4"
+        android:layout_width="match_parent"
+        android:layout_height="0dp" />
+
+    <Button
+        android:id="@+id/date_time_set"
+        android:layout_weight="1"
+        android:layout_width="match_parent"
+        android:text="Set"
+        android:layout_height="0dp" />-->
+
+    <!--<LinearLayout
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        android:orientation="vertical"
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent">
+
+        <TextView
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/hello"/>
+
+        <TextView android:id="@+id/time"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text=""/>
+
+        <Button
+            android:id="@+id/timepicker"
+            android:text="Change Time"
+            android:layout_height="wrap_content"
+            android:layout_width="wrap_content"/>
+
+        <TextView
+            android:id="@+id/date"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text=""/>
+
+        <Button android:id="@+id/datepicker"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="200dp"
+            android:text="Change the date"/>
+
+    </LinearLayout>-->
 
 </androidx.constraintlayout.widget.ConstraintLayout>
