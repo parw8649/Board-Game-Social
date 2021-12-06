@@ -6,11 +6,6 @@ import static com.example.boardgamesocial.API.RetrofitClient.getObjectList;
 
 import android.content.Intent;
 import android.os.Bundle;
-
-import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
-import androidx.fragment.app.Fragment;
-
 import android.util.Log;
 import android.view.Gravity;
 import android.view.LayoutInflater;
@@ -22,14 +17,16 @@ import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.PopupWindow;
 import android.widget.TextView;
-
+import android.widget.Toast;
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.fragment.app.Fragment;
 import com.example.boardgamesocial.API.RetrofitClient;
 import com.example.boardgamesocial.Commons.Utils;
 import com.example.boardgamesocial.DataClasses.User;
 import com.example.boardgamesocial.LoginAndSignUp.LoginAndSignUpActivity;
 import com.example.boardgamesocial.R;
 import com.google.android.material.snackbar.Snackbar;
-
 import java.util.HashMap;
 import java.util.List;
 
@@ -118,7 +115,7 @@ public class EditProfileFragment extends Fragment {
         buttonEditBio = view.findViewById(R.id.edit_profile_btn_edit_bio);
         buttonDeleteAcc = view.findViewById(R.id.edit_profile_btn_delete_account);
 
-        setAppBarFab(view);
+        setAppBarFab();
 
         retrofitClient.getCall(User.class, new HashMap<String, String>() {{
             put("id", String.valueOf(Utils.getUserId()));
@@ -181,7 +178,6 @@ public class EditProfileFragment extends Fragment {
                     textViewCurrUsername.setText(user.getUsername());
                     Snackbar.make(view, "Username updated", Snackbar.LENGTH_SHORT)
                             .setAnchorView(R.id.bottom_app_bar).setAction("Action", null).show();
-                    return;
                 });
             });
         }catch (Exception e) {
@@ -224,7 +220,6 @@ public class EditProfileFragment extends Fragment {
                     editTextConfirmPassword.setText("");
                     Snackbar.make(view, "Password updated.", Snackbar.LENGTH_SHORT)
                             .setAnchorView(R.id.bottom_app_bar).setAction("Action", null).show();
-                    return;
                 });
             });
         }catch (Exception e) {
@@ -300,8 +295,8 @@ public class EditProfileFragment extends Fragment {
                     List<User> users = getObjectList(jsonArray, User.class);
                     getActivity().runOnUiThread(() -> {
                         if (users.size() == 1 && users.get(0).getUsername().equals(textViewCurrUsername.getText().toString())) {
-                            Snackbar.make(view, "Account deleted.", Snackbar.LENGTH_SHORT)
-                                    .setAnchorView(R.id.bottom_app_bar).setAction("Action", null).show();
+                            Toast.makeText(getContext(), "Account deleted.", Toast.LENGTH_SHORT).show();
+//                            Snackbar.make(v, "Account deleted.", Snackbar.LENGTH_SHORT).setAction("Action", null).show();
                             Intent goToHomePostActivity = LoginAndSignUpActivity.getIntent(getContext());
                             startActivity(goToHomePostActivity);
                         }
@@ -316,13 +311,7 @@ public class EditProfileFragment extends Fragment {
         buttonDeleteAccDeny.setOnClickListener(v -> popupWindow.dismiss());
     }
 
-    private void setAppBarFab(View view) {
-//        bottomAppBar = view.findViewById(R.id.bottom_app_bar);
-//        fab = view.findViewById(R.id.bottom_app_bar_fab);
-//
-//        bottomAppBar.setCradleVerticalOffset(fabOffsetInvisible);
-//        fab.setVisibility(View.INVISIBLE);
-
+    private void setAppBarFab() {
         Bundle result = new Bundle();
         result.putInt("visibility", View.INVISIBLE);
         // The child fragment needs to still set the result on its parent fragment manager

@@ -88,9 +88,8 @@ public class ProfileFragment extends Fragment {
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         Button buttonEditProfile = view.findViewById(R.id.profile_btn_edit);
-        Button btnUserGames = view.findViewById(R.id.profile_btn_view_user_gamelist);
 
-        setAppBarFab(view);
+        setAppBarFab();
 
         Log.i(TAG, String.format("userId: %s", Utils.getUserId()));
         retrofitClient = RetrofitClient.getClient();
@@ -161,7 +160,7 @@ public class ProfileFragment extends Fragment {
         });
     }
 
-    private void setAppBarFab(View view) {
+    private void setAppBarFab() {
         Bundle result = new Bundle();
         result.putInt("visibility", View.INVISIBLE);
         // The child fragment needs to still set the result on its parent fragment manager
