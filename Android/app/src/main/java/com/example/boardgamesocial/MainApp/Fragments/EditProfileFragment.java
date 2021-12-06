@@ -4,7 +4,10 @@ import static android.content.Context.LAYOUT_INFLATER_SERVICE;
 import static com.example.boardgamesocial.API.RetrofitClient.getClient;
 import static com.example.boardgamesocial.API.RetrofitClient.getObject;
 import static com.example.boardgamesocial.API.RetrofitClient.getObjectList;
+import static com.example.boardgamesocial.Commons.Constants.fabOffsetInvisible;
+import static com.example.boardgamesocial.Commons.Constants.fabOffsetVisible;
 
+import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 
@@ -31,6 +34,8 @@ import com.example.boardgamesocial.DataClasses.User;
 import com.example.boardgamesocial.LoginAndSignUp.LoginAndSignUpActivity;
 import com.example.boardgamesocial.MainApp.MainAppActivity;
 import com.example.boardgamesocial.R;
+import com.google.android.material.bottomappbar.BottomAppBar;
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.snackbar.Snackbar;
 import com.google.gson.JsonArray;
 
@@ -59,6 +64,8 @@ public class EditProfileFragment extends Fragment {
     // TODO: Rename and change types of parameters
     private String mParam1;
     private String mParam2;
+    private BottomAppBar bottomAppBar;
+    private FloatingActionButton fab;
     private String username;
     private String secret;
     private TextView textViewGreeting;
@@ -127,6 +134,8 @@ public class EditProfileFragment extends Fragment {
         buttonEditPassword = view.findViewById(R.id.edit_profile_btn_edit_password);
         buttonEditBio = view.findViewById(R.id.edit_profile_btn_edit_bio);
         buttonDeleteAcc = view.findViewById(R.id.edit_profile_btn_delete_account);
+
+        setAppBarFab(view);
 
         retrofitClient.getCall(User.class, new HashMap<String, String>() {{
             put("id", String.valueOf(Utils.getUserId()));
@@ -320,5 +329,13 @@ public class EditProfileFragment extends Fragment {
         });
 
         buttonDeleteAccDeny.setOnClickListener(v -> popupWindow.dismiss());
+    }
+
+    private void setAppBarFab(View view) {
+        bottomAppBar = view.findViewById(R.id.bottom_app_bar);
+        fab = view.findViewById(R.id.bottom_app_bar_fab);
+
+        bottomAppBar.setCradleVerticalOffset(fabOffsetInvisible);
+        fab.setVisibility(View.INVISIBLE);
     }
 }

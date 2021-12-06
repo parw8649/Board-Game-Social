@@ -1,6 +1,8 @@
 package com.example.boardgamesocial.MainApp;
 
 import static com.example.boardgamesocial.API.RetrofitClient.getObject;
+import static com.example.boardgamesocial.Commons.Constants.fabOffsetInvisible;
+import static com.example.boardgamesocial.Commons.Constants.fabOffsetVisible;
 
 import android.content.Context;
 import android.content.Intent;
@@ -37,8 +39,6 @@ public class MainAppActivity extends AppCompatActivity {
     private NavController navController;
     private BottomAppBar bottomAppBar;
     private FloatingActionButton fab;
-    private float fabOffsetVisible = 0.0f;
-    private float fabOffsetInvisible = 35.0f;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -119,8 +119,9 @@ public class MainAppActivity extends AppCompatActivity {
                 fab.setOnClickListener(v -> {
 //                    Snackbar.make(v, "Testing phase of adding a new post ", Snackbar.LENGTH_SHORT)
 //                            .setAnchorView(R.id.bottom_app_bar_fab).setAction("Action", null).show();
-                    bottomAppBar.setCradleVerticalOffset(fabOffsetInvisible);
-                    fab.setVisibility(View.INVISIBLE);
+//                    bottomAppBar.setCradleVerticalOffset(fabOffsetInvisible);
+//                    fab.setVisibility(View.INVISIBLE);
+                    setAppBarFab(v, View.INVISIBLE);
                     Log.i(TAG, "setFabOnClick: fab cradle margin: " + bottomAppBar.getFabCradleMargin());
                     Log.i(TAG, "setFabOnClick: fab vertical offset: " + bottomAppBar.getCradleVerticalOffset());
                     Log.i(TAG, "setFabOnClick: fab cradle corner radius: " + bottomAppBar.getFabCradleRoundedCornerRadius());
@@ -131,8 +132,9 @@ public class MainAppActivity extends AppCompatActivity {
                 fab.setOnClickListener(v -> {
 //                    Snackbar.make(v, "Eventually, you'll be able to add a new event", Snackbar.LENGTH_SHORT)
 //                            .setAnchorView(R.id.bottom_app_bar_fab).setAction("Action", null).show();
-                    bottomAppBar.setCradleVerticalOffset(fabOffsetInvisible);
-                    fab.setVisibility(View.INVISIBLE);
+//                    bottomAppBar.setCradleVerticalOffset(fabOffsetInvisible);
+//                    fab.setVisibility(View.INVISIBLE);
+                    setAppBarFab(v, View.INVISIBLE);
                     navController.navigate(R.id.addEventFragment);
                 });
                 return;
@@ -140,8 +142,9 @@ public class MainAppActivity extends AppCompatActivity {
                 fab.setOnClickListener(v -> {
                     /*Snackbar.make(v, "Eventually, you'll be able to add a new game to your collection ", Snackbar.LENGTH_SHORT)
                             .setAnchorView(R.id.bottom_app_bar_fab).setAction("Action", null).show();*/
-                    bottomAppBar.setCradleVerticalOffset(fabOffsetInvisible);
-                    fab.setVisibility(View.INVISIBLE);
+//                    bottomAppBar.setCradleVerticalOffset(fabOffsetInvisible);
+//                    fab.setVisibility(View.INVISIBLE);
+                    setAppBarFab(v, View.INVISIBLE);
                     navController.navigate(R.id.addGameFragment);
                 });
                 return;
@@ -165,5 +168,15 @@ public class MainAppActivity extends AppCompatActivity {
                 }
             });
         });
+    }
+
+    private void setAppBarFab(View view, int visibility) {
+        if (visibility == View.VISIBLE) {
+            bottomAppBar.setCradleVerticalOffset(fabOffsetVisible);
+            fab.setVisibility(View.VISIBLE);
+        } else {
+            bottomAppBar.setCradleVerticalOffset(fabOffsetInvisible);
+            fab.setVisibility(View.INVISIBLE);
+        }
     }
 }
