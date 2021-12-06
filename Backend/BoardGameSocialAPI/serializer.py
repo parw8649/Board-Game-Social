@@ -56,6 +56,7 @@ class PostSerializer(serializers.ModelSerializer):
             'userId',
             'postBody',
             'postType',
+            'dateTime',
             'private',
             'likes'
         ]
@@ -93,6 +94,7 @@ class MessageSerializer(serializers.ModelSerializer):
             'id',
             'senderId',
             'receiverId',
+            'dateTime',
             'content'
         ]
 
