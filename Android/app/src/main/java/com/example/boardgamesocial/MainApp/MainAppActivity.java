@@ -12,7 +12,9 @@ import android.view.Menu;
 import android.view.View;
 import android.widget.Toast;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.fragment.app.FragmentResultListener;
 import androidx.navigation.NavController;
 import androidx.navigation.Navigation;
 import androidx.navigation.ui.AppBarConfiguration;
@@ -92,6 +94,17 @@ public class MainAppActivity extends AppCompatActivity {
             setFabOnClick(item.getItemId());
             return true;
         });
+
+        getSupportFragmentManager().setFragmentResultListener("requestKey", this, new FragmentResultListener() {
+            @Override
+            public void onFragmentResult(@NonNull String requestKey, @NonNull Bundle bundle) {
+                // We use a String here, but any type that can be put in a Bundle is supported
+                int visibility = bundle.getInt("visibility");
+                // Do something with the result
+                View view = findViewById(R.id.content).getRootView();
+                setAppBarFab(view, visibility);
+            }
+        });
     }
 
     @Override
@@ -156,18 +169,18 @@ public class MainAppActivity extends AppCompatActivity {
     }
 
     private void userLogout() {
-        RetrofitClient.getClient().logoutCall(new HashMap<String, String>() {{
-            put("id", Utils.getUserId().toString());
-        }}).subscribe(jsonObject -> {
-            User user = getObject(jsonObject, User.class);
-            this.runOnUiThread(() -> {
-                if (user.getId() == Utils.getUserId()) {
-                    Toast.makeText(this,"Successful logout", Toast.LENGTH_SHORT).show();
-                    Intent goToHomePostActivity = LoginAndSignUpActivity.getIntent(MainAppActivity.this);
-                    startActivity(goToHomePostActivity);
-                }
-            });
-        });
+        try {
+            RetrofitClient.getClient().logoutCall(new HashMap<String, String>() {{
+                put("user_id", Utils.getUserId().toString());
+            }}).subscribe();
+
+            Toast.makeText(this,"Successful logout", Toast.LENGTH_SHORT).show();
+            Intent goToHomePostActivity = LoginAndSignUpActivity.getIntent(MainAppActivity.this);
+            startActivity(goToHomePostActivity);
+        } catch (Exception e) {
+            Toast.makeText(this,"Unable to logout", Toast.LENGTH_SHORT).show();
+        }
+
     }
 
     private void setAppBarFab(View view, int visibility) {
