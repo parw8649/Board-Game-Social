@@ -1,6 +1,7 @@
 package com.example.boardgamesocial.DataViews.Adapters.ViewHolders;
 
 import android.app.Activity;
+import android.util.Log;
 import android.view.View;
 import android.widget.ImageButton;
 import android.widget.ImageView;
@@ -91,7 +92,9 @@ public class GameVH extends DataClsVH<Game> {
         if(Objects.nonNull(ibtnDeleteGame)) {
             ibtnDeleteGame.setOnClickListener(v -> retrofitClient.deleteCall(Game.class, new HashMap<String, String>() {{
                 put("id", String.valueOf(game.getId()));
-            }}).subscribe());
+            }}).blockingSubscribe(jsonArray -> {
+                Log.i(TAG, "Game deleted!");
+            }));
         }
     }
 

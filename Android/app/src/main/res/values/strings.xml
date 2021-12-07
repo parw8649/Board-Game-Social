@@ -7,6 +7,7 @@
     <string name="games_option_title">Games</string>
     <string name="events_option_title">Events</string>
     <string name="search_option_title">Search</string>
+    <string name="chat_option_title">Chat</string>
     <!-- Strings used for item -->
     <string name="item_textView_posterPlaceHolder">Poster\'s Name</string>
     <string name="item_textView_postTypePlaceHolder">Post Type</string>
@@ -35,6 +36,7 @@
     <string name="game_min_player_text">Min players: %1$d</string>
     <string name="game_max_player_text">Max players: %1$d</string>
     <string name="game_overall_play_count_text">Overall play count: %1$d</string>
+    <string name="game_seats_available_text">Seats available: %1$d</string>
 
     <!-- Strings used for Add Game -->
     <string name="et_hint_game_title">Game title</string>
@@ -143,6 +145,15 @@
     <string name="add_post_btn_add_post">Add Post</string>
     <string name="add_post_error">Unable to create post. Please try again later.</string>
     <string name="add_post_success">Post created.</string>
+    <string name="btn_title_join_game">Join game</string>
     <string name="VH_user_name">Username</string>
     <string name="VH_user_image_des">user_image</string>
+
+    <string name="tv_title_people_in_event">People in the event</string>
+    <string name="tv_title_add_game_review">Add Game Review</string>
+    <string name="tv_title_game_review">Game reviews</string>
+    <string name="VH_game_review">Game review</string>
+    <string name="et_hint_game_review_content">Write your review here…</string>
+    <string name="review_save">Save</string>
+    <string name="no_game_reviews_added_yet">No Game Reviews added yet</string>
 </resources>
