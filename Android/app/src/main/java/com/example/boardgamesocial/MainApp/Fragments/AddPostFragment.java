@@ -73,7 +73,6 @@ public class AddPostFragment extends Fragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setAppBarFab();
         if (getArguments() != null) {
             mParam1 = getArguments().getString(ARG_PARAM1);
             mParam2 = getArguments().getString(ARG_PARAM2);
@@ -91,7 +90,7 @@ public class AddPostFragment extends Fragment {
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
-        setAppBarFab();
+        setAppBarFab(View.INVISIBLE);
 
         RadioButton radioButtonPrivate = view.findViewById(R.id.add_post_radioBtn_private);
         RadioButton radioButtonPublic = view.findViewById(R.id.add_post_radioBtn_public);
@@ -122,17 +121,17 @@ public class AddPostFragment extends Fragment {
 
         if (editTextBody.getText().toString().length() == 0) {
             Snackbar.make(view, R.string.add_post_body_error, Snackbar.LENGTH_LONG)
-                    .setAction("Action", null).show();
+                    .setAnchorView(R.id.add_post_button).setAction("Action", null).show();
             return false;
         }
         if (spinnerPostType.getSelectedItem().toString().equals(getString(R.string.add_post_spinner_placeholder))) {
             Snackbar.make(view, R.string.add_post_type_error, Snackbar.LENGTH_LONG)
-                    .setAction("Action", null).show();
+                    .setAnchorView(R.id.add_post_button).setAction("Action", null).show();
             return false;
         }
         if (!typeChecked) {
             Snackbar.make(view, R.string.add_post_view_error, Snackbar.LENGTH_LONG)
-                    .setAction("Action", null).show();
+                    .setAnchorView(R.id.add_post_button).setAction("Action", null).show();
             return false;
         }
 
@@ -166,23 +165,23 @@ public class AddPostFragment extends Fragment {
                     .subscribe(jsonObject -> {
                         Post madePost = retrofitClient.getObject(jsonObject, Post.class);
                         Log.i(TAG, String.format("makePost: newPost: %s", madePost.toString()));
-
                     });
         } catch (Exception e) {
             Log.i(TAG, String.format("makePost: error msg: %s", e.getMessage()));
             Snackbar.make(view, R.string.add_post_error, Snackbar.LENGTH_LONG)
-                    .setAction("Action", null).show();
+                    .setAnchorView(R.id.add_post_button).setAction("Action", null).show();
             return;
         }
         Snackbar.make(view, R.string.add_post_success, Snackbar.LENGTH_LONG)
-                .setAction("Action", null).show();
+                .setAnchorView(R.id.add_post_button).setAction("Action", null).show();
+        setAppBarFab(View.VISIBLE);
         NavHostFragment.findNavController(AddPostFragment.this)
                 .navigate(R.id.action_addPostFragment_to_HomePostFragment);
     }
 
-    private void setAppBarFab() {
+    private void setAppBarFab(int visibility) {
         Bundle result = new Bundle();
-        result.putInt("visibility", View.INVISIBLE);
+        result.putInt("visibility", visibility);
         // The child fragment needs to still set the result on its parent fragment manager
         getParentFragmentManager().setFragmentResult("requestKey", result);
     }

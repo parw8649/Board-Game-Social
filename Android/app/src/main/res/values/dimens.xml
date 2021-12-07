@@ -20,6 +20,7 @@
     <!--  Main App Activity  -->
     <dimen name="main_app_activity_padding">10dp</dimen>
     <dimen name="main_app_activity_bottom_margin">55dp</dimen>
+    <dimen name="fab_vertical_offset">35dp</dimen>
     <!--  profile and edit fragments -->
     <dimen name="profile_bio_bottom_margin">30dp</dimen>
     <dimen name="profile_bio_padding">15dp</dimen>
