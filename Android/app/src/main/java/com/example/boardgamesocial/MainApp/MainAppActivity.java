@@ -84,6 +84,11 @@ public class MainAppActivity extends AppCompatActivity {
                 case R.id.logout_option:
                     userLogout();
                     break;
+                case R.id.chat_option:
+                    navController.navigate(R.id.chatFragment);
+                    bottomAppBar.setCradleVerticalOffset(fabOffsetInvisible);
+                    fab.setVisibility(View.INVISIBLE);
+                    break;
             }
             setFabOnClick(item.getItemId());
             return true;

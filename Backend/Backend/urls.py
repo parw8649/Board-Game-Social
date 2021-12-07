@@ -26,6 +26,7 @@ urlpatterns = [
     path('sign_up/', signUpView, name="sign_up"),
     path('api/', include([
         path('user/', UserView.as_view(), name="user"),
+        path('profile/', ProfileView.as_view(), name="profile"),
         path('event/', EventView.as_view(), name="event"),
         path('post/', PostView.as_view(), name="post"),
         path('game/', GameView.as_view(), name="game"),

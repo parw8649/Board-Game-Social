@@ -3,6 +3,7 @@ package com.example.boardgamesocial.MainApp.Fragments;
 import static com.example.boardgamesocial.API.RetrofitClient.getObjectList;
 
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -23,12 +24,16 @@ import com.example.boardgamesocial.DataViews.Adapters.ViewHolders.EventVH;
 import com.example.boardgamesocial.DataViews.Adapters.ViewHolders.GameVH;
 import com.example.boardgamesocial.DataViews.DataClsVM;
 import com.example.boardgamesocial.R;
+import com.google.gson.JsonArray;
 
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Objects;
+import java.util.Optional;
 import java.util.OptionalInt;
+
+import io.reactivex.Observable;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -41,7 +46,8 @@ public class HostedGamesFragment extends Fragment implements OnItemListener {
 
     private RecyclerView recyclerView;
 
-    private List<Integer> gameIdList;
+    private Event event;
+
     List<HostedGame> hostedGameList;
 
     // TODO: Rename parameter arguments, choose names that match
@@ -94,29 +100,45 @@ public class HostedGamesFragment extends Fragment implements OnItemListener {
     public void onViewCreated(@NonNull View view, Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
-        //Retrieve the value
+        /*//Retrieve the value
         assert getArguments() != null;
-        Event event = (Event) getArguments().getSerializable(EventVH.EVENT_KEY);
+        event = (Event) getArguments().getSerializable(EventVH.EVENT_KEY);
 
-        gameIdList = new ArrayList<>();
+        //List<Integer> gameIdList = new ArrayList<>();
 
         RetrofitClient.getClient().getCall(HostedGame.class, new HashMap<String, String>() {{
             put("eventId", event.getId().toString());
         }}).blockingSubscribe(hosted -> {
             hostedGameList = getObjectList(hosted, HostedGame.class);
-            /*if (Objects.nonNull(hostedGameList) && !hostedGameList.isEmpty()) {
+            *//*if (Objects.nonNull(hostedGameList) && !hostedGameList.isEmpty()) {
                 hostedGameList.forEach(hostedGame -> gameIdList.add(hostedGame.getGameId()));
-            }*/
+            }*//*
         });
 
-        /*Map<String, String> gameFilter = new HashMap<>();
+        *//*Map<String, String> gameFilter = new HashMap<>();
 
-        Log.i(TAG, "HostedGameList: " + hostedGameList.stream().map(HostedGame::getId).map(Object::toString).collect(Collectors.joining(", ")));
-        gameFilter.put("hostedgame", hostedGameList.stream().map(HostedGame::getId).map(Object::toString).collect(Collectors.joining(", ")));*/
+        Log.i(TAG, "HostedGameList: " + hostedGameList.stream().map(HostedGame::getGameId).map(Object::toString).collect(Collectors.joining(", ")));
 
-        /*Observable<JsonArray> arrayObservable = hostedGameList.stream().map(hostedGame -> RetrofitClient.getClient().getCall(Game.class, new HashMap<String, String>() {{
+        hostedGameList.forEach(hostedGame -> gameFilter.put("hostedgame", hostedGame.getGameId().toString()));
+        gameFilter.put("hostedgame", hostedGameList.stream().map(HostedGame::getId).map(Object::toString).collect(Collectors.joining(", ")));
+
+        Observable<JsonArray> arrayObservable =
+                hostedGameList.stream().map(hostedGame -> RetrofitClient.getClient().getCall(Game.class, new HashMap<String, String>() {{
             put("hostedgame", hostedGame.getId().toString());
-        }}));*/
+        }}).subscribe(JsonElement::getAsJsonObject)).collect();*//*
+
+        JsonArray jsonArray = new JsonArray();
+
+        hostedGameList.forEach(hostedGame -> {
+            RetrofitClient.getClient().getCall(Game.class, new HashMap<String, String>() {{
+                put("id", hostedGame.getGameId().toString());
+            }}).blockingSubscribe(j -> {
+                if(!j.isEmpty())
+                    jsonArray.add(j.get(0));
+            });
+        });
+
+        Observable<JsonArray> arrayObservable = Observable.fromArray(jsonArray);*/
 
         recyclerView = view.findViewById(R.id.eventHostedGame_recyclerView);
         recyclerView.setLayoutManager(new LinearLayoutManager(this.getContext()));
@@ -129,8 +151,7 @@ public class HostedGamesFragment extends Fragment implements OnItemListener {
         recyclerView.setAdapter(dataClsAdapter);
 
         DataClsVM dataClsVM = DataClsVM.getInstance();
-        //TODO: Need to show only hosted games in the specified event.
-        dataClsVM.getMediatorLiveData(RetrofitClient.getClient().getCall(Game.class, new HashMap<>()), Game.class)
+        dataClsVM.getMediatorLiveData(fetchUpdatedEventHostedGames(), Game.class, true)
                 .observe(getViewLifecycleOwner(), dataClsAdapter::addNewObjects);
     }
 
@@ -144,11 +165,16 @@ public class HostedGamesFragment extends Fragment implements OnItemListener {
 
         Game game = (Game) contextBundle.getSerializable(GameVH.GAME_KEY);
 
-        if(Objects.nonNull(game))
+        if(Objects.nonNull(game)) {
             contextBundle.putInt("SEATS_AVAILABLE", getSeatsAvailableByGameId(game.getId()));
 
-        DataClsAdapter<Game, GameVH> dataClsAdapter = (DataClsAdapter<Game, GameVH>) recyclerView.getAdapter();
-        assert dataClsAdapter != null;
+            Optional<HostedGame> optionalHostedGame = hostedGameList.stream()
+                    .filter(hostedGame -> hostedGame.getGameId().equals(game.getId()))
+                    .findFirst();
+
+            optionalHostedGame.ifPresent(hostedGame -> contextBundle.putSerializable("HOSTED_GAME", hostedGame));
+        }
+
 
         NavHostFragment.findNavController(HostedGamesFragment.this)
                 .navigate(R.id.action_hostedGamesFragment_to_singleHostedGameFragment, contextBundle);
@@ -165,5 +191,32 @@ public class HostedGamesFragment extends Fragment implements OnItemListener {
             return noOfSeatsAvailable.getAsInt();
         else
             return 0;
+    }
+
+    //Method added for updating hostedGames in an event
+    private Observable<JsonArray> fetchUpdatedEventHostedGames() {
+
+        Log.i(TAG, "Inside fetchUpdatedEventHostedGames");
+
+        //Retrieve the value
+        assert getArguments() != null;
+        event = (Event) getArguments().getSerializable(EventVH.EVENT_KEY);
+
+        //Fetching all games in the specified event
+        RetrofitClient.getClient().getCall(HostedGame.class, new HashMap<String, String>() {{
+            put("eventId", event.getId().toString());
+        }}).blockingSubscribe(hosted -> hostedGameList = getObjectList(hosted, HostedGame.class));
+
+        JsonArray jsonArray = new JsonArray();
+
+        //Fetching game details for game ids
+        hostedGameList.forEach(hostedGame -> RetrofitClient.getClient().getCall(Game.class, new HashMap<String, String>() {{
+            put("id", hostedGame.getGameId().toString());
+        }}).blockingSubscribe(j -> {
+            if(!j.isEmpty())
+                jsonArray.add(j.get(0));
+        }));
+
+        return Observable.fromArray(jsonArray);
     }
 }

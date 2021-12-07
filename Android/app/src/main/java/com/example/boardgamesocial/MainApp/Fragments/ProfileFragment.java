@@ -10,6 +10,8 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.TextView;
+import android.widget.Toast;
+
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
@@ -17,6 +19,7 @@ import androidx.navigation.fragment.NavHostFragment;
 import com.example.boardgamesocial.API.RetrofitClient;
 import com.example.boardgamesocial.Commons.Utils;
 import com.example.boardgamesocial.DataClasses.User;
+import com.example.boardgamesocial.DataViews.Adapters.ViewHolders.RelationshipVH.UserToUserVH;
 import com.example.boardgamesocial.R;
 import java.util.HashMap;
 import java.util.List;
@@ -108,11 +111,7 @@ public class ProfileFragment extends Fragment {
 
         textViewBio.setText("Empty bios for all!");
 
-        if (Objects.nonNull(getArguments())) {
-            setNames(view, getArguments().getInt("diffUserId"));
-        } else {
-            setNames(view, Utils.getUserId());
-        }
+        setNames(view);
 
         buttonFriendList.setOnClickListener(v -> {
             Bundle bundle = new Bundle();
@@ -123,8 +122,9 @@ public class ProfileFragment extends Fragment {
                 bundle = null;
             }
             setAppBarFab(View.INVISIBLE);
+
             NavHostFragment.findNavController(ProfileFragment.this)
-                    .navigate(R.id.action_profileFragment_to_userFriendsFragment, bundle);
+                    .navigate(R.id.action_profileFragment_to_userFriendsFragment);
         });
 
         buttonUserGameList.setOnClickListener(v -> {
@@ -136,18 +136,19 @@ public class ProfileFragment extends Fragment {
                 bundle = null;
             }
             setAppBarFab(View.VISIBLE);
+
             NavHostFragment.findNavController(ProfileFragment.this)
-                    .navigate(R.id.action_profileFragment_to_userGamesFragment, bundle);
+                    .navigate(R.id.action_profileFragment_to_userGamesFragment);
         });
     }
 
-    private void setNames(View view, Integer userId) {
+    private void setNames(View view) {
         Activity activity = getActivity();
         textViewFirstName = view.findViewById(R.id.profile_first_name);
         textViewUsername = view.findViewById(R.id.profile_username);
 
         retrofitClient.getCall(User.class, new HashMap<String, String>() {{
-            put("id", String.valueOf(userId));
+            put("id", String.valueOf(Utils.getUserId()));
         }}).subscribe(jsonArray -> {
             List<User> userList = getObjectList(jsonArray, User.class);
             activity.runOnUiThread(() -> {

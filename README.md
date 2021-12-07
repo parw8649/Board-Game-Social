@@ -62,6 +62,7 @@ Django tokens will be used to verify valid user activity when sending and receiv
 | http://boardgamesocial.herokuapp.com/api/hosted_game/ | GET, POST, DELETE, PUT | eventId, gameId, seatsAvailable |
 | http://boardgamesocial.herokuapp.com/api/review/ | GET, POST, DELETE, PUT | userId, gameId, content |
 | http://boardgamesocial.herokuapp.com/api/hosted_game_to_user/ | GET, POST, DELETE, PUT | userId, gameId |
+| http://boardgamesocial.herokuapp.com/api/profile | GET, POST, DELETE|  userId |
 
 
 ## How to use it:
@@ -255,3 +256,25 @@ dataClsVM.getMediatorLiveData(RetrofitClient.getClient().getCall(your_DataClass.
 
 ### On Click for items in RecyclerView
 Any Fragment or Activity that uses RecyclerView needs to implement `DataClsAdapter.OnItemListener`. When implementing `DataClsAdapter.OnItemListener`you will need to override `onItemClick`. This function will define the behaviour once the item of RecyclerView is clicked.
+
+## Tests:
+### Backend API
+![Screen Shot 2021-10-30 at 20 10 44](https://user-images.githubusercontent.com/56419970/139565541-bb4a83a6-7e12-4b07-83e5-ef48ae2ccbcc.png)
+![Screen Shot 2021-10-30 at 20 11 29](https://user-images.githubusercontent.com/56419970/139565557-6619fa7d-afa0-4d50-b79f-7993b5112743.png)
+![Screen Shot 2021-10-30 at 20 11 49](https://user-images.githubusercontent.com/56419970/139565565-953a9852-d2db-46ee-98eb-784f70f7ec25.png)
+![Screen Shot 2021-10-30 at 20 12 03](https://user-images.githubusercontent.com/56419970/139565574-21aeff21-0f4f-43ee-91d5-aba2ba80c870.png)
+![Screen Shot 2021-10-30 at 20 12 48](https://user-images.githubusercontent.com/56419970/139565582-a6de7459-b413-477f-927f-7cb570bdb3ac.png)
+![Screen Shot 2021-10-30 at 20 13 06](https://user-images.githubusercontent.com/56419970/139565585-d8f5e9d9-0404-460c-8fcf-4392176a8308.png)
+![Screen Shot 2021-10-30 at 20 13 31](https://user-images.githubusercontent.com/56419970/139565589-cb52586d-6e1e-4ae5-9c8a-d6bda44d282a.png)
+![Screen Shot 2021-10-30 at 20 13 42](https://user-images.githubusercontent.com/56419970/139565593-2392a2be-d5ee-4b99-a4b5-c956c6678b65.png)
+![Screen Shot 2021-10-30 at 20 14 01](https://user-images.githubusercontent.com/56419970/139565597-8aa42817-d70d-4bfc-b46f-6027a696d3ed.png)
+![Screen Shot 2021-10-30 at 20 14 18](https://user-images.githubusercontent.com/56419970/139565602-e2e38a40-655a-47df-9259-9eaf85ade940.png)
+![Screen Shot 2021-10-30 at 20 14 32](https://user-images.githubusercontent.com/56419970/139565605-1f1c0953-dc1e-4de5-9900-08c0c2a5c699.png)
+![Screen Shot 2021-10-30 at 20 14 56](https://user-images.githubusercontent.com/56419970/139565613-37b618b0-e99c-4f0c-83e9-b658e0149339.png)
+![Screen Shot 2021-10-30 at 20 15 31](https://user-images.githubusercontent.com/56419970/139565622-84444726-d622-4364-a55d-cf24f7cc84f6.png)
+
+### Each of the DBCalls tests runs test on all 4 respective endpoints
+![Screen Shot 2021-11-07 at 16 38 58](https://user-images.githubusercontent.com/56419970/140668484-cd5e3747-29fa-4175-ab0d-6fe93d44bd93.png)
+![Screen Shot 2021-11-07 at 16 39 34](https://user-images.githubusercontent.com/56419970/140668485-e299a8b9-587f-4be8-94b5-74382a0098fe.png)
+## MVVM
+![Screen Shot 2021-11-16 at 17 15 39](https://user-images.githubusercontent.com/56419970/142101377-724793b7-6779-4ccf-a52f-a499a5be5cda.png)

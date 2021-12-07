@@ -1,28 +1,34 @@
 package com.example.boardgamesocial.MainApp.Fragments;
 
+import static com.example.boardgamesocial.API.RetrofitClient.getObjectList;
+
 import android.os.Bundle;
-
-import androidx.annotation.NonNull;
-import androidx.fragment.app.Fragment;
-import androidx.recyclerview.widget.LinearLayoutManager;
-import androidx.recyclerview.widget.RecyclerView;
-
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Toast;
 
+import androidx.annotation.NonNull;
+import androidx.fragment.app.Fragment;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
+
 import com.example.boardgamesocial.API.RetrofitClient;
 import com.example.boardgamesocial.Commons.Utils;
 import com.example.boardgamesocial.DataClasses.Game;
+import com.example.boardgamesocial.DataClasses.Relationships.GameToUser;
 import com.example.boardgamesocial.DataViews.Adapters.DataClsAdapter;
 import com.example.boardgamesocial.DataViews.Adapters.ViewHolders.GameVH;
 import com.example.boardgamesocial.DataViews.DataClsVM;
 import com.example.boardgamesocial.R;
+import com.google.gson.JsonArray;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+
+import io.reactivex.Observable;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -31,8 +37,11 @@ import java.util.List;
  */
 public class UserGamesFragment extends Fragment implements DataClsAdapter.OnItemListener {
 
+    public static final String TAG = "UserGamesFragment";
+
     private RecyclerView recyclerView;
-    private List<Game> games;
+
+    private List<GameToUser> gameToUserList;
 
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
@@ -98,9 +107,30 @@ public class UserGamesFragment extends Fragment implements DataClsAdapter.OnItem
         recyclerView.setAdapter(dataClsAdapter);
 
         DataClsVM dataClsVM = DataClsVM.getInstance();
-        //TODO: Need to fetch user specific games from db
-        dataClsVM.getMediatorLiveData(RetrofitClient.getClient().getCall(Game.class, new HashMap<>()), Game.class)
+        dataClsVM.getMediatorLiveData(fetchUserSpecificGames(), Game.class, true)
                 .observe(getViewLifecycleOwner(), dataClsAdapter::addNewObjects);
+    }
+
+    private Observable<JsonArray> fetchUserSpecificGames() {
+
+        Log.i(TAG, "Inside fetchUserSpecificGames");
+
+        gameToUserList = new ArrayList<>();
+
+        RetrofitClient.getClient().getCall(GameToUser.class, new HashMap<String, String>() {{
+            put("userId", String.valueOf(Utils.getUserId()));
+        }}).blockingSubscribe(gameToUserJson -> gameToUserList = getObjectList(gameToUserJson, GameToUser.class));
+
+        JsonArray jsonArray = new JsonArray();
+
+        gameToUserList.forEach(gameToUser -> RetrofitClient.getClient().getCall(Game.class, new HashMap<String, String>() {{
+            put("id", String.valueOf(gameToUser.getGameId()));
+        }}).blockingSubscribe(j -> {
+            if(!j.isEmpty())
+                jsonArray.add(j.get(0));
+        }));
+
+        return Observable.fromArray(jsonArray);
     }
 
     @Override

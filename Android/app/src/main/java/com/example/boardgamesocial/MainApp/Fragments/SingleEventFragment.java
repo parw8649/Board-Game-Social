@@ -22,6 +22,8 @@ import com.example.boardgamesocial.R;
  */
 public class SingleEventFragment extends Fragment {
 
+    public static final String TAG = "SingleEventFragment";
+
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
     private static final String ARG_PARAM1 = "param1";
@@ -90,6 +92,6 @@ public class SingleEventFragment extends Fragment {
                 .navigate(R.id.action_singleEventFragment_to_hostedGamesFragment, getArguments()));
 
         btnPeopleInEvent.setOnClickListener(v -> NavHostFragment.findNavController(SingleEventFragment.this)
-                .navigate(R.id.action_singleEventFragment_to_eventAttendeesFragment));
+                .navigate(R.id.action_singleEventFragment_to_eventAttendeesFragment, getArguments()));
     }
 }

@@ -62,7 +62,7 @@ public class EventsFragment extends Fragment implements OnItemListener {
         tvEventDescription.setVisibility(View.GONE);*/
 
         DataClsVM dataClsVM = DataClsVM.getInstance();
-        dataClsVM.getMediatorLiveData(RetrofitClient.getClient().getCall(Event.class, new HashMap<>()), Event.class)
+        dataClsVM.getMediatorLiveData(RetrofitClient.getClient().getCall(Event.class, new HashMap<>()), Event.class, false)
                 .observe(getViewLifecycleOwner(), dataClsAdapter::addNewObjects);
     }
 
@@ -71,9 +71,6 @@ public class EventsFragment extends Fragment implements OnItemListener {
 
     @Override
     public void onItemClick(Bundle contextBundle) {
-
-        DataClsAdapter<Event, EventVH> dataClsAdapter = (DataClsAdapter<Event, EventVH>) recyclerView.getAdapter();
-        assert dataClsAdapter != null;
 
         NavHostFragment.findNavController(EventsFragment.this)
                 .navigate(R.id.action_EventsFragment_to_singleEventFragment, contextBundle);

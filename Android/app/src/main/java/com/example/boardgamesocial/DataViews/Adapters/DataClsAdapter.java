@@ -13,10 +13,16 @@ import com.example.boardgamesocial.DataClasses.DataClass;
 import com.example.boardgamesocial.DataClasses.Event;
 import com.example.boardgamesocial.DataClasses.Game;
 import com.example.boardgamesocial.DataClasses.Post;
+import com.example.boardgamesocial.DataClasses.Relationships.EventToUser;
+import com.example.boardgamesocial.DataClasses.Relationships.UserToUser;
+import com.example.boardgamesocial.DataClasses.Review;
 import com.example.boardgamesocial.DataViews.Adapters.ViewHolders.DataClsVH;
 import com.example.boardgamesocial.DataViews.Adapters.ViewHolders.EventVH;
 import com.example.boardgamesocial.DataViews.Adapters.ViewHolders.GameVH;
 import com.example.boardgamesocial.DataViews.Adapters.ViewHolders.PostVH;
+import com.example.boardgamesocial.DataViews.Adapters.ViewHolders.RelationshipVH.EventToUserVH;
+import com.example.boardgamesocial.DataViews.Adapters.ViewHolders.RelationshipVH.UserToUserVH;
+import com.example.boardgamesocial.DataViews.Adapters.ViewHolders.ReviewVH;
 import com.example.boardgamesocial.DataViews.Adapters.ViewHolders.VHConstructor;
 
 import java.util.ArrayList;
@@ -28,14 +34,17 @@ import java.util.Objects;
 public class DataClsAdapter <DC extends DataClass, VH extends DataClsVH<DC>> extends RecyclerView.Adapter<VH> {
     private final Activity activity;
     private final OnItemListener onItemListener;
+    private final int itemLayout;
     private List<DC> objectList;
     private Class<DC> cls;
-    private int itemLayout;
 
     public static final Map<Class<?>, VHConstructor> VH_MAP = new HashMap<Class<?>, VHConstructor>(){{
         put(Post.class, PostVH::new);
         put(Game.class, GameVH::new);
         put(Event.class, EventVH::new);
+        put(UserToUser.class, UserToUserVH::new);
+        put(EventToUser.class, EventToUserVH::new);
+        put(Review.class, ReviewVH::new);
     }};
 
     public DataClsAdapter(OnItemListener onItemListener, Class<DC> cls, Activity activity, int itemLayout) {
@@ -72,28 +81,28 @@ public class DataClsAdapter <DC extends DataClass, VH extends DataClsVH<DC>> ext
     }
 
     public void addNewObjects(List<DC> newObjects) {
-        objectList = new ArrayList<>();
-        /** Note: Commented below lines for add functionality
-         * Inorder to have newly added object at the top of the list.
-         * which also helps for delete functionality.
-         * This will help for all CRUD operations on objects.
-         * */
-        /*for (DC object : newObjects) {
+        for (DC object : newObjects) {
             if (!objectList.contains(object)){
                 objectList.add(object);
-                notifyItemChanged(objectList.indexOf(object));
+                notifyItemInserted(objectList.indexOf(object));
             }
 
             objectList.removeIf(obj -> {
                 boolean exists = newObjects.contains(obj);
-                if(!exists)
-                    notifyDataSetChanged();
+                if(!exists){
+                    notifyItemRemoved(objectList.indexOf(obj));
+                }
                 return !exists;
             });
-        }*/
-        objectList.addAll(newObjects);
-        notifyDataSetChanged();
+        }
     }
+
+//    public void filterSearch(String searchQuery, String filterBy){
+//
+//
+//    }
+
+
 
     @Override
     public int getItemCount() {
@@ -103,5 +112,4 @@ public class DataClsAdapter <DC extends DataClass, VH extends DataClsVH<DC>> ext
     public interface OnItemListener {
         void onItemClick(Bundle contextBundle);
     }
-
 }

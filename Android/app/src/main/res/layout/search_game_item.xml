@@ -92,7 +92,8 @@
             android:backgroundTint="@color/blue_yonder"
             android:padding="@dimen/btn_padding_slim"
             android:src="@drawable/ic_baseline_delete_24"
-            android:textAppearance="@style/TextAppearance.AppCompat.Small" />
+            android:textAppearance="@style/TextAppearance.AppCompat.Small"
+            android:visibility="invisible"/>
 
     </RelativeLayout>
 

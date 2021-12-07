@@ -3,6 +3,15 @@ from django.utils import timezone
 from django.contrib.auth.models import User
 
 
+class Profile(models.Model):
+    class Meta:
+        db_table = "profile"
+
+    userId = models.ForeignKey(User, on_delete=models.CASCADE, db_column='userId')
+    bio = models.TextField(default="None", db_column='bio')
+    iconUrl = models.TextField(default="None", db_column='iconUrl')
+
+
 class Event(models.Model):
     class Meta:
         db_table = "event"
@@ -21,6 +30,7 @@ class Post(models.Model):
     userId = models.ForeignKey(User, on_delete=models.CASCADE, db_column='userId')
     postBody = models.TextField(db_column='postBody')
     postType = models.CharField(db_column='postType', max_length=20)
+    dateTime = models.DateTimeField(default=timezone.now, db_column='dateTime', null=True)
     private = models.BooleanField(default=False, db_column='private')
     likes = models.IntegerField(default=0, db_column='likes')
 
@@ -52,6 +62,7 @@ class Message(models.Model):
 
     senderId = models.ForeignKey(User, on_delete=models.CASCADE, db_column="senderId", related_name="senderId")
     receiverId = models.ForeignKey(User, on_delete=models.CASCADE, db_column="receiverId", related_name="receiverId")
+    dateTime = models.DateTimeField(default=timezone.now, db_column='dateTime', null=True)
     content = models.TextField(db_column="content")
 
 
