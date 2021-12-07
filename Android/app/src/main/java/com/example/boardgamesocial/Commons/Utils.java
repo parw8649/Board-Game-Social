@@ -3,6 +3,8 @@ package com.example.boardgamesocial.Commons;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.os.Bundle;
+import android.view.View;
 
 import com.example.boardgamesocial.LoginAndSignUp.LoginAndSignUpActivity;
 import com.example.boardgamesocial.MainApp.MainAppActivity;

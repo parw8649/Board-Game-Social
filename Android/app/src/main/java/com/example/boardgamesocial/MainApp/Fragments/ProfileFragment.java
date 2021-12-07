@@ -90,6 +90,9 @@ public class ProfileFragment extends Fragment {
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
+        Button buttonEditProfile = view.findViewById(R.id.profile_btn_edit);
+
+        setAppBarFab(View.INVISIBLE);
 
         Log.i(TAG, String.format("userId: %s", Utils.getUserId()));
         retrofitClient = RetrofitClient.getClient();
@@ -98,22 +101,42 @@ public class ProfileFragment extends Fragment {
         buttonUserGameList = view.findViewById(R.id.profile_btn_view_user_gamelist);
         buttonFriendList = view.findViewById(R.id.profile_btn_view_friends);
 
-        buttonUserGameList.setOnClickListener(view1 -> NavHostFragment.findNavController(ProfileFragment.this)
-                .navigate(R.id.action_profileFragment_to_userGamesFragment));
-
-        buttonEditProfile.setOnClickListener(view1 -> NavHostFragment.findNavController(ProfileFragment.this)
-                .navigate(R.id.action_profileFragment_to_editProfileFragment));
+        if (Objects.isNull(getArguments())) {
+            buttonEditProfile.setVisibility(view.VISIBLE);
+            buttonEditProfile.setOnClickListener(view1 -> NavHostFragment.findNavController(ProfileFragment.this)
+                    .navigate(R.id.action_profileFragment_to_editProfileFragment));
+        } else {
+            buttonEditProfile.setVisibility(view.GONE);
+        }
 
         textViewBio.setText("Empty bios for all!");
 
         setNames(view);
 
         buttonFriendList.setOnClickListener(v -> {
+            Bundle bundle = new Bundle();
+
+            if (Objects.nonNull(getArguments())) {
+                bundle.putInt("diffUserId", getArguments().getInt("diffUserId"));
+            } else {
+                bundle = null;
+            }
+            setAppBarFab(View.INVISIBLE);
+
             NavHostFragment.findNavController(ProfileFragment.this)
                     .navigate(R.id.action_profileFragment_to_userFriendsFragment);
         });
 
         buttonUserGameList.setOnClickListener(v -> {
+            Bundle bundle = new Bundle();
+
+            if (Objects.nonNull(getArguments())) {
+                bundle.putInt("diffUserId", getArguments().getInt("diffUserId"));
+            } else {
+                bundle = null;
+            }
+            setAppBarFab(View.VISIBLE);
+
             NavHostFragment.findNavController(ProfileFragment.this)
                     .navigate(R.id.action_profileFragment_to_userGamesFragment);
         });
@@ -138,5 +161,12 @@ public class ProfileFragment extends Fragment {
                 buttonUserGameList.setText(viewUserGames);
             });
         });
+    }
+
+    private void setAppBarFab(int visibility) {
+        Bundle result = new Bundle();
+        result.putInt("visibility", visibility);
+        // The child fragment needs to still set the result on its parent fragment manager
+        getParentFragmentManager().setFragmentResult("requestKey", result);
     }
 }

@@ -5,7 +5,6 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-
     tools:context=".MainApp.MainAppActivity">
 
     <include
@@ -14,6 +13,7 @@
         android:layout_height="match_parent"
         layout="@layout/content_main_app"
         android:padding="@dimen/main_app_activity_padding"
+        android:layout_marginBottom="@dimen/main_app_activity_bottom_margin"
         tools:layout_editor_absoluteX="0dp" />
 
     <!--  https://youtu.be/IfgV9WzYOn8?t=443  -->
@@ -26,7 +26,9 @@
         app:itemIconTint="@color/ice_blue"
         app:itemTextColor="@color/blue_yonder"
         app:fabAlignmentMode="end"
-        app:menu="@menu/navbar_options" />
+        app:fabCradleVerticalOffset="@dimen/fab_vertical_offset"
+        app:menu="@menu/navbar_options">
+    </com.google.android.material.bottomappbar.BottomAppBar>
 
     <com.google.android.material.floatingactionbutton.FloatingActionButton
         android:id="@+id/bottom_app_bar_fab"

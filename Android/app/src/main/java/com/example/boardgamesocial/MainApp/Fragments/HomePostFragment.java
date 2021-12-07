@@ -78,6 +78,8 @@ public class HomePostFragment extends Fragment implements OnItemListener {
     public void onViewCreated(@NonNull View view, Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
+        setAppBarFab();
+
         if (Objects.nonNull(Utils.getUserId())) {
             Log.i(TAG, String.format("Utils.getUserId(): %d", Utils.getUserId()));
         }
@@ -107,5 +109,12 @@ public class HomePostFragment extends Fragment implements OnItemListener {
         NavHostFragment.findNavController(HomePostFragment.this)
                 .navigate(R.id.action_HomePostFragment_to_singlePostFragment, contextBundle);
         Toast.makeText(getContext(),"Item clicked", Toast.LENGTH_LONG).show();
+    }
+
+    private void setAppBarFab() {
+        Bundle result = new Bundle();
+        result.putInt("visibility", View.VISIBLE);
+        // The child fragment needs to still set the result on its parent fragment manager
+        getParentFragmentManager().setFragmentResult("requestKey", result);
     }
 }
