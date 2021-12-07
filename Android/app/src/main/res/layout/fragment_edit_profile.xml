@@ -5,10 +5,218 @@
     android:layout_height="match_parent"
     tools:context=".MainApp.Fragments.EditProfileFragment">
 
-    <!-- TODO: Update blank fragment layout -->
-    <TextView
+    <ScrollView
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:text="@string/title_fragment_edit_profile" />
+        android:layout_height="match_parent">
 
+        <LinearLayout
+            android:id="@+id/edit_profile_main_layout"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:scrollbars="vertical"
+            android:orientation="vertical"
+            android:layout_marginVertical="@dimen/fragment_v_margin">
+
+            <TextView
+                android:id="@+id/edit_profile_greeting"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_marginVertical="@dimen/fragment_v_margin"
+                android:text="@string/edit_profile_greeting"
+                android:textSize="@dimen/textSizeBig"
+                android:textStyle="bold"
+                android:textAlignment="center"/>
+
+            <LinearLayout
+                android:id="@+id/edit_profile_icon_layout"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginVertical="@dimen/fragment_v_margin"
+                android:gravity="center" >
+
+                <ImageView
+                    android:id="@+id/edit_profile_icon"
+                    android:layout_width="@dimen/profile_icon_size"
+                    android:layout_height="@dimen/profile_icon_size"
+                    android:layout_marginEnd="@dimen/h_spacer"
+                    android:contentDescription="@string/imageView_contentDescription"
+                    android:src="@drawable/show_circular_image" />
+
+                <Button
+                    android:id="@+id/edit_profile_btn_edit_icon"
+                    android:layout_width="@dimen/btn_width_slim"
+                    android:layout_height="@dimen/btn_height_slim"
+                    android:layout_marginStart="@dimen/h_spacer"
+                    android:padding="@dimen/btn_padding_slim"
+                    android:backgroundTint="@color/blue_yonder"
+                    android:text="@string/edit_profile_btn_edit_icon"
+                    android:textAppearance="@style/TextAppearance.AppCompat.Small"
+                    android:textSize="@dimen/textSizeSmall" />
+            </LinearLayout>
+
+            <RelativeLayout
+                android:id="@+id/edit_profile_username_layout"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginHorizontal="@dimen/edit_profile_h_margin"
+                android:layout_marginVertical="@dimen/h_spacer" >
+
+                <TextView
+                    android:id="@+id/edit_profile_username_label"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/edit_profile_username_label"
+                    android:textSize="@dimen/textSizeMiddle" />
+
+                <TextView
+                    android:id="@+id/edit_profile_current_username"
+                    android:layout_toEndOf="@id/edit_profile_username_label"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="@dimen/h_spacer"
+                    android:text="@string/edit_profile_current_username"
+                    android:textSize="@dimen/textSizeMiddle" />
+
+                <EditText
+                    android:id="@+id/edit_profile_editText_username"
+                    android:layout_below="@id/edit_profile_current_username"
+                    android:layout_toEndOf="@id/edit_profile_username_label"
+                    android:layout_width="@dimen/edit_profile_editText_width"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="@dimen/h_spacer"
+                    android:inputType="text"
+                    android:hint="@string/edit_profile_username_hint"
+                    android:textAppearance="@style/TextAppearance.AppCompat.Small"/>
+
+                <Button
+                    android:id="@+id/edit_profile_btn_edit_username"
+                    android:layout_width="wrap_content"
+                    android:layout_height="@dimen/btn_height_slim"
+                    android:layout_below="@id/edit_profile_current_username"
+                    android:layout_marginStart="@dimen/h_spacer"
+                    android:layout_toEndOf="@id/edit_profile_editText_username"
+                    android:backgroundTint="@color/blue_yonder"
+                    android:padding="@dimen/btn_padding_slim"
+                    android:text="@string/edit_profile_btn_edit_username"
+                    android:textAppearance="@style/TextAppearance.AppCompat.Small"
+                    android:textSize="@dimen/textSizeSmall" />
+            </RelativeLayout>
+
+            <RelativeLayout
+                android:id="@+id/edit_profile_password_layout"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginHorizontal="@dimen/edit_profile_h_margin"
+                android:layout_marginVertical="@dimen/h_spacer" >
+
+                <TextView
+                    android:id="@+id/edit_profile_password_label"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/edit_profile_password_label"
+                    android:textSize="@dimen/textSizeMiddle" />
+
+                <TextView
+                    android:id="@+id/edit_profile_password_asterisks"
+                    android:layout_toEndOf="@id/edit_profile_password_label"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="@dimen/h_spacer"
+                    android:text="@string/edit_profile_password_asterisks"
+                    android:textSize="@dimen/textSizeMiddle" />
+
+                <EditText
+                    android:id="@+id/edit_profile_editText_password"
+                    android:layout_below="@id/edit_profile_password_asterisks"
+                    android:layout_toEndOf="@id/edit_profile_password_label"
+                    android:layout_width="@dimen/edit_profile_editText_width"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="@dimen/h_spacer"
+                    android:inputType="textPassword"
+                    android:hint="@string/edit_profile_password_hint"
+                    android:textAppearance="@style/TextAppearance.AppCompat.Small"/>
+
+                <EditText
+                    android:id="@+id/edit_profile_editText_password_confirm"
+                    android:layout_below="@id/edit_profile_editText_password"
+                    android:layout_toEndOf="@id/edit_profile_password_label"
+                    android:layout_width="@dimen/edit_profile_editText_width"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="@dimen/h_spacer"
+                    android:inputType="textPassword"
+                    android:hint="@string/edit_profile_password_confirm_hint"
+                    android:textAppearance="@style/TextAppearance.AppCompat.Small"/>
+
+                <Button
+                    android:id="@+id/edit_profile_btn_edit_password"
+                    android:layout_width="wrap_content"
+                    android:layout_height="@dimen/btn_height_slim"
+                    android:layout_below="@id/edit_profile_editText_password"
+                    android:layout_marginStart="@dimen/h_spacer"
+                    android:layout_toEndOf="@id/edit_profile_editText_password_confirm"
+                    android:backgroundTint="@color/blue_yonder"
+                    android:padding="@dimen/btn_padding_slim"
+                    android:text="@string/edit_profile_btn_edit_password"
+                    android:textAppearance="@style/TextAppearance.AppCompat.Small"
+                    android:textSize="@dimen/textSizeSmall" />
+            </RelativeLayout>
+
+            <RelativeLayout
+                android:id="@+id/edit_profile_bio_layout"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginHorizontal="@dimen/edit_profile_h_margin"
+                android:layout_marginVertical="@dimen/h_spacer" >
+
+                <TextView
+                    android:id="@+id/edit_profile_bio_label"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/edit_profile_bio_label"
+                    android:textSize="@dimen/textSizeMiddle" />
+
+                <EditText
+                    android:id="@+id/edit_profile_editText_bio"
+                    android:layout_width="@dimen/edit_profile_editText_bio_width"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="@dimen/h_spacer"
+                    android:layout_toEndOf="@id/edit_profile_bio_label"
+                    android:inputType="textMultiLine"
+                    android:maxLines="10"
+                    android:scrollbarDefaultDelayBeforeFade="@integer/material_motion_duration_short_2"
+                    android:text="@string/profile_bio_placeholder"
+                    android:textAppearance="@style/TextAppearance.AppCompat.Small" />
+
+                <Button
+                    android:id="@+id/edit_profile_btn_edit_bio"
+                    android:layout_width="@dimen/btn_width_slim"
+                    android:layout_height="@dimen/btn_height_slim"
+                    android:layout_marginStart="@dimen/h_spacer"
+                    android:layout_toEndOf="@id/edit_profile_editText_bio"
+                    android:backgroundTint="@color/blue_yonder"
+                    android:padding="@dimen/btn_padding_slim"
+                    android:text="@string/edit_profile_btn_edit_bio"
+                    android:textAppearance="@style/TextAppearance.AppCompat.Small"
+                    android:textSize="@dimen/textSizeSmall" />
+            </RelativeLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginVertical="@dimen/fragment_v_margin"
+                android:gravity="center">
+
+                <Button
+                    android:id="@+id/edit_profile_btn_delete_account"
+                    android:layout_width="wrap_content"
+                    android:layout_height="@dimen/btn_height_slim"
+                    android:layout_marginBottom="@dimen/linear_vert_padding"
+                    android:backgroundTint="@color/coral_reef_var"
+                    android:textColor="@color/black"
+                    android:padding="@dimen/btn_padding_slim"
+                    android:text="@string/edit_profile_btn_delete_account"
+                    android:textAppearance="@style/TextAppearance.AppCompat.Medium" />
+            </LinearLayout>
+        </LinearLayout>
+    </ScrollView>
 </FrameLayout>

@@ -18,7 +18,6 @@
             android:label="@string/title_activity_main_app"
             android:theme="@style/Theme.BoardGameSocial.NoActionBar"
             android:windowSoftInputMode="adjustPan">
-
         </activity>
         <activity
             android:name=".LoginAndSignUp.LoginAndSignUpActivity"
