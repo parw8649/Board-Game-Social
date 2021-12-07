@@ -71,7 +71,6 @@ public class ProfileFragment extends Fragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setAppBarFab();
         if (getArguments() != null) {
             mParam1 = getArguments().getString(ARG_PARAM1);
             mParam2 = getArguments().getString(ARG_PARAM2);
@@ -90,7 +89,7 @@ public class ProfileFragment extends Fragment {
         super.onViewCreated(view, savedInstanceState);
         Button buttonEditProfile = view.findViewById(R.id.profile_btn_edit);
 
-        setAppBarFab();
+        setAppBarFab(View.INVISIBLE);
 
         Log.i(TAG, String.format("userId: %s", Utils.getUserId()));
         retrofitClient = RetrofitClient.getClient();
@@ -123,6 +122,7 @@ public class ProfileFragment extends Fragment {
             } else {
                 bundle = null;
             }
+            setAppBarFab(View.INVISIBLE);
             NavHostFragment.findNavController(ProfileFragment.this)
                     .navigate(R.id.action_profileFragment_to_userFriendsFragment, bundle);
         });
@@ -135,6 +135,7 @@ public class ProfileFragment extends Fragment {
             } else {
                 bundle = null;
             }
+            setAppBarFab(View.VISIBLE);
             NavHostFragment.findNavController(ProfileFragment.this)
                     .navigate(R.id.action_profileFragment_to_userGamesFragment, bundle);
         });
@@ -161,9 +162,9 @@ public class ProfileFragment extends Fragment {
         });
     }
 
-    private void setAppBarFab() {
+    private void setAppBarFab(int visibility) {
         Bundle result = new Bundle();
-        result.putInt("visibility", View.INVISIBLE);
+        result.putInt("visibility", visibility);
         // The child fragment needs to still set the result on its parent fragment manager
         getParentFragmentManager().setFragmentResult("requestKey", result);
     }

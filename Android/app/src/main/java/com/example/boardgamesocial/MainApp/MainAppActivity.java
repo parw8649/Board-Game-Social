@@ -62,28 +62,28 @@ public class MainAppActivity extends AppCompatActivity {
             switch (item.getItemId()) {
                 case R.id.home_option:
                     navController.navigate(R.id.HomePostFragment);
-                    bottomAppBar.setCradleVerticalOffset(fabOffsetVisible);
+//                    bottomAppBar.setCradleVerticalOffset(fabOffsetVisible);
                     fab.setVisibility(View.VISIBLE);
                     break;
                 case R.id.events_option:
                     navController.navigate(R.id.eventsFragment);
-                    bottomAppBar.setCradleVerticalOffset(fabOffsetVisible);
+//                    bottomAppBar.setCradleVerticalOffset(fabOffsetVisible);
                     fab.setVisibility(View.VISIBLE);
                     break;
                 case R.id.games_option:
                     // this should direct to a fragment showing all games available in database
                     navController.navigate(R.id.gameCollectionFragment);
-                    bottomAppBar.setCradleVerticalOffset(fabOffsetVisible);
+//                    bottomAppBar.setCradleVerticalOffset(fabOffsetVisible);
                     fab.setVisibility(View.VISIBLE);
                     break;
                 case R.id.search_option:
                     navController.navigate(R.id.searchFragment);
-                    bottomAppBar.setCradleVerticalOffset(fabOffsetInvisible);
+//                    bottomAppBar.setCradleVerticalOffset(fabOffsetInvisible);
                     fab.setVisibility(View.INVISIBLE);
                     break;
                 case R.id.profile_option:
                     navController.navigate(R.id.profileFragment);
-                    bottomAppBar.setCradleVerticalOffset(fabOffsetInvisible);
+//                    bottomAppBar.setCradleVerticalOffset(fabOffsetInvisible);
                     fab.setVisibility(View.INVISIBLE);
                     break;
                 case R.id.logout_option:
@@ -157,10 +157,10 @@ public class MainAppActivity extends AppCompatActivity {
 
     private void setAppBarFab(View view, int visibility) {
         if (visibility == View.VISIBLE) {
-            bottomAppBar.setCradleVerticalOffset(fabOffsetVisible);
+//            bottomAppBar.setCradleVerticalOffset(fabOffsetVisible);
             fab.setVisibility(View.VISIBLE);
         } else {
-            bottomAppBar.setCradleVerticalOffset(fabOffsetInvisible);
+//            bottomAppBar.setCradleVerticalOffset(fabOffsetInvisible);
             fab.setVisibility(View.INVISIBLE);
         }
     }
@@ -169,15 +169,15 @@ public class MainAppActivity extends AppCompatActivity {
         try {
             RetrofitClient.getClient().logoutCall(new HashMap<String, String>() {{
                 put("user_id", Utils.getUserId().toString());
-            }}).subscribe();
-
-            Toast.makeText(this,"Successful logout", Toast.LENGTH_SHORT).show();
-            Intent goToHomePostActivity = LoginAndSignUpActivity.getIntent(MainAppActivity.this);
-            startActivity(goToHomePostActivity);
+            }}).subscribe(jsonObject -> {
+                runOnUiThread(() -> {
+                    Toast.makeText(this,"Successful logout", Toast.LENGTH_SHORT).show();
+                    Intent goToHomePostActivity = LoginAndSignUpActivity.getIntent(MainAppActivity.this);
+                    startActivity(goToHomePostActivity);
+                });
+            }); // look at doOnError instead of try catch
         } catch (Exception e) {
             Toast.makeText(this,"Unable to logout", Toast.LENGTH_SHORT).show();
         }
-
     }
-
 }

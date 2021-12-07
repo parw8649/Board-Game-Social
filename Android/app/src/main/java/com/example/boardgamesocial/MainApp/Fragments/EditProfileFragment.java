@@ -87,7 +87,6 @@ public class EditProfileFragment extends Fragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setAppBarFab();
         if (getArguments() != null) {
             mParam1 = getArguments().getString(ARG_PARAM1);
             mParam2 = getArguments().getString(ARG_PARAM2);
@@ -116,7 +115,7 @@ public class EditProfileFragment extends Fragment {
         buttonEditBio = view.findViewById(R.id.edit_profile_btn_edit_bio);
         buttonDeleteAcc = view.findViewById(R.id.edit_profile_btn_delete_account);
 
-        setAppBarFab();
+        setAppBarFab(View.INVISIBLE);
 
         retrofitClient.getCall(User.class, new HashMap<String, String>() {{
             put("id", String.valueOf(Utils.getUserId()));
@@ -147,7 +146,7 @@ public class EditProfileFragment extends Fragment {
     private void validateUsername(View view) {
         if (editTextNewUsername.getText().toString().isEmpty() || username.equals(editTextNewUsername.getText().toString())) {
             Snackbar.make(view, "Please enter a new username for update.", Snackbar.LENGTH_LONG)
-                    .setAnchorView(R.id.bottom_app_bar).setAction("Action", null).show();
+                    .setAnchorView(R.id.edit_profile_btn_edit_username).setAction("Action", null).show();
             return;
         }
 
@@ -158,7 +157,7 @@ public class EditProfileFragment extends Fragment {
                 List<User> users = getObjectList(jsonArray, User.class);
                 if (users.size() > 0) {
                     Snackbar.make(view, "Please enter a new username for update.", Snackbar.LENGTH_LONG)
-                            .setAnchorView(R.id.bottom_app_bar).setAction("Action", null).show();
+                            .setAnchorView(R.id.edit_profile_btn_edit_username).setAction("Action", null).show();
                 } else {
                     updateUsername(view);
                 }
@@ -178,12 +177,12 @@ public class EditProfileFragment extends Fragment {
                     textViewGreeting.setText(getString(R.string.edit_profile_greeting, user.getUsername()));
                     textViewCurrUsername.setText(user.getUsername());
                     Snackbar.make(view, "Username updated", Snackbar.LENGTH_SHORT)
-                            .setAnchorView(R.id.bottom_app_bar).setAction("Action", null).show();
+                            .setAnchorView(R.id.edit_profile_btn_edit_username).setAction("Action", null).show();
                 });
             });
         }catch (Exception e) {
             Snackbar.make(view, "Unable to update username", Snackbar.LENGTH_SHORT)
-                    .setAnchorView(R.id.bottom_app_bar).setAction("Action", null).show();
+                    .setAnchorView(R.id.edit_profile_btn_edit_username).setAction("Action", null).show();
         }
     }
 
@@ -191,17 +190,17 @@ public class EditProfileFragment extends Fragment {
         if (editTextNewPassword.getText().toString().isEmpty()
                 || editTextConfirmPassword.getText().toString().isEmpty()) {
             Snackbar.make(view, "Please enter a new password for update.", Snackbar.LENGTH_SHORT)
-                    .setAnchorView(R.id.bottom_app_bar).setAction("Action", null).show();
+                    .setAnchorView(R.id.edit_profile_btn_edit_password).setAction("Action", null).show();
             return false;
         }
         if (!editTextNewPassword.getText().toString().equals(editTextConfirmPassword.getText().toString())){
             Snackbar.make(view, "Passwords do not match.", Snackbar.LENGTH_SHORT)
-                    .setAnchorView(R.id.bottom_app_bar).setAction("Action", null).show();
+                    .setAnchorView(R.id.edit_profile_btn_edit_password).setAction("Action", null).show();
             return false;
         }
         if (editTextConfirmPassword.getText().toString().length() < 6) {
             Snackbar.make(view, "Password must be 6 or more characters.", Snackbar.LENGTH_LONG)
-                    .setAnchorView(R.id.bottom_app_bar).setAction("Action", null).show();
+                    .setAnchorView(R.id.edit_profile_btn_edit_password).setAction("Action", null).show();
             return false;
         }
         return true;
@@ -220,12 +219,12 @@ public class EditProfileFragment extends Fragment {
                     editTextNewPassword.setText("");
                     editTextConfirmPassword.setText("");
                     Snackbar.make(view, "Password updated.", Snackbar.LENGTH_SHORT)
-                            .setAnchorView(R.id.bottom_app_bar).setAction("Action", null).show();
+                            .setAnchorView(R.id.edit_profile_btn_edit_password).setAction("Action", null).show();
                 });
             });
         }catch (Exception e) {
             Snackbar.make(view, "Unable to update password", Snackbar.LENGTH_SHORT)
-                    .setAnchorView(R.id.bottom_app_bar).setAction("Action", null).show();
+                    .setAnchorView(R.id.edit_profile_btn_edit_password).setAction("Action", null).show();
         }
     }
 
@@ -242,16 +241,16 @@ public class EditProfileFragment extends Fragment {
 //                    editTextNewPassword.setText("");
 //                    editTextConfirmPassword.setText("");
 //                    Snackbar.make(view, "Bio updated.", Snackbar.LENGTH_SHORT)
-//                            .setAnchorView(R.id.bottom_app_bar).setAction("Action", null).show();
+//                            .setAnchorView(R.id.edit_profile_btn_edit_bio).setAction("Action", null).show();
 //                    return;
 //                });
 //            });
 //        }catch (Exception e) {
 //            Snackbar.make(view, "Unable to update password", Snackbar.LENGTH_SHORT)
-//                    .setAnchorView(R.id.bottom_app_bar).setAction("Action", null).show();
+//                    .setAnchorView(R.id.edit_profile_btn_edit_bio).setAction("Action", null).show();
 //        }
         Snackbar.make(view, "inside updateBio function :D", Snackbar.LENGTH_SHORT)
-                            .setAnchorView(R.id.bottom_app_bar).setAction("Action", null).show();
+                .setAnchorView(R.id.edit_profile_btn_edit_bio).setAction("Action", null).show();
     }
 
     private void deleteAccount(View view) {
@@ -301,16 +300,16 @@ public class EditProfileFragment extends Fragment {
                 });
             }catch (Exception e) {
                 Snackbar.make(view, "Unable to delete account.", Snackbar.LENGTH_SHORT)
-                        .setAnchorView(R.id.bottom_app_bar).setAction("Action", null).show();
+                        .setAnchorView(R.id.edit_profile_btn_delete_account).setAction("Action", null).show();
             }
         });
 
         buttonDeleteAccDeny.setOnClickListener(v -> popupWindow.dismiss());
     }
 
-    private void setAppBarFab() {
+    private void setAppBarFab(int visibility) {
         Bundle result = new Bundle();
-        result.putInt("visibility", View.INVISIBLE);
+        result.putInt("visibility", visibility);
         // The child fragment needs to still set the result on its parent fragment manager
         getParentFragmentManager().setFragmentResult("requestKey", result);
     }
