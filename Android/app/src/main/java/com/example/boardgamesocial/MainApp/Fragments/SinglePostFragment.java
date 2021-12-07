@@ -1,5 +1,7 @@
 package com.example.boardgamesocial.MainApp.Fragments;
 
+import static com.example.boardgamesocial.API.RetrofitClient.getObjectList;
+
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
@@ -8,10 +10,18 @@ import androidx.fragment.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
+import android.widget.TextView;
 import android.widget.Toast;
 
+import com.example.boardgamesocial.API.RetrofitClient;
+import com.example.boardgamesocial.DataClasses.Post;
+import com.example.boardgamesocial.DataClasses.User;
 import com.example.boardgamesocial.DataViews.Adapters.ViewHolders.PostVH;
 import com.example.boardgamesocial.R;
+
+import java.util.HashMap;
+import java.util.List;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -20,10 +30,19 @@ import com.example.boardgamesocial.R;
  */
 public class SinglePostFragment extends Fragment {
 
+    public static final String TAG = "SinglePostFragment";
+
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
     private static final String ARG_PARAM1 = "param1";
     private static final String ARG_PARAM2 = "param2";
+
+    private RetrofitClient retrofitClient;
+    private TextView textViewUsername;
+    private TextView textViewPostType;
+    private TextView textViewBody;
+    private TextView textViewLikes;
+    private ImageView imageViewUserIcon;
 
     // TODO: Rename and change types of parameters
     private String mParam1;
@@ -71,5 +90,29 @@ public class SinglePostFragment extends Fragment {
         super.onViewCreated(view, savedInstanceState);
         assert this.getArguments() != null;
         Toast.makeText(getContext(), this.getArguments().getSerializable(PostVH.POST_KEY).toString(), Toast.LENGTH_SHORT).show();
+        retrofitClient = RetrofitClient.getClient();
+
+        Post post = (Post) getArguments().getSerializable(PostVH.POST_KEY);
+        textViewUsername = view.findViewById(R.id.single_post_poster);
+        textViewPostType = view.findViewById(R.id.single_post_type);
+        textViewBody = view.findViewById(R.id.single_post_body);
+        textViewLikes = view.findViewById(R.id.single_post_number_likes);
+        imageViewUserIcon = view.findViewById(R.id.single_post_user_icon);
+
+        setUsername(post.getUserId());
+        textViewPostType.setText(post.getPostType().toString());
+        textViewBody.setText(post.getPostBody().toString());
+        textViewLikes.setText(post.getLikes().toString());
+    }
+
+    private void setUsername(int userId) {
+        retrofitClient.getCall(User.class, new HashMap<String, String>() {{
+            put("id", String.valueOf(userId));
+        }}).subscribe(jsonArray -> {
+            getActivity().runOnUiThread(() -> {
+                List<User> users = getObjectList(jsonArray, User.class);
+                textViewUsername.setText(users.get(0).getUsername().toString());
+            });
+        });
     }
 }

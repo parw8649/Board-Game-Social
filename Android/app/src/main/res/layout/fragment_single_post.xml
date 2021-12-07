@@ -3,12 +3,106 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:layout_margin="8dp"
     tools:context=".MainApp.Fragments.SinglePostFragment">
 
-    <!-- TODO: Update blank fragment layout -->
-    <TextView
+    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:text="@string/hello_blank_fragment" />
+        android:orientation="vertical">
 
+    <androidx.cardview.widget.CardView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="@dimen/linear_vert_padding"
+        android:backgroundTint="@color/very_light_tangelo_light_var">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:padding="8dp">
+
+                <ImageView
+                    android:id="@+id/single_post_user_icon"
+                    android:layout_width="70dp"
+                    android:layout_height="70dp"
+                    android:layout_alignParentStart="true"
+                    android:layout_toStartOf="@id/single_post_name_and_type"
+                    android:src="@drawable/ic_baseline_person_24" />
+
+                <LinearLayout
+                    android:id="@+id/single_post_name_and_type"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:orientation="vertical">
+
+                    <TextView
+                        android:id="@+id/single_post_poster"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:maxLines="1"
+                        android:text="@string/item_textView_posterPlaceHolder"
+                        android:textAppearance="@style/TextAppearance.AppCompat.Headline" />
+
+                    <TextView
+                        android:id="@+id/single_post_type"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:maxLines="1"
+                        android:text="@string/item_textView_postTypePlaceHolder"
+                        android:textAppearance="@style/TextAppearance.AppCompat.Medium" />
+                </LinearLayout>
+            </LinearLayout>
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <TextView
+                    android:id="@+id/single_post_body"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:paddingStart="8dp"
+                    android:paddingEnd="8dp"
+                    android:text="@string/item_textView_postBodyPlaceHolder"
+                    android:textAppearance="@style/TextAppearance.AppCompat.Body1"
+                    android:textSize="@dimen/textSizeBig" />
+
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@id/single_post_body"
+                    android:layout_alignParentEnd="true">
+
+                    <ImageView
+                        android:id="@+id/single_post_like_img"
+                        android:clickable="true"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:src="@drawable/ic_baseline_favorite_24" />
+
+                    <TextView
+                        android:id="@+id/single_post_number_likes"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:textAlignment="center"
+                        android:text="@string/item_textView_numberLikesPlaceholder" />
+                </LinearLayout>
+            </RelativeLayout>
+        </LinearLayout>
+    </androidx.cardview.widget.CardView>
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/comments_recyclerView"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        tools:listitem="@layout/comment_item"
+        android:orientation="vertical"/>
+    </LinearLayout>
 </FrameLayout>
