@@ -62,28 +62,23 @@ public class MainAppActivity extends AppCompatActivity {
             switch (item.getItemId()) {
                 case R.id.home_option:
                     navController.navigate(R.id.HomePostFragment);
-//                    bottomAppBar.setCradleVerticalOffset(fabOffsetVisible);
                     fab.setVisibility(View.VISIBLE);
                     break;
                 case R.id.events_option:
                     navController.navigate(R.id.eventsFragment);
-//                    bottomAppBar.setCradleVerticalOffset(fabOffsetVisible);
                     fab.setVisibility(View.VISIBLE);
                     break;
                 case R.id.games_option:
                     // this should direct to a fragment showing all games available in database
                     navController.navigate(R.id.gameCollectionFragment);
-//                    bottomAppBar.setCradleVerticalOffset(fabOffsetVisible);
                     fab.setVisibility(View.VISIBLE);
                     break;
                 case R.id.search_option:
                     navController.navigate(R.id.searchFragment);
-//                    bottomAppBar.setCradleVerticalOffset(fabOffsetInvisible);
                     fab.setVisibility(View.INVISIBLE);
                     break;
                 case R.id.profile_option:
                     navController.navigate(R.id.profileFragment);
-//                    bottomAppBar.setCradleVerticalOffset(fabOffsetInvisible);
                     fab.setVisibility(View.INVISIBLE);
                     break;
                 case R.id.logout_option:
