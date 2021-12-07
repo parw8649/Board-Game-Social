@@ -134,12 +134,6 @@ public class SearchFragment extends Fragment implements AdapterView.OnItemSelect
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         spSearch.setAdapter(adapter);
         spSearch.setOnItemSelectedListener(this);
-//        btnSearch.setOnClickListener(view1 -> {
-//            Toast a = Toast.makeText(this.getContext(), "Search" + searchOption, Toast.LENGTH_LONG);
-//            a.show();
-//            //search(retrofitClient);
-//        });
-
 
         Observable<String> observableQueryText = Observable
                 .create((ObservableOnSubscribe<String>) emitter -> svSearchBar.setOnQueryTextListener(
@@ -164,9 +158,7 @@ public class SearchFragment extends Fragment implements AdapterView.OnItemSelect
         observableQueryText.subscribe(res -> {
             Log.d(TAG, "onNext: search query: " + res);
             // method for sending a request to the server
-            //sendRequestToServer(s);
             requireActivity().runOnUiThread(()-> search(res));
-//            search(res);
         });
     }
 
@@ -197,6 +189,7 @@ public class SearchFragment extends Fragment implements AdapterView.OnItemSelect
                 break;
             case "People":
                 Log.i(TAG, "People Search");
+                //ToDO: Add people layout
                 break;
             case "Events":
                 Log.i(TAG, "Event Search");
@@ -278,9 +271,11 @@ public class SearchFragment extends Fragment implements AdapterView.OnItemSelect
                 break;
             case "People":
                 Log.i(TAG,"People Search");
+                //Add serach for people
                 break;
             case "Events":
                 Log.i(TAG,"Event Search");
+                //Todo: Add search for event
                 break;
             default:
                 break;
@@ -290,6 +285,7 @@ public class SearchFragment extends Fragment implements AdapterView.OnItemSelect
 
     @Override
     public void onItemClick(Bundle contextBundle) {
+        //Todo: Add actions to nav to page depending on item with context bundle
 
     }
 }
