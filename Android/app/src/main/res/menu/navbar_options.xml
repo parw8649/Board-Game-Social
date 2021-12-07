@@ -44,11 +44,6 @@
         app:showAsAction="always" />
 
     <item
-        android:id="@+id/empty3"
-        android:title=""
-        app:showAsAction="always" />
-
-    <item
         android:id="@+id/profile_option"
         android:title="@string/profile_option_title"
         android:icon="@drawable/ic_baseline_person_24_blue_yonder"

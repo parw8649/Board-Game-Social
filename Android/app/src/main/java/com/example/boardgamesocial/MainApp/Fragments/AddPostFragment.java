@@ -173,7 +173,7 @@ public class AddPostFragment extends Fragment {
             return;
         }
         Snackbar.make(view, R.string.add_post_success, Snackbar.LENGTH_LONG)
-                .setAnchorView(R.id.add_post_button).setAction("Action", null).show();
+                .setAnchorView(R.id.bottom_app_bar).setAction("Action", null).show();
         setAppBarFab(View.VISIBLE);
         NavHostFragment.findNavController(AddPostFragment.this)
                 .navigate(R.id.action_addPostFragment_to_HomePostFragment);
