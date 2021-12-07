@@ -79,6 +79,11 @@ public class MainAppActivity extends AppCompatActivity {
                     Intent goToHomePostActivity = LoginAndSignUpActivity.getIntent(MainAppActivity.this);
                     startActivity(goToHomePostActivity);
                     break;
+                case R.id.chat_option:
+                    navController.navigate(R.id.chatFragment);
+                    bottomAppBar.setCradleVerticalOffset(fabOffsetInvisible);
+                    fab.setVisibility(View.INVISIBLE);
+                    break;
             }
             setFabOnClick(item.getItemId());
             return true;

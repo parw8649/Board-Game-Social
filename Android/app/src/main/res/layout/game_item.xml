@@ -89,9 +89,9 @@
             android:layout_width="@dimen/item_more_btn_width"
             android:layout_height="45dp"
             android:layout_alignParentEnd="true"
-            android:src="@drawable/ic_baseline_delete_24"
             android:backgroundTint="@color/blue_yonder"
             android:padding="@dimen/btn_padding_slim"
+            android:src="@drawable/ic_baseline_delete_24"
             android:textAppearance="@style/TextAppearance.AppCompat.Small" />
 
     </RelativeLayout>

@@ -1,7 +1,10 @@
 package com.example.boardgamesocial.MainApp.Fragments;
 
 import static com.example.boardgamesocial.API.RetrofitClient.getObject;
+import static com.example.boardgamesocial.API.RetrofitClient.getObjectList;
 
+import android.app.DatePickerDialog;
+import android.app.TimePickerDialog;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.util.Log;
@@ -11,10 +14,12 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.EditText;
+import android.widget.ImageButton;
 import android.widget.RelativeLayout;
 
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
+import androidx.navigation.fragment.NavHostFragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -23,16 +28,27 @@ import com.example.boardgamesocial.Commons.Utils;
 import com.example.boardgamesocial.DataClasses.Event;
 import com.example.boardgamesocial.DataClasses.Game;
 import com.example.boardgamesocial.DataClasses.HostedGame;
+import com.example.boardgamesocial.DataClasses.Relationships.GameToUser;
 import com.example.boardgamesocial.DataViews.Adapters.DataClsAdapter;
 import com.example.boardgamesocial.DataViews.Adapters.DataClsAdapter.OnItemListener;
 import com.example.boardgamesocial.DataViews.Adapters.ViewHolders.GameVH;
 import com.example.boardgamesocial.DataViews.DataClsVM;
 import com.example.boardgamesocial.R;
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
+import com.google.gson.JsonArray;
 
+import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.HashMap;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Objects;
 import java.util.Set;
+import java.util.concurrent.atomic.AtomicReference;
+import java.util.stream.Collectors;
+
+import io.reactivex.Observable;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -43,9 +59,14 @@ public class AddEventFragment extends Fragment implements OnItemListener {
 
     public static final String TAG = "AddEventFragment";
 
+    private final Gson gson = new GsonBuilder().create();
+
+    private List<GameToUser> gameToUserList;
+
     private EditText etEventName;
     private EditText etEventDateTime;
     private EditText etEventDescription;
+    private int mYear, mMonth, mDay, mHour, mMinute, mSeconds;
 
     private RecyclerView recyclerView;
 
@@ -104,6 +125,7 @@ public class AddEventFragment extends Fragment implements OnItemListener {
         etEventName = view.findViewById(R.id.et_event_name);
         etEventDateTime = view.findViewById(R.id.et_event_date_time);
         etEventDescription = view.findViewById(R.id.et_event_description);
+        ImageButton ibtnSetDate = view.findViewById(R.id.btn_set_date);
 
         Button btnSaveEvent = view.findViewById(R.id.btn_save_event);
 
@@ -118,21 +140,115 @@ public class AddEventFragment extends Fragment implements OnItemListener {
         recyclerView.setAdapter(dataClsAdapter);
 
         DataClsVM dataClsVM = DataClsVM.getInstance();
-        dataClsVM.getMediatorLiveData(RetrofitClient.getClient().getCall(Game.class, new HashMap<>()), Game.class, false)
+        dataClsVM.getMediatorLiveData(fetchNonPrivateGames(), Game.class, true)
                 .observe(getViewLifecycleOwner(), dataClsAdapter::addNewObjects);
+
+        AtomicReference<StringBuilder> sbEventDateTime = new AtomicReference<>();
+
+        ibtnSetDate.setOnClickListener(s -> {
+
+            sbEventDateTime.set(new StringBuilder());
+
+            //Log.i(TAG, "Acceptable time format: " + java.time.Clock.systemUTC().instant());
+
+            //StringBuilder dateTime = new StringBuilder();
+
+            // Get Current Date
+            final Calendar c = Calendar.getInstance();
+            mYear = c.get(Calendar.YEAR);
+            mMonth = c.get(Calendar.MONTH);
+            mDay = c.get(Calendar.DAY_OF_MONTH);
+            mHour = c.get(Calendar.HOUR_OF_DAY);
+            mMinute = c.get(Calendar.MINUTE);
+            mSeconds = c.get(Calendar.SECOND);
+            //mMilliseconds = c.get(Calendar.MILLISECOND);
+
+            // Launch Time Picker Dialog
+            TimePickerDialog timePickerDialog = new TimePickerDialog(requireContext(),
+                    (view12, hourOfDay, minute) -> {
+
+                        sbEventDateTime.get()
+                                .append(" | ")
+                                .append(hourOfDay).append(":")
+                                .append(minute).append(":")
+                                .append(mSeconds);
+
+                        etEventDateTime.setText(sbEventDateTime.toString());
+                    }, mHour, mMinute, true);
+
+            timePickerDialog.show();
+
+            DatePickerDialog datePickerDialog = new DatePickerDialog(requireContext(),
+                    (view1, year, monthOfYear, dayOfMonth) -> {
+
+                        sbEventDateTime.get()
+                                .append(year).append("-")
+                                .append(monthOfYear + 1).append("-")
+                                .append(dayOfMonth);
+
+                        etEventDateTime.setText(sbEventDateTime.toString());
+                    },
+                    mYear, mMonth, mDay);
+
+            datePickerDialog.show();
+
+            //Log.i(TAG, "-------------------------> dateTime: " + tvEventDateTime.getText().toString());
+        });
 
         btnSaveEvent.setOnClickListener(v -> {
 
+            etEventDateTime.setText(sbEventDateTime.toString());
+            Log.i(TAG, "-----------------------> Updated Event Date Time: " + etEventDateTime.getText().toString());
+
             String eventName = Objects.nonNull(etEventName) ? etEventName.getText().toString() : null;
-            String eventDateTime = Objects.nonNull(etEventDateTime) ? etEventDateTime.getText().toString() : null;
+
+            String eventDateTime = Objects.nonNull(etEventDateTime)
+                    ? etEventDateTime.getText().toString()
+                    : String.valueOf(java.time.Clock.systemUTC().instant());
+
             String eventDescription = Objects.nonNull(etEventDescription) ? etEventDescription.getText().toString() : null;
 
-            //TODO: Need to add date picker at FE
+            //Need to add date picker at FE
             eventDateTime = String.valueOf(java.time.Clock.systemUTC().instant());
 
             addEvent(new Event(eventName, Utils.getUserId()), eventDateTime, eventDescription);
-            requireActivity().getSupportFragmentManager().popBackStack();
+            //requireActivity().getSupportFragmentManager().popBackStack();
+            NavHostFragment
+                    .findNavController(AddEventFragment.this)
+                    .navigate(R.id.action_addEventFragment_to_eventsFragment);
         });
+    }
+
+    @Override
+    public void onItemClick(Bundle contextBundle) {
+        Game game = (Game) contextBundle.getSerializable(GameVH.GAME_KEY);
+        DataClsAdapter<Game, GameVH> dataClsAdapter = (DataClsAdapter<Game, GameVH>) recyclerView.getAdapter();
+        assert dataClsAdapter != null;
+
+        RecyclerView.ViewHolder viewHolder = recyclerView
+                .findViewHolderForAdapterPosition(dataClsAdapter
+                        .getObjectList()
+                        .indexOf(game));
+        assert viewHolder != null;
+
+        CheckBox checkBox = viewHolder.itemView.findViewById(R.id.ck_hosted_game);
+        checkBox.setVisibility(View.INVISIBLE);
+        RelativeLayout relativeLayout = viewHolder.itemView.findViewById(R.id.hosted_game_card);
+
+        if(Objects.nonNull(game)) {
+            Log.i(TAG, game.getId().toString());
+            if(checkBox.isChecked()) {
+                checkBox.setChecked(false);
+                gameIdList.remove(game.getId());
+                Log.i(TAG, "Removed - GameId: " + game.getId().toString());
+                relativeLayout.setBackgroundColor(Color.parseColor("#5EFF9B44"));
+            } else {
+                checkBox.setChecked(true);
+                gameIdList.add(game.getId());
+                Log.i(TAG, "Added - GameId: " + game.getId().toString());
+                relativeLayout.setBackgroundColor(Color.parseColor("#60000000"));
+            }
+        }
     }
 
     private void addEvent(Event event, String eventDateTime, String eventDescription) {
@@ -188,35 +304,104 @@ public class AddEventFragment extends Fragment implements OnItemListener {
         });
     }
 
-    @Override
-    public void onItemClick(Bundle contextBundle) {
-        Game game = (Game) contextBundle.getSerializable(GameVH.GAME_KEY);
-        DataClsAdapter<Game, GameVH> dataClsAdapter = (DataClsAdapter<Game, GameVH>) recyclerView.getAdapter();
-        assert dataClsAdapter != null;
+    //Method to remove private games from the games collection
+    private Observable<JsonArray> fetchNonPrivateGames() {
 
-        RecyclerView.ViewHolder viewHolder = recyclerView
-                .findViewHolderForAdapterPosition(dataClsAdapter
-                        .getObjectList()
-                        .indexOf(game));
-        assert viewHolder != null;
+        Log.i(TAG, "Inside fetchNonPrivateGames");
 
-        CheckBox checkBox = viewHolder.itemView.findViewById(R.id.ck_hosted_game);
-        checkBox.setVisibility(View.INVISIBLE);
-        RelativeLayout relativeLayout = viewHolder.itemView.findViewById(R.id.hosted_game_card);
+        gameToUserList = new ArrayList<>();
 
-        if(Objects.nonNull(game)) {
-            Log.i(TAG, game.getId().toString());
-            if(checkBox.isChecked()) {
-                checkBox.setChecked(false);
-                gameIdList.remove(game.getId());
-                Log.i(TAG, "Removed - GameId: " + game.getId().toString());
-                relativeLayout.setBackgroundColor(Color.parseColor("#5EFF9B44"));
-            } else {
-                checkBox.setChecked(true);
-                gameIdList.add(game.getId());
-                Log.i(TAG, "Added - GameId: " + game.getId().toString());
-                relativeLayout.setBackgroundColor(Color.parseColor("#60000000"));
+        RetrofitClient.getClient().getCall(GameToUser.class, new HashMap<String, String>() {{
+            put("private", "True");
+        }}).blockingSubscribe(gameToUserJson -> gameToUserList = getObjectList(gameToUserJson, GameToUser.class));
+
+        List<Integer> gameIdList = gameToUserList.stream().map(GameToUser::getGameId).collect(Collectors.toList());
+
+        JsonArray jsonArray = new JsonArray();
+
+        RetrofitClient.getClient().getCall(Game.class, new HashMap<>()).blockingSubscribe(j -> {
+            if(!j.isEmpty()) {
+
+                List<Game> gameList = getObjectList(j, Game.class);
+
+                if(Objects.nonNull(gameList) && !gameList.isEmpty()) {
+
+                    gameList.forEach(game -> {
+                        if(!gameIdList.contains(game.getId())) {
+                            jsonArray.add(gson.toJsonTree(game));
+                        }
+                    });
+                }
             }
-        }
+        });
+
+        return Observable.fromArray(jsonArray);
     }
+
+    //-------------------------------------------update date---//
+    /*private void updateDate() {
+        mDateDisplay.setText(
+                new StringBuilder()
+                        // Month is 0 based so add 1
+                        .append(mDay).append("/")
+                        .append(mMonth + 1).append("/")
+                        .append(mYear).append(" "));
+        showDialog(TIME_DIALOG_ID);
+    }
+
+    //-------------------------------------------update time---//
+    public void updatetime() {
+        mTimeDisplay.setText(
+                new StringBuilder()
+                        .append(pad(mhour)).append(":")
+                        .append(pad(mminute)));
+    }
+
+    private static String pad(int c) {
+        if (c >= 10)
+            return String.valueOf(c);
+        else
+            return "0" + String.valueOf(c);
+
+
+        //Datepicker dialog generation
+
+        private DatePickerDialog.OnDateSetListener mDateSetListener =
+                new DatePickerDialog.OnDateSetListener() {
+
+                    public void onDateSet(DatePicker view, int year,
+                                          int monthOfYear, int dayOfMonth) {
+                        mYear = year;
+                        mMonth = monthOfYear;
+                        mDay = dayOfMonth;
+                        updateDate();
+                    }
+                };
+
+
+        // Timepicker dialog generation
+        private TimePickerDialog.OnTimeSetListener mTimeSetListener =
+                new TimePickerDialog.OnTimeSetListener() {
+                    public void onTimeSet(TimePicker view, int hourOfDay, int minute) {
+                        mhour = hourOfDay;
+                        mminute = minute;
+                        updatetime();
+                    }
+                };
+
+        @Override
+        protected Dialog onCreateDialog(int id) {
+            switch (id) {
+                case DATE_DIALOG_ID:
+                    return new DatePickerDialog(this,
+                            mDateSetListener,
+                            mYear, mMonth, mDay);
+
+                case TIME_DIALOG_ID:
+                    return new TimePickerDialog(this,
+                            mTimeSetListener, mhour, mminute, false);
+
+            }
+            return null;
+        }*/
 }
