@@ -5,6 +5,7 @@ import android.os.Bundle;
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.Observer;
+import androidx.navigation.fragment.NavHostFragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -24,6 +25,7 @@ import com.example.boardgamesocial.API.RetrofitClient;
 import com.example.boardgamesocial.Commons.Utils;
 import com.example.boardgamesocial.DataClasses.Event;
 import com.example.boardgamesocial.DataClasses.Game;
+import com.example.boardgamesocial.DataClasses.User;
 import com.example.boardgamesocial.DataViews.Adapters.DataClsAdapter;
 import com.example.boardgamesocial.DataViews.Adapters.ViewHolders.DataClsVH;
 import com.example.boardgamesocial.DataViews.Adapters.ViewHolders.EventVH;
@@ -68,12 +70,15 @@ public class SearchFragment extends Fragment implements AdapterView.OnItemSelect
     private String searchOption;
     private RecyclerView rvGames;
     private RecyclerView rvEvents;
-    private RecyclerView rvPeople;
+    private RecyclerView rvUser;
     private CompositeDisposable disposables = new CompositeDisposable();
     private boolean gamesLoaded;
     private RetrofitClient retrofitClient;
     private DataClsAdapter<Game, GameVH> dataClsAdapterGames;
     private DataClsVM dataClsVM;
+    private DataClsAdapter<Event, EventVH> dataClsAdapterEvents;
+    //Todo: Add UserVH
+    //private DataClsAdapter<User, UserVH> dataClsAdapterUsers;
 
     public SearchFragment() {
         // Required empty public constructor
@@ -122,7 +127,7 @@ public class SearchFragment extends Fragment implements AdapterView.OnItemSelect
         spSearch = view.findViewById(R.id.sp_search);
         rvGames = view.findViewById(R.id.rvGamesSearch);
         rvEvents = view.findViewById(R.id.rvEventsSearch);
-        rvPeople = view.findViewById(R.id.rvPeopleSearch);
+        rvUser = view.findViewById(R.id.rvUserSearch);
         searchOption = "Games";
         gamesLoaded = false;
 
@@ -137,28 +142,29 @@ public class SearchFragment extends Fragment implements AdapterView.OnItemSelect
 
         Observable<String> observableQueryText = Observable
                 .create((ObservableOnSubscribe<String>) emitter -> svSearchBar.setOnQueryTextListener(
-                new SearchView.OnQueryTextListener() {
-                    @Override
-                    public boolean onQueryTextSubmit(String query) {
-                        return false;
-                    }
-                    @Override
-                    public boolean onQueryTextChange(final String newText) {
-                        if (!emitter.isDisposed()) {
-                            if (!newText.isEmpty()) {
-                                emitter.onNext(newText); // Pass the query to the emitter
+                        new SearchView.OnQueryTextListener() {
+                            @Override
+                            public boolean onQueryTextSubmit(String query) {
+                                return false;
                             }
-                        }
-                        return false;
-                    }
-                }))
+
+                            @Override
+                            public boolean onQueryTextChange(final String newText) {
+                                if (!emitter.isDisposed()) {
+                                    if (!newText.isEmpty()) {
+                                        emitter.onNext(newText); // Pass the query to the emitter
+                                    }
+                                }
+                                return false;
+                            }
+                        }))
                 .debounce(500, TimeUnit.MILLISECONDS) // Apply Debounce() operator to limit requests
                 .subscribeOn(AndroidSchedulers.mainThread());
 
         observableQueryText.subscribe(res -> {
             Log.d(TAG, "onNext: search query: " + res);
             // method for sending a request to the server
-            requireActivity().runOnUiThread(()-> search(res));
+            requireActivity().runOnUiThread(() -> search(res));
         });
     }
 
@@ -172,31 +178,41 @@ public class SearchFragment extends Fragment implements AdapterView.OnItemSelect
             case "Games":
                 Log.i(TAG, "Games Search");
                 changeVisibility("Games");
-                if (!gamesLoaded) {
-                    rvGames.setLayoutManager(new LinearLayoutManager(this.getContext()));
+                rvGames.setLayoutManager(new LinearLayoutManager(this.getContext()));
 
-                    dataClsAdapterGames = new DataClsAdapter<>(
+                dataClsAdapterGames = new DataClsAdapter<>(
                         this,
                         Game.class,
                         getActivity(),
                         R.layout.game_item);
-                    rvGames.setAdapter(dataClsAdapterGames);
+                rvGames.setAdapter(dataClsAdapterGames);
 
-                    dataClsVM.getMediatorLiveData(RetrofitClient.getClient().getCall(Game.class, new HashMap<>()), Game.class, true)
+                dataClsVM.getMediatorLiveData(RetrofitClient.getClient().getCall(Game.class, new HashMap<>()), Game.class, true)
                         .observe(getViewLifecycleOwner(), dataClsAdapterGames::addNewObjects);
-                    gamesLoaded = true;
-                }
+
+
                 break;
-            case "People":
-                Log.i(TAG, "People Search");
-                //ToDO: Add people layout
+            case "User":
+                Log.i(TAG, "User Search");
+                //ToDO: Add user layout
+                rvUser.setLayoutManager(new LinearLayoutManager(this.getContext()));
+
+//                dataClsAdapterUser = new DataClsAdapter<>(
+//                        this,
+//                        User.class,
+//                        getActivity(),
+//                        R.layout.user_item);
+//                rvEvents.setAdapter(dataClsAdapterUser);
+
+                // dataClsVM.getMediatorLiveData(RetrofitClient.getClient().getCall(User.class, new HashMap<>()), User.class, true)
+                //.observe(getViewLifecycleOwner(), dataClsAdapterUser::addNewObjects);
                 break;
             case "Events":
                 Log.i(TAG, "Event Search");
                 changeVisibility("Events");
                 rvEvents.setLayoutManager(new LinearLayoutManager(this.getContext()));
 
-                DataClsAdapter<Event, EventVH> dataClsAdapterEvents = new DataClsAdapter<>(
+                dataClsAdapterEvents = new DataClsAdapter<>(
                         this,
                         Event.class,
                         getActivity(),
@@ -228,19 +244,19 @@ public class SearchFragment extends Fragment implements AdapterView.OnItemSelect
             case "Games":
                 Log.i(TAG, "Games Visible");
                 rvGames.setVisibility(View.VISIBLE);
-                rvPeople.setVisibility(View.GONE);
+                rvUser.setVisibility(View.GONE);
                 rvEvents.setVisibility(View.GONE);
                 break;
-            case "People":
-                Log.i(TAG, "People Visible");
+            case "User":
+                Log.i(TAG, "User Visible");
                 rvGames.setVisibility(View.GONE);
-                rvPeople.setVisibility(View.VISIBLE);
+                rvUser.setVisibility(View.VISIBLE);
                 rvEvents.setVisibility(View.GONE);
                 break;
             case "Events":
                 Log.i(TAG, "Event Visible");
                 rvGames.setVisibility(View.GONE);
-                rvPeople.setVisibility(View.GONE);
+                rvUser.setVisibility(View.GONE);
                 rvEvents.setVisibility(View.VISIBLE);
                 break;
             default:
@@ -253,14 +269,14 @@ public class SearchFragment extends Fragment implements AdapterView.OnItemSelect
 
     public void search(String searchQuery) {
 //      TODO: validate query
-        switch(searchOption) {
+        switch (searchOption) {
             case "Games":
-                Log.i(TAG,"Games Search");
-                Observable<JsonArray> gameQuery = retrofitClient.getCall(Game.class, new HashMap<String, String>(){{
+                Log.i(TAG, "Games Search");
+                Observable<JsonArray> gameQuery = retrofitClient.getCall(Game.class, new HashMap<String, String>() {{
                     put("gameTitle", searchQuery);
-                }}).mergeWith(retrofitClient.getCall(Game.class, new HashMap<String, String>(){{
+                }}).mergeWith(retrofitClient.getCall(Game.class, new HashMap<String, String>() {{
                     put("genre", searchQuery);
-                }})).mergeWith(retrofitClient.getCall(Game.class, new HashMap<String, String>(){{
+                }})).mergeWith(retrofitClient.getCall(Game.class, new HashMap<String, String>() {{
                     put("description", searchQuery);
                 }})).scan((cumulativeJsonArray, newJsonArray) -> {
                     cumulativeJsonArray.addAll(newJsonArray);
@@ -269,13 +285,32 @@ public class SearchFragment extends Fragment implements AdapterView.OnItemSelect
                 dataClsVM.getMediatorLiveData(gameQuery, Game.class, true)
                         .observe(getViewLifecycleOwner(), dataClsAdapterGames::addNewObjects);
                 break;
-            case "People":
-                Log.i(TAG,"People Search");
-                //Add serach for people
+            case "User":
+//                Log.i(TAG, "User Search");
+//                //Add search for user
+//                Observable<JsonArray> userQuery = retrofitClient.getCall(User.class, new HashMap<String, String>() {{
+//                    put("username", searchQuery);
+//                }}).mergeWith(retrofitClient.getCall(User.class, new HashMap<String, String>() {{
+//                }})).scan((cumulativeJsonArray, newJsonArray) -> {
+//                    cumulativeJsonArray.addAll(newJsonArray);
+//                    return cumulativeJsonArray;
+//                });
+                // dataClsVM.getMediatorLiveData(userQuery, Game.class, true)
+                //      .observe(getViewLifecycleOwner(), dataClsAdapterUsers::addNewObjects);
                 break;
             case "Events":
-                Log.i(TAG,"Event Search");
-                //Todo: Add search for event
+                Log.i(TAG, "Event Search");
+                Observable<JsonArray> eventQuery = retrofitClient.getCall(Event.class, new HashMap<String, String>() {{
+                    put("name", searchQuery);
+                }}).mergeWith(retrofitClient.getCall(Event.class, new HashMap<String, String>() {{
+                    put("description", searchQuery);
+                }})).scan((cumulativeJsonArray, newJsonArray) -> {
+                    cumulativeJsonArray.addAll(newJsonArray);
+                    return cumulativeJsonArray;
+                });
+                dataClsVM.getMediatorLiveData(eventQuery, Event.class, true)
+                        .observe(getViewLifecycleOwner(), dataClsAdapterEvents::addNewObjects);
+
                 break;
             default:
                 break;
@@ -285,8 +320,19 @@ public class SearchFragment extends Fragment implements AdapterView.OnItemSelect
 
     @Override
     public void onItemClick(Bundle contextBundle) {
-        //Todo: Add actions to nav to page depending on item with context bundle
+        switch (searchOption) {
+            case "Games":
+                NavHostFragment.findNavController(SearchFragment.this)
+                        .navigate(R.id.action_searchFragment_to_gameReviewsFragment, contextBundle);
+                break;
+            case "People":
+                NavHostFragment.findNavController(SearchFragment.this)
+                        .navigate(R.id.action_searchFragment_to_profileFragment, contextBundle);
+            case "Events":
+                NavHostFragment.findNavController(SearchFragment.this)
+                        .navigate(R.id.action_searchFragment_to_singleEventFragment, contextBundle);
 
+        }
     }
 }
 

@@ -77,7 +77,7 @@
         tools:listitem="@layout/event_item" />
 
     <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/rvPeopleSearch"
+        android:id="@+id/rvUserSearch"
         android:layout_width="409dp"
         android:layout_height="583dp"
         android:layout_marginStart="8dp"
