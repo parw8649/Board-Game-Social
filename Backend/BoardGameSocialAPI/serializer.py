@@ -26,6 +26,15 @@ class UserSerializer(serializers.ModelSerializer):
         return user
 
 
+class ProfileSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Profile
+        fields = [
+            'bio',
+            'iconUrl',
+        ]
+
+
 class EventSerializer(serializers.ModelSerializer):
     class Meta:
         model = Event
@@ -47,6 +56,7 @@ class PostSerializer(serializers.ModelSerializer):
             'userId',
             'postBody',
             'postType',
+            'dateTime',
             'private',
             'likes'
         ]
@@ -84,6 +94,7 @@ class MessageSerializer(serializers.ModelSerializer):
             'id',
             'senderId',
             'receiverId',
+            'dateTime',
             'content'
         ]
 
