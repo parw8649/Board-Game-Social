@@ -35,7 +35,7 @@ public class RetrofitClient {
 
     public static final String TAG = "RetrofitClient";
 
-    public static APIMode apiMode = APIMode.PROD;
+    public static APIMode apiMode = APIMode.DEV;
     private final API api;
     private static RetrofitClient retrofitClient;
 

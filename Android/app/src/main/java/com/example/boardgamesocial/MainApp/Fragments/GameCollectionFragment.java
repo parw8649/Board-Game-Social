@@ -46,10 +46,7 @@ import io.reactivex.Observable;
 public class GameCollectionFragment extends Fragment implements OnItemListener {
 
     public static final String TAG = "GameCollectionFragment";
-
-    private final Gson gson = new GsonBuilder().create();
-
-    private List<GameToUser> gameToUserList;
+    public static final RetrofitClient retrofitClient = RetrofitClient.getClient();
 
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
@@ -115,7 +112,7 @@ public class GameCollectionFragment extends Fragment implements OnItemListener {
         recyclerView.setAdapter(dataClsAdapter);
 
         DataClsVM dataClsVM = DataClsVM.getInstance();
-        dataClsVM.getMediatorLiveData(fetchNonPrivateGames(), Game.class, true)
+        dataClsVM.getMediatorLiveData(retrofitClient.getCall(Game.class, new HashMap<>()), Game.class, true)
                 .observe(getViewLifecycleOwner(), dataClsAdapter::addNewObjects);
     }
 
@@ -130,39 +127,5 @@ public class GameCollectionFragment extends Fragment implements OnItemListener {
 
         NavHostFragment.findNavController(GameCollectionFragment.this)
                 .navigate(R.id.action_gameCollectionFragment_to_gameReviews, contextBundle);
-    }
-
-    //Method to remove private games from the games collection
-    private Observable<JsonArray> fetchNonPrivateGames() {
-
-        Log.i(TAG, "Inside fetchNonPrivateGames");
-
-        gameToUserList = new ArrayList<>();
-
-        RetrofitClient.getClient().getCall(GameToUser.class, new HashMap<String, String>() {{
-            put("private", "True");
-        }}).blockingSubscribe(gameToUserJson -> gameToUserList = getObjectList(gameToUserJson, GameToUser.class));
-
-        List<Integer> gameIdList = gameToUserList.stream().map(GameToUser::getGameId).collect(Collectors.toList());
-
-        JsonArray jsonArray = new JsonArray();
-
-        RetrofitClient.getClient().getCall(Game.class, new HashMap<>()).blockingSubscribe(j -> {
-            if(!j.isEmpty()) {
-
-                List<Game> gameList = getObjectList(j, Game.class);
-
-                if(Objects.nonNull(gameList) && !gameList.isEmpty()) {
-
-                    gameList.forEach(game -> {
-                        if(!gameIdList.contains(game.getId())) {
-                            jsonArray.add(gson.toJsonTree(game));
-                        }
-                    });
-                }
-            }
-        });
-
-        return Observable.fromArray(jsonArray);
     }
 }
