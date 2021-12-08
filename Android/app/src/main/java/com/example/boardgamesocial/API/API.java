@@ -8,6 +8,7 @@ import com.example.boardgamesocial.DataClasses.Game;
 import com.example.boardgamesocial.DataClasses.HostedGame;
 import com.example.boardgamesocial.DataClasses.Message;
 import com.example.boardgamesocial.DataClasses.Post;
+import com.example.boardgamesocial.DataClasses.Profile;
 import com.example.boardgamesocial.DataClasses.Relationships.EventToUser;
 import com.example.boardgamesocial.DataClasses.Relationships.GameToUser;
 import com.example.boardgamesocial.DataClasses.Relationships.HostedGameToUser;
@@ -45,6 +46,7 @@ public interface API {
 
     HashMap<Class<?>, String> URL_MAP = new HashMap<Class<?>, String>() {{
         put(User.class, "api/user/");
+        put(Profile.class, "api/profile");
         put(Event.class, "api/event/");
         put(Post.class, "api/post/");
         put(Game.class, "api/game/");

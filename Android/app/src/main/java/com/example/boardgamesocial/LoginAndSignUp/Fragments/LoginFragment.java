@@ -11,6 +11,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
@@ -27,6 +28,8 @@ import com.example.boardgamesocial.databinding.FragmentLoginBinding;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Objects;
+
+import io.reactivex.Observable;
 
 public class LoginFragment extends Fragment {
 
@@ -86,7 +89,10 @@ public class LoginFragment extends Fragment {
                     Utils.addUserIdToPreferences(getContext(), userList.get(0).getId());
                     Intent goToMainAppActivity = MainAppActivity.getIntent(getContext());
                     startActivity(goToMainAppActivity);
+                }, throwable -> {
+                    requireActivity().runOnUiThread(() -> {
+                        Toast.makeText(getContext(), "Wrong credentials", Toast.LENGTH_SHORT).show();
+                    });
                 });
-
     }
 }

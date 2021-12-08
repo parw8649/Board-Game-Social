@@ -78,6 +78,8 @@ public class HomePostFragment extends Fragment implements DataClsAdapter.OnItemL
     public void onViewCreated(@NonNull View view, Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
+        setAppBarFab();
+
         if (Objects.nonNull(Utils.getUserId())) {
             Log.i(TAG, String.format("Utils.getUserId(): %d", Utils.getUserId()));
         }
@@ -93,7 +95,7 @@ public class HomePostFragment extends Fragment implements DataClsAdapter.OnItemL
         recyclerView.setAdapter(dataClsAdapter);
 
         DataClsVM dataClsVM = DataClsVM.getInstance();
-        dataClsVM.getMediatorLiveData(RetrofitClient.getClient().getCall(Post.class, new HashMap<>()), Post.class)
+        dataClsVM.getMediatorLiveData(RetrofitClient.getClient().getCall(Post.class, new HashMap<>()), Post.class, false)
                 .observe(getViewLifecycleOwner(), dataClsAdapter::addNewObjects);
     }
 
@@ -107,5 +109,12 @@ public class HomePostFragment extends Fragment implements DataClsAdapter.OnItemL
         NavHostFragment.findNavController(HomePostFragment.this)
                 .navigate(R.id.action_HomePostFragment_to_singlePostFragment, contextBundle);
         Toast.makeText(getContext(),"Item clicked", Toast.LENGTH_LONG).show();
+    }
+
+    private void setAppBarFab() {
+        Bundle result = new Bundle();
+        result.putInt("visibility", View.VISIBLE);
+        // The child fragment needs to still set the result on its parent fragment manager
+        getParentFragmentManager().setFragmentResult("requestKey", result);
     }
 }

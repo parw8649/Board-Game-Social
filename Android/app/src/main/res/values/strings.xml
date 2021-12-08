@@ -7,6 +7,7 @@
     <string name="games_option_title">Games</string>
     <string name="events_option_title">Events</string>
     <string name="search_option_title">Search</string>
+    <string name="chat_option_title">Chat</string>
     <!-- Strings used for item -->
     <string name="item_textView_posterPlaceHolder">Poster\'s Name</string>
     <string name="item_textView_postTypePlaceHolder">Post Type</string>
@@ -35,6 +36,7 @@
     <string name="game_min_player_text">Min players: %1$d</string>
     <string name="game_max_player_text">Max players: %1$d</string>
     <string name="game_overall_play_count_text">Overall play count: %1$d</string>
+    <string name="game_seats_available_text">Seats available: %1$d</string>
 
     <!-- Strings used for Add Game -->
     <string name="et_hint_game_title">Game title</string>
@@ -73,16 +75,7 @@
     <string name="profile_first_name_placeholder">firstName</string>
     <string name="profile_username_placeholder">username</string>
     <string name="profile_btn_edit">edit profile</string>
-    <string name="profile_bio_placeholder">I am the user’s biography. I will have a character limit
-        of 850 using Roboto regular at size 16. Ooooo ooooooooo oooooo ooooo ooooo oo ooooo oooo
-        ooooo oooo oooooo ooooooo ooooooo ooooo oooooooo oooo ooooo oooo ooooooooo ooo ooo oooo oo
-        ooooo oooo oooooooooo oo ooooo oooo oooo oooo oooooo oooo oooo oooo oo ooooooooooo oooooo
-        ooooooo oooooo oooooo oooooo ooooooooo ooo ooooo oooooo ooooo oo oooo ooooo oooo ooooo ooo
-        ooo oooooo oooooo oooooooo oooooo oooooo ooooo oooooo oooooo ooooo ooooooo oooooo ooooo ooooo
-        oooooooo oooooo oooooo ooooo oooooo oooooo ooooo ooooooo oooooo ooooooooooo oooooo ooooooooo
-        ooo ooooo oooooo ooooo oo oooo ooooo oooo ooooo ooo ooo oooooo oooooo oooooooo oooooo oooooo
-        ooooo oooooo oooooo ooooo ooooooo oooooo ooooo ooooo oooooooo oooooo oooooo ooooo oooooo oooooo
-        ooooo ooooooo oooooo ooooooo ooooo ooooooo oooooo oooooo</string>
+    <string name="profile_bio_placeholder">user biography</string>
     <string name="profile_btn_view_friends">view %1$s\'s friends</string>
     <string name="profile_btn_view_user_gamelist">view %1$s\'s gamelist</string>
     <string name="btn_text_sign_in">sign in</string>
@@ -100,17 +93,39 @@
     <string name="key_event_date_time">EVENT_DATE_TIME</string>
     <string name="key_event_description">EVENT_DESCRIPTION</string>
 
+
+    <!-- Strings used in search-page -->
+    <string name="search_hint">Enter a name or keywords...</string>
+    <string-array name="search_options">
+        <item>Games</item>
+        <item>People</item>
+        <item>Events</item>
+
+    </string-array>
+
     <!-- Strings used for hosted games in an event -->
     <string name="tv_event_hosted_games">Hosted games from the event</string>
     <string name="tv_seats_available">Seats available: 10</string>
+    <string name="btn_title_join_game">Join game</string>
+    <string name="VH_user_name">Username</string>
+    <string name="VH_user_image_des">user_image</string>
+
+    <string name="tv_title_people_in_event">People in the event</string>
+    <string name="tv_title_add_game_review">Add Game Review</string>
+    <string name="tv_title_game_review">Game reviews</string>
+    <string name="VH_game_review">Game review</string>
+    <string name="et_hint_game_review_content">Write your review here…</string>
+    <string name="review_save">Save</string>
+    <string name="no_game_reviews_added_yet">No Game Reviews added yet</string>
+
 
     <!-- Common string -->
     <string name="btn_text_save">save</string>
     <string name="item_button_delete">delete</string>
     <string name="tv_add_new_game">Add New Game</string>
     <string name="cx_text_create_a_private_game">Create a private game?</string>
-    <string name="item_textView_friendNamePlaceholder">Friend\'s name</string>
-    <string name="item_textView_lastMessagePlaceholder">Last message</string>
+    <string name="search">Search</string>
+
 
     <!-- Strings used for fragment_add_post -->
     <string name="add_post_view_setting_label">View Setting:</string>
@@ -122,8 +137,7 @@
     <string-array name="post_types">
         <item> - Select Post Type - </item>
         <item>General</item>
-        <item>Event</item>
-        <item>Review</item>
+        <item>Event Shoutout</item>
     </string-array>
     <string name="add_post_type_error">Please select a post type and try again.</string>
     <string name="add_post_body_label">Body:</string>
@@ -132,4 +146,29 @@
     <string name="add_post_btn_add_post">Add Post</string>
     <string name="add_post_error">Unable to create post. Please try again later.</string>
     <string name="add_post_success">Post created.</string>
+
+    <!--  Strings used for fragment_edit_profile  -->
+    <string name="edit_profile_greeting">Hello, %1$s!</string>
+    <string name="edit_profile_btn_edit_icon">edit icon</string>
+    <string name="edit_profile_username_label">username:</string>
+    <string name="edit_profile_current_username">current username</string>
+    <string name="edit_profile_username_hint">new username</string>
+    <string name="edit_profile_btn_edit_username">edit username</string>
+    <string name="edit_profile_password_label">password:</string>
+    <string name="edit_profile_password_asterisks">******</string>
+    <string name="edit_profile_password_hint">new password</string>
+    <string name="edit_profile_password_confirm_hint">confirm password</string>
+    <string name="edit_profile_btn_edit_password">edit password</string>
+    <string name="edit_profile_bio_label">bio:</string>
+    <string name="edit_profile_current_bio">placeholder</string>
+    <string name="edit_profile_btn_edit_bio">edit bio</string>
+    <string name="edit_profile_btn_delete_account">delete account</string>
+    <string name="imageView_contentDescription">user icon</string>
+    <!--  Strings used for popup_window  -->
+    <string name="popup_type_warning">-- Warning --</string>
+    <string name="delete_acc_title">Delete Account Chosen</string>
+    <string name="delete_acc_warning">You are about to delete your Movie Social account.</string>
+    <string name="delete_acc_confirm">Yes, delete account</string>
+    <string name="delete_acc_deny">No, keep account</string>
+    <string name="popup_continue_msg">Do you want to continue?</string>
 </resources>

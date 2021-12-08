@@ -74,26 +74,24 @@ public class PostVH extends DataClsVH<Post> {
     }
 
     private void performBind(Activity activity, Post post, User user){
-        activity.runOnUiThread(()->{
+        activity.runOnUiThread(() -> {
             toggleVisibility(View.VISIBLE);
             textViewUsername.setText(user.getUsername());
             textViewPostType.setText(post.getPostType());
             textViewPostBody.setText(post.getPostBody());
             itemNumberLikes.setText(String.valueOf(post.getLikes()));
         });
-        likeImg.setOnClickListener(view -> {
-                    itemNumberLikes.setText(String.valueOf(post.getLikes() + 1));
-                    retrofitClient.putCall(Post.class, new HashMap<String, String>() {{
-                        put("id", String.valueOf(post.getId()));
-                        put("userId", String.valueOf(user.getId()));
-                        put("postBody", String.valueOf(post.getPostBody()));
-                        put("postType", String.valueOf(post.getPostType()));
-                        put("likes", String.valueOf(post.getLikes() + 1));
-                    }}).subscribe(jsonObject -> {
-                        Post putPost = getObject(jsonObject, Post.class);
-                        post.setLikes(putPost.getLikes());
-                    });
-                }
+        likeImg.setOnClickListener(view -> retrofitClient.putCall(Post.class, new HashMap<String, String>() {{
+            put("id", String.valueOf(post.getId()));
+            put("userId", String.valueOf(user.getId()));
+            put("postBody", String.valueOf(post.getPostBody()));
+            put("postType", String.valueOf(post.getPostType()));
+            put("likes", String.valueOf(post.getLikes() + 1));
+        }}).subscribe(jsonObject -> {
+            Post putPost = getObject(jsonObject, Post.class);
+            post.setLikes(putPost.getLikes());
+            activity.runOnUiThread(() -> itemNumberLikes.setText(String.valueOf(post.getLikes())));
+        })
         );
     }
 }

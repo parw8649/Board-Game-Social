@@ -65,6 +65,21 @@
             app:destination="@id/userGamesFragment" />
     </fragment>
     <fragment
+        android:id="@+id/userProfileFragment"
+        android:name="com.example.boardgamesocial.MainApp.Fragments.UserProfileFragment"
+        android:label="fragment_userProfile"
+        tools:layout="@layout/fragment_user_profile" >
+        <action
+            android:id="@+id/action_userProfileFragment_to_HomePostFragment"
+            app:destination="@id/HomePostFragment" />
+        <action
+            android:id="@+id/action_userProfileFragment_to_userFriendsFragment"
+            app:destination="@id/userFriendsFragment" />
+        <action
+            android:id="@+id/action_userProfileFragment_to_userGamesFragment"
+            app:destination="@id/userGamesFragment" />
+    </fragment>
+    <fragment
         android:id="@+id/addPostFragment"
         android:name="com.example.boardgamesocial.MainApp.Fragments.AddPostFragment"
         android:label="fragment_add_post"
@@ -97,8 +112,8 @@
         android:label="fragment_user_friends"
         tools:layout="@layout/fragment_user_friends" >
         <action
-            android:id="@+id/action_userFriendsFragment_to_profileFragment"
-            app:destination="@id/profileFragment" />
+            android:id="@+id/action_userFriendsFragment_to_userProfileFragment"
+            app:destination="@id/userProfileFragment" />
     </fragment>
     <fragment
         android:id="@+id/gameCollectionFragment"
@@ -106,8 +121,8 @@
         android:label="fragment_game_collection"
         tools:layout="@layout/fragment_game_collection" >
         <action
-            android:id="@+id/action_gameCollectionFragment_to_profileFragment"
-            app:destination="@id/profileFragment" />
+            android:id="@+id/action_gameCollectionFragment_to_gameReviews"
+            app:destination="@id/gameReviewsFragment" />
     </fragment>
     <fragment
         android:id="@+id/singleEventFragment"
@@ -176,7 +191,17 @@
         android:id="@+id/searchFragment"
         android:name="com.example.boardgamesocial.MainApp.Fragments.SearchFragment"
         android:label="fragment_search"
-        tools:layout="@layout/fragment_search" />
+        tools:layout="@layout/fragment_search" >
+        <action
+            android:id="@+id/action_searchFragment_to_singleEventFragment"
+            app:destination="@id/singleEventFragment" />
+        <action
+            android:id="@+id/action_searchFragment_to_profileFragment"
+            app:destination="@id/profileFragment" />
+        <action
+            android:id="@+id/action_searchFragment_to_gameReviewsFragment"
+            app:destination="@id/gameReviewsFragment" />
+    </fragment>
     <fragment
         android:id="@+id/addGameFragment"
         android:name="com.example.boardgamesocial.MainApp.Fragments.AddGameFragment"
@@ -206,5 +231,20 @@
         <action
             android:id="@+id/action_addEventFragment_to_eventsFragment"
             app:destination="@id/eventsFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/gameReviewsFragment"
+        android:name="com.example.boardgamesocial.MainApp.Fragments.GameReviewsFragment"
+        android:label="fragment_game_reviews"
+        tools:layout="@layout/fragment_game_reviews">
+    </fragment>
+    <fragment
+        android:id="@+id/addGameReviewFragment"
+        android:name="com.example.boardgamesocial.MainApp.Fragments.AddGameReviewFragment"
+        android:label="fragment_add_game_review"
+        tools:layout="@layout/fragment_add_game_review">
+        <action
+            android:id="@+id/action_addGameReviewFragment_to_gameReviewsFragment"
+            app:destination="@id/gameReviewsFragment" />
     </fragment>
 </navigation>

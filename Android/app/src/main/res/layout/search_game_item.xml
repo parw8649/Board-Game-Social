@@ -1,0 +1,100 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_marginEnd="8dp"
+    android:layout_marginStart="8dp"
+    android:layout_marginTop="8dp"
+    android:backgroundTint="@color/very_light_tangelo_light_var" >
+
+    <RelativeLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:padding="8dp">
+
+        <ImageView
+            android:id="@+id/game_icon"
+            android:layout_width="55dp"
+            android:layout_height="75dp"
+            android:layout_alignParentStart="true"
+
+            android:layout_toStartOf="@+id/game_title_and_genre"
+            android:padding="7dp"
+            android:src="@drawable/ic_image_placeholder" />
+
+        <LinearLayout
+            android:id="@+id/game_title_and_genre"
+            android:layout_width="240dp"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="3dp"
+            android:layout_toStartOf="@+id/btn_delete_game"
+            android:orientation="vertical">
+
+            <TextView
+                android:id="@+id/tv_game_title"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:maxLines="1"
+                android:text="@string/game_items_tv_title"
+                android:textAppearance="@style/TextAppearance.AppCompat.Title" />
+
+            <TextView
+                android:id="@+id/tv_game_genre"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:maxLines="1"
+                android:text="@string/game_items_tv_genre"
+                android:textAppearance="@style/TextAppearance.AppCompat.Body1" />
+        </LinearLayout>
+
+        <TextView
+            android:id="@+id/game_description"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/game_icon"
+            android:text="@string/game_items_tv_description"
+            android:maxLines="10"
+            android:textAppearance="@style/TextAppearance.AppCompat.Body2" />
+
+        <TextView
+            android:id="@+id/tv_min_player_count"
+            android:layout_width="180dp"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/game_description"
+            android:maxLines="1"
+            android:hint="@string/game_item_tv_min_players"
+            android:textAppearance="@style/TextAppearance.AppCompat.Body2" />
+
+        <TextView
+            android:id="@+id/tv_max_player_count"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="2dp"
+            android:layout_below="@id/game_description"
+            android:layout_toEndOf="@id/tv_min_player_count"
+            android:hint="@string/game_item_tv_max_players"
+            android:textAppearance="@style/TextAppearance.AppCompat.Body2" />
+
+        <TextView
+            android:id="@+id/overall_play_count"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/tv_min_player_count"
+            android:maxLines="1"
+            android:hint="@string/game_item_tv_overall_play_count"
+            android:textAppearance="@style/TextAppearance.AppCompat.Body2" />
+
+        <ImageButton
+            android:id="@+id/btn_delete_game"
+            android:layout_width="@dimen/item_more_btn_width"
+            android:layout_height="45dp"
+            android:layout_alignParentEnd="true"
+            android:backgroundTint="@color/blue_yonder"
+            android:padding="@dimen/btn_padding_slim"
+            android:src="@drawable/ic_baseline_delete_24"
+            android:textAppearance="@style/TextAppearance.AppCompat.Small"
+            android:visibility="invisible"/>
+
+    </RelativeLayout>
+
+</androidx.cardview.widget.CardView>
