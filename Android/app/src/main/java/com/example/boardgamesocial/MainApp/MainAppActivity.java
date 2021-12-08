@@ -86,7 +86,6 @@ public class MainAppActivity extends AppCompatActivity {
                     break;
                 case R.id.chat_option:
                     navController.navigate(R.id.chatFragment);
-                    bottomAppBar.setCradleVerticalOffset(fabOffsetInvisible);
                     fab.setVisibility(View.INVISIBLE);
                     break;
             }

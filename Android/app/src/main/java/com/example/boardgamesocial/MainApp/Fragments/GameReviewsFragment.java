@@ -43,7 +43,7 @@ public class GameReviewsFragment extends Fragment implements DataClsAdapter.OnIt
     private FloatingActionButton fab;
     private NavController navController;
 
-    private float fabOffsetVisible = 5.0f;
+    private float fabOffsetVisible = 0.0f;
     private float fabOffsetInvisible = 35.0f;
 
     // TODO: Rename parameter arguments, choose names that match
@@ -146,12 +146,12 @@ public class GameReviewsFragment extends Fragment implements DataClsAdapter.OnIt
         navController = Navigation.findNavController(requireActivity(), R.id.nav_host_fragment_content_main_app);
 
         bottomAppBar = requireActivity().findViewById(R.id.bottom_app_bar);
-        bottomAppBar.setCradleVerticalOffset(fabOffsetVisible);
+        //bottomAppBar.setCradleVerticalOffset(fabOffsetVisible);
         fab = requireActivity().findViewById(R.id.bottom_app_bar_fab);
         fab.setVisibility(View.VISIBLE);
         fab.setOnClickListener(v -> {
             navController.navigate(R.id.addGameReviewFragment, getArguments());
-            bottomAppBar.setCradleVerticalOffset(fabOffsetInvisible);
+            //bottomAppBar.setCradleVerticalOffset(fabOffsetInvisible);
             fab.setVisibility(View.INVISIBLE);
         });
 
