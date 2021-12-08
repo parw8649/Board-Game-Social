@@ -30,6 +30,7 @@ import com.example.boardgamesocial.DataViews.Adapters.DataClsAdapter;
 import com.example.boardgamesocial.DataViews.Adapters.ViewHolders.DataClsVH;
 import com.example.boardgamesocial.DataViews.Adapters.ViewHolders.EventVH;
 import com.example.boardgamesocial.DataViews.Adapters.ViewHolders.GameVH;
+import com.example.boardgamesocial.DataViews.Adapters.ViewHolders.UserVH;
 import com.example.boardgamesocial.DataViews.DataClsVM;
 import com.example.boardgamesocial.R;
 import com.google.gson.JsonArray;
@@ -78,7 +79,7 @@ public class SearchFragment extends Fragment implements AdapterView.OnItemSelect
     private DataClsVM dataClsVM;
     private DataClsAdapter<Event, EventVH> dataClsAdapterEvents;
     //Todo: Add UserVH
-    //private DataClsAdapter<User, UserVH> dataClsAdapterUsers;
+    private DataClsAdapter<User, UserVH> dataClsAdapterUsers;
 
     public SearchFragment() {
         // Required empty public constructor
@@ -179,20 +180,12 @@ public class SearchFragment extends Fragment implements AdapterView.OnItemSelect
                 changeVisibility("Games");
                 search("");
                 break;
-            case "User":
+            case "People":
                 Log.i(TAG, "User Search");
                 //ToDO: Add user layout
-                rvUser.setLayoutManager(new LinearLayoutManager(this.getContext()));
+                changeVisibility("People");
+                search("");
 
-//                dataClsAdapterUser = new DataClsAdapter<>(
-//                        this,
-//                        User.class,
-//                        getActivity(),
-//                        R.layout.user_item);
-//                rvEvents.setAdapter(dataClsAdapterUser);
-
-                // dataClsVM.getMediatorLiveData(RetrofitClient.getClient().getCall(User.class, new HashMap<>()), User.class, true)
-                //.observe(getViewLifecycleOwner(), dataClsAdapterUser::addNewObjects);
                 break;
             case "Events":
                 Log.i(TAG, "Event Search");
@@ -224,7 +217,7 @@ public class SearchFragment extends Fragment implements AdapterView.OnItemSelect
                 rvUser.setVisibility(View.GONE);
                 rvEvents.setVisibility(View.GONE);
                 break;
-            case "User":
+            case "People":
                 Log.i(TAG, "User Visible");
                 rvGames.setVisibility(View.GONE);
                 rvUser.setVisibility(View.VISIBLE);
@@ -276,18 +269,30 @@ public class SearchFragment extends Fragment implements AdapterView.OnItemSelect
                 }
 
                 break;
-            case "User":
-//                Log.i(TAG, "User Search");
-//                //Add search for user
-//                Observable<JsonArray> userQuery = retrofitClient.getCall(User.class, new HashMap<String, String>() {{
-//                    put("username", searchQuery);
-//                }}).mergeWith(retrofitClient.getCall(User.class, new HashMap<String, String>() {{
-//                }})).scan((cumulativeJsonArray, newJsonArray) -> {
-//                    cumulativeJsonArray.addAll(newJsonArray);
-//                    return cumulativeJsonArray;
-//                });
-                // dataClsVM.getMediatorLiveData(userQuery, Game.class, true)
-                //      .observe(getViewLifecycleOwner(), dataClsAdapterUsers::addNewObjects);
+            case "People":
+                Log.i(TAG, "User Search");
+                //Add search for user
+                rvUser.setLayoutManager(new LinearLayoutManager(this.getContext()));
+
+                dataClsAdapterUsers = new DataClsAdapter<>(
+                        this,
+                        User.class,
+                        getActivity(),
+                        R.layout.user_item);
+                rvUser.setAdapter(dataClsAdapterUsers);
+                if(!searchQuery.isEmpty()) {
+                    Observable<JsonArray> userQuery = retrofitClient.getCall(User.class, new HashMap<String, String>() {{
+                        put("username", searchQuery);
+                    }}).scan((cumulativeJsonArray, newJsonArray) -> {
+                        cumulativeJsonArray.addAll(newJsonArray);
+                        return cumulativeJsonArray;
+                    });
+                    dataClsVM.getMediatorLiveData(userQuery, User.class, true)
+                            .observe(getViewLifecycleOwner(), dataClsAdapterUsers::addNewObjects);
+                } else {
+                    dataClsVM.getMediatorLiveData(RetrofitClient.getClient().getCall(User.class, new HashMap<>()), User.class, true)
+                            .observe(getViewLifecycleOwner(), dataClsAdapterUsers::addNewObjects);
+                }
                 break;
             case "Events":
                 Log.i(TAG, "Event Search");
