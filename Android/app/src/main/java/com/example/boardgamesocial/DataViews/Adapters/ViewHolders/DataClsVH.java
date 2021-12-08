@@ -36,6 +36,7 @@ public abstract class DataClsVH <DC extends DataClass> extends RecyclerView.View
     public abstract void toggleVisibility(int visibility);
     public abstract void onBind(Activity activity, DC dataClass);
 
+
     @Override
     public void onClick(View view) {
         onItemListener.onItemClick(contextBundle);

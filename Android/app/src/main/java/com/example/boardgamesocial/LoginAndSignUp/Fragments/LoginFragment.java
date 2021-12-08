@@ -79,7 +79,7 @@ public class LoginFragment extends Fragment {
                     return retrofitClient.getCall(User.class, new HashMap<String, String>(){{
                         put("username", username);
                     }});
-                })
+                }) // TODO: catch errors if wrong credentials given: maybe .doOnError ?
                 .subscribe(jsonArray -> {
                     List<User> userList = getObjectList(jsonArray, User.class);
                     assert userList.size() == 1;

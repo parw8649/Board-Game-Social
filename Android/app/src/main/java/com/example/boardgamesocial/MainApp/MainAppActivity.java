@@ -1,22 +1,36 @@
 package com.example.boardgamesocial.MainApp;
 
+import static com.example.boardgamesocial.API.RetrofitClient.getObject;
+import static com.example.boardgamesocial.Commons.Constants.fabOffsetInvisible;
+import static com.example.boardgamesocial.Commons.Constants.fabOffsetVisible;
+
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.Menu;
 import android.view.View;
+import android.widget.Toast;
+
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.fragment.app.FragmentResultListener;
 import androidx.navigation.NavController;
 import androidx.navigation.Navigation;
 import androidx.navigation.ui.AppBarConfiguration;
 import androidx.navigation.ui.NavigationUI;
+
+import com.example.boardgamesocial.API.RetrofitClient;
+import com.example.boardgamesocial.Commons.Utils;
+import com.example.boardgamesocial.DataClasses.User;
 import com.example.boardgamesocial.databinding.ActivityMainAppBinding;
 import com.example.boardgamesocial.LoginAndSignUp.LoginAndSignUpActivity;
 import com.example.boardgamesocial.R;
 import com.google.android.material.bottomappbar.BottomAppBar;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.snackbar.Snackbar;
+
+import java.util.HashMap;
 
 public class MainAppActivity extends AppCompatActivity {
 
@@ -27,8 +41,6 @@ public class MainAppActivity extends AppCompatActivity {
     private NavController navController;
     private BottomAppBar bottomAppBar;
     private FloatingActionButton fab;
-    private float fabOffsetVisible = 0.0f;
-    private float fabOffsetInvisible = 35.0f;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -46,38 +58,31 @@ public class MainAppActivity extends AppCompatActivity {
         // default fab onClick after login
         setFabOnClick(R.id.home_option);
 
-
         bottomAppBar.setOnMenuItemClickListener(item -> {
             switch (item.getItemId()) {
                 case R.id.home_option:
                     navController.navigate(R.id.HomePostFragment);
-                    bottomAppBar.setCradleVerticalOffset(fabOffsetVisible);
                     fab.setVisibility(View.VISIBLE);
                     break;
                 case R.id.events_option:
                     navController.navigate(R.id.eventsFragment);
-                    bottomAppBar.setCradleVerticalOffset(fabOffsetVisible);
                     fab.setVisibility(View.VISIBLE);
                     break;
                 case R.id.games_option:
                     // this should direct to a fragment showing all games available in database
                     navController.navigate(R.id.gameCollectionFragment);
-                    bottomAppBar.setCradleVerticalOffset(fabOffsetVisible);
                     fab.setVisibility(View.VISIBLE);
                     break;
                 case R.id.search_option:
                     navController.navigate(R.id.searchFragment);
-                    bottomAppBar.setCradleVerticalOffset(fabOffsetInvisible);
                     fab.setVisibility(View.INVISIBLE);
                     break;
                 case R.id.profile_option:
                     navController.navigate(R.id.profileFragment);
-                    bottomAppBar.setCradleVerticalOffset(fabOffsetInvisible);
                     fab.setVisibility(View.INVISIBLE);
                     break;
                 case R.id.logout_option:
-                    Intent goToHomePostActivity = LoginAndSignUpActivity.getIntent(MainAppActivity.this);
-                    startActivity(goToHomePostActivity);
+                    userLogout();
                     break;
                 case R.id.chat_option:
                     navController.navigate(R.id.chatFragment);
@@ -87,6 +92,15 @@ public class MainAppActivity extends AppCompatActivity {
             }
             setFabOnClick(item.getItemId());
             return true;
+        });
+
+        getSupportFragmentManager().setFragmentResultListener("requestKey", this, new FragmentResultListener() {
+            @Override
+            public void onFragmentResult(@NonNull String requestKey, @NonNull Bundle bundle) {
+                int visibility = bundle.getInt("visibility");
+                View view = findViewById(R.id.content).getRootView();
+                setAppBarFab(view, visibility);
+            }
         });
     }
 
@@ -113,26 +127,22 @@ public class MainAppActivity extends AppCompatActivity {
         switch (fragmentId) {
             case R.id.home_option:
                 fab.setOnClickListener(v -> {
-//                    Snackbar.make(v, "Testing phase of adding a new post ", Snackbar.LENGTH_SHORT)
-//                            .setAnchorView(R.id.bottom_app_bar_fab).setAction("Action", null).show();
-                    bottomAppBar.setCradleVerticalOffset(fabOffsetInvisible);
-                    fab.setVisibility(View.INVISIBLE);
+                    setAppBarFab(v, View.INVISIBLE);
+                    Log.i(TAG, "setFabOnClick: fab cradle margin: " + bottomAppBar.getFabCradleMargin());
+                    Log.i(TAG, "setFabOnClick: fab vertical offset: " + bottomAppBar.getCradleVerticalOffset());
+                    Log.i(TAG, "setFabOnClick: fab cradle corner radius: " + bottomAppBar.getFabCradleRoundedCornerRadius());
                     navController.navigate(R.id.addPostFragment);
                 });
                 return;
             case R.id.events_option:
                 fab.setOnClickListener(v -> {
-                    bottomAppBar.setCradleVerticalOffset(fabOffsetInvisible);
-                    fab.setVisibility(View.INVISIBLE);
+                    setAppBarFab(v, View.INVISIBLE);
                     navController.navigate(R.id.addEventFragment);
                 });
                 return;
             case R.id.games_option:
                 fab.setOnClickListener(v -> {
-                    /*Snackbar.make(v, "Eventually, you'll be able to add a new game to your collection ", Snackbar.LENGTH_SHORT)
-                            .setAnchorView(R.id.bottom_app_bar_fab).setAction("Action", null).show();*/
-                    bottomAppBar.setCradleVerticalOffset(fabOffsetInvisible);
-                    fab.setVisibility(View.INVISIBLE);
+                    setAppBarFab(v, View.INVISIBLE);
                     navController.navigate(R.id.addGameFragment);
                 });
                 return;
@@ -140,6 +150,32 @@ public class MainAppActivity extends AppCompatActivity {
                 return;
             case R.id.profile_option:
                 return;
+        }
+    }
+
+    private void setAppBarFab(View view, int visibility) {
+        if (visibility == View.VISIBLE) {
+//            bottomAppBar.setCradleVerticalOffset(fabOffsetVisible);
+            fab.setVisibility(View.VISIBLE);
+        } else {
+//            bottomAppBar.setCradleVerticalOffset(fabOffsetInvisible);
+            fab.setVisibility(View.INVISIBLE);
+        }
+    }
+
+    private void userLogout() {
+        try {
+            RetrofitClient.getClient().logoutCall(new HashMap<String, String>() {{
+                put("user_id", Utils.getUserId().toString());
+            }}).subscribe(jsonObject -> {
+                runOnUiThread(() -> {
+                    Toast.makeText(this,"Successful logout", Toast.LENGTH_SHORT).show();
+                    Intent goToHomePostActivity = LoginAndSignUpActivity.getIntent(MainAppActivity.this);
+                    startActivity(goToHomePostActivity);
+                });
+            }); // look at doOnError instead of try catch
+        } catch (Exception e) {
+            Toast.makeText(this,"Unable to logout", Toast.LENGTH_SHORT).show();
         }
     }
 }
