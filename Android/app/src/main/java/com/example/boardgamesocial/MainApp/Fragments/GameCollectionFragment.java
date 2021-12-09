@@ -10,6 +10,8 @@ import android.view.ViewGroup;
 
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
+import androidx.navigation.NavController;
+import androidx.navigation.Navigation;
 import androidx.navigation.fragment.NavHostFragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -23,6 +25,7 @@ import com.example.boardgamesocial.DataViews.Adapters.DataClsAdapter.OnItemListe
 import com.example.boardgamesocial.DataViews.Adapters.ViewHolders.GameVH;
 import com.example.boardgamesocial.DataViews.DataClsVM;
 import com.example.boardgamesocial.R;
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.JsonArray;
@@ -44,6 +47,9 @@ public class GameCollectionFragment extends Fragment implements OnItemListener {
     private final Gson gson = new GsonBuilder().create();
 
     private List<GameToUser> gameToUserList;
+
+    private FloatingActionButton fab;
+    private NavController navController;
 
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
@@ -172,6 +178,15 @@ public class GameCollectionFragment extends Fragment implements OnItemListener {
                 })
                 , Game.class, true)
                 .observe(getViewLifecycleOwner(), dataClsAdapter::addNewObjects);
+
+        navController = Navigation.findNavController(requireActivity(), R.id.nav_host_fragment_content_main_app);
+
+        fab = requireActivity().findViewById(R.id.bottom_app_bar_fab);
+        fab.setVisibility(View.VISIBLE);
+        fab.setOnClickListener(v -> {
+            navController.navigate(R.id.addGameFragment);
+            fab.setVisibility(View.INVISIBLE);
+        });
     }
 
     @Override

@@ -26,7 +26,7 @@ import io.reactivex.functions.Function;
 public class DataClsVM extends ViewModel {
     private static DataClsVM liveDataConnector;
     private final Map<Class<?>, MediatorLiveData<?>> mediatorLiveDataMap;
-    private static long updateInterval = 1000;
+    private static long updateInterval = 10;
 
     private DataClsVM(){
         mediatorLiveDataMap = new HashMap<>();

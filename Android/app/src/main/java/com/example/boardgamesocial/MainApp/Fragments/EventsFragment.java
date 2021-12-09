@@ -5,10 +5,11 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
+import androidx.navigation.NavController;
+import androidx.navigation.Navigation;
 import androidx.navigation.fragment.NavHostFragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -21,6 +22,7 @@ import com.example.boardgamesocial.DataViews.Adapters.DataClsAdapter.OnItemListe
 import com.example.boardgamesocial.DataViews.Adapters.ViewHolders.EventVH;
 import com.example.boardgamesocial.DataViews.DataClsVM;
 import com.example.boardgamesocial.R;
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
 import java.util.HashMap;
 
@@ -29,6 +31,9 @@ public class EventsFragment extends Fragment implements OnItemListener {
     public static final String TAG = "EventsFragment";
 
     private RecyclerView recyclerView;
+
+    private FloatingActionButton fab;
+    private NavController navController;
 
     public EventsFragment() {
         // Required empty public constructor
@@ -64,6 +69,15 @@ public class EventsFragment extends Fragment implements OnItemListener {
         DataClsVM dataClsVM = DataClsVM.getInstance();
         dataClsVM.getMediatorLiveData(RetrofitClient.getClient().getCall(Event.class, new HashMap<>()), Event.class, false)
                 .observe(getViewLifecycleOwner(), dataClsAdapter::addNewObjects);
+
+        navController = Navigation.findNavController(requireActivity(), R.id.nav_host_fragment_content_main_app);
+
+        fab = requireActivity().findViewById(R.id.bottom_app_bar_fab);
+        fab.setVisibility(View.VISIBLE);
+        fab.setOnClickListener(v -> {
+            navController.navigate(R.id.addEventFragment);
+            fab.setVisibility(View.INVISIBLE);
+        });
     }
 
     @Override
