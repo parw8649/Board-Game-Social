@@ -31,10 +31,10 @@ public class UserVH extends DataClsVH<User> {
 
     @Override
     public void onBind(Activity activity, User user) {
+        toggleVisibility(View.INVISIBLE);
         contextBundle.putSerializable(USER_KEY, user);
         activity.runOnUiThread(()->{
             toggleVisibility(View.VISIBLE);
-            
             textViewUsername.setText(user.getUsername());
         });
     }

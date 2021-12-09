@@ -17,6 +17,7 @@ import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ProgressBar;
 import android.widget.SearchView;
 import android.widget.Spinner;
 import android.widget.Toast;
@@ -73,12 +74,10 @@ public class SearchFragment extends Fragment implements AdapterView.OnItemSelect
     private RecyclerView rvEvents;
     private RecyclerView rvUser;
     private CompositeDisposable disposables = new CompositeDisposable();
-    private boolean gamesLoaded;
     private RetrofitClient retrofitClient;
     private DataClsAdapter<Game, GameVH> dataClsAdapterGames;
     private DataClsVM dataClsVM;
     private DataClsAdapter<Event, EventVH> dataClsAdapterEvents;
-    //Todo: Add UserVH
     private DataClsAdapter<User, UserVH> dataClsAdapterUsers;
 
     public SearchFragment() {
@@ -93,7 +92,6 @@ public class SearchFragment extends Fragment implements AdapterView.OnItemSelect
      * @param param2 Parameter 2.
      * @return A new instance of fragment SearchFragment.
      */
-    // TODO: Rename and change types and number of parameters
     public static SearchFragment newInstance(String param1, String param2) {
         SearchFragment fragment = new SearchFragment();
         Bundle args = new Bundle();
@@ -130,7 +128,7 @@ public class SearchFragment extends Fragment implements AdapterView.OnItemSelect
         rvEvents = view.findViewById(R.id.rvEventsSearch);
         rvUser = view.findViewById(R.id.rvUserSearch);
         searchOption = "Games";
-        gamesLoaded = false;
+
 
         retrofitClient = RetrofitClient.getClient();
         dataClsVM = DataClsVM.getInstance();
@@ -172,8 +170,6 @@ public class SearchFragment extends Fragment implements AdapterView.OnItemSelect
     @Override
     public void onItemSelected(AdapterView<?> adapterView, View view, int pos, long id) {
         searchOption = adapterView.getItemAtPosition(pos).toString();
-        //TODO: Figure out how to limit calls after called at least once
-
         switch (searchOption) {
             case "Games":
                 Log.i(TAG, "Games Search");
@@ -335,10 +331,12 @@ public class SearchFragment extends Fragment implements AdapterView.OnItemSelect
                 break;
             case "People":
                 NavHostFragment.findNavController(SearchFragment.this)
-                        .navigate(R.id.action_searchFragment_to_profileFragment, contextBundle);
+                        .navigate(R.id.action_searchFragment_to_userProfileFragment, contextBundle);
+                break;
             case "Events":
                 NavHostFragment.findNavController(SearchFragment.this)
                         .navigate(R.id.action_searchFragment_to_singleEventFragment, contextBundle);
+                break;
 
         }
     }
