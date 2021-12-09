@@ -8,101 +8,131 @@
 
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
+        android:layout_height="wrap_content"
         android:orientation="vertical">
 
-    <androidx.cardview.widget.CardView
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginBottom="@dimen/linear_vert_padding"
-        android:backgroundTint="@color/very_light_tangelo_light_var">
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_marginBottom="@dimen/linear_vert_padding"
+            android:orientation="vertical">
+
+            <androidx.cardview.widget.CardView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="@dimen/linear_vert_padding"
+                android:backgroundTint="@color/very_light_tangelo_light_var">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical">
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal"
+                        android:padding="8dp">
+
+                        <ImageView
+                            android:id="@+id/single_post_user_icon"
+                            android:layout_width="70dp"
+                            android:layout_height="70dp"
+                            android:src="@drawable/ic_baseline_person_24" />
+
+                        <LinearLayout
+                            android:id="@+id/single_post_name_and_type"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="center"
+                            android:orientation="vertical">
+
+                            <TextView
+                                android:id="@+id/single_post_poster"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:maxLines="1"
+                                android:text="@string/item_textView_posterPlaceHolder"
+                                android:textAppearance="@style/TextAppearance.AppCompat.Headline" />
+
+                            <TextView
+                                android:id="@+id/single_post_type"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:maxLines="1"
+                                android:text="@string/item_textView_postTypePlaceHolder"
+                                android:textAppearance="@style/TextAppearance.AppCompat.Medium" />
+                        </LinearLayout>
+                    </LinearLayout>
+
+                    <RelativeLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content">
+
+                        <TextView
+                            android:id="@+id/single_post_body"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:paddingStart="8dp"
+                            android:paddingEnd="8dp"
+                            android:text="@string/item_textView_postBodyPlaceHolder"
+                            android:textAppearance="@style/TextAppearance.AppCompat.Body1"
+                            android:textSize="@dimen/textSizeBig" />
+
+                        <LinearLayout
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_below="@id/single_post_body"
+                            android:layout_alignParentEnd="true">
+
+                            <ImageView
+                                android:id="@+id/single_post_like_img"
+                                android:clickable="true"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:src="@drawable/ic_baseline_favorite_24" />
+
+                            <TextView
+                                android:id="@+id/single_post_number_likes"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:textAlignment="center"
+                                android:text="@string/item_textView_numberLikesPlaceholder" />
+                        </LinearLayout>
+                    </RelativeLayout>
+                </LinearLayout>
+            </androidx.cardview.widget.CardView>
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/comments_recyclerView"
+                android:layout_width="match_parent"
+                android:layout_height="520dp"
+                tools:listitem="@layout/comment_item"
+                android:orientation="vertical"/>
+
+        </LinearLayout>
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="vertical">
-            <LinearLayout
-                android:layout_width="match_parent"
+            android:gravity="center_vertical"
+            android:orientation="horizontal">
+            <EditText
+                android:id="@+id/single_post_editText_comment"
+                android:layout_width="345dp"
                 android:layout_height="wrap_content"
-                android:orientation="horizontal"
-                android:padding="8dp">
+                android:layout_gravity="bottom"
+                android:layout_marginEnd="@dimen/h_spacer"
+                android:hint="@string/comment_hint"
+                android:textAppearance="@style/TextAppearance.AppCompat.Small"
+                android:maxLength="300"/>
 
-                <ImageView
-                    android:id="@+id/single_post_user_icon"
-                    android:layout_width="70dp"
-                    android:layout_height="70dp"
-                    android:layout_alignParentStart="true"
-                    android:layout_toStartOf="@id/single_post_name_and_type"
-                    android:src="@drawable/ic_baseline_person_24" />
-
-                <LinearLayout
-                    android:id="@+id/single_post_name_and_type"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="center"
-                    android:orientation="vertical">
-
-                    <TextView
-                        android:id="@+id/single_post_poster"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:maxLines="1"
-                        android:text="@string/item_textView_posterPlaceHolder"
-                        android:textAppearance="@style/TextAppearance.AppCompat.Headline" />
-
-                    <TextView
-                        android:id="@+id/single_post_type"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:maxLines="1"
-                        android:text="@string/item_textView_postTypePlaceHolder"
-                        android:textAppearance="@style/TextAppearance.AppCompat.Medium" />
-                </LinearLayout>
-            </LinearLayout>
-
-            <RelativeLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content">
-
-                <TextView
-                    android:id="@+id/single_post_body"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:paddingStart="8dp"
-                    android:paddingEnd="8dp"
-                    android:text="@string/item_textView_postBodyPlaceHolder"
-                    android:textAppearance="@style/TextAppearance.AppCompat.Body1"
-                    android:textSize="@dimen/textSizeBig" />
-
-                <LinearLayout
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_below="@id/single_post_body"
-                    android:layout_alignParentEnd="true">
-
-                    <ImageView
-                        android:id="@+id/single_post_like_img"
-                        android:clickable="true"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:src="@drawable/ic_baseline_favorite_24" />
-
-                    <TextView
-                        android:id="@+id/single_post_number_likes"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:textAlignment="center"
-                        android:text="@string/item_textView_numberLikesPlaceholder" />
-                </LinearLayout>
-            </RelativeLayout>
+            <ImageButton
+                android:id="@+id/single_post_btn_add_comment"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:background="transparent"
+                android:src="@drawable/ic_baseline_send_24"/>
         </LinearLayout>
-    </androidx.cardview.widget.CardView>
-
-    <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/comments_recyclerView"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        tools:listitem="@layout/comment_item"
-        android:orientation="vertical"/>
     </LinearLayout>
 </FrameLayout>

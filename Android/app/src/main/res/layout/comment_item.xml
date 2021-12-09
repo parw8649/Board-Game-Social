@@ -13,7 +13,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginBottom="@dimen/linear_vert_padding"
-        android:backgroundTint="@color/very_light_tangelo_light_var">
+        android:backgroundTint="@color/ice_blue">
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -36,7 +36,7 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:maxLines="1"
-                        android:text="@string/item_textView_posterPlaceHolder"
+                        android:text="@string/comment_item_textView_posterPlaceHolder"
                         android:textAppearance="@style/TextAppearance.AppCompat.SearchResult.Subtitle" />
             </LinearLayout>
 
@@ -45,7 +45,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:padding="8dp"
-                android:text="@string/item_textView_postBodyPlaceHolder"
+                android:text="@string/comment_item_textView_postBodyPlaceHolder"
                 android:textAppearance="@style/TextAppearance.AppCompat.Body1" />
 
         </LinearLayout>

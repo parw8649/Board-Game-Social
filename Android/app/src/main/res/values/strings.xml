@@ -173,6 +173,6 @@
     <string name="popup_continue_msg">Do you want to continue?</string>
     <!-- Strings used for comment_item -->
     <string name="comment_item_textView_posterPlaceHolder">Commenter\'s Name</string>
-    <string name="comment_item_textView_postTypePlaceHolder">Comment Type</string>
     <string name="comment_item_textView_postBodyPlaceHolder">Comment body goes here</string>
+    <string name="comment_hint">Add a comment. . .</string>
 </resources>
