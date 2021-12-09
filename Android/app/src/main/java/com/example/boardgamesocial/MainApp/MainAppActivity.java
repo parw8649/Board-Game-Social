@@ -86,7 +86,6 @@ public class MainAppActivity extends AppCompatActivity {
                     break;
                 case R.id.chat_option:
                     navController.navigate(R.id.chatFragment);
-                    bottomAppBar.setCradleVerticalOffset(fabOffsetInvisible);
                     fab.setVisibility(View.INVISIBLE);
                     break;
             }
@@ -98,6 +97,7 @@ public class MainAppActivity extends AppCompatActivity {
             @Override
             public void onFragmentResult(@NonNull String requestKey, @NonNull Bundle bundle) {
                 int visibility = bundle.getInt("visibility");
+                Log.i(TAG, "onFragmentResult: visibility: " + visibility);
                 View view = findViewById(R.id.content).getRootView();
                 setAppBarFab(view, visibility);
             }
