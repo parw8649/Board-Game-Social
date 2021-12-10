@@ -8,7 +8,7 @@
     <string name="events_option_title">Events</string>
     <string name="search_option_title">Search</string>
     <string name="chat_option_title">Chat</string>
-    <!-- Strings used for item -->
+    <!-- Strings used for post_item -->
     <string name="item_textView_posterPlaceHolder">Poster\'s Name</string>
     <string name="item_textView_postTypePlaceHolder">Post Type</string>
     <string name="item_textView_postBodyPlaceHolder">post body goes here</string>
@@ -171,4 +171,8 @@
     <string name="delete_acc_confirm">Yes, delete account</string>
     <string name="delete_acc_deny">No, keep account</string>
     <string name="popup_continue_msg">Do you want to continue?</string>
+    <!-- Strings used for comment_item -->
+    <string name="comment_item_textView_posterPlaceHolder">Commenter\'s Name</string>
+    <string name="comment_item_textView_postBodyPlaceHolder">Comment body goes here</string>
+    <string name="comment_hint">Add a comment. . .</string>
 </resources>
