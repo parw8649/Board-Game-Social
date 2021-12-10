@@ -22,6 +22,7 @@ import com.example.boardgamesocial.DataViews.Adapters.DataClsAdapter;
 import com.example.boardgamesocial.DataViews.Adapters.ViewHolders.GameVH;
 import com.example.boardgamesocial.DataViews.DataClsVM;
 import com.example.boardgamesocial.R;
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.gson.JsonArray;
 
 import java.util.ArrayList;
@@ -95,6 +96,9 @@ public class UserGamesFragment extends Fragment implements DataClsAdapter.OnItem
 
     public void onViewCreated(@NonNull View view, Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
+
+        FloatingActionButton fab = requireActivity().findViewById(R.id.bottom_app_bar_fab);
+        fab.setVisibility(View.INVISIBLE);
 
         recyclerView = view.findViewById(R.id.userGames_recyclerView);
         recyclerView.setLayoutManager(new LinearLayoutManager((this.getContext())));

@@ -126,7 +126,7 @@ public class EditProfileFragment extends Fragment {
         buttonEditBio = view.findViewById(R.id.edit_profile_btn_edit_bio);
         buttonDeleteAcc = view.findViewById(R.id.edit_profile_btn_delete_account);
 
-        FloatingActionButton fab = view.findViewById(R.id.bottom_app_bar_fab);
+        FloatingActionButton fab = requireActivity().findViewById(R.id.bottom_app_bar_fab);
         fab.setVisibility(View.INVISIBLE);
 
         retrofitClient.getCall(User.class, new HashMap<String, String>() {{

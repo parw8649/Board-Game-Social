@@ -25,6 +25,7 @@ import com.example.boardgamesocial.DataViews.Adapters.ViewHolders.PostVH;
 import com.example.boardgamesocial.DataViews.Adapters.ViewHolders.RelationshipVH.UserToUserVH;
 import com.example.boardgamesocial.DataViews.DataClsVM;
 import com.example.boardgamesocial.R;
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
 import java.util.HashMap;
 
@@ -89,6 +90,9 @@ public class UserFriendsFragment extends Fragment implements DataClsAdapter.OnIt
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
+
+        FloatingActionButton fab = requireActivity().findViewById(R.id.bottom_app_bar_fab);
+        fab.setVisibility(View.INVISIBLE);
 
         RecyclerView recyclerView = view.findViewById(R.id.friendFeed_recyclerView);
         recyclerView.setLayoutManager(new LinearLayoutManager(this.getContext()));

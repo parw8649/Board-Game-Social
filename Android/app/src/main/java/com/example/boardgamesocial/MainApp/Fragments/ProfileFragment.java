@@ -101,7 +101,7 @@ public class ProfileFragment extends Fragment {
         super.onViewCreated(view, savedInstanceState);
         Button buttonEditProfile = view.findViewById(R.id.profile_btn_edit);
 
-        fab = view.findViewById(R.id.bottom_app_bar_fab);
+        fab = requireActivity().findViewById(R.id.bottom_app_bar_fab);
         fab.setVisibility(View.INVISIBLE);
 
         Log.i(TAG, String.format("userId: %s", Utils.getUserId()));

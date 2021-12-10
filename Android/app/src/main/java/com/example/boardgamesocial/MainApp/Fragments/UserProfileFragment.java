@@ -100,7 +100,7 @@ public class UserProfileFragment extends Fragment {
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         retrofitClient = RetrofitClient.getClient();
-        imageViewUserIcon = view.findViewById(R.id.userProfile_user_icon);
+        imageViewUserIcon = requireActivity().findViewById(R.id.userProfile_user_icon);
 
         textViewFirstName = view.findViewById(R.id.userProfile_first_name);
         textViewUsername = view.findViewById(R.id.userProfile_username);

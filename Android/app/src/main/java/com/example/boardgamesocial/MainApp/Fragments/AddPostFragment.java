@@ -92,7 +92,7 @@ public class AddPostFragment extends Fragment {
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
-        fab = view.findViewById(R.id.bottom_app_bar_fab);
+        fab = requireActivity().findViewById(R.id.bottom_app_bar_fab);
         fab.setVisibility(View.INVISIBLE);
 
         RadioButton radioButtonPrivate = view.findViewById(R.id.add_post_radioBtn_private);

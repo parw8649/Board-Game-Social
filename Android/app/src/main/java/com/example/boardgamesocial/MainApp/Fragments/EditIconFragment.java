@@ -106,7 +106,7 @@ public class EditIconFragment extends Fragment {
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
-        FloatingActionButton fab = view.findViewById(R.id.bottom_app_bar_fab);
+        FloatingActionButton fab = requireActivity().findViewById(R.id.bottom_app_bar_fab);
         fab.setVisibility(View.INVISIBLE);
 
         ImageView imageView1 = view.findViewById(R.id.user_icon_choice_1);

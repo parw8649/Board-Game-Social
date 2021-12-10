@@ -96,16 +96,6 @@ public class MainAppActivity extends AppCompatActivity {
             setFabOnClick(item.getItemId());
             return true;
         });
-
-        getSupportFragmentManager().setFragmentResultListener("requestKey", this, new FragmentResultListener() {
-            @Override
-            public void onFragmentResult(@NonNull String requestKey, @NonNull Bundle bundle) {
-                int visibility = bundle.getInt("visibility");
-                Log.i(TAG, "onFragmentResult: visibility: " + visibility);
-                View view = findViewById(R.id.content).getRootView();
-                setAppBarFab(view, visibility);
-            }
-        });
     }
 
     @Override
