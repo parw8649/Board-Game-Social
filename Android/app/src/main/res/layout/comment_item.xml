@@ -24,13 +24,14 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="horizontal"
-                android:padding="8dp">
+                android:paddingLeft="8dp"
+                android:paddingRight="8dp">
 
                 <ImageView
                     android:id="@+id/comment_item_user_icon"
                     android:layout_width="30dp"
                     android:layout_height="30dp"
-                    android:src="@drawable/ic_baseline_person_24" />
+                    android:src="@drawable/ic_baseline_person_24_coral" />
 
                     <TextView
                         android:id="@+id/comment_item_poster"
@@ -45,7 +46,9 @@
                 android:id="@+id/comment_item_body"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:padding="8dp"
+                android:paddingTop="4dp"
+                android:paddingLeft="8dp"
+                android:paddingRight="8dp"
                 android:text="@string/comment_item_textView_postBodyPlaceHolder"
                 android:textAppearance="@style/TextAppearance.AppCompat.Body1" />
 

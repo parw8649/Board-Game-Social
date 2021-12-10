@@ -108,7 +108,7 @@ public class HomePostFragment extends Fragment implements OnItemListener {
     public void onItemClick(Bundle contextBundle) {
         NavHostFragment.findNavController(HomePostFragment.this)
                 .navigate(R.id.action_HomePostFragment_to_singlePostFragment, contextBundle);
-        Toast.makeText(getContext(),"Item clicked", Toast.LENGTH_LONG).show();
+//        Toast.makeText(getContext(),"Item clicked", Toast.LENGTH_LONG).show();
     }
 
     private void setAppBarFab() {

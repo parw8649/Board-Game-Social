@@ -42,22 +42,22 @@ public class CommentVH extends DataClsVH<Comment> {
 
     @Override
     public void onBind(Activity activity, Comment comment) {
+        contextBundle.putSerializable(COMMENT_KEY, comment);
         toggleVisibility(View.INVISIBLE);
 
-        if (localCache.containsKey(comment)) {
-            performBind(activity,comment, (User) Objects.requireNonNull(localCache.get(comment)).getSerializable(USER_KEY));
-        } else {
-            retrofitClient.getCall(User.class, new HashMap<String, String>() {{
-                put("id", comment.getUserId().toString());
-            }}).subscribe(jsonArray -> {
-                List<User> users = getObjectList(jsonArray,User.class);
-                if (users.size() > 1) {
-                    new Exception(String.format("Got many Users on primary key [%d] %s:", comment.getUserId().toString(), users));
-                } else {
-                    performBind(activity, comment, users.get(0));
-                }
-            });
-        }
+        retrofitClient.getCall(User.class, new HashMap<String, String>() {{
+            put("id", comment.getUserId().toString());
+        }}).subscribe(jsonArray -> {
+            List<User> users = getObjectList(jsonArray,User.class);
+            if (users.size() > 1) {
+                new Exception(String.format("Got many Users on primary key [%d] %s:", comment.getUserId().toString(), users));
+            } else {
+                performBind(activity, comment, users.get(0));
+                contextBundle.putSerializable(USER_KEY, users.get(0));
+                contextBundle.putSerializable(COMMENT_KEY, comment);
+                localCache.put(comment, contextBundle);
+            }
+        });
     }
 
     private void performBind(Activity activity, Comment comment, User user) {

@@ -1,5 +1,6 @@
 package com.example.boardgamesocial.MainApp.Fragments;
 
+import static com.example.boardgamesocial.API.RetrofitClient.getObject;
 import static com.example.boardgamesocial.API.RetrofitClient.getObjectList;
 
 import android.os.Bundle;
@@ -29,6 +30,7 @@ import com.example.boardgamesocial.DataViews.Adapters.ViewHolders.CommentVH;
 import com.example.boardgamesocial.DataViews.Adapters.ViewHolders.PostVH;
 import com.example.boardgamesocial.DataViews.DataClsVM;
 import com.example.boardgamesocial.R;
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.snackbar.Snackbar;
 
 import java.util.HashMap;
@@ -49,7 +51,6 @@ public class SinglePostFragment extends Fragment implements DataClsAdapter.OnIte
     private static final String ARG_PARAM2 = "param2";
 
     private RetrofitClient retrofitClient;
-    private Post post;
     private DataClsAdapter<Comment, CommentVH> dataClsAdapter;
     private TextView textViewUsername;
     private TextView textViewPostType;
@@ -103,13 +104,8 @@ public class SinglePostFragment extends Fragment implements DataClsAdapter.OnIte
 
     public void onViewCreated(@NonNull View view, Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        assert this.getArguments() != null;
-        Log.i(TAG, "onViewCreated: Post: " + this.getArguments().getSerializable(PostVH.POST_KEY).toString());
-        Toast.makeText(getContext(), this.getArguments().getSerializable(PostVH.POST_KEY).toString(), Toast.LENGTH_SHORT).show();
-        setAppBarFab(View.INVISIBLE);
         retrofitClient = RetrofitClient.getClient();
 
-        post = (Post) getArguments().getSerializable(PostVH.POST_KEY);
         textViewUsername = view.findViewById(R.id.single_post_poster);
         textViewPostType = view.findViewById(R.id.single_post_type);
         textViewBody = view.findViewById(R.id.single_post_body);
@@ -117,9 +113,18 @@ public class SinglePostFragment extends Fragment implements DataClsAdapter.OnIte
         imageViewUserIcon = view.findViewById(R.id.single_post_user_icon);
         editTextComment = view.findViewById(R.id.single_post_editText_comment);
         imageButtonSend = view.findViewById(R.id.single_post_btn_add_comment);
-        RecyclerView recyclerView = view.findViewById(R.id.comments_recyclerView);
 
-        imageButtonSend.setOnClickListener(v -> sendComment(v));
+        assert getArguments() != null;
+        Post post = (Post) getArguments().getSerializable(PostVH.POST_KEY);
+        Log.i(TAG, "onViewCreated: Post: " + post);
+//        Toast.makeText(getContext(), this.getArguments().getSerializable(PostVH.POST_KEY).toString(), Toast.LENGTH_SHORT).show();
+
+        RecyclerView recyclerView = view.findViewById(R.id.comments_recyclerView);
+        FloatingActionButton fab = requireActivity().findViewById(R.id.bottom_app_bar_fab);
+
+        fab.setVisibility(View.INVISIBLE);
+
+        imageButtonSend.setOnClickListener(v -> sendComment(post.getId()));
 
         setUsername(post.getUserId());
         textViewPostType.setText(post.getPostType());
@@ -137,8 +142,7 @@ public class SinglePostFragment extends Fragment implements DataClsAdapter.OnIte
 
         DataClsVM dataClsVM = DataClsVM.getInstance();
         dataClsVM.getMediatorLiveData(retrofitClient.getCall(Comment.class, new HashMap<String, String>(){{
-//                                            put("postId", post.getId().toString());
-//                                            put("userId", post.getUserId().toString());
+                                            put("postId", post.getId().toString());
                                         }}), Comment.class, true)
                                         .observe(getViewLifecycleOwner(), dataClsAdapter::addNewObjects);
     }
@@ -164,27 +168,20 @@ public class SinglePostFragment extends Fragment implements DataClsAdapter.OnIte
         Toast.makeText(getContext(), "comment tapped",Toast.LENGTH_SHORT).show();
     }
 
-    private void sendComment(View view) {
+    private void sendComment(int postId) {
         if (editTextComment.getText().toString().isEmpty()) {
             return;
         }
 
-        retrofitClient.postCall(Comment.class, new Comment(Utils.getUserId(), post.getId(), editTextComment.getText().toString()))
+        retrofitClient.postCall(Comment.class, new Comment(Utils.getUserId(), postId, editTextComment.getText().toString()))
                 .subscribe(jsonObject -> {
+                    Comment comment = getObject(jsonObject, Comment.class);
                     requireActivity().runOnUiThread(() -> {
-                        Log.i(TAG, String.format("sendComment: comment: {s}", jsonObject));
-                        editTextComment.clearComposingText();
+                        Log.i(TAG, String.format("sendComment: comment: %s", comment));
+                        editTextComment.setText("");
                     });
                 }, throwable -> {
                     requireActivity().runOnUiThread(() -> {return;});
                 });
-    }
-
-    private void setAppBarFab(int visibility) {
-        Log.i(TAG, "setAppBarFab: visibility: " + visibility);
-        Bundle result = new Bundle();
-        result.putInt("visibility", visibility);
-        // The child fragment needs to still set the result on its parent fragment manager
-        getParentFragmentManager().setFragmentResult("requestKey", result);
     }
 }
