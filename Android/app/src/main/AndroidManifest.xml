@@ -13,11 +13,6 @@
         android:theme="@style/Theme.BoardGameSocial"
         android:usesCleartextTraffic="true">
         <activity
-            android:name=".MainApp.Fragments.EditIconFragment"
-            android:exported="false"
-            android:label="@string/title_activity_edit_icon_fragment"
-            android:theme="@style/Theme.BoardGameSocial.NoActionBar" />
-        <activity
             android:name=".MainApp.MainAppActivity"
             android:exported="true"
             android:label="@string/title_activity_main_app"
