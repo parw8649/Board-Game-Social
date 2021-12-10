@@ -158,7 +158,7 @@ public class HostedGamesFragment extends Fragment implements OnItemListener {
                 .observe(getViewLifecycleOwner(), dataClsAdapter::addNewObjects);
 
         fab = requireActivity().findViewById(R.id.bottom_app_bar_fab);
-        fab.setVisibility(View.VISIBLE);
+        fab.setVisibility(View.INVISIBLE);
     }
 
     @Override

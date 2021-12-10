@@ -14,6 +14,7 @@ import androidx.navigation.fragment.NavHostFragment;
 import com.example.boardgamesocial.DataClasses.Event;
 import com.example.boardgamesocial.DataViews.Adapters.ViewHolders.EventVH;
 import com.example.boardgamesocial.R;
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -96,6 +97,6 @@ public class SingleEventFragment extends Fragment {
                 .navigate(R.id.action_singleEventFragment_to_eventAttendeesFragment, getArguments()));
 
         fab = requireActivity().findViewById(R.id.bottom_app_bar_fab);
-        fab.setVisibility(View.VISIBLE);
+        fab.setVisibility(View.INVISIBLE);
     }
 }
