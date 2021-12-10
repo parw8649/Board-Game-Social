@@ -78,8 +78,8 @@ public class HomePostFragment extends Fragment implements OnItemListener {
     public void onViewCreated(@NonNull View view, Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
-        FloatingActionButton fab = requireActivity().findViewById(R.id.bottom_app_bar_fab);
-        fab.setVisibility(View.VISIBLE);
+//        fab = requireActivity().findViewById(R.id.bottom_app_bar_fab);
+//        fab.setVisibility(View.VISIBLE);
 
         if (Objects.nonNull(Utils.getUserId())) {
             Log.i(TAG, String.format("Utils.getUserId(): %d", Utils.getUserId()));
