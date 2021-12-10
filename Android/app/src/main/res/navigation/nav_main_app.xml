@@ -254,5 +254,9 @@
         android:id="@+id/editIconFragment"
         android:name="com.example.boardgamesocial.MainApp.Fragments.EditIconFragment"
         android:label="fragment_edit_icon"
-        tools:layout="@layout/fragment_edit_icon" />
+        tools:layout="@layout/fragment_edit_icon" >
+        <action
+            android:id="@+id/action_editIconFragment_to_editProfileFragment"
+            app:destination="@id/editProfileFragment" />
+    </fragment>
 </navigation>

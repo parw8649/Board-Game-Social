@@ -18,11 +18,13 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.FragmentResultListener;
 import androidx.navigation.NavController;
 import androidx.navigation.Navigation;
+import androidx.navigation.fragment.NavHostFragment;
 import androidx.navigation.ui.AppBarConfiguration;
 import androidx.navigation.ui.NavigationUI;
 
 import com.example.boardgamesocial.API.RetrofitClient;
 import com.example.boardgamesocial.Commons.Utils;
+import com.example.boardgamesocial.DataClasses.Profile;
 import com.example.boardgamesocial.DataClasses.User;
 import com.example.boardgamesocial.MainApp.Fragments.EditIconFragment;
 import com.example.boardgamesocial.databinding.ActivityMainAppBinding;
@@ -166,23 +168,39 @@ public class MainAppActivity extends AppCompatActivity {
     }
 
     private void userLogout() {
-        try {
-            RetrofitClient.getClient().logoutCall(new HashMap<String, String>() {{
-                put("user_id", Utils.getUserId().toString());
-            }}).subscribe(jsonObject -> {
-                runOnUiThread(() -> {
-                    Toast.makeText(this,"Successful logout", Toast.LENGTH_SHORT).show();
-                    Intent goToHomePostActivity = LoginAndSignUpActivity.getIntent(MainAppActivity.this);
-                    startActivity(goToHomePostActivity);
-                });
-            }); // look at doOnError instead of try catch
-        } catch (Exception e) {
+        RetrofitClient.getClient().logoutCall(new HashMap<String, String>() {{
+            put("user_id", Utils.getUserId().toString());
+        }}).subscribe(jsonObject -> {
+            runOnUiThread(() -> {
+                Toast.makeText(this,"Successful logout", Toast.LENGTH_SHORT).show();
+                Intent goToHomePostActivity = LoginAndSignUpActivity.getIntent(MainAppActivity.this);
+                startActivity(goToHomePostActivity);
+            });
+        }, throwable -> runOnUiThread(() -> {
             Toast.makeText(this,"Unable to logout", Toast.LENGTH_SHORT).show();
-        }
+        }));
     }
 
     public void setIcon(View view) {
         ImageView imageView = (ImageView) view;
-        Toast.makeText(this, "setIcon: icon img: " + EditIconFragment.ICON_MAP.get(imageView.getTag()), Toast.LENGTH_LONG).show();
+        Log.i(TAG, "setIcon: icon img: "+ EditIconFragment.ICON_MAP.get(imageView.getTag()));
+//        Toast.makeText(this, "setIcon: icon img: " + EditIconFragment.ICON_MAP.get(imageView.getTag()), Toast.LENGTH_LONG).show();
+
+        RetrofitClient.getClient().putCall(Profile.class, new HashMap<String, String>() {{
+            put("id", Utils.getProfileId().toString());
+            put("userId", Utils.getUserId().toString());
+            put("password", "secret");
+            put("icon_url", EditIconFragment.ICON_MAP.get(imageView.getTag()).get(1));
+        }}).subscribe(jsonObject -> {
+            Profile profile = getObject(jsonObject, Profile.class);
+            if (profile.getIconUrl().equals(EditIconFragment.ICON_MAP.get(imageView.getTag()).get(1))) {
+                runOnUiThread(() -> {
+                    Toast.makeText(this, "Icon updated.", Toast.LENGTH_LONG).show();
+                    navController.navigate(R.id.action_editIconFragment_to_editProfileFragment);
+                });
+            }
+        }, throwable -> runOnUiThread(() -> {
+            Toast.makeText(this, "Unable to update Icon.", Toast.LENGTH_LONG).show();
+        }));
     }
 }
