@@ -190,7 +190,7 @@ public class ProfileFragment extends Fragment {
                             .into(imageViewUserIcon);
                 });
             } else if (profiles.size() == 0) {
-                retrofitClient.postCall(Profile.class, new Profile(Utils.getUserId(), getString(R.string.profile_bio_placeholder),EditIconFragment.ICON_MAP.get("icon1").get(1)))
+                retrofitClient.postCall(Profile.class, new Profile(Utils.getUserId(), getString(R.string.profile_bio_placeholder), EditIconFragment.ICON_MAP.get("icon1").get(1)))
                         .subscribe(jsonObject -> {
                             Profile profile = getObject(jsonObject,Profile.class);
                             Utils.addProfileIdToPreferences(getContext(), profile.getId());
