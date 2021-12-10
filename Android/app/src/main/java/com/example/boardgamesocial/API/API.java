@@ -46,7 +46,7 @@ public interface API {
 
     HashMap<Class<?>, String> URL_MAP = new HashMap<Class<?>, String>() {{
         put(User.class, "api/user/");
-        put(Profile.class, "api/profile");
+        put(Profile.class, "api/profile/");
         put(Event.class, "api/event/");
         put(Post.class, "api/post/");
         put(Game.class, "api/game/");
