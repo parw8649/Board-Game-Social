@@ -24,6 +24,7 @@ import com.example.boardgamesocial.DataClasses.Profile;
 import com.example.boardgamesocial.DataClasses.User;
 import com.example.boardgamesocial.DataViews.Adapters.ViewHolders.RelationshipVH.UserToUserVH;
 import com.example.boardgamesocial.R;
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.snackbar.Snackbar;
 import com.squareup.picasso.Picasso;
 
@@ -41,6 +42,7 @@ public class ProfileFragment extends Fragment {
     public static final String TAG = "ProfileFragment";
 
     private RetrofitClient retrofitClient;
+    private FloatingActionButton fab;
     private TextView textViewFirstName;
     private TextView textViewUsername;
     private TextView textViewBio;
@@ -99,7 +101,8 @@ public class ProfileFragment extends Fragment {
         super.onViewCreated(view, savedInstanceState);
         Button buttonEditProfile = view.findViewById(R.id.profile_btn_edit);
 
-        setAppBarFab(View.INVISIBLE);
+        fab = view.findViewById(R.id.bottom_app_bar_fab);
+        fab.setVisibility(View.INVISIBLE);
 
         Log.i(TAG, String.format("userId: %s", Utils.getUserId()));
         retrofitClient = RetrofitClient.getClient();
@@ -128,7 +131,7 @@ public class ProfileFragment extends Fragment {
             } else {
                 bundle = null;
             }
-            setAppBarFab(View.INVISIBLE);
+            fab.setVisibility(View.INVISIBLE);
 
             NavHostFragment.findNavController(ProfileFragment.this)
                     .navigate(R.id.action_profileFragment_to_userFriendsFragment);
@@ -142,7 +145,7 @@ public class ProfileFragment extends Fragment {
             } else {
                 bundle = null;
             }
-            setAppBarFab(View.VISIBLE);
+            fab.setVisibility(View.VISIBLE);
 
             NavHostFragment.findNavController(ProfileFragment.this)
                     .navigate(R.id.action_profileFragment_to_userGamesFragment);
@@ -203,12 +206,5 @@ public class ProfileFragment extends Fragment {
                 Toast.makeText(getContext(), "Retrieved many Profiles with given username.", Toast.LENGTH_SHORT).show();
             }
         });
-    }
-
-    private void setAppBarFab(int visibility) {
-        Bundle result = new Bundle();
-        result.putInt("visibility", visibility);
-        // The child fragment needs to still set the result on its parent fragment manager
-        getParentFragmentManager().setFragmentResult("requestKey", result);
     }
 }
