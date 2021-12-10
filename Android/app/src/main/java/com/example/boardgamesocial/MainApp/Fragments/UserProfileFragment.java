@@ -1,6 +1,9 @@
 package com.example.boardgamesocial.MainApp.Fragments;
 
 
+import static com.example.boardgamesocial.API.RetrofitClient.getObject;
+import static com.example.boardgamesocial.API.RetrofitClient.getObjectList;
+
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
@@ -13,13 +16,20 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.example.boardgamesocial.API.RetrofitClient;
+import com.example.boardgamesocial.Commons.Utils;
+import com.example.boardgamesocial.DataClasses.Profile;
 import com.example.boardgamesocial.DataClasses.User;
 import com.example.boardgamesocial.DataViews.Adapters.ViewHolders.RelationshipVH.UserToUserVH;
 import com.example.boardgamesocial.R;
+import com.squareup.picasso.Picasso;
 
+import java.util.HashMap;
+import java.util.List;
 import java.util.Objects;
 
 /**
@@ -36,6 +46,8 @@ public class UserProfileFragment extends Fragment {
     private TextView textViewBio;
     private Button buttonUserGameList;
     private Button buttonFriendList;
+    private RetrofitClient retrofitClient;
+    private ImageView imageViewUserIcon;
 
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
@@ -87,6 +99,8 @@ public class UserProfileFragment extends Fragment {
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
+        retrofitClient = RetrofitClient.getClient();
+        imageViewUserIcon = view.findViewById(R.id.userProfile_user_icon);
 
         textViewFirstName = view.findViewById(R.id.userProfile_first_name);
         textViewUsername = view.findViewById(R.id.userProfile_username);
@@ -113,6 +127,41 @@ public class UserProfileFragment extends Fragment {
             // should the getArguments() bundle be sent instead?
             NavHostFragment.findNavController(UserProfileFragment.this)
                     .navigate(R.id.action_userProfileFragment_to_userGamesFragment, requireArguments());
+        });
+    }
+
+    private void setBioAndIcon() {
+        retrofitClient.getCall(Profile.class, new HashMap<String, String>() {{
+            put("userId", String.valueOf(Utils.getUserId()));
+        }}).subscribe(jsonArray -> {
+            List<Profile> profiles = getObjectList(jsonArray, Profile.class);
+            if (profiles.size() == 1) {
+                Utils.addProfileIdToPreferences(getContext(), (Objects.isNull(profiles.get(0).getId())? 99 : profiles.get(0).getId()));
+                requireActivity().runOnUiThread(() -> {
+                    textViewBio.setText(profiles.get(0).getBio());
+                    Picasso
+                            .with(getContext())
+                            .load(profiles.get(0).getIconUrl())
+                            .fit()
+                            .placeholder(R.drawable.show_circular_image)
+                            .into(imageViewUserIcon);
+                });
+            } else if (profiles.size() == 0) {
+                retrofitClient.postCall(Profile.class, new Profile(Utils.getUserId(), getString(R.string.profile_bio_placeholder),EditIconFragment.ICON_MAP.get("icon1").get(1)))
+                        .subscribe(jsonObject -> {
+                            Profile profile = getObject(jsonObject,Profile.class);
+                            Utils.addProfileIdToPreferences(getContext(), profile.getId());
+                            requireActivity().runOnUiThread(() -> {
+                                textViewBio.setText(profile.getBio());
+                            });
+                        },throwable1 -> {
+                            requireActivity().runOnUiThread(() -> {
+                                Toast.makeText(getContext(), "Unable to connect user bio and icon", Toast.LENGTH_SHORT).show();
+                            });
+                        });
+            } else {
+                Toast.makeText(getContext(), "Retrieved many Profiles with given username.", Toast.LENGTH_SHORT).show();
+            }
         });
     }
 }
