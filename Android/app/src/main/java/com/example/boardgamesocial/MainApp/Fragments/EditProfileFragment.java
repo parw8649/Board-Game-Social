@@ -30,6 +30,7 @@ import com.example.boardgamesocial.DataClasses.Profile;
 import com.example.boardgamesocial.DataClasses.User;
 import com.example.boardgamesocial.LoginAndSignUp.LoginAndSignUpActivity;
 import com.example.boardgamesocial.R;
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.snackbar.Snackbar;
 import com.squareup.picasso.Picasso;
 
@@ -125,7 +126,8 @@ public class EditProfileFragment extends Fragment {
         buttonEditBio = view.findViewById(R.id.edit_profile_btn_edit_bio);
         buttonDeleteAcc = view.findViewById(R.id.edit_profile_btn_delete_account);
 
-        setAppBarFab(View.INVISIBLE);
+        FloatingActionButton fab = view.findViewById(R.id.bottom_app_bar_fab);
+        fab.setVisibility(View.INVISIBLE);
 
         retrofitClient.getCall(User.class, new HashMap<String, String>() {{
             put("id", String.valueOf(Utils.getUserId()));
@@ -198,24 +200,22 @@ public class EditProfileFragment extends Fragment {
     }
 
     private void updateUsername(View view) {
-        try {
-            retrofitClient.putCall(User.class, new HashMap<String, String>() {{
-                put("id", Utils.getUserId().toString());
-                put("password", secret);
-                put("username", editTextNewUsername.getText().toString());
-            }}).subscribe(jsonObject -> {
-                User user = getObject(jsonObject, User.class);
-                getActivity().runOnUiThread(() -> {
-                    textViewGreeting.setText(getString(R.string.edit_profile_greeting, user.getUsername()));
-                    textViewCurrUsername.setText(user.getUsername());
-                    Snackbar.make(view, "Username updated", Snackbar.LENGTH_SHORT)
-                            .setAnchorView(R.id.edit_profile_btn_edit_username).setAction("Action", null).show();
-                });
+        retrofitClient.putCall(User.class, new HashMap<String, String>() {{
+            put("id", Utils.getUserId().toString());
+            put("password", secret);
+            put("username", editTextNewUsername.getText().toString());
+        }}).subscribe(jsonObject -> {
+            User user = getObject(jsonObject, User.class);
+            getActivity().runOnUiThread(() -> {
+                textViewGreeting.setText(getString(R.string.edit_profile_greeting, user.getUsername()));
+                textViewCurrUsername.setText(user.getUsername());
+                Snackbar.make(view, "Username updated", Snackbar.LENGTH_SHORT)
+                        .setAnchorView(R.id.edit_profile_btn_edit_username).setAction("Action", null).show();
             });
-        }catch (Exception e) {
-            Snackbar.make(view, "Unable to update username", Snackbar.LENGTH_SHORT)
+        }, throwable -> {
+            Snackbar.make(view, "Unable to update username.", Snackbar.LENGTH_SHORT)
                     .setAnchorView(R.id.edit_profile_btn_edit_username).setAction("Action", null).show();
-        }
+        });
     }
 
     private boolean validatePassword(View view) {
@@ -239,25 +239,23 @@ public class EditProfileFragment extends Fragment {
     }
 
     private void updatePassword(View view) {
-        try {
-            retrofitClient.putCall(User.class, new HashMap<String, String>() {{
-                put("id", Utils.getUserId().toString());
-                put("username", textViewCurrUsername.getText().toString());
-                put("password", editTextConfirmPassword.getText().toString());
-            }}).subscribe(jsonObject -> {
-                User user = getObject(jsonObject, User.class);
-                getActivity().runOnUiThread(() -> {
-                    secret = editTextConfirmPassword.getText().toString();
-                    editTextNewPassword.setText("");
-                    editTextConfirmPassword.setText("");
-                    Snackbar.make(view, "Password updated.", Snackbar.LENGTH_SHORT)
-                            .setAnchorView(R.id.edit_profile_btn_edit_password).setAction("Action", null).show();
-                });
+        retrofitClient.putCall(User.class, new HashMap<String, String>() {{
+            put("id", Utils.getUserId().toString());
+            put("username", textViewCurrUsername.getText().toString());
+            put("password", editTextConfirmPassword.getText().toString());
+        }}).subscribe(jsonObject -> {
+            User user = getObject(jsonObject, User.class);
+            getActivity().runOnUiThread(() -> {
+                secret = editTextConfirmPassword.getText().toString();
+                editTextNewPassword.setText("");
+                editTextConfirmPassword.setText("");
+                Snackbar.make(view, "Password updated.", Snackbar.LENGTH_SHORT)
+                        .setAnchorView(R.id.edit_profile_btn_edit_password).setAction("Action", null).show();
             });
-        }catch (Exception e) {
-            Snackbar.make(view, "Unable to update password", Snackbar.LENGTH_SHORT)
+        }, throwable -> {
+            Snackbar.make(view, "Unable to update password.", Snackbar.LENGTH_SHORT)
                     .setAnchorView(R.id.edit_profile_btn_edit_password).setAction("Action", null).show();
-        }
+        });
     }
 
     private void updateBio(View view) {
@@ -314,33 +312,24 @@ public class EditProfileFragment extends Fragment {
         });
 
         buttonDeleteAccConfirm.setOnClickListener(v -> {
-            try {
-                retrofitClient.deleteCall(User.class, new HashMap<String, String>() {{
-                    put("id", Utils.getUserId().toString());
-                }}).subscribe(jsonArray-> {
-                    List<User> users = getObjectList(jsonArray, User.class);
-                    getActivity().runOnUiThread(() -> {
-                        if (users.size() == 1 && users.get(0).getUsername().equals(textViewCurrUsername.getText().toString())) {
-                            Toast.makeText(getContext(), "Account deleted.", Toast.LENGTH_SHORT).show();
+            retrofitClient.deleteCall(User.class, new HashMap<String, String>() {{
+                put("id", Utils.getUserId().toString());
+            }}).subscribe(jsonArray-> {
+                List<User> users = getObjectList(jsonArray, User.class);
+                getActivity().runOnUiThread(() -> {
+                    if (users.size() == 1 && users.get(0).getUsername().equals(textViewCurrUsername.getText().toString())) {
+                        Toast.makeText(getContext(), "Account deleted.", Toast.LENGTH_SHORT).show();
 //                            Snackbar.make(v, "Account deleted.", Snackbar.LENGTH_SHORT).setAction("Action", null).show();
-                            Intent goToHomePostActivity = LoginAndSignUpActivity.getIntent(getContext());
-                            startActivity(goToHomePostActivity);
-                        }
-                    });
+                        Intent goToHomePostActivity = LoginAndSignUpActivity.getIntent(getContext());
+                        startActivity(goToHomePostActivity);
+                    }
                 });
-            }catch (Exception e) {
+            }, throwable -> {
                 Snackbar.make(view, "Unable to delete account.", Snackbar.LENGTH_SHORT)
                         .setAnchorView(R.id.edit_profile_btn_delete_account).setAction("Action", null).show();
-            }
+            });
         });
 
         buttonDeleteAccDeny.setOnClickListener(v -> popupWindow.dismiss());
-    }
-
-    private void setAppBarFab(int visibility) {
-        Bundle result = new Bundle();
-        result.putInt("visibility", visibility);
-        // The child fragment needs to still set the result on its parent fragment manager
-        getParentFragmentManager().setFragmentResult("requestKey", result);
     }
 }
