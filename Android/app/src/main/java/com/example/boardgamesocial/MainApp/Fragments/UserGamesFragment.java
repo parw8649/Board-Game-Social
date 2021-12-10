@@ -22,12 +22,15 @@ import com.example.boardgamesocial.DataViews.Adapters.DataClsAdapter;
 import com.example.boardgamesocial.DataViews.Adapters.ViewHolders.GameVH;
 import com.example.boardgamesocial.DataViews.DataClsVM;
 import com.example.boardgamesocial.R;
-import com.google.android.material.floatingactionbutton.FloatingActionButton;
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
 import com.google.gson.JsonArray;
 
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Objects;
+import java.util.stream.Collectors;
 
 import io.reactivex.Observable;
 
@@ -39,6 +42,8 @@ import io.reactivex.Observable;
 public class UserGamesFragment extends Fragment implements DataClsAdapter.OnItemListener {
 
     public static final String TAG = "UserGamesFragment";
+
+    private final Gson gson = new GsonBuilder().create();
 
     private RecyclerView recyclerView;
 
@@ -97,9 +102,6 @@ public class UserGamesFragment extends Fragment implements DataClsAdapter.OnItem
     public void onViewCreated(@NonNull View view, Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
-        FloatingActionButton fab = requireActivity().findViewById(R.id.bottom_app_bar_fab);
-        fab.setVisibility(View.INVISIBLE);
-
         recyclerView = view.findViewById(R.id.userGames_recyclerView);
         recyclerView.setLayoutManager(new LinearLayoutManager((this.getContext())));
 
@@ -110,8 +112,35 @@ public class UserGamesFragment extends Fragment implements DataClsAdapter.OnItem
                 R.layout.game_item);
         recyclerView.setAdapter(dataClsAdapter);
 
+        RetrofitClient retrofitClient = RetrofitClient.getClient();
+
         DataClsVM dataClsVM = DataClsVM.getInstance();
-        dataClsVM.getMediatorLiveData(fetchUserSpecificGames(), Game.class, true)
+        dataClsVM.getMediatorLiveData(
+                retrofitClient.getCall(GameToUser.class, new HashMap<String, String>() {{
+                    put("userId", String.valueOf(Utils.getUserId()));
+                }}).flatMap(gameToUserArray -> {
+                    List<GameToUser> gameToUserList = getObjectList(gameToUserArray, GameToUser.class);
+                    List<Integer> gameIdList = gameToUserList
+                            .stream()
+                            .filter(gameToUser -> Objects.nonNull(gameToUser.getUserId()))
+                            .map(GameToUser::getGameId)
+                            .collect(Collectors.toList());
+
+                    return retrofitClient.getCall(Game.class, new HashMap<>()).
+                            map(gameArray -> {
+                                List<Game> gameList = getObjectList(gameArray, Game.class);
+                                return gson.toJsonTree(gameList
+                                        .stream()
+                                        .filter(game -> Objects.nonNull(game.getGameTitle()))
+                                        .filter(game -> gameIdList.contains(game.getId()))
+                                        .collect(Collectors.toList())).getAsJsonArray();
+                            });
+                }).scan((resultingArray, dataArray) -> {
+                    resultingArray = new JsonArray();
+                    resultingArray.addAll(dataArray);
+                    return resultingArray;
+                })
+                , Game.class, true)
                 .observe(getViewLifecycleOwner(), dataClsAdapter::addNewObjects);
     }
 
