@@ -15,6 +15,12 @@ public class Profile implements DataClass{
         this.iconUrl = iconUrl;
     }
 
+    public Profile(Integer userId, String bio, String iconUrl) {
+        this.userId = userId;
+        this.bio = bio;
+        this.iconUrl = iconUrl;
+    }
+
     public Integer getId() {
         return id;
     }

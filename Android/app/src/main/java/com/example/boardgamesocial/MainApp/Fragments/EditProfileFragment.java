@@ -14,6 +14,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.PopupWindow;
 import android.widget.TextView;
@@ -21,12 +22,17 @@ import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
+import androidx.navigation.fragment.NavHostFragment;
+
 import com.example.boardgamesocial.API.RetrofitClient;
 import com.example.boardgamesocial.Commons.Utils;
+import com.example.boardgamesocial.DataClasses.Profile;
 import com.example.boardgamesocial.DataClasses.User;
 import com.example.boardgamesocial.LoginAndSignUp.LoginAndSignUpActivity;
 import com.example.boardgamesocial.R;
 import com.google.android.material.snackbar.Snackbar;
+import com.squareup.picasso.Picasso;
+
 import java.util.HashMap;
 import java.util.List;
 
@@ -54,6 +60,8 @@ public class EditProfileFragment extends Fragment {
     private EditText editTextNewPassword;
     private EditText editTextConfirmPassword;
     private EditText editTextBio;
+    private ImageView imageViewUserIcon;
+    private Button buttonEditIcon;
     private Button buttonEditUsername;
     private Button buttonEditPassword;
     private Button buttonEditBio;
@@ -110,6 +118,8 @@ public class EditProfileFragment extends Fragment {
         editTextNewPassword = view.findViewById(R.id.edit_profile_editText_password);
         editTextConfirmPassword = view.findViewById(R.id.edit_profile_editText_password_confirm);
         editTextBio = view.findViewById(R.id.edit_profile_editText_bio);
+        imageViewUserIcon = view.findViewById(R.id.edit_profile_icon);
+        buttonEditIcon = view.findViewById(R.id.edit_profile_btn_edit_icon);
         buttonEditUsername = view.findViewById(R.id.edit_profile_btn_edit_username);
         buttonEditPassword = view.findViewById(R.id.edit_profile_btn_edit_password);
         buttonEditBio = view.findViewById(R.id.edit_profile_btn_edit_bio);
@@ -130,6 +140,28 @@ public class EditProfileFragment extends Fragment {
             });
         });
 
+        retrofitClient.getCall(Profile.class, new HashMap<String, String>() {{
+            put("userId", String.valueOf(Utils.getUserId()));
+        }}).subscribe(jsonArray -> {
+            List<Profile> profiles = getObjectList(jsonArray, Profile.class);
+            if (profiles.size() == 1) {
+                requireActivity().runOnUiThread(() -> {
+                    editTextBio.setText(profiles.get(0).getBio());
+                    Picasso
+                            .with(getContext())
+                            .load(profiles.get(0).getIconUrl())
+                            .fit()
+                            .placeholder(R.drawable.show_circular_image)
+                            .into(imageViewUserIcon);
+                });
+            }
+        });
+
+        buttonEditIcon.setOnClickListener(v->{
+            NavHostFragment.findNavController(EditProfileFragment.this)
+                    .navigate(R.id.action_editProfileFragment_to_editIconFragment);
+        });
+
         buttonEditUsername.setOnClickListener(v -> validateUsername(v));
 
         buttonEditPassword.setOnClickListener(v -> {
@@ -145,7 +177,7 @@ public class EditProfileFragment extends Fragment {
 
     private void validateUsername(View view) {
         if (editTextNewUsername.getText().toString().isEmpty() || username.equals(editTextNewUsername.getText().toString())) {
-            Snackbar.make(view, "Please enter a new username for update.", Snackbar.LENGTH_LONG)
+            Snackbar.make(view, "Please enter a new username for update.", Snackbar.LENGTH_SHORT)
                     .setAnchorView(R.id.edit_profile_btn_edit_username).setAction("Action", null).show();
             return;
         }
@@ -156,7 +188,7 @@ public class EditProfileFragment extends Fragment {
             getActivity().runOnUiThread(() -> {
                 List<User> users = getObjectList(jsonArray, User.class);
                 if (users.size() > 0) {
-                    Snackbar.make(view, "Please enter a new username for update.", Snackbar.LENGTH_LONG)
+                    Snackbar.make(view, "Username not available.", Snackbar.LENGTH_SHORT)
                             .setAnchorView(R.id.edit_profile_btn_edit_username).setAction("Action", null).show();
                 } else {
                     updateUsername(view);
@@ -199,7 +231,7 @@ public class EditProfileFragment extends Fragment {
             return false;
         }
         if (editTextConfirmPassword.getText().toString().length() < 6) {
-            Snackbar.make(view, "Password must be 6 or more characters.", Snackbar.LENGTH_LONG)
+            Snackbar.make(view, "Password must be 6 or more characters.", Snackbar.LENGTH_SHORT)
                     .setAnchorView(R.id.edit_profile_btn_edit_password).setAction("Action", null).show();
             return false;
         }
@@ -229,28 +261,26 @@ public class EditProfileFragment extends Fragment {
     }
 
     private void updateBio(View view) {
-//        try {
-//            retrofitClient.putCall(User.class, new HashMap<String, String>() {{
-//                put("id", Utils.getUserId().toString());
-//                put("username", textViewCurrUsername.getText().toString());
-//                put("password", secret);
-//                put("bio", editTextBio.getText().toString());
-//            }}).subscribe(jsonObject -> {
-//                User user = getObject(jsonObject, User.class);
-//                getActivity().runOnUiThread(() -> {
-//                    editTextNewPassword.setText("");
-//                    editTextConfirmPassword.setText("");
-//                    Snackbar.make(view, "Bio updated.", Snackbar.LENGTH_SHORT)
-//                            .setAnchorView(R.id.edit_profile_btn_edit_bio).setAction("Action", null).show();
-//                    return;
-//                });
-//            });
-//        }catch (Exception e) {
-//            Snackbar.make(view, "Unable to update password", Snackbar.LENGTH_SHORT)
-//                    .setAnchorView(R.id.edit_profile_btn_edit_bio).setAction("Action", null).show();
-//        }
-        Snackbar.make(view, "inside updateBio function :D", Snackbar.LENGTH_SHORT)
-                .setAnchorView(R.id.edit_profile_btn_edit_bio).setAction("Action", null).show();
+        retrofitClient.putCall(Profile.class, new HashMap<String, String>() {{
+            put("id", Utils.getProfileId().toString());
+            put("userId", Utils.getUserId().toString());
+            put("username", username);
+            put("password", secret);
+            put("bio", editTextBio.getText().toString());
+        }}).subscribe(jsonObject -> {
+            Profile profile = getObject(jsonObject, Profile.class);
+            if (profile.getBio().equals(editTextBio.getText().toString())) {
+                getActivity().runOnUiThread(() -> {
+                    Snackbar.make(view, "Bio updated.", Snackbar.LENGTH_SHORT)
+                            .setAnchorView(R.id.edit_profile_btn_edit_bio).setAction("Action", null).show();
+                });
+            }
+        }, throwable -> requireActivity().runOnUiThread(() -> {
+            Snackbar.make(view, "Unable to update Bio", Snackbar.LENGTH_SHORT)
+                    .setAnchorView(R.id.edit_profile_btn_edit_bio).setAction("Action", null).show();
+        }));
+//        Snackbar.make(view, "inside updateBio function :D", Snackbar.LENGTH_SHORT)
+//                .setAnchorView(R.id.edit_profile_btn_edit_bio).setAction("Action", null).show();
     }
 
     private void deleteAccount(View view) {

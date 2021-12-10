@@ -171,4 +171,7 @@
     <string name="delete_acc_confirm">Yes, delete account</string>
     <string name="delete_acc_deny">No, keep account</string>
     <string name="popup_continue_msg">Do you want to continue?</string>
+    <string name="title_activity_edit_icon_fragment">EditIconFragment</string>
+    <!--  edit icon fragment  -->
+    <string name="edit_icon_title">Choose your icon:</string>
 </resources>

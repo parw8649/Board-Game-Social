@@ -1,5 +1,6 @@
 package com.example.boardgamesocial.MainApp.Fragments;
 
+import static com.example.boardgamesocial.API.RetrofitClient.getObject;
 import static com.example.boardgamesocial.API.RetrofitClient.getObjectList;
 
 import android.app.Activity;
@@ -9,6 +10,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -18,9 +20,13 @@ import androidx.fragment.app.Fragment;
 import androidx.navigation.fragment.NavHostFragment;
 import com.example.boardgamesocial.API.RetrofitClient;
 import com.example.boardgamesocial.Commons.Utils;
+import com.example.boardgamesocial.DataClasses.Profile;
 import com.example.boardgamesocial.DataClasses.User;
 import com.example.boardgamesocial.DataViews.Adapters.ViewHolders.RelationshipVH.UserToUserVH;
 import com.example.boardgamesocial.R;
+import com.google.android.material.snackbar.Snackbar;
+import com.squareup.picasso.Picasso;
+
 import java.util.HashMap;
 import java.util.List;
 import java.util.Objects;
@@ -38,6 +44,7 @@ public class ProfileFragment extends Fragment {
     private TextView textViewFirstName;
     private TextView textViewUsername;
     private TextView textViewBio;
+    private ImageView imageViewUserIcon;
     private Button buttonEditProfile;
     private Button buttonUserGameList;
     private Button buttonFriendList;
@@ -97,6 +104,7 @@ public class ProfileFragment extends Fragment {
         Log.i(TAG, String.format("userId: %s", Utils.getUserId()));
         retrofitClient = RetrofitClient.getClient();
         textViewBio = view.findViewById(R.id.profile_bio);
+        imageViewUserIcon = view.findViewById(R.id.profile_user_icon);
         buttonEditProfile = view.findViewById(R.id.profile_btn_edit);
         buttonUserGameList = view.findViewById(R.id.profile_btn_view_user_gamelist);
         buttonFriendList = view.findViewById(R.id.profile_btn_view_friends);
@@ -109,9 +117,8 @@ public class ProfileFragment extends Fragment {
             buttonEditProfile.setVisibility(view.GONE);
         }
 
-        textViewBio.setText("Empty bios for all!");
-
         setNames(view);
+        setBioAndIcon();
 
         buttonFriendList.setOnClickListener(v -> {
             Bundle bundle = new Bundle();
@@ -160,6 +167,41 @@ public class ProfileFragment extends Fragment {
                 buttonFriendList.setText(viewUserFriends);
                 buttonUserGameList.setText(viewUserGames);
             });
+        });
+    }
+
+    private void setBioAndIcon() {
+        retrofitClient.getCall(Profile.class, new HashMap<String, String>() {{
+            put("userId", String.valueOf(Utils.getUserId()));
+        }}).subscribe(jsonArray -> {
+            List<Profile> profiles = getObjectList(jsonArray, Profile.class);
+            if (profiles.size() == 1) {
+                Utils.addProfileIdToPreferences(getContext(), (Objects.isNull(profiles.get(0).getId())? 99 : profiles.get(0).getId()));
+                requireActivity().runOnUiThread(() -> {
+                    textViewBio.setText(profiles.get(0).getBio());
+                    Picasso
+                            .with(getContext())
+                            .load(profiles.get(0).getIconUrl())
+                            .fit()
+                            .placeholder(R.drawable.show_circular_image)
+                            .into(imageViewUserIcon);
+                });
+            } else if (profiles.size() == 0) {
+                retrofitClient.postCall(Profile.class, new Profile(Utils.getUserId(), getString(R.string.profile_bio_placeholder),null))
+                        .subscribe(jsonObject -> {
+                            Profile profile = getObject(jsonObject,Profile.class);
+                            Utils.addProfileIdToPreferences(getContext(), (Objects.isNull(profile.getId())? 99 : profile.getId()));
+                            requireActivity().runOnUiThread(() -> {
+                                textViewBio.setText(profile.getBio());
+                            });
+                        },throwable1 -> {
+                            requireActivity().runOnUiThread(() -> {
+                                Toast.makeText(getContext(), "Unable to connect user bio and icon", Toast.LENGTH_SHORT).show();
+                            });
+                        });
+            } else {
+                Toast.makeText(getContext(), "Retrieved many Profiles with given username.", Toast.LENGTH_SHORT).show();
+            }
         });
     }
 

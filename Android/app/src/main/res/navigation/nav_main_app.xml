@@ -105,6 +105,9 @@
         <action
             android:id="@+id/action_editProfileFragment_to_profileFragment"
             app:destination="@id/profileFragment" />
+        <action
+            android:id="@+id/action_editProfileFragment_to_editIconFragment"
+            app:destination="@id/editIconFragment" />
     </fragment>
     <fragment
         android:id="@+id/userFriendsFragment"
@@ -247,4 +250,9 @@
             android:id="@+id/action_addGameReviewFragment_to_gameReviewsFragment"
             app:destination="@id/gameReviewsFragment" />
     </fragment>
+    <fragment
+        android:id="@+id/editIconFragment"
+        android:name="com.example.boardgamesocial.MainApp.Fragments.EditIconFragment"
+        android:label="fragment_edit_icon"
+        tools:layout="@layout/fragment_edit_icon" />
 </navigation>
