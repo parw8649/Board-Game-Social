@@ -114,6 +114,13 @@
             app:layout_constraintTop_toBottomOf="@id/single_post_cardview"
             tools:listitem="@layout/comment_item" />
 
+        <androidx.constraintlayout.widget.Guideline
+            android:id="@+id/guideline6"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            app:layout_constraintGuide_begin="547dp" />
+
         <LinearLayout
             android:id="@+id/comment_add_section"
             android:layout_width="match_parent"
