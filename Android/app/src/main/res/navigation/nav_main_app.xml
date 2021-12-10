@@ -196,11 +196,11 @@
             android:id="@+id/action_searchFragment_to_singleEventFragment"
             app:destination="@id/singleEventFragment" />
         <action
-            android:id="@+id/action_searchFragment_to_profileFragment"
-            app:destination="@id/profileFragment" />
-        <action
             android:id="@+id/action_searchFragment_to_gameReviewsFragment"
             app:destination="@id/gameReviewsFragment" />
+        <action
+            android:id="@+id/action_searchFragment_to_userProfileFragment"
+            app:destination="@id/userProfileFragment" />
     </fragment>
     <fragment
         android:id="@+id/addGameFragment"

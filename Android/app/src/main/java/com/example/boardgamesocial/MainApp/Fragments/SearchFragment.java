@@ -17,6 +17,7 @@ import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ProgressBar;
 import android.widget.SearchView;
 import android.widget.Spinner;
 import android.widget.Toast;
@@ -30,6 +31,7 @@ import com.example.boardgamesocial.DataViews.Adapters.DataClsAdapter;
 import com.example.boardgamesocial.DataViews.Adapters.ViewHolders.DataClsVH;
 import com.example.boardgamesocial.DataViews.Adapters.ViewHolders.EventVH;
 import com.example.boardgamesocial.DataViews.Adapters.ViewHolders.GameVH;
+import com.example.boardgamesocial.DataViews.Adapters.ViewHolders.UserVH;
 import com.example.boardgamesocial.DataViews.DataClsVM;
 import com.example.boardgamesocial.R;
 import com.google.gson.JsonArray;
@@ -72,13 +74,11 @@ public class SearchFragment extends Fragment implements AdapterView.OnItemSelect
     private RecyclerView rvEvents;
     private RecyclerView rvUser;
     private CompositeDisposable disposables = new CompositeDisposable();
-    private boolean gamesLoaded;
     private RetrofitClient retrofitClient;
     private DataClsAdapter<Game, GameVH> dataClsAdapterGames;
     private DataClsVM dataClsVM;
     private DataClsAdapter<Event, EventVH> dataClsAdapterEvents;
-    //Todo: Add UserVH
-    //private DataClsAdapter<User, UserVH> dataClsAdapterUsers;
+    private DataClsAdapter<User, UserVH> dataClsAdapterUsers;
 
     public SearchFragment() {
         // Required empty public constructor
@@ -92,7 +92,6 @@ public class SearchFragment extends Fragment implements AdapterView.OnItemSelect
      * @param param2 Parameter 2.
      * @return A new instance of fragment SearchFragment.
      */
-    // TODO: Rename and change types and number of parameters
     public static SearchFragment newInstance(String param1, String param2) {
         SearchFragment fragment = new SearchFragment();
         Bundle args = new Bundle();
@@ -129,7 +128,7 @@ public class SearchFragment extends Fragment implements AdapterView.OnItemSelect
         rvEvents = view.findViewById(R.id.rvEventsSearch);
         rvUser = view.findViewById(R.id.rvUserSearch);
         searchOption = "Games";
-        gamesLoaded = false;
+
 
         retrofitClient = RetrofitClient.getClient();
         dataClsVM = DataClsVM.getInstance();
@@ -151,9 +150,8 @@ public class SearchFragment extends Fragment implements AdapterView.OnItemSelect
                             @Override
                             public boolean onQueryTextChange(final String newText) {
                                 if (!emitter.isDisposed()) {
-                                    if (!newText.isEmpty()) {
                                         emitter.onNext(newText); // Pass the query to the emitter
-                                    }
+
                                 }
                                 return false;
                             }
@@ -172,55 +170,23 @@ public class SearchFragment extends Fragment implements AdapterView.OnItemSelect
     @Override
     public void onItemSelected(AdapterView<?> adapterView, View view, int pos, long id) {
         searchOption = adapterView.getItemAtPosition(pos).toString();
-        //TODO: Figure out how to limit calls after called at least once
-
         switch (searchOption) {
             case "Games":
                 Log.i(TAG, "Games Search");
                 changeVisibility("Games");
-                rvGames.setLayoutManager(new LinearLayoutManager(this.getContext()));
-
-                dataClsAdapterGames = new DataClsAdapter<>(
-                        this,
-                        Game.class,
-                        getActivity(),
-                        R.layout.game_item);
-                rvGames.setAdapter(dataClsAdapterGames);
-
-                dataClsVM.getMediatorLiveData(RetrofitClient.getClient().getCall(Game.class, new HashMap<>()), Game.class, true)
-                        .observe(getViewLifecycleOwner(), dataClsAdapterGames::addNewObjects);
-
-
+                search("");
                 break;
-            case "User":
+            case "People":
                 Log.i(TAG, "User Search");
                 //ToDO: Add user layout
-                rvUser.setLayoutManager(new LinearLayoutManager(this.getContext()));
+                changeVisibility("People");
+                search("");
 
-//                dataClsAdapterUser = new DataClsAdapter<>(
-//                        this,
-//                        User.class,
-//                        getActivity(),
-//                        R.layout.user_item);
-//                rvEvents.setAdapter(dataClsAdapterUser);
-
-                // dataClsVM.getMediatorLiveData(RetrofitClient.getClient().getCall(User.class, new HashMap<>()), User.class, true)
-                //.observe(getViewLifecycleOwner(), dataClsAdapterUser::addNewObjects);
                 break;
             case "Events":
                 Log.i(TAG, "Event Search");
                 changeVisibility("Events");
-                rvEvents.setLayoutManager(new LinearLayoutManager(this.getContext()));
-
-                dataClsAdapterEvents = new DataClsAdapter<>(
-                        this,
-                        Event.class,
-                        getActivity(),
-                        R.layout.event_item);
-                rvEvents.setAdapter(dataClsAdapterEvents);
-
-                dataClsVM.getMediatorLiveData(RetrofitClient.getClient().getCall(Event.class, new HashMap<>()), Event.class, true)
-                        .observe(getViewLifecycleOwner(), dataClsAdapterEvents::addNewObjects);
+               search("");
                 break;
             default:
                 break;
@@ -247,7 +213,7 @@ public class SearchFragment extends Fragment implements AdapterView.OnItemSelect
                 rvUser.setVisibility(View.GONE);
                 rvEvents.setVisibility(View.GONE);
                 break;
-            case "User":
+            case "People":
                 Log.i(TAG, "User Visible");
                 rvGames.setVisibility(View.GONE);
                 rvUser.setVisibility(View.VISIBLE);
@@ -272,45 +238,83 @@ public class SearchFragment extends Fragment implements AdapterView.OnItemSelect
         switch (searchOption) {
             case "Games":
                 Log.i(TAG, "Games Search");
-                Observable<JsonArray> gameQuery = retrofitClient.getCall(Game.class, new HashMap<String, String>() {{
-                    put("gameTitle", searchQuery);
-                }}).mergeWith(retrofitClient.getCall(Game.class, new HashMap<String, String>() {{
-                    put("genre", searchQuery);
-                }})).mergeWith(retrofitClient.getCall(Game.class, new HashMap<String, String>() {{
-                    put("description", searchQuery);
-                }})).scan((cumulativeJsonArray, newJsonArray) -> {
-                    cumulativeJsonArray.addAll(newJsonArray);
-                    return cumulativeJsonArray;
-                });
-                dataClsVM.getMediatorLiveData(gameQuery, Game.class, true)
-                        .observe(getViewLifecycleOwner(), dataClsAdapterGames::addNewObjects);
+                rvGames.setLayoutManager(new LinearLayoutManager(this.getContext()));
+                dataClsAdapterGames = new DataClsAdapter<>(
+                        this,
+                        Game.class,
+                        getActivity(),
+                        R.layout.game_item);
+                rvGames.setAdapter(dataClsAdapterGames);
+                if(!searchQuery.isEmpty()) {
+                    Observable<JsonArray> gameQuery = retrofitClient.getCall(Game.class, new HashMap<String, String>() {{
+                        put("gameTitle", searchQuery);
+                    }}).mergeWith(retrofitClient.getCall(Game.class, new HashMap<String, String>() {{
+                        put("genre", searchQuery);
+                    }})).mergeWith(retrofitClient.getCall(Game.class, new HashMap<String, String>() {{
+                        put("description", searchQuery);
+                    }})).scan((cumulativeJsonArray, newJsonArray) -> {
+                        cumulativeJsonArray.addAll(newJsonArray);
+                        return cumulativeJsonArray;
+                    });
+                    dataClsVM.getMediatorLiveData(gameQuery, Game.class, true)
+                            .observe(getViewLifecycleOwner(), dataClsAdapterGames::addNewObjects);
+                } else {
+                    dataClsVM.getMediatorLiveData(RetrofitClient.getClient().getCall(Game.class, new HashMap<>()), Game.class, true)
+                            .observe(getViewLifecycleOwner(), dataClsAdapterGames::addNewObjects);
+
+                }
+
                 break;
-            case "User":
-//                Log.i(TAG, "User Search");
-//                //Add search for user
-//                Observable<JsonArray> userQuery = retrofitClient.getCall(User.class, new HashMap<String, String>() {{
-//                    put("username", searchQuery);
-//                }}).mergeWith(retrofitClient.getCall(User.class, new HashMap<String, String>() {{
-//                }})).scan((cumulativeJsonArray, newJsonArray) -> {
-//                    cumulativeJsonArray.addAll(newJsonArray);
-//                    return cumulativeJsonArray;
-//                });
-                // dataClsVM.getMediatorLiveData(userQuery, Game.class, true)
-                //      .observe(getViewLifecycleOwner(), dataClsAdapterUsers::addNewObjects);
+            case "People":
+                Log.i(TAG, "User Search");
+                //Add search for user
+                rvUser.setLayoutManager(new LinearLayoutManager(this.getContext()));
+
+                dataClsAdapterUsers = new DataClsAdapter<>(
+                        this,
+                        User.class,
+                        getActivity(),
+                        R.layout.user_item);
+                rvUser.setAdapter(dataClsAdapterUsers);
+                if(!searchQuery.isEmpty()) {
+                    Observable<JsonArray> userQuery = retrofitClient.getCall(User.class, new HashMap<String, String>() {{
+                        put("username", searchQuery);
+                    }}).scan((cumulativeJsonArray, newJsonArray) -> {
+                        cumulativeJsonArray.addAll(newJsonArray);
+                        return cumulativeJsonArray;
+                    });
+                    dataClsVM.getMediatorLiveData(userQuery, User.class, true)
+                            .observe(getViewLifecycleOwner(), dataClsAdapterUsers::addNewObjects);
+                } else {
+                    dataClsVM.getMediatorLiveData(RetrofitClient.getClient().getCall(User.class, new HashMap<>()), User.class, true)
+                            .observe(getViewLifecycleOwner(), dataClsAdapterUsers::addNewObjects);
+                }
                 break;
             case "Events":
                 Log.i(TAG, "Event Search");
-                Observable<JsonArray> eventQuery = retrofitClient.getCall(Event.class, new HashMap<String, String>() {{
-                    put("name", searchQuery);
-                }}).mergeWith(retrofitClient.getCall(Event.class, new HashMap<String, String>() {{
-                    put("description", searchQuery);
-                }})).scan((cumulativeJsonArray, newJsonArray) -> {
-                    cumulativeJsonArray.addAll(newJsonArray);
-                    return cumulativeJsonArray;
-                });
-                dataClsVM.getMediatorLiveData(eventQuery, Event.class, true)
-                        .observe(getViewLifecycleOwner(), dataClsAdapterEvents::addNewObjects);
+                rvEvents.setLayoutManager(new LinearLayoutManager(this.getContext()));
+                dataClsAdapterEvents = new DataClsAdapter<>(
+                        this,
+                        Event.class,
+                        getActivity(),
+                        R.layout.event_item);
+                rvEvents.setAdapter(dataClsAdapterEvents);
 
+                if(!searchQuery.isEmpty()) {
+                    Observable<JsonArray> eventQuery = retrofitClient.getCall(Event.class, new HashMap<String, String>() {{
+                        put("name", searchQuery);
+                    }}).mergeWith(retrofitClient.getCall(Event.class, new HashMap<String, String>() {{
+                        put("description", searchQuery);
+                    }})).scan((cumulativeJsonArray, newJsonArray) -> {
+                        cumulativeJsonArray.addAll(newJsonArray);
+                        return cumulativeJsonArray;
+                    });
+                    dataClsVM.getMediatorLiveData(eventQuery, Event.class, true)
+                            .observe(getViewLifecycleOwner(), dataClsAdapterEvents::addNewObjects);
+                } else {
+                    dataClsVM.getMediatorLiveData(RetrofitClient.getClient().getCall(Event.class, new HashMap<>()), Event.class, true)
+                            .observe(getViewLifecycleOwner(), dataClsAdapterEvents::addNewObjects);
+                }
                 break;
             default:
                 break;
@@ -327,10 +331,12 @@ public class SearchFragment extends Fragment implements AdapterView.OnItemSelect
                 break;
             case "People":
                 NavHostFragment.findNavController(SearchFragment.this)
-                        .navigate(R.id.action_searchFragment_to_profileFragment, contextBundle);
+                        .navigate(R.id.action_searchFragment_to_userProfileFragment, contextBundle);
+                break;
             case "Events":
                 NavHostFragment.findNavController(SearchFragment.this)
                         .navigate(R.id.action_searchFragment_to_singleEventFragment, contextBundle);
+                break;
 
         }
     }

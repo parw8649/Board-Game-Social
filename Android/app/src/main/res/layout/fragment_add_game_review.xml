@@ -48,4 +48,98 @@
         app:layout_constraintTop_toBottomOf="@+id/et_game_review_content"
         app:layout_constraintVertical_bias="0.127" />
 
+    <!--
+
+    <TextView
+       android:layout_width="wrap_content"
+       android:layout_height="wrap_content"
+       android:text="@string/Title"
+       />
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="horizontal"
+    android:layout_width="fill_parent"
+    android:layout_height="wrap_content"
+    >
+
+   <EditText
+       android:layout_width="100px"
+       android:layout_height="wrap_content"
+       android:text="1"
+       android:id="@+id/formNumber"
+   android:numeric="integer"/>
+   <Button android:text="Run Form" android:id="@+id/btnRunForm"
+       android:layout_width="wrap_content"
+       android:layout_height="wrap_content">
+   </Button>
+</LinearLayout>
+<ImageView
+  android:id="@+id/spaceStationIcon"
+  android:layout_width="30dp"
+  android:layout_height="30dp"
+  android:layout_marginTop="15dp"
+  android:src="@drawable/space_station_icon"
+  app:layout_constraintEnd_toStartOf="@+id/flightsIcon"
+  app:layout_constraintHorizontal_chainStyle="spread"
+  app:layout_constraintStart_toStartOf="parent"
+  app:layout_constraintTop_toTopOf="parent" />
+
+<ImageView
+  android:id="@+id/flightsIcon"
+  android:layout_width="30dp"
+  android:layout_height="30dp"
+  android:src="@drawable/rocket_icon"
+  app:layout_constraintBottom_toBottomOf="@+id/spaceStationIcon"
+  app:layout_constraintEnd_toStartOf="@+id/roverIcon"
+  app:layout_constraintStart_toEndOf="@+id/spaceStationIcon"
+  app:layout_constraintTop_toTopOf="@+id/spaceStationIcon" />
+
+<ImageView
+  android:id="@+id/roverIcon"
+  android:layout_width="30dp"
+  android:layout_height="30dp"
+  android:src="@drawable/rover_icon"
+  app:layout_constraintBottom_toBottomOf="@+id/flightsIcon"
+  app:layout_constraintEnd_toEndOf="parent"
+  app:layout_constraintStart_toEndOf="@+id/flightsIcon"
+  app:layout_constraintTop_toTopOf="@+id/flightsIcon" />
+
+<TextView
+  android:id="@+id/roverLabel"
+  android:layout_width="wrap_content"
+  android:layout_height="wrap_content"
+  android:layout_marginTop="15dp"
+  android:text="@string/rovers"
+  app:layout_constraintEnd_toEndOf="@+id/roverIcon"
+  app:layout_constraintStart_toStartOf="@+id/roverIcon"
+  app:layout_constraintTop_toBottomOf="@+id/roverIcon" />
+
+<TextView
+  android:id="@+id/flightsLabel"
+  android:layout_width="wrap_content"
+  android:layout_height="wrap_content"
+  android:layout_marginTop="15dp"
+  android:text="@string/flights"
+  app:layout_constraintEnd_toEndOf="@+id/flightsIcon"
+  app:layout_constraintStart_toStartOf="@+id/flightsIcon"
+  app:layout_constraintTop_toBottomOf="@+id/flightsIcon" />
+
+<TextView
+  android:id="@+id/spaceStationLabel"
+  android:layout_width="wrap_content"
+  android:layout_height="wrap_content"
+  android:layout_marginTop="15dp"
+  android:text="@string/space_stations"
+  app:layout_constraintEnd_toEndOf="@+id/spaceStationIcon"
+  app:layout_constraintStart_toStartOf="@+id/spaceStationIcon"
+  app:layout_constraintTop_toBottomOf="@+id/spaceStationIcon" />
+<ImageView
+  android:id="@+id/rocketIcon"
+  android:layout_width="30dp"
+  android:layout_height="30dp"
+  android:src="@drawable/rocket_icon"
+  app:layout_constraintCircle="@id/galaxyIcon"
+  app:layout_constraintCircleAngle="270"
+  app:layout_constraintCircleRadius="100dp" />
+
+    -->
 </androidx.constraintlayout.widget.ConstraintLayout>
