@@ -54,9 +54,9 @@ public class PostVH extends DataClsVH<Post> {
     @Override
     public void onBind(Activity activity, Post post) {
         toggleVisibility(View.INVISIBLE);
-        if (localCache.containsKey(post)){
-            performBind(activity, post, (User) Objects.requireNonNull(localCache.get(post)).getSerializable(USER_KEY));
-        } else {
+//        if (localCache.containsKey(post)){
+//            performBind(activity, post, (User) Objects.requireNonNull(localCache.get(post)).getSerializable(USER_KEY));
+//        } else {
             retrofitClient.getCall(User.class, new HashMap<String, String>(){{
                 put("id", String.valueOf(post.getUserId()));
             }}).subscribe(jsonArray -> {
@@ -70,7 +70,7 @@ public class PostVH extends DataClsVH<Post> {
                     localCache.put(post, contextBundle);
                 }
             });
-        }
+//        }
     }
 
     private void performBind(Activity activity, Post post, User user){

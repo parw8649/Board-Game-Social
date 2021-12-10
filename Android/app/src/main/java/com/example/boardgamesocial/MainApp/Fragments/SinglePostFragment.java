@@ -1,29 +1,64 @@
 package com.example.boardgamesocial.MainApp.Fragments;
 
+import static com.example.boardgamesocial.API.RetrofitClient.getObject;
+import static com.example.boardgamesocial.API.RetrofitClient.getObjectList;
+
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.EditText;
+import android.widget.ImageButton;
+import android.widget.ImageView;
+import android.widget.TextView;
 import android.widget.Toast;
 
+import com.example.boardgamesocial.API.RetrofitClient;
+import com.example.boardgamesocial.Commons.Utils;
+import com.example.boardgamesocial.DataClasses.Comment;
+import com.example.boardgamesocial.DataClasses.Post;
+import com.example.boardgamesocial.DataClasses.User;
+import com.example.boardgamesocial.DataViews.Adapters.DataClsAdapter;
+import com.example.boardgamesocial.DataViews.Adapters.ViewHolders.CommentVH;
 import com.example.boardgamesocial.DataViews.Adapters.ViewHolders.PostVH;
+import com.example.boardgamesocial.DataViews.DataClsVM;
 import com.example.boardgamesocial.R;
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
+import com.google.android.material.snackbar.Snackbar;
+
+import java.util.HashMap;
+import java.util.List;
 
 /**
  * A simple {@link Fragment} subclass.
  * Use the {@link SinglePostFragment#newInstance} factory method to
  * create an instance of this fragment.
  */
-public class SinglePostFragment extends Fragment {
+public class SinglePostFragment extends Fragment implements DataClsAdapter.OnItemListener {
+
+    public static final String TAG = "SinglePostFragment";
 
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
     private static final String ARG_PARAM1 = "param1";
     private static final String ARG_PARAM2 = "param2";
+
+    private RetrofitClient retrofitClient;
+    private DataClsAdapter<Comment, CommentVH> dataClsAdapter;
+    private TextView textViewUsername;
+    private TextView textViewPostType;
+    private TextView textViewBody;
+    private TextView textViewLikes;
+    private ImageView imageViewUserIcon;
+    private EditText editTextComment;
+    private ImageButton imageButtonSend;
 
     // TODO: Rename and change types of parameters
     private String mParam1;
@@ -69,7 +104,84 @@ public class SinglePostFragment extends Fragment {
 
     public void onViewCreated(@NonNull View view, Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        assert this.getArguments() != null;
-        Toast.makeText(getContext(), this.getArguments().getSerializable(PostVH.POST_KEY).toString(), Toast.LENGTH_SHORT).show();
+        retrofitClient = RetrofitClient.getClient();
+
+        textViewUsername = view.findViewById(R.id.single_post_poster);
+        textViewPostType = view.findViewById(R.id.single_post_type);
+        textViewBody = view.findViewById(R.id.single_post_body);
+        textViewLikes = view.findViewById(R.id.single_post_number_likes);
+        imageViewUserIcon = view.findViewById(R.id.single_post_user_icon);
+        editTextComment = view.findViewById(R.id.single_post_editText_comment);
+        imageButtonSend = view.findViewById(R.id.single_post_btn_add_comment);
+
+        assert getArguments() != null;
+        Post post = (Post) getArguments().getSerializable(PostVH.POST_KEY);
+        Log.i(TAG, "onViewCreated: Post: " + post);
+//        Toast.makeText(getContext(), this.getArguments().getSerializable(PostVH.POST_KEY).toString(), Toast.LENGTH_SHORT).show();
+
+        RecyclerView recyclerView = view.findViewById(R.id.comments_recyclerView);
+        FloatingActionButton fab = requireActivity().findViewById(R.id.bottom_app_bar_fab);
+
+        fab.setVisibility(View.INVISIBLE);
+
+        imageButtonSend.setOnClickListener(v -> sendComment(post.getId()));
+
+        setUsername(post.getUserId());
+        textViewPostType.setText(post.getPostType());
+        textViewBody.setText(post.getPostBody());
+        textViewLikes.setText(String.valueOf(post.getLikes()));
+
+        recyclerView.setLayoutManager(new LinearLayoutManager(this.getContext()));
+
+        dataClsAdapter = new DataClsAdapter<>(
+                this,
+                Comment.class,
+                getActivity(),
+                R.layout.comment_item);
+        recyclerView.setAdapter(dataClsAdapter);
+
+        DataClsVM dataClsVM = DataClsVM.getInstance();
+        dataClsVM.getMediatorLiveData(retrofitClient.getCall(Comment.class, new HashMap<String, String>(){{
+                                            put("postId", post.getId().toString());
+                                        }}), Comment.class, true)
+                                        .observe(getViewLifecycleOwner(), dataClsAdapter::addNewObjects);
+    }
+
+    private void setUsername(int userId) {
+        retrofitClient.getCall(User.class, new HashMap<String, String>() {{
+            put("id", String.valueOf(userId));
+        }}).subscribe(jsonArray -> {
+            getActivity().runOnUiThread(() -> {
+                List<User> users = getObjectList(jsonArray, User.class);
+                textViewUsername.setText(users.get(0).getUsername().toString());
+            });
+        });
+    }
+
+    @Override
+    public void onDestroyView() {
+        super.onDestroyView();
+    }
+
+    @Override
+    public void onItemClick(Bundle bundle) {
+        Toast.makeText(getContext(), "comment tapped",Toast.LENGTH_SHORT).show();
+    }
+
+    private void sendComment(int postId) {
+        if (editTextComment.getText().toString().isEmpty()) {
+            return;
+        }
+
+        retrofitClient.postCall(Comment.class, new Comment(Utils.getUserId(), postId, editTextComment.getText().toString()))
+                .subscribe(jsonObject -> {
+                    Comment comment = getObject(jsonObject, Comment.class);
+                    requireActivity().runOnUiThread(() -> {
+                        Log.i(TAG, String.format("sendComment: comment: %s", comment));
+                        editTextComment.setText("");
+                    });
+                }, throwable -> {
+                    requireActivity().runOnUiThread(() -> {return;});
+                });
     }
 }
