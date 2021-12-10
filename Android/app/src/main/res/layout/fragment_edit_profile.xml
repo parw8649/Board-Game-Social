@@ -182,7 +182,7 @@
                     android:layout_marginStart="@dimen/h_spacer"
                     android:layout_toEndOf="@id/edit_profile_bio_label"
                     android:inputType="textMultiLine"
-                    android:maxLines="10"
+                    android:maxLength="850"
                     android:scrollbarDefaultDelayBeforeFade="@integer/material_motion_duration_short_2"
                     android:text="@string/profile_bio_placeholder"
                     android:textAppearance="@style/TextAppearance.AppCompat.Small" />

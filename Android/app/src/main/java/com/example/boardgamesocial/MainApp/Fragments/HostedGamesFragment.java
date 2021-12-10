@@ -24,6 +24,7 @@ import com.example.boardgamesocial.DataViews.Adapters.ViewHolders.EventVH;
 import com.example.boardgamesocial.DataViews.Adapters.ViewHolders.GameVH;
 import com.example.boardgamesocial.DataViews.DataClsVM;
 import com.example.boardgamesocial.R;
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.gson.JsonArray;
 
 import java.util.ArrayList;
@@ -49,6 +50,8 @@ public class HostedGamesFragment extends Fragment implements OnItemListener {
     private Event event;
 
     List<HostedGame> hostedGameList;
+
+    private FloatingActionButton fab;
 
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
@@ -153,6 +156,9 @@ public class HostedGamesFragment extends Fragment implements OnItemListener {
         DataClsVM dataClsVM = DataClsVM.getInstance();
         dataClsVM.getMediatorLiveData(fetchUpdatedEventHostedGames(), Game.class, true)
                 .observe(getViewLifecycleOwner(), dataClsAdapter::addNewObjects);
+
+        fab = requireActivity().findViewById(R.id.bottom_app_bar_fab);
+        fab.setVisibility(View.INVISIBLE);
     }
 
     @Override

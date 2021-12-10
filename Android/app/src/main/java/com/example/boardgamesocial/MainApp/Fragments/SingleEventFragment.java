@@ -14,6 +14,7 @@ import androidx.navigation.fragment.NavHostFragment;
 import com.example.boardgamesocial.DataClasses.Event;
 import com.example.boardgamesocial.DataViews.Adapters.ViewHolders.EventVH;
 import com.example.boardgamesocial.R;
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -32,6 +33,7 @@ public class SingleEventFragment extends Fragment {
     // TODO: Rename and change types of parameters
     private String mParam1;
     private String mParam2;
+    private FloatingActionButton fab;
 
     public SingleEventFragment() {
         // Required empty public constructor
@@ -93,5 +95,8 @@ public class SingleEventFragment extends Fragment {
 
         btnPeopleInEvent.setOnClickListener(v -> NavHostFragment.findNavController(SingleEventFragment.this)
                 .navigate(R.id.action_singleEventFragment_to_eventAttendeesFragment, getArguments()));
+
+        fab = requireActivity().findViewById(R.id.bottom_app_bar_fab);
+        fab.setVisibility(View.INVISIBLE);
     }
 }
