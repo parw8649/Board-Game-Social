@@ -137,10 +137,10 @@ public class SinglePostFragment extends Fragment implements DataClsAdapter.OnIte
 
         DataClsVM dataClsVM = DataClsVM.getInstance();
         dataClsVM.getMediatorLiveData(retrofitClient.getCall(Comment.class, new HashMap<String, String>(){{
-            put("postId", post.getId().toString());
-            put("userId", post.getUserId().toString());
-        }}), Comment.class, false)
-        .observe(getViewLifecycleOwner(), dataClsAdapter::addNewObjects);
+//                                            put("postId", post.getId().toString());
+//                                            put("userId", post.getUserId().toString());
+                                        }}), Comment.class, true)
+                                        .observe(getViewLifecycleOwner(), dataClsAdapter::addNewObjects);
     }
 
     private void setUsername(int userId) {

@@ -27,7 +27,6 @@ public class CommentVH extends DataClsVH<Comment> {
     private final TextView textViewUsername;
     private final TextView textViewCommentBody;
 
-    // TODO: Add TextViews once xml is created
     public CommentVH(@NonNull View commentView, DataClsAdapter.OnItemListener onItemListener) {
         super(commentView, onItemListener);
 
