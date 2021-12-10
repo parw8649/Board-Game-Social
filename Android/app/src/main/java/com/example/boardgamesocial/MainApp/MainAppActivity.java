@@ -10,6 +10,7 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.Menu;
 import android.view.View;
+import android.widget.ImageView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
@@ -23,6 +24,7 @@ import androidx.navigation.ui.NavigationUI;
 import com.example.boardgamesocial.API.RetrofitClient;
 import com.example.boardgamesocial.Commons.Utils;
 import com.example.boardgamesocial.DataClasses.User;
+import com.example.boardgamesocial.MainApp.Fragments.EditIconFragment;
 import com.example.boardgamesocial.databinding.ActivityMainAppBinding;
 import com.example.boardgamesocial.LoginAndSignUp.LoginAndSignUpActivity;
 import com.example.boardgamesocial.R;
@@ -177,5 +179,10 @@ public class MainAppActivity extends AppCompatActivity {
         } catch (Exception e) {
             Toast.makeText(this,"Unable to logout", Toast.LENGTH_SHORT).show();
         }
+    }
+
+    public void setIcon(View view) {
+        ImageView imageView = (ImageView) view;
+        Toast.makeText(this, "setIcon: icon img: " + EditIconFragment.ICON_MAP.get(imageView.getTag()), Toast.LENGTH_LONG).show();
     }
 }

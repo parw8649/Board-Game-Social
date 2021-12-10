@@ -68,7 +68,7 @@
             android:padding="@dimen/profile_bio_padding"
             android:layout_marginBottom="@dimen/profile_bio_bottom_margin"
             android:justificationMode="inter_word"
-            android:maxLength="@dimen/profile_bio_length"
+            android:maxLength="850"
             android:text="@string/profile_bio_placeholder"/>
 
         <Button

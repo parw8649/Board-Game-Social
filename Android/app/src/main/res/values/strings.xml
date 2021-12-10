@@ -178,4 +178,10 @@
     <!--  edit icon fragment  -->
     <string name="title_activity_edit_icon_fragment">EditIconFragment</string>
     <string name="edit_icon_title">Choose your icon:</string>
+    <string name="icon1">icon1</string>
+    <string name="icon2">icon2</string>
+    <string name="icon3">icon3</string>
+    <string name="icon4">icon4</string>
+    <string name="icon5">icon5</string>
+    <string name="icon6">icon6</string>
 </resources>

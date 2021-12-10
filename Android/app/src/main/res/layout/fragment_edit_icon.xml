@@ -33,14 +33,18 @@
                 android:layout_width="150dp"
                 android:layout_height="150dp"
                 android:layout_marginEnd="@dimen/icon_margin"
+                android:tag="@string/icon1"
                 android:clickable="true"
+                android:onClick="setIcon"
                 android:src="@drawable/show_circular_image" />
 
             <ImageView
                 android:id="@+id/user_icon_choice_2"
                 android:layout_width="150dp"
                 android:layout_height="150dp"
+                android:tag="@string/icon2"
                 android:clickable="true"
+                android:onClick="setIcon"
                 android:src="@drawable/show_circular_image" />
         </LinearLayout>
 
@@ -56,14 +60,18 @@
                 android:layout_width="150dp"
                 android:layout_height="150dp"
                 android:layout_marginEnd="@dimen/icon_margin"
+                android:tag="@string/icon3"
                 android:clickable="true"
+                android:onClick="setIcon"
                 android:src="@drawable/show_circular_image" />
 
             <ImageView
                 android:id="@+id/user_icon_choice_4"
                 android:layout_width="150dp"
                 android:layout_height="150dp"
+                android:tag="@string/icon4"
                 android:clickable="true"
+                android:onClick="setIcon"
                 android:src="@drawable/show_circular_image" />
         </LinearLayout>
 
@@ -79,14 +87,18 @@
                 android:layout_width="150dp"
                 android:layout_height="150dp"
                 android:layout_marginEnd="@dimen/icon_margin"
+                android:tag="@string/icon5"
                 android:clickable="true"
+                android:onClick="setIcon"
                 android:src="@drawable/show_circular_image" />
 
             <ImageView
                 android:id="@+id/user_icon_choice_6"
                 android:layout_width="150dp"
                 android:layout_height="150dp"
+                android:tag="@string/icon6"
                 android:clickable="true"
+                android:onClick="setIcon"
                 android:src="@drawable/show_circular_image" />
         </LinearLayout>
     </LinearLayout>
