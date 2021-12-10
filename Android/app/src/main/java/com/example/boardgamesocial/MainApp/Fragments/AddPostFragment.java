@@ -21,6 +21,7 @@ import com.example.boardgamesocial.API.RetrofitClient;
 import com.example.boardgamesocial.Commons.Utils;
 import com.example.boardgamesocial.DataClasses.Post;
 import com.example.boardgamesocial.R;
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.snackbar.Snackbar;
 
 import java.util.Objects;
@@ -47,6 +48,7 @@ public class AddPostFragment extends Fragment {
     Spinner spinnerPostType;
     boolean isPrivate;
     boolean typeChecked;
+    private FloatingActionButton fab;
 
     public AddPostFragment() {
         // Required empty public constructor
@@ -90,7 +92,8 @@ public class AddPostFragment extends Fragment {
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
-        setAppBarFab(View.INVISIBLE);
+        fab = view.findViewById(R.id.bottom_app_bar_fab);
+        fab.setVisibility(View.INVISIBLE);
 
         RadioButton radioButtonPrivate = view.findViewById(R.id.add_post_radioBtn_private);
         RadioButton radioButtonPublic = view.findViewById(R.id.add_post_radioBtn_public);
@@ -160,29 +163,21 @@ public class AddPostFragment extends Fragment {
 
     private void makePost(View view) {
         RetrofitClient retrofitClient = RetrofitClient.getClient();
-        try {
             retrofitClient.postCall(Post.class, newPost)
                     .subscribe(jsonObject -> {
                         Post madePost = retrofitClient.getObject(jsonObject, Post.class);
                         Log.i(TAG, String.format("makePost: newPost: %s", madePost.toString()));
-                    });
-        } catch (Exception e) {
-            Log.i(TAG, String.format("makePost: error msg: %s", e.getMessage()));
-            Snackbar.make(view, R.string.add_post_error, Snackbar.LENGTH_LONG)
-                    .setAnchorView(R.id.add_post_button).setAction("Action", null).show();
-            return;
-        }
-        Snackbar.make(view, R.string.add_post_success, Snackbar.LENGTH_LONG)
-                .setAnchorView(R.id.bottom_app_bar).setAction("Action", null).show();
-        setAppBarFab(View.VISIBLE);
-        NavHostFragment.findNavController(AddPostFragment.this)
-                .navigate(R.id.action_addPostFragment_to_HomePostFragment);
-    }
+                        requireActivity().runOnUiThread(() -> {
+                            Snackbar.make(view, R.string.add_post_success, Snackbar.LENGTH_LONG)
+                                    .setAnchorView(R.id.bottom_app_bar).setAction("Action", null).show();
+                            fab.setVisibility(View.VISIBLE);
+                            NavHostFragment.findNavController(AddPostFragment.this)
+                                    .navigate(R.id.action_addPostFragment_to_HomePostFragment);
+                        });
 
-    private void setAppBarFab(int visibility) {
-        Bundle result = new Bundle();
-        result.putInt("visibility", visibility);
-        // The child fragment needs to still set the result on its parent fragment manager
-        getParentFragmentManager().setFragmentResult("requestKey", result);
+                    }, throwable ->  {
+                        Snackbar.make(view, "Unable to make Post.", Snackbar.LENGTH_LONG)
+                                .setAnchorView(R.id.bottom_app_bar).setAction("Action", null).show();
+                    });
     }
 }
